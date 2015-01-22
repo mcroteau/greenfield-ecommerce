@@ -1,0 +1,16 @@
+input[type="text"],
+input[type="password"]{				
+	-moz-box-shadow: inset 0 2px 4px -2px #bbb;
+	-webkit-box-shadow: inset 0 2px 4px -2px #bbb;
+	box-shadow: inset 0 2px 4px -2px #bbb;
+}
+
+.form-group em{
+	font-size:18px;
+	font-weight:bold;
+	font-style:normal;
+}
+.form-group.inactive em{
+	color:#777;
+	font-style:italic;
+}
