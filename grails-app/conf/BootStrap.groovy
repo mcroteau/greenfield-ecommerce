@@ -25,6 +25,8 @@ import groovy.io.FileType
 
 class BootStrap {
 
+	def developmentDataService
+
 	def adminRole
 	def customerRole
 	def salesmanRole
@@ -43,19 +45,11 @@ class BootStrap {
 		createAdmin()
 		println 'Accounts : ' + Account.count()
 
-		//setupTestEnvironment()
+		developmentDataService.generate()
 	}
 	
 	
 	
-	
-	def setupTestEnvironment(){
-		createCatalogs()
-		createProducts()
-		createCustomers()
-		createOrders()
-	}
-
 	
 
 	def createRoles = {
@@ -99,222 +93,7 @@ class BootStrap {
 		}
 		
 	}
-	
 
-	
-	
-	def createCustomers = {
-		def password = new Sha256Hash('customer').toHex()
-		
-		def customer = new Account(username : 'customer', passwordHash : password, name : 'customer', lastName: 'customer', email : 'customer1@email.com')
-			
-		customer.address1 = "1000 Main Street"
-		customer.address2 = "Apt. #10"
-		customer.city = "Reno"
-		customer.state = State.findByName("Nevada")
-		customer.zip = "89523"
-		
-		customer.addToRoles(customerRole)
-		
-		customerRole.addToAccounts(customer)
-		customerRole.save(flush:true)
-
-		
-		customer.save(flush:true)
-		
-		customer.addToPermissions("account:customer_profile:" + customer.id)
-		customer.addToPermissions("account:customer_update:" + customer.id)
-		customer.addToPermissions("account:customer_order_history:" + customer.id)
-		customer.save(flush:true)
-		
-		
-		
-		
-		def customer2 = new Account(username : 'customer2', passwordHash : password, firstName : 'customer2', lastName: 'customer2', email : 'customer2@email.com')
-		
-		customer2.addToRoles(customerRole)
-		
-		customerRole.addToAccounts(customer2)
-		customerRole.save(flush:true)
-		
-		customer2.save(flush:true)
-		customer2.addToPermissions("account:customer_profile:" + customer2.id)
-		customer2.addToPermissions("account:customer_update:" + customer2.id)
-		customer2.addToPermissions("account:customer_order_history:" + customer2.id)
-		customer2.save(flush:true)
-		
-		
-		
-		def customer3 = new Account(username : 'customer3', passwordHash : password, firstName : 'customer3', lastName: 'customer3', email : 'customer3@email.com')
-		
-		customer3.addToRoles(customerRole)
-		
-		customerRole.addToAccounts(customer3)
-		customerRole.save(flush:true)
-		
-		customer3.save(flush:true)
-		customer3.addToPermissions("account:customer_profile:" + customer3.id)
-		customer3.addToPermissions("account:customer_update:" + customer3.id)
-		customer3.addToPermissions("account:customer_order_history:" + customer3.id)
-		customer3.save(flush:true)
-		
-		println "Accounts : ${Account.count()}"
-	}
-	
-	
-	
-	
-	
-	def createCatalogs(){		
-		def c1 = new Catalog()
-		c1.name = "Poker Chips"
-		c1.save(flush:true);
-		
-		def c2 = new Catalog()
-		c2.name = "Porcelain Dice"
-		c2.save(flush:true);
-		
-		def c3 = new Catalog()
-		c3.name = "Double Decks"
-		c3.save(flush:true);
-		
-		def c4 = new Catalog()
-		c4.name = "Rummy"
-		c4.save(flush:true);
-		
-		println "Catalogs : ${Catalog.count()}"
-	}
-	
-	
-	def createProducts(){
-		
-		int max = 50
-		int catalog_max = 4
-		Random rand = new Random()
-		
-		def catalogs = Catalog.findAll()
-		
-		(1..10).each {
-			
-			def catalog_id = rand.nextInt(catalog_max)
-			
-			def productName = ""
-			switch(catalog_id){
-				case 0 :
-					productName = "Poker Chips ${it}"
-					break;
-				case 1 : 
-					productName = "Porcelain Dice ${it}"
-					break;
-				case 2 : 
-					productName = "Card Decks ${it}"
-					break;
-				case 3 : 
-					productName = "Rummy Set ${it}"
-					break;
-				default : 
-					productName = "Casino Set ${it}"
-					break;
-			}
-			
-			def num = rand.nextInt(max)
-			
-			def catalog = catalogs.get(catalog_id)
-			
-			def product = new Product()
-			
-			product.productNo = num + "no"
-			product.name = productName
-			product.description = "description of product ${it}"
-			product.quantity = num * 20
-			product.price = num
-			product.weight = 10
-			product.length = 5
-			product.height = 5
-			product.width = 5
-			product.imageUrl = "images/app/no-image.jpg"
-			product.detailsImageUrl = "images/app/no-image.jpg"
-			product.catalog = catalog
-			product.save(flush:true)
-			
-			productLookup = num
-		}
-		
-		println "Products : ${Product.count()} "
-		
-	}
-	
-	
-	def createOrders(){
-
-		def customer = Account.findByUsername("customer")
-		
-		(1..3).each(){
-			createMockTransaction(customer)
-		}
-		
-		println "Orders : ${Transaction.count()} "
-	}
-
-	
-	
-	def createMockTransaction(customer){
-
-		def taxes = 2.00
-		def shipping = 4.00
-
-		Random rand = new Random()
-		def id = rand.nextInt(9) + 1
-		def quantity = rand.nextInt(2) + 1
-		def days = rand.nextInt(9) + 1
-
-		def shoppingCart = new ShoppingCart()
-		shoppingCart.account = customer
-		shoppingCart.status = ShoppingCartStatus.TRANSACTION.description()
-		shoppingCart.save(flush:true)
-
-		def product = Product.get(id)		
-		def shoppingCartItem = new ShoppingCartItem()
-		shoppingCartItem.quantity = quantity
-		shoppingCartItem.product = product
-		shoppingCart.addToShoppingCartItems(shoppingCartItem)
-		shoppingCart.save(flush:true)
-		
-
-		shoppingCart.taxes = taxes
-		shoppingCart.shipping = shipping
-		shoppingCart.subtotal = (product.price * quantity)
-		shoppingCart.total = shoppingCart.subtotal + taxes + shipping
-		shoppingCart.save(flush:true)
-		
-		
-		def transaction = new Transaction()
-    	transaction.orderDate = new Date() + days
-		
-		transaction.total = shoppingCart.total
-		transaction.subtotal = shoppingCart.subtotal
-		transaction.taxes = shoppingCart.taxes
-		transaction.shipping = shoppingCart.shipping
-		
-		transaction.status = OrderStatus.OPEN.description()
-		transaction.shoppingCart = shoppingCart
-		transaction.account = customer
-		
-		transaction.chargeId = "DEVELOPEMENT"
-		
-		//Shipping Info
-		transaction.shipName = customer.username
-		transaction.shipAddress1 = customer.address1
-		transaction.shipAddress2 = customer.address2
-		transaction.shipCity = customer.city
-		transaction.shipState = customer.state 
-		transaction.shipZip = customer.zip
-		
-		transaction.save(flush:true)
-		
-	}
-	
-	
 	
 	
 	def createLayout(){

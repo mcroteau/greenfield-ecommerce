@@ -3,6 +3,9 @@ package org.greenfield
 import org.springframework.dao.DataIntegrityViolationException
 import org.greenfield.BaseController
 
+import org.greenfield.log.CatalogViewLog
+import org.apache.shiro.SecurityUtils
+
 @Mixin(BaseController)
 class CatalogController {
 
@@ -16,7 +19,27 @@ class CatalogController {
 	
 	def products(Long id){
 		def catalogInstance = Catalog.findById(id)
+		
+		if(!catalogInstance){	
+			flash.message = "Unable to find Catalog..."
+			redirect(controller : 'store', action : 'index')
+		}
+		
 		def products = Product.findAllByCatalogAndDisabledAndQuantityGreaterThan(catalogInstance, false, 0)
+		
+		def catalogViewLog = new CatalogViewLog()
+		catalogViewLog.catalog = catalogInstance
+		
+		def subject = SecurityUtils.getSubject();
+		if(subject.isAuthenticated()){
+			def account = Account.findByUsername(subject.principal)
+			if(account){
+				catalogViewLog.account = account
+			}
+		}
+		
+		catalogViewLog.save(flush:true)
+		
 		[products : products, catalogInstance: catalogInstance]
 	}
 	

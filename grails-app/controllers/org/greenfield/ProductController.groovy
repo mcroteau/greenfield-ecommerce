@@ -8,6 +8,11 @@ import java.awt.Graphics2D
 import grails.util.Environment
 import grails.converters.*
 
+
+import org.apache.shiro.SecurityUtils
+import org.greenfield.log.ProductViewLog
+import org.greenfield.log.SearchLog
+
 @Mixin(BaseController)
 class ProductController {
 
@@ -25,13 +30,25 @@ class ProductController {
 			def p1 = Product.findAll("from Product as p where UPPER(p.name) like UPPER('%${params.query}%') AND p.disabled = false AND p.quantity > 0")
 			def p2 = Product.findAll("from Product as p where UPPER(p.description) like UPPER('%${params.query}%') AND p.disabled = false AND p.quantity > 0")
 			
-			
 			p1.collect( { productA ->
 			    def productB = p2.find { it.name == productA.name }
 				p2.remove(productB)
 			})
 
 			def products = p1 + p2
+			
+			
+			def searchLog = new SearchLog()
+			searchLog.query = params.query.toLowerCase()
+			def subject = SecurityUtils.getSubject();
+			if(subject.isAuthenticated()){
+				def account = Account.findByUsername(subject.principal)
+				if(account){
+					searchLog.account = account
+				}
+			}
+			searchLog.save(flush:true)
+			
 			
 			[products : products]
 		}else{
@@ -66,6 +83,10 @@ class ProductController {
 			
 		}
 		
+		
+		def productViewLog = new ProductViewLog()
+		productViewLog.product = productInstance
+		productViewLog.save(flush:true)
 		
         [ productInstance: productInstance, productOptions : productOptions ]
 	}

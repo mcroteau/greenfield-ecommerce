@@ -4,9 +4,11 @@ import org.greenfield.Account
 
 class LoginLog {
 
-	Date date
 	Account account
 	String ipAddress
+	
+	Date dateCreated
+	Date lastUpdated
 
     static constraints = {
 		id generator: 'sequence', params:[sequence:'ID_LOGIN_LOG_PK_SEQ']

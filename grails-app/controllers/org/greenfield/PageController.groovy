@@ -3,6 +3,9 @@ package org.greenfield
 import org.springframework.dao.DataIntegrityViolationException
 import org.greenfield.BaseController
 
+import org.greenfield.log.PageViewLog
+import org.apache.shiro.SecurityUtils
+
 @Mixin(BaseController)
 class PageController {
 
@@ -21,9 +24,28 @@ class PageController {
     	[pageInstance: pageInstance]
 	}
 	
+	
 	def store_view(String title){
 		def t = java.net.URLDecoder.decode(params.title, "UTF-8");
 		def pageInstance = Page.findByTitle(t)
+		if(!pageInstance){
+			flash.message = "Unable to find page"
+    	    redirect(controller : 'store', action: "index")
+		}
+		
+		def pageViewLog = new PageViewLog()
+		pageViewLog.page = pageInstance
+
+		def subject = SecurityUtils.getSubject();
+		if(subject.isAuthenticated()){
+			def account = Account.findByUsername(subject.principal)
+			if(account){
+				pageViewLog.account = account
+			}
+		}
+		
+		pageViewLog.save(flush:true)
+		
 		[pageInstance : pageInstance]
 	}
 	
