@@ -1,301 +1,540 @@
-<html>
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+	<title>Greenfield : Administration Prototype</title>
+
 	<link rel="stylesheet" href="${resource(dir:'bootstrap/3.1.1/css', file:'bootstrap.min.css')}" />
-	
 	<script type="text/javascript" src="${resource(dir:'js/lib/jquery/1.11.0/jquery.js')}"></script>
-	
 	<script type="text/javascript" src="${resource(dir:'bootstrap/3.1.1/js/bootstrap.js')}"></script>
+	
+	<script type="text/javascript" src="${resource(dir:'bootstrap/datepicker/datepicker.js')}"></script>
+	<link rel="stylesheet" href="${resource(dir:'bootstrap/datepicker', file:'datepicker.css')}" />
+	
+	<script type="text/javascript" src="${resource(dir:'js/lib/dygraphs/1.1.0/dygraph-combined.min.js')}"></script>
+	
+
+	<link href="fonts/fonts.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="${resource(dir:'css', file:'admin.css')}" />
 	
 	<g:layoutHead/>
 	
-<style type="text/css">
-@font-face { 
-	font-family: Roboto-Regular; 
-	src: url("${resource(dir:'fonts/Roboto-Regular.ttf')}"); 
-} 
-@font-face { 
-	font-family: Roboto-Bold;
-	src: url("${resource(dir:'fonts/Roboto-Bold.ttf')}"); 
-}
-@font-face { 
-	font-family: Roboto-Thin; 
-	src: url("${resource(dir:'fonts/Roboto-Thin.ttf')}"); 
-}
-@font-face { 
-	font-family: Roboto-Light; 
-	src: url("${resource(dir:'fonts/Roboto-Light.ttf')}"); 
-}
-@font-face { 
-	font-family: Roboto-Black; 
-	src: url("${resource(dir:'fonts/Roboto-Black.ttf')}"); 
-}
-@font-face { 
-	font-family: Roboto-Medium; 
-	src: url("${resource(dir:'fonts/Roboto-Medium.ttf')}"); 
-}
-html,body{
-	background:#efefef;
-}	
-
-#admin-marker{
-	height:5px;
-	margin-top:15px;
-	margin-bottom:0px;
-	background:#ffa247;
-	background:#999;
-	-webkit-border-top-left-radius: 5px;
-	-webkit-border-top-right-radius: 5px;
-	-moz-border-radius-topleft: 5px;
-	-moz-border-radius-topright: 5px;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-}
-
-#admin-nav-container{
-	font-family:Roboto-Regular;
-	padding-bottom:15px;
-	margin-top:0px;
-	background:#3b3e41;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-}
-
-#admin-nav-container h4{
-	font-size:12px;
-	text-align:center;
-	color:bbb;
-}
-
-#admin-nav{
-	margin:0px;
-	padding:0px;
-	list-style:none;
-}
-
-#admin-nav li{
-	padding:0px;
-	margin:0px;
-	height:58px;
-	display:block;
-	background:ddd;
-}
-
-#admin-nav li a{
-	color:#bbb;
-	display:block;
-	font-size:17px;
-	height:58px;
-	padding:15px 10px 10px 10px;
-	vertical-align:middle;
-	font-family:Roboto-Thin;
-	background:#3b3e41;
-	border-top:solid 1px #575859;
-	border-bottom:solid 1px #2b2b2b;
-	outline:none;
-	text-decoration:none;
-}
-
-#admin-nav li a:hover{
-	color:#ddd;
-	background:#595b5d;
-	text-decoration:none;
-}
-
-#admin-nav li a:active{
-	color:#efefef;
-	background:#656667;
-	text-decoration:none;
-}
-
-#admin-nav li a:visited, 
-#admin-nav li a:link{
-	text-decoration:none;
-}
-
-#admin-nav li a.active{
-	color:#f8f8f8;
-	background:#25292c;
-}
-
-#admin-content{
-	padding:20px 10px 30px 0px;
-	position:relative;
-}
-
-.container{	
-	background:#fff;
-	min-height:500px;
-	margin-top:15px;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	position:relative;
-	-webkit-box-shadow: 0px 0px 25px 0px rgba(204,204,204,1);
-	-moz-box-shadow: 0px 0px 25px 0px rgba(204,204,204,1);
-	box-shadow: 0px 0px 25px 0px rgba(204,204,204,1);
-}	
-
-table{
-	empty-cells:show;
-	border-collapse:separate;
-	border:none !important;
-	border-spacing:2px 2px;
-}
-table tr{
-	border:none !important;
-}
-table td{
-	border-top:none !important;
-	border-bottom: 1px dashed #ddd;
-	border-right : 1px dashed #ddd;
-}
-.nav{
-	margin-bottom:10px;
-}
-.inactive a{
-	display:inline-block;
-	background:#f8f8f8;
-	border:solid 1px #ddd !important;
-}
-.form-group label{
-	font-weight:normal;
-}
-.form-group .form-control{
-	display:inline-block;
-	width:300px;
-}
-.form-group label em{
-	font-weight:normal;
-	font-size:11px;
-	color:#777
-}
-#information h3{
-	margin:20px 0px 30px 0px;
-	padding-bottom:7px;
-	border-bottom:dashed 3px #ddd;
-}
-
-.instructions{
-	color:#777;
-	font-size:12px;
-}
-
-.clear{
-	clear:both;
-}
-
-
-.nextLink,
-.step,
-.currentStep,
-.prevLink {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    color: #428bca;
-    float: left;
-    line-height: 1.42857;
-    margin-left: -1px;
-    padding: 6px 12px;
-    position: relative;
-    text-decoration: none !important;
-}
-.nextLink:hover,
-.step:hover,
-.currentStep:hover,
-.prevLink:hover{
-	text-decoration:none;
-}
-.currentStep {
-    background-color: #428bca;
-    border-color: #428bca;
-    color: #fff;
-    cursor: default;
-    z-index: 2;
-}
-</style>
+	
+<style type="text/css">	
+	@font-face { 
+		font-family: Roboto-Regular; 
+		src: url("${resource(dir:'fonts/Roboto-Regular.ttf')}"); 
+	} 
+	@font-face { 
+		font-family: Roboto-Bold;
+		src: url("${resource(dir:'fonts/Roboto-Bold.ttf')}"); 
+	}
+	@font-face { 
+		font-family: Roboto-Thin; 
+		src: url("${resource(dir:'fonts/Roboto-Thin.ttf')}"); 
+	}
+	@font-face { 
+		font-family: Roboto-Light; 
+		src: url("${resource(dir:'fonts/Roboto-Light.ttf')}"); 
+	}
+	@font-face { 
+		font-family: Roboto-Black; 
+		src: url("${resource(dir:'fonts/Roboto-Black.ttf')}"); 
+	}
+	@font-face { 
+		font-family: Roboto-Medium; 
+		src: url("${resource(dir:'fonts/Roboto-Medium.ttf')}"); 
+	}
+</style>	
 
 </head>
 <body>
-
-	<div class="container">
 	
-		<div class="row">
+	<div id="greenfield-header"></div>
+	
+	<div id="outer-container">
 		
-			<div class="col-xs-2">
+		<div id="admin-nav-container">
+	
+			<div id="admin-marker"></div>
 			
-				<div id="admin-nav-container">
+			<ul id="admin-nav">
+				<li><g:link uri="/admin">Dashboard</g:link></li>
+				<li><g:link uri="/product/list">Products</g:link></li>
+				<li><g:link uri="/catalog/list">Catalogs</g:link></li>
+				<li><g:link uri="/transaction/list">Orders</g:link></li>
+				<li><g:link uri="/page/list">Pages</g:link></li>
+				<li><g:link uri="/account/admin_list?admin=false">Accounts</g:link></li>
+				<li><g:link uri="/configuration/settings">Settings</g:link></li>
+				<li><g:link uri="/configuration">Configuration</g:link></li>
+				<li><g:link uri="/layout">Store Layout</g:link></li>
+			</ul>
 			
-					<div id="admin-marker"></div>
+		</div>
+		
+		<div id="content-container">
+			
+			<div id="header">
+				<span class="header-info pull-left align-left">Welcome Back <strong><shiro:principal/></strong>!</span>
+				
+				<span class="header-info pull-right align-right">
+					<g:link uri="/">Store Front</g:link>
+					&nbsp;|&nbsp;
+					<g:link controller="auth" action="signOut">Logout</g:link>
+				</span>
 					
-					
-					<ul id="admin-nav">
-						<li><g:link uri="/admin">Home</g:link></li>
-						<li><g:link uri="/product/list">Products</g:link></li>
-						<li><g:link uri="/catalog/list">Catalogs</g:link></li>
-						<li><g:link uri="/transaction/list">Orders</g:link></li>
-						<li><g:link uri="/page/list">Pages</g:link></li>
-						<li><g:link uri="/account/admin_list?admin=false">Accounts</g:link></li>
-						<li><g:link uri="/configuration/settings">Settings</g:link></li>
-						<li><g:link uri="/configuration">Configuration</g:link></li>
-						<li><g:link uri="/layout">Store Layout</g:link></li>
-					</ul>
-				</div>
+				<br class="clear"/>
 			</div>
 			
-			<div class="col-xs-10">
 			
-				<div id="admin-content">
+			<div id="content">
 				
-					<div style="background:#efefef; padding:5px 10px; color:#555; font-size:12px; border-radius:3px; border:solid 1px #ddd;">
-						Welcome back <strong><shiro:principal/></strong>! 
-						
-						<g:link controller="auth" action="signOut" class="pull-right">logout</g:link>
+				<div id="store-stats">
+					
+					<div class="store-stat">
+						<span class="store-stat-value">${storeStatistics.generalStats.products}</span>
+						<span class="store-stat-label secondary">Products</span>
+					</div>
 
-						<span class="pull-right">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-						
-						<g:link uri="/" class="pull-right">Storefront</g:link>
-						
-						<div class="clear"></div>
+					
+					<div class="store-stat">
+						<span class="store-stat-value">${storeStatistics.generalStats.outOfStock}</span>
+						<span class="store-stat-label secondary">Out of Stock</span>
 					</div>
 					
 					
-					<shiro:hasRole name="ROLE_SALESMAN">
-						<h2>Salesman</h2>
-					</shiro:hasRole>
+					<div class="store-stat">
+						<span class="store-stat-value">${storeStatistics.generalStats.catalogs}</span>
+						<span class="store-stat-label secondary">Catalogs</span>
+					</div>
 					
-					<shiro:hasRole name="ROLE_CUSTOMER_SERVICE">
-						<h2>Customer Service</h2>
-					</shiro:hasRole>
 					
-					<shiro:hasRole name="ROLE_AFFILIATE">
-						<h2>Affiliate</h2>
-					</shiro:hasRole>
-                	
-					<g:layoutBody/>
-
+					<div class="store-stat">
+						<span class="store-stat-value">${storeStatistics.generalStats.customers}</span>
+						<span class="store-stat-label secondary">Customers</span>
+					</div>
+					
+					
+					<div class="store-stat">
+						<span class="store-stat-value">${storeStatistics.generalStats.abandonedCarts}</span>
+						<span class="store-stat-label secondary">Abandoned Carts</span>
+					</div>
+					
 					
 				</div>
-			</div>
-			
-		</div>
-		
+				<!-- end of store-stats -->
+				
+				
+				
+				<h1 class="dashboard pull-left">Store Overview</h1>
 
-		<div class="footer" style="margin:30px 20px; color:#777; font-size:11px;text-align:right">
-			<!--
-			<li><g:link uri="/admin/shoppingCart/list">Shopping Carts</g:link></li>
-			<li><g:link uri="/admin/shoppingCartItem/list">Shopping Cart Items</g:link></li>
-			-->
-			Greenfield &copy; 2015
-		</div>
+				<div id="date-selectors" class="pull-right align-right" style="display:block">
+					<span class="secondary">
+						Date Range :&nbsp;
+					</span>
+					<input type="text" id="start-date" class="form-control"/>
+					&nbsp;
+					<span class="secondary">to</span>
+					&nbsp;
+					<input type="text" id="end-date" class="form-control"/>
+					<a href="javascript:" class="btn btn-default" id="refresh"><span class="glyphicon glyphicon-refresh"></span></a>
+					<a href="javascript:" class="btn btn-default">All Data</a>
+				</div>
+				
+				<br class="clear"/>
+				
+				<div id="refreshable-data">
+					
+					<div id="sales-stats-container">
+						
+						<div id="sales-stats" class="pull-left">
+							
+							<div class="sales-stat">
+								<span class="stat">
+									<span class="sales-stat-dollar secondary">$</span>
+									<span class="sales-stat-value">12,045.50</span>
+									<span class="sales-stat-label hint">TOTAL SALES</span>
+								</span>
+							</div>
+							
+							<div class="sales-stat">
+								<span class="stat">
+									<span class="sales-stat-value">10</span>
+									<span class="sales-stat-label hint">TOTAL ORDERS</span>
+								</span>
+							</div>
+							
+							
+							<div class="sales-stat">
+								<span class="stat">
+									<span class="sales-stat-dollar secondary">$</span>
+									<span class="sales-stat-value">1,204.50</span>
+									<span class="sales-stat-label hint">AVERAGE ORDER</span>
+								</span>
+							</div>
+							
+
+							<div class="sales-stat">
+								<span class="stat">
+									<span class="hint">13/23</span>
+									<span class="sales-stat-value">53</span>
+									<span class="sales-stat-percent secondary">%</span>
+									<span class="sales-stat-label hint">CHECKOUT RATE</span>
+								</span>
+							</div>
+							
+						</div>
+						
+						<div id="sales-chart-container" class="pull-left">
+							<h3 class="secondary align-left">Sales</h3>
+							<div id="sales-chart"></div>
+						</div>
+						
+						<br class="clear"/>
+						
+					</div>
+					<!-- end of sales-stats-container -->
+					
+					<br class="clear"/>
+					
+								
+					<div id="activity-stats-container">
+						
+						<div class="activity-stats">
+							
+							<h4 class="secondary">Top viewed Products</h4>
+							
+							<div class="activity-stat-list">
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Walrus Ivory Whale</span>
+									<span class="activity-stat-value">4</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Walrus Ivory Walrus</span>
+									<span class="activity-stat-value">2</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Jade Beaded Necklace</span>
+									<span class="activity-stat-value">2</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Jade Earrings</span>
+									<span class="activity-stat-value">1</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Black Diamond Necklace</span>
+									<span class="activity-stat-value">1</span>
+									<br class="clear"/>
+								</div>
+								
+
+    							<div class="view-all">
+									<a href="#">View All</a>
+								</div>
+								
+							</div>
+							
+						</div>
+						
+						<div class="activity-stats">
+							
+							<h4 class="secondary">Top viewed Pages</h4>
+							
+							<div class="activity-stat-list">
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Home</span>
+									<span class="activity-stat-value">114</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">About Us</span>
+									<span class="activity-stat-value">110</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Contact Us</span>
+									<span class="activity-stat-value">98</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Native Artwork</span>
+									<span class="activity-stat-value">95</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Privacy Policy</span>
+									<span class="activity-stat-value">92</span>
+									<br class="clear"/>
+								</div>
+
+    							
+								<div class="view-all">
+									<a href="#">View All</a>
+								</div>
+								
+							</div>
+							
+						</div>
+						
+						<div class="activity-stats last">
+							
+							<h4 class="secondary">Top Search Terms</h4>
+							
+							<div class="activity-stat-list">
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">walrus ivory</span>
+									<span class="activity-stat-value">13</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">black diamond</span>
+									<span class="activity-stat-value">10</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">earrings</span>
+									<span class="activity-stat-value">10</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">ivory carving</span>
+									<span class="activity-stat-value">7</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">baleen</span>
+									<span class="activity-stat-value">4</span>
+									<br class="clear"/>
+								</div>
+
+    							
+								<div class="view-all">
+									<a href="#">View All</a>
+								</div>
+								
+							</div>
+							
+						</div>
+					
+						<br class="clear"/>
+						
+						<div class="activity-stats">
+							
+							<h4 class="secondary">Top viewed Catalogs</h4>
+							
+							<div class="activity-stat-list">
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Oosik Carvings</span>
+									<span class="activity-stat-value">142</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Native Masks</span>
+									<span class="activity-stat-value">103</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Baleen Carvings</span>
+									<span class="activity-stat-value">87</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Baleen Baskets</span>
+									<span class="activity-stat-value">58</span>
+									<br class="clear"/>
+								</div>
+                	
+								<div class="activity-stat-row">
+									<span class="activity-stat-title">Grass Baskets</span>
+									<span class="activity-stat-value">42</span>
+									<br class="clear"/>
+								</div>
+
+
+    							<div class="view-all">
+									<a href="#">View All</a>
+								</div>
+								
+							</div>
+							
+						</div>
+						
+						
+						
+						<div id="google-analytics-tip">
+							<blockquote class="secondary">Greenfield leverages Google Analytics for detailed website statistics.  If you haven’t already done so, create an account and save your Analytics code in <strong class="secondary">Settings -> Store Settings</strong> to take advantage of this feature 
+							
+								<a href="#">Visit Google Analytics</a>
+							</blockquote>
+						
+							<br class="clear"/>
+						</div>
+						
+						
+						
+					</div>
+					<!-- end of activity stats container -->
+					
+					
+				</div>
+				
+				
+			</div>
+			<!-- end of content -->
 			
+			
+			
+		</div>
+		<!-- end of content-container -->
+		
+		
+		<br class="clear"/>
+		
 	</div>
 	
 	
-	<br style="margin-top:100px;"/>
+<script type="text/javascript">
 	
 	
+	$(document).ready(function(){
+		
+		var $refreshDataDiv = $('#refreshable-data');
+		var $refreshBtn = $('#refresh');
+		$refreshBtn.click(refreshData);
+		
+		function refreshData(){
+			$refreshDataDiv.fadeOut(500);
+			$refreshDataDiv.fadeIn(500);
+		}
+		
+		var $startDate = $('#start-date'),
+			$endDate = $('#end-date');
+			
+		$startDate.datepicker();
+		$endDate.datepicker();
+		
+		$startDate.val('01/01/2015');
+		$endDate.val('01/31/2015');
+		
+		function generateData(){
+			var days = 32;
+			var data = [];
+			var today = new Date();
+			
+			var past = new Date(today.setDate(today.getDate() - days));
+			console.log(past)
+			
+			for(var i = 0; i < days; i ++){
+				
+				past.setDate(past.getDate() + i);
+				var value = Math.floor(Math.random() * 100) + 1;
+				
+				var day = past.getDate();
+				var month = past.getMonth() + 1;
+				var year = past.getFullYear();
+				
+				var date = new Date(month + "/" + day + "/" + year)
+				
+				var element = [date, value]
+				data.push(element);
+			}
+			return data
+		}
+		
+		
+		var data3 = generateData();
+		//console.log(data3)
+		
+		
+		var data2 = [
+			[new Date("01/01/2015"), 24.54],
+			[new Date("01/02/2015"), 43.10],
+			[new Date("01/03/2015"), 13.50],
+			[new Date("01/04/2015"), 65],
+			[new Date("01/05/2015"), 56],
+			[new Date("01/06/2015"), 75],
+			[new Date("01/07/2015"), 23],
+			[new Date("01/08/2015"), 45],
+			[new Date("01/09/2015"), 58],
+			[new Date("01/10/2015"), 14],
+			[new Date("01/11/2015"), 17],
+			[new Date("01/12/2015"), 24],
+			[new Date("01/13/2015"), 38],
+			[new Date("01/14/2015"), 34],
+			[new Date("01/15/2015"), 24.54],
+			[new Date("01/16/2015"), 43.10],
+			[new Date("01/17/2015"), 13.50],
+			[new Date("01/18/2015"), 65],
+			[new Date("01/19/2015"), 56],
+			[new Date("01/20/2015"), 75],
+			[new Date("01/21/2015"), 23],
+			[new Date("01/22/2015"), 45],
+			[new Date("01/23/2015"), 58],
+			[new Date("01/24/2015"), 14],
+			[new Date("01/25/2015"), 17],
+			[new Date("01/26/2015"), 24],
+			[new Date("01/27/2015"), 38],
+			[new Date("01/28/2015"), 34],
+			[new Date("01/29/2015"), 38],
+			[new Date("01/30/2015"), 34],
+			[new Date("01/31/2015"), 75]
+		];
+		
+		var options = {
+			axes : {
+				y : {
+					axisLabelFormatter : function(y){
+						return '$' + y;
+					}
+				}
+			},
+			highlightCircleSize: 4,
+			width:555,
+			height:240,                   
+			legend: 'always',
+			axisLineColor : "#ddd",
+			fillGraph : true,
+			drawPoints : false,//small dataset true
+			pointSize : 4,
+			strokeWidth : 2,
+			color : "#9abbcf",
+			drawGrid : true,
+			gridLineColor : "#ddd",
+			drawGapEdgePoints : true,
+			labels : ["Date", "Sales"]
+		}
+		
+		var $chartDiv = $('#sales-chart');
+		
+		var chart = new Dygraph( $chartDiv.get(0), data3, options );
+		
+	});
+	
+
+	
+</script>	
+
 </body>
 </html>

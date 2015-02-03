@@ -338,9 +338,12 @@ class DevelopmentDataService {
 				shoppingCart.status = ShoppingCartStatus.ACTIVE.description()
 				shoppingCart.save(flush:true)
 
+				shoppingCart.dateCreated = generateRandomDate()
+				
 				def shoppingCartItem = new ShoppingCartItem()
 				shoppingCartItem.quantity = quantity
 				shoppingCartItem.product = product
+
 				shoppingCart.addToShoppingCartItems(shoppingCartItem)
 				shoppingCart.save(flush:true)
 		
