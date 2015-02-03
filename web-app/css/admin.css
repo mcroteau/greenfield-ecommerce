@@ -121,18 +121,20 @@ span, p, table, td, th{
 }
 
 	
-	
 
 #content-container{
 	float:left;
 	margin-left:25px;
 	width:750px;
+	text-align:left;
 }	
+
+#content{}
 
 
 #header{
 	margin-top:10px;
-	margin-bottom:15px;
+	margin-bottom:10px;
 }
 
 

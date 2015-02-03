@@ -1,8 +1,7 @@
 <%@ page import="org.greenfield.State" %>
 <%@ page import="grails.util.Environment" %>
 <%@ page import="org.greenfield.ApplicationService" %>
-<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
-%>
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
 	
 
 	

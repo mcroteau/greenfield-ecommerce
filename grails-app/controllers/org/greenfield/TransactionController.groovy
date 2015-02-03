@@ -39,7 +39,7 @@ class TransactionController {
 		authenticatedAdmin { adminAccount ->
         	params.max = Math.min(max ?: 10, 100)
 			params.sort
-        	[transactionInstanceList: Transaction.list([sort : "id", order:"desc", max : params.max ]), transactionInstanceTotal: Transaction.count()]
+        	[transactionInstanceList: Transaction.list(params), transactionInstanceTotal: Transaction.count()]
 		}
     }
 	
