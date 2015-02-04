@@ -18,20 +18,22 @@ ${applicationService.getStoreName()} : Admin Login</title>
 		height:100%;
 		text-align:center;
 		background:#efefef;
+		background:#1c695b;
 	}
 	.container{
-		padding:50px;
-		width:500px;
-		margin:20px auto;
+		padding:20px 50px 50px 50px;
+		width:400px;
+		margin:50px auto;
 		background:#fff;
 		text-align:left !important;
-		-webkit-border-radius: 5px;
-		-moz-border-radius: 5px;
-		border-radius: 5px;
-		-webkit-box-shadow: 0px 0px 25px 0px rgba(204,204,204,1);
-		-moz-box-shadow: 0px 0px 25px 0px rgba(204,204,204,1);
-		box-shadow: 0px 0px 25px 0px rgba(204,204,204,1);
+		border-radius: 3px 3px 3px 3px;
+		-moz-border-radius: 3px 3px 3px 3px;
+		-webkit-border-radius: 3px 3px 3px 3px;
+		box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.38);
+		-moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.38);
+		-webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.38);
 	}
+
 </style>
 	
 	<div class="container">
@@ -41,7 +43,7 @@ ${applicationService.getStoreName()} : Admin Login</title>
 		</g:if>
 		
 		<div>
-			<h2>Admin Login</h2>
+			<h2 class="hint" style="color:rgba(0,0,0,0.26) !important;">Administration Login</h2>
 			<g:form controller="auth" action="signIn" class="form">
 				<div class="form-group">
 				  	<label for="username">Username</label>
@@ -49,7 +51,7 @@ ${applicationService.getStoreName()} : Admin Login</title>
 				</div>
 				<div class="form-group">
 				  	<label for="password">Password</label>
-				  	<input type="password" name="password" class="form-control" id="password" placeholder="***">
+				  	<input type="password" name="password" class="form-control" id="password" placeholder="******">
 				</div>
 				<div class="checkbox">
 				  	<label>

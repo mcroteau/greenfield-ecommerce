@@ -46,6 +46,10 @@
 		font-family: Roboto-Medium; 
 		src: url("${resource(dir:'fonts/Roboto-Medium.ttf')}"); 
 	}
+	
+	h2{
+		color:rgba(0,0,0,0.54) !important;
+	}
 </style>	
 
 </head>

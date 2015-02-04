@@ -22,7 +22,6 @@ class AdminController {
 			def endDate
 			
 			if(params.startDate && params.endDate){
-				println "****   parsing dates   *****"
 				try{
 					startDate = Date.parse("MM/dd/yyyy", params.startDate)
 					endDate = Date.parse("MM/dd/yyyy", params.endDate)
@@ -33,7 +32,6 @@ class AdminController {
 				}
 				
 				if(!startDate || !endDate){
-					println "*****    invalid dates    ****"
 					flash.message = "Date Range must have correct dates formatted as mm/dd/yyyy"
 					startDate = new Date() - 30
 					endDate = new Date()
@@ -47,11 +45,9 @@ class AdminController {
 			
 			}else if(params.allData){
 				//set dates to null
-				println "****    retrieve all data    ****"
 				startDate = null
 				endDate = null
 			}else{
-				println "****   set date range   ****"
 				//last month
 				startDate = new Date() - 30
 				endDate = new Date() 
@@ -128,14 +124,28 @@ class AdminController {
 		}
 		
 		def orders
+		def chartData = [:]
 		if(startDate && endDate){
-			orders = Transaction.findAllByOrderDateBetween(startDate, endDate)
+			orders = Transaction.findAllByOrderDateBetween(startDate, endDate, [ sort : "orderDate", order:"asc" ])
 		}else{
-			orders = Transaction.findAll()
+			orders = Transaction.list([sort : "orderDate", order:"asc" ])
 		}
 		
+		
+		def previousDate = null
 		orders.eachWithIndex(){ order, index ->
 			sales += order.total
+			
+			def date = order.orderDate.clearTime().format("MM/dd/yyyy")
+			
+			if(date != previousDate){
+				chartData[date] = order.total
+			}else{
+				chartData[date] += order.total
+			}
+
+			previousDate = date
+			
 		}
 		
 		
@@ -147,6 +157,7 @@ class AdminController {
 		
 		
 		stats.orders = orders
+		stats.chartData = chartData
 		stats.checkoutCarts = checkoutCarts
 		stats.shoppingCarts = shoppingCarts
 		stats.checkoutRate = checkoutRate
@@ -170,10 +181,9 @@ class AdminController {
 		if(startDate && endDate){
 			productViewLogs = ProductViewLog.findAllByDateCreatedBetween(startDate, endDate)
 		}else{
-			productViewLogs = ProductViewLog.findAll()
+			productViewLogs = ProductViewLog.list()
 		}
 		
-		println "ProductViewLogs : " + productViewLogs.size()
 		
 		productViewLogs?.each(){ productLog ->
 			if(stats[productLog.product.id]){
@@ -198,10 +208,9 @@ class AdminController {
 		if(startDate && endDate){
 			pageViewLogs = PageViewLog.findAllByDateCreatedBetween(startDate, endDate)
 		}else{
-			pageViewLogs = PageViewLog.findAll()
+			pageViewLogs = PageViewLog.list()
 		}
 		
-		println "PageViewLogs : " + pageViewLogs.size()
 		
 		pageViewLogs?.each(){ pageLog ->
 			if(stats[pageLog.page.id]){
@@ -229,7 +238,7 @@ class AdminController {
 		if(startDate && endDate){
 			catalogViewLogs = CatalogViewLog.findAllByDateCreatedBetween(startDate, endDate)
 		}else{
-			catalogViewLogs = CatalogViewLog.findAll()
+			catalogViewLogs = CatalogViewLog.list()
 		}
 		
 		catalogViewLogs?.each(){ catalogLog ->
@@ -255,7 +264,7 @@ class AdminController {
 		if(startDate && endDate){
 			searchLogs = SearchLog.findAllByDateCreatedBetween(startDate, endDate)
 		}else{
-			searchLogs = SearchLog.findAll()
+			searchLogs = SearchLog.list()
 		}
 		
 		searchLogs?.each(){ searchLog ->

@@ -13,6 +13,8 @@
 	</g:if>	
 	
 	
+	
+	
 	<div id="store-stats">
 		
 		<div class="store-stat">
@@ -127,8 +129,13 @@
 			</div>
 			
 			<div id="sales-chart-container" class="pull-left">
-				<h3 class="secondary align-left">Sales</h3>
-				<div id="sales-chart"></div>
+				<g:if test="${storeStatistics.salesStats.chartData.size() > 0}">
+					<h3 class="secondary align-left">Sales</h3>
+					<div id="sales-chart"></div>
+				</g:if>
+				<g:else>
+					<img src="/${applicationService.getContextName()}/images/app/no-chart-data.jpg" id="no-chart-data" height="260" width="520" style="margin-left:40px;"/>
+				</g:else>
 			</div>
 			
 			<br class="clear"/>
@@ -308,28 +315,25 @@
 <script type="text/javascript">
 	
 	var salesData = [];
-	var dates = []
-	var totals = []
-	<g:if test="${storeStatistics.salesStats.orders}">
-		<g:each in="${storeStatistics.salesStats.orders}" var="order">
-			dates.push("${order.orderDate.format("MM/dd/yyyy")}");
-			var total = parseFloat(${order.total})
+	var dates = [];
+	var totals = [];
+	
+	<g:if test="${storeStatistics.salesStats.chartData}">
+		<g:each in="${storeStatistics.salesStats.chartData}" var="data">
+			dates.push("${data.key}");
+			var total = ${applicationService.formatPrice(data.value)}
 			totals.push(total);
 		</g:each>
-		console.log(dates);
-		console.log(totals);
-		
-		console.log(dates.length, totals.length)
 		
 		for(var m = 0; m < dates.length; m++){
-			salesData.push(new Date(dates[m]), totals[m]);
+			var dataPoint = [new Date(dates[m]), totals[m]];
+			salesData.push(dataPoint);
 		}
 	</g:if>
 	
 	$(document).ready(function(){
 		
-		
-		
+		var $noChartDataImg = $('#no-chart-data');
 		var $refreshDataDiv = $('#refreshable-data');
 		var $calculatingDiv = $('#calculating');
 		var $form = $('.range-form');
@@ -348,35 +352,6 @@
 			
 		$startDate.datepicker();
 		$endDate.datepicker();
-		
-		
-		function generateData(){
-			var days = 32;
-			var data = [];
-			var today = new Date();
-			
-			var past = new Date(today.setDate(today.getDate() - days));
-			console.log(past)
-			
-			for(var i = 0; i < days; i ++){
-				
-				past.setDate(past.getDate() + i);
-				var value = Math.floor(Math.random() * 100) + 1;
-				
-				var day = past.getDate();
-				var month = past.getMonth() + 1;
-				var year = past.getFullYear();
-				
-				var date = new Date(month + "/" + day + "/" + year)
-				
-				var element = [date, value]
-				data.push(element);
-			}
-			return data
-		}
-		
-		
-		var data3 = generateData();
 		
 		var options = {
 			axes : {
@@ -404,8 +379,9 @@
 		
 		var $chartDiv = $('#sales-chart');
 		
-		console.log(salesData)
-		var chart = new Dygraph( $chartDiv.get(0), salesData, options );
+		if(salesData.length > 0){
+			var chart = new Dygraph( $chartDiv.get(0), salesData, options );
+		}
 		
 	});
 

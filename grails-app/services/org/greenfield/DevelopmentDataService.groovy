@@ -25,14 +25,14 @@ import org.greenfield.log.SearchLog
 class DevelopmentDataService {
 
 	
-	def MAX_DAYS = 40
-	def PRODUCTS_COUNT        = 15
-	def CUSTOMERS_COUNT       = 10
-	def ORDERS_COUNT          = 20
-	def PAGE_VIEWS_COUNT      = 70
-	def PRODUCT_VIEWS_COUNT   = 50
-	def CATALOG_VIEWS_COUNT   = 100
-	def SEARCH_QUERIES_COUNT  = 40
+	def MAX_DAYS = 150
+	def PRODUCTS_COUNT        = 40
+	def CUSTOMERS_COUNT       = 20
+	def ORDERS_COUNT          = 108
+	def PAGE_VIEWS_COUNT      = 430
+	def PRODUCT_VIEWS_COUNT   = 350
+	def CATALOG_VIEWS_COUNT   = 450
+	def SEARCH_QUERIES_COUNT  = 70
 	def ABANDONED_CARTS_COUNT = 5
 	
 	
