@@ -33,7 +33,7 @@ class DevelopmentDataService {
 	def PRODUCT_VIEWS_COUNT   = 350
 	def CATALOG_VIEWS_COUNT   = 450
 	def SEARCH_QUERIES_COUNT  = 70
-	def ABANDONED_CARTS_COUNT = 5
+	def ABANDONED_CARTS_COUNT = 25
 	
 	
 	def queries = ["gaming systems", "slot machines", "rummy sets", "double decks", "porcelain dice", "dice set", "poker chips", "chip sets", "game machines", "price is right"]	
