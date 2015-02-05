@@ -294,11 +294,11 @@ h1.dashboard{
 	float:right;
 }
 
-.view-all{
+.view-all-container{
 	text-align:right;
 }	
 
-.view-all a{
+.view-all{
 	font-size:12px;
 }
 

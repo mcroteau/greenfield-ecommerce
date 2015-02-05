@@ -22,12 +22,11 @@
 <div class="form-group">
 	<label for="content">
 		<g:message code="page.content.label" default="Content" />
-		
 	</label>
-	<g:textArea class="form-control summernote" name="content" id="content" cols="40" rows="15" maxlength="65535" value="${pageInstance?.content}"/>
+	<g:textArea class="form-control" name="content" class="ckeditor" cols="40" rows="15" maxlength="65535" value="${pageInstance?.content}"/>
 	
 </div>
 
 <script type="text/javascript">
-    CKEDITOR.replace( 'content' );
+
 </script>

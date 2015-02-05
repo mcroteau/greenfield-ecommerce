@@ -5,8 +5,114 @@
   	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  	<meta name="layout" content="admin" />
 	<title><g:message code="app.name"  /> </title>
+	
+	<script type="text/javascript" src="${resource(dir:'js/lib/mustache/mustache.min.js')}"></script>
+	
+	<!-- jscrollpane assets -->
+	<link rel="stylesheet" href="${resource(dir:'js/lib/jscrollpane/2.0.20', file:'jscrollpane.css')}" />
+	<script type="text/javascript" src="${resource(dir:'js/lib/jscrollpane/2.0.20/jquery.mousewheel.js')}"></script>
+	<script type="text/javascript" src="${resource(dir:'js/lib/jscrollpane/2.0.20/jscrollpane.min.js')}"></script>
+	<script type="text/javascript" src="${resource(dir:'js/lib/jscrollpane/2.0.20/mwheelintent.js')}"></script>
+	
+	
+<style type="text/css">	
+	#backdrop{
+		z-index:-3001;
+		opacity:0;
+		position:fixed;
+		top:0px;
+		bottom:0px;
+		left:0px;
+		right:0px;
+		background:rgba(0,0,0,0.30);
+	}
+	
+	#modal{
+		height:380px;
+		width:320px;
+		padding:20px 10px 20px 30px;
+		z-index:-2000;
+		opacity:0;
+		left:50%;
+		top:50%;
+		margin-top:-190px;
+		margin-left:-160px;
+		position:absolute;
+		background:#ffffff;
+		text-align:center;
+		border-radius: 3px 3px 3px 3px;
+		-moz-border-radius: 3px 3px 3px 3px;
+		-webkit-border-radius: 3px 3px 3px 3px;
+		-webkit-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.5);
+		-moz-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.5);
+		box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.5);
+	}
+	#modal .activity-stats{
+		height:auto;
+		margin-bottom:0px;
+	}
+	
+	#activity-stats-content{
+		height:260px;
+		width:280px;
+		margin:10px auto;
+		text-align:left;
+		overflow: auto;
+	}
+	#close-activity-stats{
+		font-size:12px;
+		padding:5px 10px;
+		margin-top:8px;
+		margin-right:0px;
+		outline:none;
+		display:inline-block;
+	}
+	#close-activity-stats:hover{
+		text-decoration:none;
+		background:#efefef;
+	}
+	
+	.jspContainer{
+		-webkit-box-shadow: inset 0 3px 5px -4px rgba(0,0,0,0.2);
+		-moz-box-shadow: inset 0 3px 5px -4px rgba(0,0,0,0.2);
+	    box-shadow: inset 0px 3px 5px -4px rgba(0,0,0,0.2);
+	}
+
+	.jspVerticalBar{
+		width:8px;
+	}
+	
+	.jspPane{
+		width:255px !important;
+	}
+	
+	.jspTrack{
+		background-color:#efefef;
+		-webkit-box-shadow: inset 1px 1px 1px 0px rgba(0,0,0,0.15);
+		-moz-box-shadow: inset 1px 1px 1px 0px rgba(0,0,0,0.15);
+		box-shadow: inset 1px 1px 1px 0px rgba(0,0,0,0.15);
+	}
+	.jspDrag{
+		background-color:#bbbbbb;
+	}
+</style>	
+	
 </head>
 <body>
+	
+	
+	<div id="modal">							
+		<div class="activity-stats">
+			<h4 class="secondary" id="activity-stats-title">{{title}}</h4>
+			<div id="activity-stats-content"></div>
+		</div>
+		<a href="javascript:" id="close-activity-stats" class="pull-right">Close</a>
+		<br class="clear"/>
+	</div>
+	
+	
+	<div id="backdrop"></div>
+	
 	
 	<g:if test="${flash.message}">
 		<div class="alert alert-info">${flash.message}</div>
@@ -166,9 +272,9 @@
 							</g:if>
 						</g:each>
     	            	
-						<g:if test="${storeStatistics.productStats.size() > 4}">
-							<div class="view-all">
-								<a href="#">View All</a>
+						<g:if test="${storeStatistics.productStats.size() > 5}">
+							<div class="view-all-container">
+								<a href="javascript:" class="view-all" data-type="products" data-title="TOP VIEW PRODUCTS">View All</a>
 							</div>
 						</g:if>
 					</g:if>
@@ -199,9 +305,9 @@
 							</g:if>
 						</g:each>
     	            	
-						<g:if test="${storeStatistics.pageStats?.size() > 4}">
-							<div class="view-all">
-								<a href="#">View All</a>
+						<g:if test="${storeStatistics.pageStats?.size() > 5}">
+							<div class="view-all-container">
+								<a href="javascript:" class="view-all" data-type="pages" data-title="TOP VIEWED PAGES">View All</a>
 							</div>
 						</g:if>
 					</g:if>
@@ -233,9 +339,9 @@
 							</g:if>
 						</g:each>
     	            	
-						<g:if test="${storeStatistics.searchStats?.size() > 4}">
-							<div class="view-all">
-								<a href="#">View All</a>
+						<g:if test="${storeStatistics.searchStats?.size() > 5}">
+							<div class="view-all-container">
+								<a href="javascript:" class="view-all" data-type="searches" data-title="TOP SEARCH TERMS">View All</a>
 							</div>
 						</g:if>
 					</g:if>
@@ -268,10 +374,10 @@
 								</div>
 							</g:if>
 						</g:each>
-    	            	
-						<g:if test="${storeStatistics.catalogStats?.size() > 4}">
-							<div class="view-all">
-								<a href="#">View All</a>
+						
+						<g:if test="${storeStatistics.catalogStats?.size() > 5}">
+							<div class="view-all-container">
+								<a href="javascript:" class="view-all" data-type="catalogs" data-title="TOP VIEWED CATALOGS">View All</a>
 							</div>
 						</g:if>
 					</g:if>
@@ -310,6 +416,19 @@
 		<img src="/${applicationService.getContextName()}/images/loading.gif" >
 	</div>
 	
+	<input type="hidden" id="startDateHidden" value="${startDate}"/>
+	<input type="hidden" id="endDateHidden" value="${endDate}"/>
+	
+	
+<script type="text/template" id="modal-template">		
+{{#rows}}
+	<div class="activity-stat-row">
+		<span class="activity-stat-title">{{title}}</span>
+		<span class="activity-stat-value">{{value}}</span>
+		<br class="clear"/>
+	</div>
+{{/rows}}
+</script>
 	
 	
 <script type="text/javascript">
@@ -333,10 +452,89 @@
 	
 	$(document).ready(function(){
 		
-		var $noChartDataImg = $('#no-chart-data');
-		var $refreshDataDiv = $('#refreshable-data');
-		var $calculatingDiv = $('#calculating');
-		var $form = $('.range-form');
+		var baseUrl = "/${applicationService.getContextName()}/admin/data?"
+		
+		var MODAL_TEMPLATE = $('#modal-template').text();
+		
+		var $viewAllBtn = $('.view-all');
+		
+		
+		var $modal = $('#modal'),
+			$backdrop = $('#backdrop'),
+			$activityStatsTitle = $('#activity-stats-title'),
+			$activityStatsContent = $('#activity-stats-content'),
+			$activityStatsJscroll = $activityStatsContent.jScrollPane().data('jsp'),
+			$activityStatsJscrollPane = $activityStatsJscroll.getContentPane();
+			$closeActivityStats = $('#close-activity-stats'),
+			$hiddenStartDate = $('#startDateHidden'),//prevent user from changing dates in input box
+			$hiddenEndDate = $('#endDateHidden');
+		
+		
+		$viewAllBtn.click(retreiveAllActivityData);
+		$backdrop.click(hideModal);
+		$closeActivityStats.click(hideModal);
+		setupHoverEvents();
+		
+		
+		function retreiveAllActivityData(event){
+			var $target = $(event.target);
+			var type = $target.data('type');
+			var title = $target.data('title');
+			var startDate = $hiddenStartDate.val();
+			var endDate = $hiddenEndDate.val();
+			getData(type, startDate, endDate).then(displayAllData(type, title));
+		}
+		
+		function getData(type, startDate, endDate){
+			var typeParam = "type=" + type;
+			var dateParams = "&startDate=" + startDate + "&endDate=" + endDate;
+			var url = baseUrl + typeParam + dateParams
+			return $.ajax({
+				url : url,
+				type : 'get',
+				dataType : 'json',
+				contentType : 'application/json'
+			})
+		}
+		
+		function displayAllData(type, title){
+			return function(response){
+				$activityStatsJscrollPane.empty();
+				$activityStatsTitle.html(title);
+				
+				var html = Mustache.to_html(MODAL_TEMPLATE, { rows : response.data.rows });
+				$activityStatsJscrollPane.append(html);
+				reinitializeDetailsJscrollPane();
+				
+				showModal();
+			}
+		}
+				
+		
+		
+		function reinitializeDetailsJscrollPane(){
+			$activityStatsJscroll.reinitialise();
+			$activityStatsContent.find('.jspVerticalBar').stop(true,true).animate({"opacity" : "0.4"}, 200);
+		};
+		
+	
+		function setupHoverEvents(){
+			$activityStatsContent.hover(function(){
+				$activityStatsContent.find('.jspVerticalBar').stop(true,true).animate({"opacity" : "0.9"}, 200);
+			},
+			function(){
+				$activityStatsContent.find('.jspVerticalBar').stop(true,true).animate({"opacity" : "0.4"}, 200);
+			});
+		};
+		
+
+		
+		
+		var $chartDiv = $('#sales-chart'),
+			$noChartDataImg = $('#no-chart-data'),
+			$refreshDataDiv = $('#refreshable-data'),
+			$calculatingDiv = $('#calculating'),
+			$form = $('.range-form');
 		
 		var $refreshBtn = $('#refresh');
 		$refreshBtn.click(refreshData);
@@ -377,11 +575,40 @@
 			labels : ["Date", "Sales"]
 		}
 		
-		var $chartDiv = $('#sales-chart');
-		
 		if(salesData.length > 0){
 			var chart = new Dygraph( $chartDiv.get(0), salesData, options );
 		}
+		
+		
+		
+		function showModal(){
+			$backdrop.animate({
+				"opacity" : 1,
+				"z-index" : 1000
+			}, 150, function(){
+				$modal.animate({
+					"opacity" : 1,
+					"z-index" : 1010
+				}, 50, function(){
+				});
+			});	
+		};
+				
+		
+		function hideModal(){
+			$modal.animate({
+				"opacity" : 0,
+				"z-index" : -1
+			}, 0, function(){
+				$backdrop.animate({
+					"opacity" : 0,
+					"z-index" : -2
+				}, 0, function(){
+				});	
+			}); 
+		};
+		
+		
 		
 	});
 

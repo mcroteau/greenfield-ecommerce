@@ -83,6 +83,113 @@ class AdminController {
 	
 	
 	
+	def data(){
+		authenticatedAdmin { adminAccount ->
+			def data = [:]
+			
+			def formattedData = [:]
+			formattedData.rows = []
+			
+			def response = [:]
+			def startDate = null
+			def endDate = null
+			
+			if(params.startDate && params.endDate){
+				try{
+					startDate = Date.parse("MM/dd/yyyy", params.startDate)
+					endDate = Date.parse("MM/dd/yyyy", params.endDate)
+				}catch (Exception e){
+					response.error = "Unable to parse dates"
+				}
+			}
+			
+			def rows = []
+			if(params.type){			
+				switch(params.type){
+					case "products" :
+						data = getProductViewsStatistics(startDate, endDate)
+						rows = formatProductsData(data)
+						break;
+					case "pages" :
+						data = getPageViewStatistics(startDate, endDate)
+						rows = formatPagesData(data)
+						break;
+					case "catalogs" :
+						data = getCatalogViewsStatistics(startDate, endDate)
+						rows = formatCatalogsData(data)
+						break;
+					case "searches" :
+						data = getSearchQueriesStatistics(startDate, endDate)
+						rows = formatSearchesData(data)
+						break;
+					default : 
+						response.error = "Type of data requested not found"
+						break;
+				}
+			}else{
+				response.error = "Type of data must be specified"
+			}
+			
+
+			formattedData.rows = rows
+			response.data = formattedData
+			
+			render response as JSON
+		}
+	}
+	
+	
+	def formatProductsData(data){
+		def products = []
+		data.each{ p ->
+			def product = [:]
+			product.title = p.value.product
+			product.value = p.value.count
+			products.add(product)
+		}
+		return products
+	}
+	
+	
+	def formatPagesData(data){
+		def pages = []
+		data.each{ p ->
+			def page = [:]
+			page.title = p.value.page
+			page.value = p.value.count
+			pages.add(page)
+		}
+		return pages
+	}
+	
+	
+	def formatCatalogsData(data){
+		def catalogs = []
+		data.each{ p ->
+			def catalog = [:]
+			catalog.title = p.value.catalog
+			catalog.value = p.value.count
+			catalogs.add(catalog)
+		}
+		return catalogs
+	}
+	
+	
+	
+	def formatSearchesData(data){
+		def searches = []
+		data.each{ p ->
+			def search = [:]
+			search.title = p.key
+			search.value = p.value.count
+			searches.add(search)
+		}
+		return searches
+	}
+	
+	
+	
+	
 	
 	def getGeneralStats(){
 		def generalStats = [:]
@@ -278,6 +385,8 @@ class AdminController {
 		
 		return stats.sort(){ -it.value.count }
 	}
+	
+	
 	
 	
 }

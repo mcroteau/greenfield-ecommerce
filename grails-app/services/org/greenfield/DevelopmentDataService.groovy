@@ -36,10 +36,10 @@ class DevelopmentDataService {
 	def ABANDONED_CARTS_COUNT = 25
 	
 	
-	def queries = ["gaming systems", "slot machines", "rummy sets", "double decks", "porcelain dice", "dice set", "poker chips", "chip sets", "game machines", "price is right"]	
+	def queries = ["gaming systems", "slot machines", "rummy sets", "double decks", "porcelain dice", "dice set", "poker chips", "chip sets", "game machines", "price is right", "las vegas", "shot glasses", "poker tables", "table tops"]	
 	
 	
-	def catalogs = ["Card Decks", "Porcelain Dice", "Slot Machines", "Everything Rummy", "Gaming Systems"]
+	def catalogs = ["Card Decks", "Porcelain Dice", "Slot Machines", "Everything Rummy", "Gaming Systems", "Table Tops", "Poker Tables", "T-Shirts"]
 	
 	
 	
