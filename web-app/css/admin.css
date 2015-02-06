@@ -338,7 +338,7 @@ h1.maintenance-header{
 	text-align:center;
 }
 .form-container{
-	width:700px;
+	/** width:700px; **/
 	margin:10px auto;
 }
 

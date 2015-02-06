@@ -15,7 +15,7 @@
 	<div class="form-outer-container">
 		
 		
-		<div class="form-container">
+		<div class="form-container" style="text-align:left !important">
 			
 			<h1 class="maintenance-header">Create Product
 				<g:link controller="product" action="list" class="btn btn-default pull-right">Back</g:link>

@@ -157,8 +157,7 @@ class ProductController {
     def save() {
 		authenticatedAdmin { adminAccount ->
 		    
-			
-	        def productInstance = new Product(params)
+			def productInstance = new Product(params)
 			
 	    	if(!productInstance.validate()){
 				println "**************************"
@@ -234,7 +233,7 @@ class ProductController {
 		        return
 		    }
 		
-		    flash.message = "Successfully saved product"
+		    flash.message = "Successfully created product"
 		    redirect(action: "show", id: productInstance.id)		
 		}	
     }

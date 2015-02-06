@@ -8,7 +8,7 @@
 	<head>
 		<meta name="layout" content="admin">
 		<g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}" />
-		<title>Create Product</title>
+		<title>Edit Product</title>
 	</head>
 	<body>
 	
@@ -27,6 +27,7 @@
 
 			
 			<div class="messages">
+			
 				<g:if test="${flash.message}">
 					<div class="alert alert-info" role="status">${flash.message}</div>
 				</g:if>
@@ -40,7 +41,14 @@
 						</ul>
 					</div>
 				</g:hasErrors>
+				
+				<g:if test="${productInstance.disabled}">
+					<div class="alert alert-warning">Product is currently disabled</div>
+				</g:if>
+				
 			</div>
+
+
 
 			<g:uploadForm action="update" method="post" >
 
@@ -214,6 +222,15 @@
 				</div>
 				
 				
+				
+				
+				<div class="form-row">
+					<span class="form-label full hint">Disabled</span>
+					<span class="input-container">
+						<g:checkBox name="disabled" value="${productInstance.disabled}" />
+					</span>
+					<br class="clear"/>
+				</div>
 				
 				
 				
