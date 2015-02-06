@@ -139,7 +139,7 @@ class ProductController {
 	
     def create() {
 		authenticatedAdmin { adminAccount ->
-    		[productInstance: new Product(params)]
+			[productInstance: new Product(params)]
     	}
 	}	
 	
@@ -157,8 +157,19 @@ class ProductController {
     def save() {
 		authenticatedAdmin { adminAccount ->
 		    
+			
 	        def productInstance = new Product(params)
-	    		
+			
+	    	if(!productInstance.validate()){
+				println "**************************"
+				println "***      INVALID       ***"
+				println "**************************"
+				
+				flash.message = "Information is invalid, please make sure name is unique"
+				render(view:"create",  model: [productInstance: productInstance])
+				return
+			}	
+				
 			def imageFile = request.getFile('image')
 			
 			BufferedImage originalImage = null;

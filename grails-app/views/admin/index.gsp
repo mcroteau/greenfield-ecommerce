@@ -171,7 +171,7 @@
 			&nbsp;
 			<input type="text"name="endDate" id="end-date" class="form-control" value="${endDate}"/>
 			<a href="javascript:" class="btn btn-default" id="refresh"><span class="glyphicon glyphicon-refresh"></span></a>
-			<g:link controller="admin" action="index" params="[ allData : true ]" class="btn btn-default">All Data</g:link>
+			<g:link controller="admin" action="index" params="[ allData : true ]" class="btn btn-default all-data">All Data</g:link>
 		</g:form>
 	</div>
 	
@@ -536,12 +536,20 @@
 			$calculatingDiv = $('#calculating'),
 			$form = $('.range-form');
 		
-		var $refreshBtn = $('#refresh');
+		var $refreshBtn = $('#refresh'),
+			$allDataBtn = $('.all-data');
+			
 		$refreshBtn.click(refreshData);
+		$allDataBtn.click(hideDashboard);
+		
+		function hideDashboard(){
+			$refreshDataDiv.fadeOut(50);
+			$calculatingDiv.fadeIn(50);
+		}
 		
 		function refreshData(){
-			$refreshDataDiv.fadeOut(100);
-			$calculatingDiv.fadeIn(100);
+			$refreshDataDiv.fadeOut(50);
+			$calculatingDiv.fadeIn(50);
 			$form.submit();
 		}
 		

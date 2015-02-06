@@ -22,6 +22,9 @@
 			#list-product h2{
 				float:left;
 			}
+			.floatleft{
+				float:left;
+			}
 		</style>
 		
 	</head>
@@ -29,10 +32,10 @@
 
 		<div id="list-product" class="content scaffold-list" role="main">
 			
-			<h2>Products</h2>
+			<h1 class="maintenance-header floatleft">Products</h1>
 			
 			
-			<div style="margin-top:20px;float:right; width:600px; border:solid 0px #ddd">
+			<div style="float:right; width:470px; ">
 				<g:link controller="product" action="create" class="btn btn-primary pull-right">New Product</g:link>
 				<g:form action="admin_search" class="form-horizontal">
 					<g:submitButton name="submit" value="Search" id="search" class="btn btn-info"/>
@@ -77,11 +80,11 @@
 								<g:link action="show" id="${productInstance.id}">
 									<g:if test="${productInstance.detailsImageUrl}">
 										<img src="/${applicationService.getContextName()}/${productInstance.detailsImageUrl}"  
-										style="height:50px;width:50px;"/>
+										style="height:30px;width:30px;"/>
 									</g:if>
 									<g:else>
 										<img src="/${applicationService.getContextName()}/images/app/no-image.jpg"  
-										style="height:50px;width:50px;border:solid 1px #ddd"/>
+										style="height:30px;width:30px;border:solid 1px #ddd"/>
 									</g:else>
 								</g:link>
 							</td>
@@ -97,7 +100,7 @@
 						
 							<td>${productInstance.catalog.name}</td>
 						
-							<td><g:link controller="product" action="edit" params="[id: productInstance.id]" class="btn btn-default">Edit</g:link></td>
+							<td><g:link controller="product" action="edit" params="[id: productInstance.id]" >Edit</g:link></td>
 						</tr>
 					</g:each>
 					</tbody>

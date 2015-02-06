@@ -39,6 +39,7 @@ span, p, table, td, th{
 	min-height:500px;
 	background:#fff;
 	margin:50px auto;
+	margin:25px auto;
 	padding:15px 25px 30px 15px;
 	border-radius: 3px 3px 3px 3px;
 	-moz-border-radius: 3px 3px 3px 3px;
@@ -325,6 +326,154 @@ h1.dashboard{
 }
 
 
+
+h1.maintenance-header{
+	font-size:20px;
+	margin:0px auto;
+	text-transform: uppercase;
+	color:rgba(0,0,0,0.54) !important;
+}
+.form-outer-container{
+	width:100%;
+	text-align:center;
+}
+.form-container{
+	width:700px;
+	margin:10px auto;
+}
+
+.form-row{
+	margin:0px auto 20px auto;
+}
+
+.form-label{
+	float:left;
+	font-size:12px;
+	font-weight:bold;
+	text-align:right;
+	display:inline-block;
+	vertical-align:middle;
+	padding-top:5px;
+	color:rgba(0,0,0,0.54) !important;
+	color:#7d7c7c !important;
+}
+
+.form-label.full{
+	width:225px;
+}
+
+.form-label.partial{
+	width:auto !important;
+}
+
+.input-container{
+	float:left;
+	margin-left:20px;
+	margin-right:20px;
+	text-align:left;
+	display:inline-block;
+}
+
+.input-container.sized{
+	width:420px;
+}
+
+.input-container img{
+	height:50px;
+	width:50px;
+	float:left;
+	margin-bottom:15px;
+	margin-right:15px;
+	display:inline-block;
+	border:solid 1px #ddd;
+}
+
+.input-container .label{
+	font-weight:normal;
+}
+
+.information{
+	font-size:11px;
+	font-weight:normal;
+}
+
+.block{
+	display:block;
+}
+
+input[type="text"].threefifty{
+	width:350px;
+}
+
+.autowidth{
+	width: auto !important;
+}
+
+.buttons-container{
+	width:100%;
+	margin-top:50px;
+	margin-bottom:80px;
+	text-align:center;
+}
+.buttons-container .btn{
+	margin:auto;
+}
+
+.btn{
+	opacity:1.0 !important;
+	font-size:12px;
+	text-transform:uppercase;
+	/***
+	-webkit-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.10);
+	-moz-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.10);
+	box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.10);
+	**/
+}
+
+.btn.btn-primary{
+	border:solid 1px #2068eb;
+	background: #357bfc;
+	background: -moz-linear-gradient(top,  #357bfc 0%, #226df8 100%); 
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#357bfc), color-stop(100%,#226df8)); 
+	background: -webkit-linear-gradient(top,  #357bfc 0%,#226df8 100%);
+	background: -o-linear-gradient(top,  #357bfc 0%,#226df8 100%); 
+	background: -ms-linear-gradient(top,  #357bfc 0%,#226df8 100%); 
+	background: linear-gradient(to bottom,  #357bfc 0%,#226df8 100%); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#357bfc', endColorstr='#226df8',GradientType=0 );
+	
+}
+
+
+.btn.btn-info,
+.btn.btn-info:hover{
+	border:solid 1px #039282 !important;
+	background: #04a190; /* Old browsers */
+	background: -moz-linear-gradient(top,  #04a190 0%, #029485 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#04a190), color-stop(100%,#029485)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #04a190 0%,#029485 100%);
+	background: -o-linear-gradient(top,  #04a190 0%,#029485 100%); 
+	background: -ms-linear-gradient(top,  #04a190 0%,#029485 100%); 
+	background: linear-gradient(to bottom,  #04a190 0%,#029485 100%); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04a190', endColorstr='#029485',GradientType=0 ); /* IE6-9 */
+	
+}
+
+
+.btn.btn-danger,
+.btn.btn-danger:hover{
+	border:solid 1px #c70203;
+	background: #fe0103; /* Old browsers */
+	background: -moz-linear-gradient(top,  #fe0103 0%, #df0204 100%); 
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fe0103), color-stop(100%,#df0204)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #fe0103 0%,#df0204 100%);
+	background: -o-linear-gradient(top,  #fe0103 0%,#df0204 100%); 
+	background: -ms-linear-gradient(top,  #fe0103 0%,#df0204 100%); 
+	background: linear-gradient(to bottom,  #fe0103 0%,#df0204 100%); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fe0103', endColorstr='#df0204',GradientType=0 ); /* IE6-9 */
+	
+}
+
+
 .form-control {
 	border:solid 1px #ddd;
 	border-radius: 3px;
@@ -417,6 +566,17 @@ table td{
 	text-align:right;
 }
 
+.errors{
+	padding:0px;
+	margin-left:0px;
+}
+.errors li{
+	list-style:none;
+}
+
+.messages{
+	text-align:left
+}
 
 #greenfield-header:hover {
     background-color: #1c695b;
