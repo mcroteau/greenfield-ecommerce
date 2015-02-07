@@ -51,6 +51,21 @@
 
 
 				
+			
+				<div class="form-row">
+					<span class="form-label full secondary">Url</span>
+					<span class="input-container">
+						<span class="secondary">
+							/${applicationService.getContextName()}/product/details/${productInstance?.id} &nbsp;
+						</span>
+
+						<a href="/${applicationService.getContextName()}/product/details/${URLEncoder.encode("${productInstance?.id}", "UTF-8")}" target="_blank">Test</a>
+						
+					</span>
+					<br class="clear"/>
+				</div>
+				
+				
 				
 				<div class="form-row">
 					<span class="form-label full secondary">Name 

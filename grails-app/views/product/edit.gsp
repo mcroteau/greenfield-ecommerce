@@ -50,10 +50,24 @@
 
 
 
-			<g:uploadForm action="update" method="post" >
+			<g:uploadForm method="post" >
 
 				<g:hiddenField name="id" value="${productInstance?.id}" />
 				<g:hiddenField name="version" value="${productInstance?.version}" />
+				
+			
+				<div class="form-row">
+					<span class="form-label full secondary">Url</span>
+					<span class="input-container">
+						<span class="secondary">
+							/${applicationService.getContextName()}/product/details/${productInstance?.id} &nbsp;
+						</span>
+
+						<a href="/${applicationService.getContextName()}/product/details/${URLEncoder.encode("${productInstance?.id}", "UTF-8")}" target="_blank">Test</a>
+						
+					</span>
+					<br class="clear"/>
+				</div>
 				
 				
 				<div class="form-row">
@@ -236,7 +250,10 @@
 				
 				
 				<div class="buttons-container">	
-					<g:submitButton name="create" class="btn btn-primary" value="Update Product"/>
+				
+					<g:actionSubmit controller="product" action="delete" value="Delete" formnovalidate="" onclick="return confirm('Are you sure?');"  class="btn btn-danger" />
+					
+					<g:submitButton name="update" class="btn btn-primary" value="Update Product"/>
 				</div>
 				
 			</g:uploadForm>

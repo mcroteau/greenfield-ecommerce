@@ -439,8 +439,7 @@ input[type="text"].threefifty{
 	background: -o-linear-gradient(top,  #357bfc 0%,#226df8 100%); 
 	background: -ms-linear-gradient(top,  #357bfc 0%,#226df8 100%); 
 	background: linear-gradient(to bottom,  #357bfc 0%,#226df8 100%); 
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#357bfc', endColorstr='#226df8',GradientType=0 );
-	
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#357bfc', endColorstr='#226df8',GradientType=0 );	
 }
 
 
@@ -593,4 +592,8 @@ table td{
     -o-transition: background-color 2500ms linear;
     -ms-transition: background-color 2500ms linear;
     transition: background-color 2500ms linear;	
+}
+
+a{
+	font-weight:normal;
 }

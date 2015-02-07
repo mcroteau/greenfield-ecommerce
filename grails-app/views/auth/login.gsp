@@ -21,7 +21,7 @@ ${applicationService.getStoreName()} : Admin Login</title>
 		background:#1c695b;
 	}
 	.container{
-		padding:20px 50px 50px 50px;
+		padding:50px 50px 50px 50px;
 		width:400px;
 		margin:50px auto;
 		background:#fff;
@@ -34,6 +34,32 @@ ${applicationService.getStoreName()} : Admin Login</title>
 		-webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.38);
 	}
 
+	.btn.btn-primary{
+		border:solid 1px #2068eb;
+		background: #357bfc;
+		background: -moz-linear-gradient(top,  #357bfc 0%, #226df8 100%); 
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#357bfc), color-stop(100%,#226df8)); 
+		background: -webkit-linear-gradient(top,  #357bfc 0%,#226df8 100%);
+		background: -o-linear-gradient(top,  #357bfc 0%,#226df8 100%); 
+		background: -ms-linear-gradient(top,  #357bfc 0%,#226df8 100%); 
+		background: linear-gradient(to bottom,  #357bfc 0%,#226df8 100%); 
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#357bfc', endColorstr='#226df8',GradientType=0 );	
+	}
+	
+	h1.maintenance-header{
+		font-size:20px;
+		margin:0px auto;
+		text-transform: uppercase;
+		color:rgba(0,0,0,0.54) !important;
+	}
+	
+	a{
+		font-weight:normal;
+		font-size:13px;
+	}
+	.clear{
+		clear:both;
+	}
 </style>
 	
 	<div class="container">
@@ -43,7 +69,9 @@ ${applicationService.getStoreName()} : Admin Login</title>
 		</g:if>
 		
 		<div>
-			<h2 class="hint" style="color:rgba(0,0,0,0.26) !important;">Administration Login</h2>
+			<h1 class="maintenance-header">Administration Login</h1>
+			<br class="clear"/>
+			
 			<g:form controller="auth" action="signIn" class="form">
 				<div class="form-group">
 				  	<label for="username">Username</label>

@@ -33,6 +33,7 @@ class Product {
 	static mapping = {
 		description type: "text"
         additionalPhotos cascade: 'all-delete-orphan'
+        productOptions cascade: 'all-delete-orphan'
 	}
 	
     static constraints = {

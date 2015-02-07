@@ -39,7 +39,7 @@ class DevelopmentDataService {
 	def queries = ["gaming systems", "slot machines", "rummy sets", "double decks", "porcelain dice", "dice set", "poker chips", "chip sets", "game machines", "price is right", "las vegas", "shot glasses", "poker tables", "table tops"]	
 	
 	
-	def catalogs = ["Card Decks", "Porcelain Dice", "Slot Machines", "Everything Rummy", "Gaming Systems", "Table Tops", "Poker Tables", "T-Shirts"]
+	def catalogs = ["Card Decks", "Porcelain Dice", "Slot Machines", "Everything Rummy", "Gaming Systems", "Table Tops", "Poker Tables", "T-Shirts", "Hats", "Coffee Mugs", "Shot Glasses", "Beer Mugs" ]
 	
 	
 	
