@@ -339,11 +339,13 @@ class ProductController {
     def delete(Long id) {
 		authenticatedAdminProduct { adminAccount, productInstance ->
        		try {
+				//Delete all ProductViewLogs
+				ProductViewLog.executeUpdate("delete ProductViewLog p where p.product = :product", [product : productInstance])
        		    productInstance.delete(flush: true)
        		    flash.message = "Successfull deleted product"
        		    redirect(action: "list")
        		}catch (DataIntegrityViolationException e) {
-       		    flash.message = "Something went wrong when trying to delete.  The item you are trying to delete might exist in a transaction.  Please try again or check Orders for the specific product"
+       		    flash.message = "Something went wrong when trying to delete.  The item you are trying to delete might exist in a Order or shopping cart.  Please try again or disable product"
        		    redirect(action: "show", id: id)
         	}
 		}

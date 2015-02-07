@@ -32,7 +32,7 @@
 
 		<div id="list-product" class="content scaffold-list" role="main">
 			
-			<h1 class="maintenance-header floatleft">Products</h1>
+			<h2 class="floatleft">Products</h2>
 			
 			
 			<div style="float:right; width:470px; ">

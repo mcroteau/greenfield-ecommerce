@@ -16,7 +16,7 @@
 
 <body>
 
-	<h1>Shipping Settings</h1>
+	<h2>Shipping Settings</h2>
 	
 	<g:if test="${flash.message}">
 		<div class="alert alert-info" role="status">${flash.message}</div>

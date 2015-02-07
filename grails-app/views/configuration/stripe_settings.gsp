@@ -15,7 +15,7 @@
 </head>
 <body>
 
-	<h1>Stripe Settings</h1>
+	<h2>Stripe Settings</h2>
 	
 	<p>Stripe is a developer-friendly way to accept payments online.  You will need a Stripe account to accept payments with Greenfield. <a href="http://stripe.com" target="_blank">Stripe's Website</a>.</p>
 

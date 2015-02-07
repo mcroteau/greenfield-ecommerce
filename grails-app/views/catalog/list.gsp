@@ -15,9 +15,9 @@
 
 		<div id="list-catalog" class="content scaffold-list" role="main">
 			
-			<h1 class="maintenance-header">Catalogs
+			<h2 class="">Catalogs
 				<g:link controller="catalog" action="create" class="btn btn-primary pull-right">New Catalog</g:link>
-			</h1>
+			</h2>
 			
 			<g:if test="${flash.error}">
 				<div class="alert alert-danger" role="status">${flash.error}</div>
@@ -50,7 +50,7 @@
 						
 							<td><g:link controller="catalog" action="edit" params="[id: catalogInstance.id]" >${fieldValue(bean: catalogInstance, field: "name")}</g:link></td>
 							
-							<td>/${applicationService.getContextName()}/catalog/show/${catalogInstance.id} &nbsp;<a href="/${applicationService.getContextName()}/catalog/products/${URLEncoder.encode("${catalogInstance.id}", "UTF-8")}" target="_blank">Test</a></td>
+							<td>/${applicationService.getContextName()}/catalog/show/${catalogInstance.id} &nbsp;<a href="/${applicationService.getContextName()}/catalog/products/${URLEncoder.encode("${catalogInstance.id}", "UTF-8")}" target="_blank" class="information">Test</a></td>
 							
 							<td><g:link controller="catalog" action="edit" params="[id: catalogInstance.id]">Edit</g:link></td>
 							

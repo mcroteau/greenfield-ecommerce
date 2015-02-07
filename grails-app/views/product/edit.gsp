@@ -253,7 +253,7 @@
 				
 					<g:actionSubmit controller="product" action="delete" value="Delete" formnovalidate="" onclick="return confirm('Are you sure?');"  class="btn btn-danger" />
 					
-					<g:submitButton name="update" class="btn btn-primary" value="Update Product"/>
+					<g:actionSubmit action="update" name="update" class="btn btn-primary" value="Update Product"/>
 				</div>
 				
 			</g:uploadForm>

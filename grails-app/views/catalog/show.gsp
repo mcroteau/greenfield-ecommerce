@@ -93,7 +93,7 @@
 				
 					<g:link controller="catalog" action="list" class="btn btn-default" >Back to List</g:link>
 				
-					<g:link controller="catalog" action="edit" id="${catalogInstance?.id}" class="btn btn-default">Edit Catalog</g:link>
+					<g:link controller="catalog" action="edit" id="${catalogInstance?.id}" class="btn btn-primary">Edit Catalog</g:link>
 				</div>
 				
 				

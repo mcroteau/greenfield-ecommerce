@@ -19,6 +19,8 @@
 	</g:if>
 	
 	
+
+	
 	<h1>Order # : ${transactionInstance.id}</h1>
 	
 	<g:form>
@@ -39,28 +41,42 @@
 		
 	</g:form>
 	
-		
-	<h5>Order Date : <span style="font-size:15px;font-weight:normal;"><g:formatDate format="dd MMM yyyy hh:mm z" date="${transactionInstance.orderDate}"/></span></h5>
+	
+	
+	
+	
+	<div class="form-row">
+		<span class="form-label minimum hint">Order Date:&nbsp;</span>
+		<span class="input-container">
+			<g:formatDate format="dd MMM yyyy hh:mm z" date="${transactionInstance.orderDate}"/>
+		</span>
+		<br class="clear"/>
+	</div>
 	
 	
 	<g:form controller="transaction" action="update_status" id="${transactionInstance.id}" method="post">
 		<input type="hidden" id="current-status" value="${transactionInstance.status}" />
-		<h5>Status : 
-	
-			<g:if test="${transactionInstance.status != 'REFUNDED'}">
-				<g:select from="${OrderStatus.values()}" 
-					optionKey="description" 
-					name="status" value="${transactionInstance.status}" 
-					class="form-control" 
-					style="width:150px; display:inline-block" 
-					id="status-select"/>
-				<input type="submit" value="Update Status" id="update-status" class="btn btn-primary"> 
-			</g:if>
-			<g:else>
-				${transactionInstance.status}
-			</g:else>
-		</h5>
+		<div class="form-row">
+			<span class="form-label minimum hint">Status:&nbsp;</span>
+			<span class="input-container">
+				<g:if test="${transactionInstance.status != 'REFUNDED'}">
+					<g:select from="${OrderStatus.values()}" 
+						optionKey="description" 
+						name="status" value="${transactionInstance.status}" 
+						class="form-control" 
+						style="width:150px; display:inline-block" 
+						id="status-select"/>
+					<input type="submit" value="Update Status" id="update-status" class="btn btn-primary"> 
+				</g:if>
+				<g:else>
+					${transactionInstance.status}
+				</g:else>
+			</span>
+			<br class="clear"/>
+		</div>
 	</g:form>
+	
+	
 	
 	<table class="table table-condensed">
 		<thead>

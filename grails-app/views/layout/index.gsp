@@ -35,7 +35,7 @@
 				<g:submitButton class="btn btn-primary pull-right" name="updateLayout" value="Update Store Layout & CSS" />
 			</div>
 			
-			<h3>Store Layout Editor</h3>
+			<h2>Store Layout</h2>
 			<p class="instructions">Place all layout code below.  Be sure to include <strong>[[CONTENT]]</strong> tag.  <g:link controller="layout" action="tags">View All Available Tags</g:link>.</p>  
 			
 			<p class="instructions"><g:link controller="layout" action="how">How the Layout Engine works</g:link></p>
@@ -47,7 +47,7 @@
 			
 
 			
-			<h3>CSS Editor</h3>
+			<h3>Store CSS</h3>
 			<p class="instructions">Place all supporting css code below</p>
 			
 			<textarea id="css-textarea" 

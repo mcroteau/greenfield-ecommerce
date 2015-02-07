@@ -15,7 +15,7 @@
 	
 		<div id="list-page" class="content scaffold-list" role="main">
 
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+			<h2 class="floatleft">Pages</h2>
 			
 			<g:if test="${flash.message}">
 				<div class="alert alert-info" role="status">${flash.message}</div>
@@ -46,9 +46,9 @@
 						<td>${pageInstance.title}</td>
 					
 						<td>/${applicationService.getContextName()}/page/store_view/${pageInstance.title} &nbsp;&nbsp;
-						<a href="/${applicationService.getContextName()}/page/store_view/${URLEncoder.encode("${pageInstance.title}", "UTF-8")}" class="btn btn-sm btn-default">Test</a></td>
+						<a href="/${applicationService.getContextName()}/page/store_view/${URLEncoder.encode("${pageInstance.title}", "UTF-8")}" class="information" target="_blank">Test</a></td>
 					
-						<td><g:link action="edit" id="${pageInstance.id}" class="btn btn-default">Edit</g:link></td>
+						<td><g:link action="edit" id="${pageInstance.id}" class="">Edit</g:link></td>
 					
 					</tr>
 				</g:each>

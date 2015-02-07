@@ -134,11 +134,15 @@ class CatalogController {
     def delete(Long id) {
 		authenticatedAdminCatalog { adminAccount, catalogInstance ->
     	    try {
+
+				//Delete all ProductViewLogs
+				CatalogViewLog.executeUpdate("delete CatalogViewLog c where c.catalog = :catalog", [catalog : catalogInstance])
+			
     	        catalogInstance.delete(flush: true)
     	        flash.message = "Successfully deleted the product"
     	        redirect(action: "list")
     	    }catch (DataIntegrityViolationException e) {
-    	        flash.error = "Something went wrong when deleting product. Please make sure no products belong to this catalog"
+    	        flash.message = "Something went wrong when deleting product. Please make sure no products currently belong to this catalog"
     	        redirect(action: "show", id: id)
     	    }
     	}

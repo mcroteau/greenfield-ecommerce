@@ -361,6 +361,9 @@ h1.maintenance-header{
 .form-label.full{
 	width:225px;
 }
+.form-label.minimum{
+	width:100px;
+}
 
 .form-label.partial{
 	width:auto !important;
@@ -596,4 +599,8 @@ table td{
 
 a{
 	font-weight:normal;
+}
+
+.floatleft{
+float:left;
 }

@@ -17,7 +17,7 @@
 </head>
 <body>
 
-	<h1>Store Settings</h1>
+	<h2>Store Settings</h2>
 	
 	<g:if test="${flash.message}">
 		<div class="alert alert-info" role="status">${flash.message}</div>

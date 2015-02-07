@@ -17,7 +17,7 @@
 		
 		<div id="create-catalog" class="content scaffold-create" role="main">
 		
-			<h1>Configuration</h1>
+			<h2>Configuration</h2>
 		
 			<g:if test="${flash.message}">
 				<div class="alert alert-info" role="status">${flash.message}</div>
@@ -31,18 +31,6 @@
 			</ul>
 			</g:hasErrors>
 	
-
-			
-			<g:link uri="/configuration/edit_homepage" class="btn btn-default">
-				<span class="glyphicon glyphicon-home"></span>
-				Edit Home Page
-			</g:link>
-			<br/>
-			
-			<g:link uri="/page/list" class="btn btn-default">
-				<span class="glyphicon glyphicon-list-alt"></span>
-				Custom Pages
-			</g:link>
 			<br/>
 			
 			<g:link uri="/configuration/uploads" class="btn btn-default">

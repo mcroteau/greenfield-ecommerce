@@ -13,10 +13,10 @@
 		
 
 			<g:if test="${admin}">
-				<h1>Admin Accounts</h1>
+				<h2>Admin Accounts</h2>
 			</g:if>
 			<g:else>
-				<h1>Customer Accounts</h1>
+				<h2>Customer Accounts</h2>
 			</g:else>
 			
 			<g:if test="${flash.message}">
@@ -89,7 +89,7 @@
 						<td>${accountInstance?.state?.name}</td>
 				
 						
-						<td><g:link controller="account" action="admin_edit" params="[id: accountInstance.id]" class="btn btn-default">Edit</g:link></td>
+						<td><g:link controller="account" action="admin_edit" params="[id: accountInstance.id]" class="">Edit</g:link></td>
 					
 					</tr>
 				</g:each>

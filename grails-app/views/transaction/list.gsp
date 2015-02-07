@@ -14,7 +14,7 @@
 
 
 		<div id="list-transaction" class="content scaffold-list" role="main">
-			<h1>Orders</h1>
+			<h2>Orders</h2>
 			<g:if test="${flash.message}">
 				<div class="alert alert-info" role="status">${flash.message}</div>
 			</g:if>
@@ -60,7 +60,7 @@
 				
 						<td>$${applicationService.formatPrice(transactionInstance.total)}</td>
 					
-						<td><g:link action="show" params="[id: transactionInstance.id]" class="btn btn-default">Show</g:link></td>
+						<td><g:link action="show" params="[id: transactionInstance.id]">Show </g:link></td>
 					
 					</tr>
 				</g:each>
