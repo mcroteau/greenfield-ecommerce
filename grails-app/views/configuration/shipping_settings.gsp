@@ -35,37 +35,40 @@
 	</ul>
 	
 	
-	<style type="text/css">
-		.form-group .form-control{
-			display:inline-block;
-			width:350px;
-		}
-	</style>
-	
 	
 	<form action="save_shipping_settings" class="form-horizontal">
 		
-		<h3>Store Address</h3>
+		<h4>Store Address</h4>
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Address 1</label>
-			<input type="text" class="form-control" name="address1" value="${shipping_settings?.address1}" style="width:275px;"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Address 1</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="address1" value="${shipping_settings?.address1}" style="width:275px;"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Address 2</label>
-			<input type="text" class="form-control" name="address2" value="${shipping_settings?.address2}" style="width:275px;"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Address 2</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="address2" value="${shipping_settings?.address2}" style="width:275px;"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">City</label>
-			<input type="text" class="form-control" name="city" value="${shipping_settings?.city}" style="width:275px;"/>
+		<div class="form-row">
+			<span class="form-label twohundred">City</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="city" value="${shipping_settings?.city}" style="width:275px;"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">State</label>
-			<g:select name="state"
+		<div class="form-row">
+			<span class="form-label twohundred">State</span>
+			<span class="input-container">
+				<g:select name="state"
 			          from="${State.list()}"
 			          value="${shipping_settings?.state}"
 			          optionKey="id" 
@@ -73,54 +76,71 @@
 					  id="shipState"
 					  class="form-control"
 					  style="width:175px;"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Zip</label>
-			<input type="text" class="form-control" name="zip" value="${shipping_settings?.zip}" style="width:175px;"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Zip</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="zip" value="${shipping_settings?.zip}" style="width:175px;"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
 		
 		
-		<h3>Rate Settings</h3>
+		<h4>Rate Settings</h4>
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Flat Rate Shipping $
-				<p style="color:#777; font-style:italic;">Used when EasyPost is not enabled.</p>
-			</label>
-			<input type="text" class="form-control" name="shipping" value="${shipping_settings?.shipping}" style="width:100px;"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Flat Rate Shipping $
+				<p class="information secondary">Used when EasyPost is not enabled.</p>
+			</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="shipping" value="${shipping_settings?.shipping}" style="width:100px;"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Enable <strong>EasyPost</strong> Integration</label>
-			<input type="checkbox" ${shipping_settings.easypostEnabled} name="easypostEnabled" id="easypostEnabled"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Enable <strong>EasyPost</strong> Integration</span>
+			<span class="input-container">
+				<input type="checkbox" ${shipping_settings.easypostEnabled} name="easypostEnabled" id="easypostEnabled"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
-		<p><strong>EasyPost</strong> is allows you to integrate USPS, UPS, DHL and FedEx into Greenfield for realtime shipping calculations.  <a href="http://easypost.com" target="_blank">EasyPost's Website</a>.</p>
+		<p class="information secondary"><strong>EasyPost</strong> integrates USPS, UPS, DHL and FedEx with Greenfield for realtime shipping calculations and shipping labels.  You will need an account with EasyPost to take advantage of these features.  <a href="http://easypost.com" target="_blank">EasyPost's Website</a>.</p>
 		
 		
 
 
 		<br/>
 		<div id="easypostSettings">
-			<h3>Easy Post Settings</h3>
+			<h4>Easy Post Settings</h4>
 			
-			<div class="form-group">
-				<label class="col-sm-3 control-label">Test Secret API Key</label>
-				<input type="text" class="form-control" name="testApiKey" value="${shipping_settings.testApiKey}"/>
+			<div class="form-row">
+				<span class="form-label twohundred">Test Secret API Key</span>
+				<span class="input-container">
+					<input type="text" class="form-control" name="testApiKey" value="${shipping_settings.testApiKey}"/>
+				</span>
+				<br class="clear"/>
 			</div>
     		
-			<div class="form-group">
-				<label class="col-sm-3 control-label">Live Secret API Key</label>
-				<input type="text" class="form-control" name="liveApiKey" value="${shipping_settings.liveApiKey}"/>
+			<div class="form-row">
+				<span class="form-label twohundred">Live Secret API Key</span>
+				<span class="input-container">
+					<input type="text" class="form-control" name="liveApiKey" value="${shipping_settings.liveApiKey}"/>
+				</span>
+				<br class="clear"/>
 			</div>		
 				
 			<br/>
 		</div>
 		
 			
-		<div class="form-group">
-			<label class="col-sm-3 control-label">&nbsp;</label>
+		<div class="buttons-container">
+			<span class="form-label twohundred">&nbsp;</span>
 			<g:link controller="configuration" action="index" class="btn btn-default">Cancel</g:link>
 			<g:submitButton value="Save Settings" name="submit" class="btn btn-primary"/>
 		</div>

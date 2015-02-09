@@ -400,7 +400,7 @@ h1.maintenance-header{
 }
 
 .information{
-	font-size:11px;
+	font-size:12px;
 	font-weight:normal;
 }
 
@@ -408,41 +408,47 @@ h1.maintenance-header{
 	display:block;
 }
 
-input[type="text"].fifty{
+.fifty{
 	width:50px;
 }
-input[type="text"].seventyfive{
+.seventyfive{
 	width:75px;
 }
-input[type="text"].onehundred{
+.onehundred{
 	width:100px;
 }
-input[type="text"].onefifty{
+.onefifty{
 	width:150px;
 }
-input[type="text"].oneseventyfive{
+.oneseventyfive{
 	width:175px;
 }
-input[type="text"].twohundred{
+.twohundred{
 	width:200px;
 }
-input[type="text"].twotwentyfive{
+.twotwentyfive{
 	width:225px;
 }
-input[type="text"].twofifty{
+.twofifty{
 	width:250px;
 }
-input[type="text"].twoseventyfive{
+.twoseventyfive{
 	width:275px;
 }
-input[type="text"].threehundred{
+.threehundred{
 	width:300px;
 }
-input[type="text"].threetwentyfive{
+.threetwentyfive{
 	width:325px;
 }
-input[type="text"].threefifty{
+.threefifty{
 	width:350px;
+}
+.threeseventyfive{
+	width:375px;
+}
+.fourhundred{
+	width:400px;
 }
 
 .autowidth{
@@ -514,6 +520,7 @@ input[type="text"].threefifty{
 
 
 .form-control {
+	display:inline-block;
 	border:solid 1px #ddd;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -547,8 +554,8 @@ table td{
 }
 .form-group .form-control{
 	display:inline-block;
-	width:300px;
 }
+
 .form-group label em{
 	font-weight:normal;
 	font-size:11px;

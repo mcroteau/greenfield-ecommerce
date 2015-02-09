@@ -17,7 +17,7 @@
 
 	<h2>Stripe Settings</h2>
 	
-	<p>Stripe is a developer-friendly way to accept payments online.  You will need a Stripe account to accept payments with Greenfield. <a href="http://stripe.com" target="_blank">Stripe's Website</a>.</p>
+	<p class="information secondary">Stripe is a developer-friendly way to accept payments online.  You will need a Stripe account to accept payments with Greenfield. <a href="http://stripe.com" target="_blank">Stripe's Website</a>.</p>
 
 
 	<g:if test="${flash.message}">
@@ -45,37 +45,46 @@
 	<form action="save_stripe_settings" class="form-horizontal">
 
 
-		<h3>Development Settings</h3>
+		<h4>Development Settings</h4>
 	
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Development API Key/Secret Key</label>
-			<input type="text" class="form-control" name="devApiKey" value="${stripe_settings.devApiKey}"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Development API Key/Secret Key</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="devApiKey" value="${stripe_settings.devApiKey}"/>
+			</span>
+			<br class="clear"/>
 		</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Development Publishable Key</label>
-			<input type="text" class="form-control" name="devPublishableKey" value="${stripe_settings.devPublishableKey}"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Development Publishable Key</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="devPublishableKey" value="${stripe_settings.devPublishableKey}"/>
+			</span>
+			<br class="clear"/>
 		</div>
 
 
-		<h3>Live/Production Settings</h3>
+		<h4>Live/Production Settings</h4>
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Live API Key/Secret Key</label>
-			<input type="text" class="form-control" name="prodApiKey" value="${stripe_settings.prodApiKey}"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Live API Key/Secret Key</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="prodApiKey" value="${stripe_settings.prodApiKey}"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Live Publishable Key</label>
-			<input type="text" class="form-control" name="prodPublishableKey" value="${stripe_settings.prodPublishableKey}"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Live Publishable Key</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="prodPublishableKey" value="${stripe_settings.prodPublishableKey}"/>
+			</span>
+			<br class="clear"/>
 		</div>		
 		
 		
 		
-		
-		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">&nbsp;</label>
+		<div class="buttons-container">
 			<g:link controller="configuration" action="index" class="btn btn-default">Cancel</g:link>
 			<g:submitButton value="Save Settings" name="submit" class="btn btn-primary"/>
 		</div>

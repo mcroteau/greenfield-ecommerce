@@ -33,58 +33,79 @@
 	
 	<form action="save_email_settings" class="form-horizontal">
 	
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Username</label>
-			<input type="text" class="form-control" name="username" value="${email_settings.username}" style="width:300px"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Username</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="username" value="${email_settings.username}" style="width:300px"/>
+			</span>
+			<br class="clear"/>
 		</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Password</label>
-			<input type="password" class="form-control" name="password" value="${email_settings.password}" style="width:300px"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Password</span>
+			<span class="input-container">
+				<input type="password" class="form-control" name="password" value="${email_settings.password}" style="width:300px"/>
+			</span>
+			<br class="clear"/>
 		</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Host</label>
-			<input type="text" class="form-control" name="host" value="${email_settings.host}" style="width:300px"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Host</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="host" value="${email_settings.host}" style="width:300px"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Port</label>
-			<input type="text" class="form-control" name="port" value="${email_settings.port}" style="width:100px"/>
+		<div class="form-row">
+			<span class="form-label twohundred">Port</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="port" value="${email_settings.port}" style="width:100px"/>
+			</span>
+			<br class="clear"/>
 		</div>		
 		
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">SMTP Auth</label>
-			<input type="checkbox" ${email_settings.auth} name="auth"/>
+		<div class="form-row">
+			<span class="form-label twohundred">SMTP Auth</span>
+			<span class="input-container">
+				<input type="checkbox" ${email_settings.auth} name="auth"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">STARTTLS Enabled</label>
-			<input type="checkbox" ${email_settings.startTls} name="startTls"/>
+		<div class="form-row">
+			<span class="form-label twohundred">STARTTLS Enabled</span>
+			<span class="input-container">
+				<input type="checkbox" ${email_settings.startTls} name="startTls"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
 	
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Admin Email Address
-			<p style="font-size:11px;font-style:italic">Email addresses to receive notifications when there are new orders and registrations</p>
-			</label>
-			<input type="text" class="form-control" name="adminEmail" value="${email_settings.adminEmail}"/>
-			
+		<div class="form-row">
+			<span class="form-label twohundred">Admin/Notification Email Addresses
+				<p class="information secondary">Comma separated list of emails that will receive notification emails for registrations, orders & other updates</p>
+			</span>
+			<span class="input-container">
+				<textarea class="form-control threefifty" style="height:100px;" name="adminEmail">${email_settings.adminEmail}</textarea>
+			</span>
+			<br class="clear"/>
 		</div>
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Support Email Address
-				<p style="font-size:11px;font-style:italic">The "From" address on all outgoing emails</p>
-			</label>
-			<input type="text" class="form-control" name="supportEmail" value="${email_settings.supportEmail}"/>
-			
+		<div class="form-row">
+			<span class="form-label twohundred">Support Email Address
+				<p class="information secondary">The "From" address on all outgoing emails</p>
+			</span>
+			<span class="input-container">
+				<input type="text" class="form-control twohundred" name="supportEmail" value="${email_settings.supportEmail}"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
 		
 		
-		<div class="form-group">
-			<label  class="col-sm-3 control-label">&nbsp;</label>
+		<div class="buttons-container">
 			<g:link controller="configuration" action="index" class="btn btn-default">Cancel</g:link>
 			<g:submitButton value="Save Settings" name="submit" class="btn btn-primary"/>
 		</div>

@@ -32,46 +32,82 @@
 	</ul>
 	
 	
-	<style type="text/css">
-		.form-group .form-control{
-			display:inline-block;
-			width:300px;
-		}
-	</style>
 	
 	<form action="save_settings" class="form-horizontal">
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Company Name</label>
-			<input type="text" class="form-control" name="storeName" value="${settings?.storeName}"/>
+	
+	
+		<div class="form-row">
+			<span class="form-label twohundred">Company Name
+				<br/>
+				<span class="information secondary">Important, required for page titles etc.</span>
+			</span>
+			<span class="input-container">
+				<input type="text" class="form-control threehundred" name="storeName" value="${settings?.storeName}"/>
+			</span>
+			<br class="clear"/>
 		</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Tax Rate % <br/><em>example : 7.5% enter 7.5</em></label>
-			<input type="text" class="form-control" name="taxRate" value="${settings?.taxRate}" style="width:100px;"/>
+
+
+		<div class="form-row">
+			<span class="form-label twohundred">Tax Rate %
+				<p class="information secondary">example : 7.5% enter 7.5</p>
+			</span>
+			<span class="input-container">
+				<input type="text" class="onefifty form-control" name="taxRate" value="${settings?.taxRate}"/>
+			</span>
+			<br class="clear"/>
 		</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Shipping $</label>
-			<input type="text" class="form-control" name="shipping" value="${settings?.shipping}" style="width:100px;"/>
+
+
+		<div class="form-row">
+			<span class="form-label twohundred">Shipping $
+			</span>
+			<span class="input-container">
+				<input type="text" class="form-control onehundred" name="shipping" value="${settings?.shipping}"/>
+			</span>
+			<br class="clear"/>
 		</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Meta Keywords</label>
-			<input type="text" class="form-control" name="keywords" value="${settings?.keywords}"/>
+
+
+		<div class="form-row">
+			<span class="form-label twohundred">Meta Keywords
+			</span>
+			<span class="input-container">
+				<input type="text" class="form-control threehundred" name="keywords" value="${settings?.keywords}"/>
+			</span>
+			<br class="clear"/>
 		</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Meta Description</label>
-			<textarea class="form-control" name="description" >${settings?.description}</textarea>
+
+
+		<div class="form-row">
+			<span class="form-label twohundred">Meta Description
+			</span>
+			<span class="input-container">
+				<textarea class="form-control threehundred" name="description"  style="height:100px;">${settings?.description}</textarea>
+			</span>
+			<br class="clear"/>
 		</div>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">Google Analytics</label>
-			<input type="text" class="form-control" name="googleAnalytics" value="${settings?.googleAnalytics}"/>
+
+
+		<div class="form-row">
+			<span class="form-label twohundred">Google Analytics
+				<br/>
+				<span class="information secondary">UA # from code. e.g. UA-87654321-0</span>
+			</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="googleAnalytics" value="${settings?.googleAnalytics}"/>
+			</span>
+			<br class="clear"/>
 		</div>
 		
-		<div class="form-group">
-			<label class="col-sm-3 control-label">&nbsp;</label>
+		
+		
+		<div class="buttons-container">
 			<g:link controller="configuration" action="index" class="btn btn-default">Cancel</g:link>
 			<g:submitButton value="Save Settings" name="submit" class="btn btn-primary"/>
 		</div>

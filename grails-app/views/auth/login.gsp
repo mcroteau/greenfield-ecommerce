@@ -69,8 +69,6 @@ ${applicationService.getStoreName()} : Admin Login</title>
 		</g:if>
 		
 		<div>
-			<h1 class="maintenance-header">Administration Login</h1>
-			<br class="clear"/>
 			
 			<g:form controller="auth" action="signIn" class="form">
 				<div class="form-group">
@@ -81,14 +79,9 @@ ${applicationService.getStoreName()} : Admin Login</title>
 				  	<label for="password">Password</label>
 				  	<input type="password" name="password" class="form-control" id="password" placeholder="******">
 				</div>
-				<div class="checkbox">
-				  	<label>
-				    	<g:checkBox name="rememberMe" value="${rememberMe}" />&nbsp;Remember Me
-				  	</label>
-				</div>
 			
 				<div class="form-group">
-				  	<label><g:link controller="account" action="forgot">Forgot password?</g:link></label>
+				  	<label><g:link controller="account" action="customer_forgot">Forgot password?</g:link></label>
 				</div>
 				
 				<input type="hidden" name="targetUri" value="${targetUri}" />
