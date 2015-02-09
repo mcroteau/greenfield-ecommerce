@@ -131,6 +131,10 @@ class PageController {
     def delete(Long id) {
 		authenticatedAdminPage { adminAccount, pageInstance ->
         	try {
+
+				//Delete all ProductViewLogs
+				PageViewLog.executeUpdate("delete PageViewLog p where p.page = :page", [page : pageInstance])
+				
         	    pageInstance.delete(flush: true)
         	    flash.message = "Successfully deleted the page."
         	    redirect(action: "list")

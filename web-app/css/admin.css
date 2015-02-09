@@ -7,7 +7,7 @@ body,html{
 body, html, div,
 span, p, table, td, th{
 	font-size:14px;
-	font-family:Roboto-Regular;
+	/**font-family:Roboto-Regular;**/
 	color: rgba(0,0,0,0.87);
 }
 
@@ -221,7 +221,8 @@ h1.dashboard{
 
 .sales-stat-value{
 	font-size:26px;
-	font-family:Roboto-Bold;
+	/**font-family:Roboto-Bold;**/
+	font-weight:bold;
 }
 
 .sales-stat-label{
@@ -234,7 +235,7 @@ h1.dashboard{
 
 #store-stats{
 	padding:5px;
-	margin:0px auto 20px auto;
+	margin:0px auto 15px auto;
 	border-top:dashed 1px #ddd;
 	border-bottom:dashed 1px #ddd;
 	text-align:center;
@@ -349,13 +350,12 @@ h1.maintenance-header{
 .form-label{
 	float:left;
 	font-size:12px;
-	font-weight:bold;
 	text-align:right;
 	display:inline-block;
 	vertical-align:middle;
 	padding-top:5px;
-	color:rgba(0,0,0,0.54) !important;
-	color:#7d7c7c !important;
+	font-weight:normal;
+	color:rgba(0,0,0,0.87) !important;
 }
 
 .form-label.full{
@@ -367,6 +367,10 @@ h1.maintenance-header{
 
 .form-label.partial{
 	width:auto !important;
+}
+
+.form-label.medium{
+	width:150px;
 }
 
 .input-container{
@@ -404,6 +408,39 @@ h1.maintenance-header{
 	display:block;
 }
 
+input[type="text"].fifty{
+	width:50px;
+}
+input[type="text"].seventyfive{
+	width:75px;
+}
+input[type="text"].onehundred{
+	width:100px;
+}
+input[type="text"].onefifty{
+	width:150px;
+}
+input[type="text"].oneseventyfive{
+	width:175px;
+}
+input[type="text"].twohundred{
+	width:200px;
+}
+input[type="text"].twotwentyfive{
+	width:225px;
+}
+input[type="text"].twofifty{
+	width:250px;
+}
+input[type="text"].twoseventyfive{
+	width:275px;
+}
+input[type="text"].threehundred{
+	width:300px;
+}
+input[type="text"].threetwentyfive{
+	width:325px;
+}
 input[type="text"].threefifty{
 	width:350px;
 }

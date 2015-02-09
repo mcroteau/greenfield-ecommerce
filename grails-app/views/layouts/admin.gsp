@@ -73,7 +73,7 @@
 				<li><g:link uri="/page/list">Pages</g:link></li>
 				<li><g:link uri="/account/admin_list?admin=false">Accounts</g:link></li>
 				<li><g:link uri="/configuration/settings">Settings</g:link></li>
-				<li><g:link uri="/configuration">Configuration</g:link></li>
+				<li><g:link uri="/configuration">Import/Upload</g:link></li>
 				<li><g:link uri="/layout">Store Layout</g:link></li>
 			</ul>
 			

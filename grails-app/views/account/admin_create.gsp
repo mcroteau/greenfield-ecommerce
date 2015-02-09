@@ -1,151 +1,176 @@
 <%@ page import="org.greenfield.Account" %>
+<%@ page import="org.greenfield.State" %>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="layout" content="admin">
-		<g:set var="entityName" value="${message(code: 'account.label', default: 'Account')}" />
-		<title><g:message code="default.create.label" args="[entityName]" /></title>
-		<style type="text/css">
-			.form-group label{
-				font-weight:normal;
-			}
-			.form-group .form-control{
-				display:inline-block;
-				width:300px;
-			}
-			.form-group label em{
-				font-weight:normal;
-				font-size:11px;
-				color:#777
-			}
-			#information h3{
-				margin:20px 0px 30px 0px;
-				padding-bottom:7px;
-				border-bottom:dashed 3px #ddd;
-			}
-		</style>
+<head>
+	<meta name="layout" content="admin">
+	<g:set var="entityName" value="${message(code: 'account.label', default: 'Account')}" />
+	<title>Create Customer</title>	
+</head>
 	
-	</head>
-	
-	<body>
-		<div>
+<body>
 
-			<h2>Create Customer</h2>
+	<div class="form-outer-container">
+		
+		<div class="form-container">
+
+			<h2>Create Account					
+				<g:link controller="account" action="admin_list" params="[admin:false]"class="btn btn-default pull-right">Back to Accounts</g:link>
+				<br class="clear"/>
+			</h2>
 			
-			<g:if test="${flash.message}">
-				<div class="message" role="status">${flash.message}</div>
-			</g:if>
+
+			<br class="clear"/>
 			
-			<g:hasErrors bean="${accountInstance}">			
-				<ul class="errors" role="alert">
-					<g:eachError bean="${accountInstance}" var="error">
-						<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
-					</g:eachError>
-				</ul>
-			</g:hasErrors>
+			
+			<div class="messages">
+			
+				<g:if test="${flash.message}">
+					<div class="alert alert-info" role="status">${flash.message}</div>
+				</g:if>
+					
+				<g:hasErrors bean="${accountInstance}">
+					<div class="alert alert-danger">
+						<ul>
+							<g:eachError bean="${accountInstance}" var="error">
+								<li><g:message error="${error}"/></li>
+							</g:eachError>
+						</ul>
+					</div>
+				</g:hasErrors>
+				
+			</div>
+			
+		
 			
 			<g:form action="admin_save" class="form-horizontal" role="form">
 
 
-				<%@ page import="org.greenfield.Account" %>
-				<%@ page import="org.greenfield.State" %>
 
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'username', 'error')} required">
-					<label for="username" class="col-sm-3 control-label">
-						<g:message code="account.username.label" default="Username" />
-						<span class="required-indicator">*</span>
-					</label>
-					<g:textField class="form-control"  name="username" required="" value="${accountInstance?.username}"/>
+				<div class="form-row">
+					<span class="form-label full">Username</span>
+					<span class="input-container">
+						<g:textField type="text" name="username" required="" value="${accountInstance?.username}" class="form-control twofifty"/>
+					</span>
+					<br class="clear"/>
 				</div>
+				
 
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'email', 'error')} required">
-					<label for="email" class="col-sm-3 control-label">
-						<g:message code="account.email.label" default="Email" />
-						<span class="required-indicator">*</span>
-					</label>
-					<g:textField class="form-control" type="email" name="email" required="" value="${accountInstance?.email}"/>
+				<div class="form-row">
+					<span class="form-label full">Email</span>
+					<span class="input-container">
+						<g:textField type="email" name="email" required="" value="${accountInstance?.email}" class="form-control twofifty"/>
+					</span>
+					<br class="clear"/>
 				</div>
+				
+				
 
-
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'passwordHash', 'error')} ">
-					<label for="password" class="col-sm-3 control-label">Password</label>
-					<input type="password" class="form-control"  name="passwordHash" value="${accountInstance?.passwordHash}"/>
+				<div class="form-row">
+					<span class="form-label full">Password</span>
+					<span class="input-container">
+						<g:textField type="text" name="passwordHash" required="" value="${accountInstance?.passwordHash}" class="form-control twofifty"/>
+					</span>
+					<br class="clear"/>
 				</div>
-
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'name', 'error')} ">
-					<label for="name" class="col-sm-3 control-label">
-						<g:message code="account.name.label" default="Name" />
-		
-					</label>
-					<g:textField class="form-control"  name="name" value="${accountInstance?.name}"/>
-				</div>
+				
+				
 
 
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'address1', 'error')} ">
-					<label for="address1" class="col-sm-3 control-label">
-						<g:message code="account.address1.label" default="Address1" />
-		
-					</label>
-					<g:textField class="form-control"  name="address1" value="${accountInstance?.address1}"/>
+				<div class="form-row">
+					<span class="form-label full">Name</span>
+					<span class="input-container">
+						<g:textField class="form-control twohundred"  name="name" value="${accountInstance?.name}"/>
+					</span>
+					<br class="clear"/>
 				</div>
 
 
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'address2', 'error')} ">
-					<label for="address2" class="col-sm-3 control-label">
-						<g:message code="account.address2.label" default="Address2" />
-		
-					</label>
-					<g:textField class="form-control"  name="address2" value="${accountInstance?.address2}"/>
+				<div class="form-row">
+					<span class="form-label full">Address 1</span>
+					<span class="input-container">
+						<g:textField class="threehundred form-control"  name="address1" value="${accountInstance?.address1}"/>
+					</span>
+					<br class="clear"/>
 				</div>
-
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'city', 'error')} ">
-					<label for="city" class="col-sm-3 control-label">
-						<g:message code="account.city.label" default="City" />
-		
-					</label>
-					<g:textField class="form-control"  name="city" value="${accountInstance?.city}"/>
-				</div>
-
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'state', 'error')} ">
-					<label for="state" class="col-sm-3 control-label">
-						<g:message code="account.state.label" default="State" />
-		
-					</label><g:select name="state.id"
-									  from="${State.list()}"
-									  value="${accountInstance?.state?.id}"
-									  optionKey="id" 
-									  optionValue="name" 
-									  class="form-control"/>
-											  
-				</div>
-
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'zip', 'error')} ">
-					<label for="zip" class="col-sm-3 control-label">
-						<g:message code="account.zip.label" default="Zip" />
-					</label>
-					<g:textField class="form-control"  name="zip" value="${accountInstance?.zip}"/>
+				
+				
+				
+				<div class="form-row ">
+					<span class="form-label full">Address 2</span>
+					<span class="input-container">
+						<g:textField class="threehundred form-control"  name="address2" value="${accountInstance?.address2}"/>
+					</span>
+					<br class="clear"/>
 				</div>
 
 
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'phone', 'error')} ">
-					<label for="phone" class="col-sm-3  control-label">
-						<g:message code="account.phone.label" default="Phone" />
-					</label>
-					<g:textField class="form-control"  name="phone" value="${accountInstance?.phone}"/>
+
+
+				<div class="form-row">
+					<span class="form-label full">City</span>
+					<span class="input-container">
+						<g:textField class="twotwentyfive form-control"  name="city" value="${accountInstance?.city}"/>
+					</span>
+					<br class="clear"/>
+				</div>
+				
+				
+
+				<div class="form-row">
+					<span class="form-label full">State</span>
+					<span class="input-container">	
+						<g:select name="state.id"
+								from="${State.list()}"
+								value="${accountInstance?.state?.id}"
+								optionKey="id" 
+								optionValue="name" 
+								class="form-control"/>
+					</span>
+					<br class="clear"/>	
+				</div>
+				
+				
+				
+
+				<div class="form-row">
+					<span class="form-label full">Zip</span>
+					<span class="input-container">
+						<g:textField class="onefifty form-control"  name="zip" value="${accountInstance?.zip}"/>
+					</span>
+					<br class="clear"/>
+				</div>
+				
+
+
+				<div class="form-row">
+					<span class="form-label full">Phone</span>
+					<span class="input-container">
+						<g:textField class="twofifty form-control"  name="phone" value="${accountInstance?.phone}"/>
+					</span>
+					<br class="clear"/>
 				</div>
 
+				
 
-				<div class="form-group">
-					<label class="col-sm-3 control-label">Is Adminstrator</label>
-					<g:checkBox name="admin" value="${admin}" checked="${admin}"/>
-					<span style="font-size:11px;">All Accounts are customers by default.</span>
+				<div class="form-row">
+					<span class="form-label full">Is Adminstrator</span>
+					<span class="input-container">
+						<g:checkBox name="admin" value="${accountInstance.hasAdminRole}" checked="${accountInstance.hasAdminRole}"/>
+						<span class="information">All Accounts are customers by default.</span>		</span>
+					<br class="clear"/>
 				</div>	
 				
-				<div class="form-group">	
-					<label class="col-sm-3"></label>
-					<g:submitButton name="create" class="btn btn-primary" value="Create" />		
+				
+				<div class="buttons-container">	
+					<g:submitButton name="create" class="btn btn-primary" value="Create Account" />		
 				</div>
+				
 			</g:form>
+	
 		</div>
-	</body>
+	
+	</div>	
+	
+</body>
 </html>

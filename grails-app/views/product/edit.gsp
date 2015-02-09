@@ -17,10 +17,10 @@
 		
 		<div class="form-container">
 			
-			<h1 class="maintenance-header">Edit Product
+			<h2>Edit Product
 				<g:link controller="product" action="list" class="btn btn-default pull-right">Back</g:link>
 				<br class="clear"/>
-			</h1>
+			</h2>
 			
 			<br class="clear"/>
 			

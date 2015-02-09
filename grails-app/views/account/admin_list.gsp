@@ -29,14 +29,14 @@
 					<input type="hidden" name="admin" value="true"/>
 					<g:submitButton class="btn btn-primary pull-right" name="New Account" value="Create New Admin User"/>
 				</g:form>
-				<p>Admin Accounts have access to the store front and Administration area.</p>
+				<p class="information secondary">Admin Accounts have access to the store front and Administration area.</p>
 			</g:if>
 			<g:else>
 				<g:form action="admin_create">
 					<input type="hidden" name="admin" value="false"/>
 					<g:submitButton class="btn btn-primary pull-right" name="Create New Account" value="New Customer"/>
 				</g:form>
-				<p>Customer accounts have access to the store front and are able to shop for products</p>
+				<p class="information secondary">Customer accounts have access to the store front and are able to shop for products</p>
 			</g:else>
 			
 						
@@ -95,9 +95,8 @@
 				</g:each>
 				</tbody>
 			</table>
-			<div class="pagination">
-				<g:paginate total="${accountInstanceTotal}" />
-			</div>
+			
+			
 		</div>
 	</body>
 </html>

@@ -2,40 +2,62 @@
 <%@ page import="org.greenfield.common.RoleName" %>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="layout" content="admin">
-		<title>Update Password</title>
-	</head>
-	<body>
+<head>
+	<meta name="layout" content="admin">
+	<title>Update Password</title>
+</head>
+<body>
 
-		<div id="edit-account" class="content scaffold-edit" role="main">
-
+	
+	<div class="form-outer-container">
+	
+	
+		<div class="form-container">
+			
+			
 			<g:if test="${flash.message}">
 				<div class="alert alert-info" role="status">${flash.message}</div>
 			</g:if>
 
 			
-			<g:form method="post" >
+			<g:form method="post">
 			
-				<h1>Update Password</h1>
-				
-				<div class="form-group">
-					<label>Username</label>&nbsp;${accountInstance.username}
-				</div>
+				<h2>Update Password
+					<g:link controller="account" action="admin_edit" id="${accountInstance?.id}" class="btn btn-default pull-right">Back to Account</g:link>
+				</h2>
 
 				
-				<div class="form-group">
-					<label>Password</label>		
-					<input type="password" class="form-control"  name="passwordHash" value=""/>	
+				<br class="clear"/>
+				
+				
+				<div class="form-row">
+					<span class="form-label full">Username</span>
+					<span class="input-container">${accountInstance.username}
+					</span>
+					<br class="clear"/>
+				</div>
+				
+
+				
+				<div class="form-row">
+					<span class="form-label full">New Password</span>		
+					<span class="input-container">
+						<input type="password" class="form-control"  name="passwordHash" value=""/>			
+					</span>
+					<br class="clear"/>
 				</div>
 
 
-				<div class="form-group">
+				<div class="buttons-container">
 					<g:hiddenField name="id" value="${accountInstance?.id}" />
 					<g:actionSubmit class="btn btn-primary" action="admin_update_password" value="Update Password" />		
 				</div>
 				
 			</g:form>
+			
 		</div>
-	</body>
+		
+	</div>
+	
+</body>
 </html>

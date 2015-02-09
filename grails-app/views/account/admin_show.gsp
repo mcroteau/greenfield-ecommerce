@@ -8,121 +8,166 @@
 	<head>
 		<meta name="layout" content="admin">
 		<g:set var="entityName" value="${message(code: 'accountInstance.label', default: 'Account')}" />
-		<title><g:message code="default.edit.label" args="[entityName]" /></title>
+		<title>Show Account</title>
 	</head>
 	<body>
-
-		<div id="edit-account" class="content scaffold-edit" role="main">
-
-			<h1><g:message code="default.edit.label" args="[entityName]" /></h1>
-
-			<g:if test="${flash.message}">
-				<div class="alert alert-info" role="status">${flash.message}</div>
-			</g:if>
-			
-			<g:hasErrors bean="${accountInstance}">
-			<ul class="errors" role="alert">
-				<g:eachError bean="${accountInstance}" var="error">
-				<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
-				</g:eachError>
-			</ul>
-			</g:hasErrors>
-			
-			
-			
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'username', 'error')} required">
-					<label for="username">
-						<g:message code="accountInstance.username.label" default="Username" />
-						<span class="required-indicator">*</span>
-					</label>${accountInstance.username}
-				</div>
-
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'email', 'error')} required">
-					<label for="email">
-						<g:message code="accountInstance.email.label" default="Email" />
-						<span class="required-indicator">*</span>
-					</label>
-					${accountInstance?.email}
-				</div>
-				
-
-
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'name', 'error')} ">
-					<label for="name">
-						<g:message code="accountInstance.name.label" default="Name" />
-		
-					</label>
-					${accountInstance?.name}
-				</div>
-
-
-				<div class="formgroup ${hasErrors(bean: accountInstance, field: 'address1', 'error')} ">
-					<label for="address">
-						<g:message code="accountInstance.address1.label" default="Address1" />
-					</label>
-					${accountInstance?.address1}
-				</div>
-
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'address2', 'error')} ">
-					<label for="address2">
-						<g:message code="accountInstance.address2.label" default="Address2" />
-		
-					</label>
-					${accountInstance?.address2}
-				</div>
-
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'city', 'error')} ">
-					<label for="city">
-						<g:message code="accountInstance.city.label" default="City" />
-		
-					</label>
-					${accountInstance?.city}
-				</div>
-
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'state', 'error')} ">
-					<label for="state">
-						State
-					</label>
-					${accountInstance?.state?.name}
-				</div>
-
-
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'zip', 'error')} ">
-					<label for="zip">
-						<g:message code="accountInstance.zip.label" default="Zip" />
-					</label>
-					${accountInstance?.zip}
-				</div>
-
-
-				<div class="form-group ${hasErrors(bean: accountInstance, field: 'phone', 'error')} ">
-					<label for="phone">
-						<g:message code="accountInstance.phone.label" default="Phone" />
-					</label>
-					${accountInstance?.phone}
-				</div>
-				
-				
-				<div class="form-group">
-					<label>Password<label>					
-					<g:link action="admin_edit_password" class="btn btn-default" id="${accountInstance.id}">Change Password</g:link>
-				</div>
-
-				
-				<g:if test="${accountInstance.hasAdminRole}">
-					<h3>Is Administrator</h3>
-					<p>By default all Accounts are customers</p>
-				</g:if>	
-				
-			
-			<g:form>
 	
-				<g:hiddenField name="id" value="${accountInstance?.id}" />
+		<div class="form-outer-container">
+	
+	
+			<div class="form-container">
+		
+
+				<h2>Show Account					
+				<g:link controller="account" action="admin_list" params="[admin:false]"class="btn btn-default pull-right">Back to Accounts</g:link>
+						<br class="clear"/>
+				</h2>
+
+				<br class="clear"/>
+			
+			
+				<g:if test="${flash.message}">
+					<div class="alert alert-info" role="status">${flash.message}</div>
+				</g:if>
+			
+				<g:hasErrors bean="${accountInstance}">
+				<ul class="errors" role="alert">
+					<g:eachError bean="${accountInstance}" var="error">
+					<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
+					</g:eachError>
+				</ul>
+				</g:hasErrors>
+			
+			
+				<g:form method="post" class="form-horizontal" >
+			
+					<g:hiddenField name="id" value="${accountInstance?.id}" />
 				
-				<g:link class="btn btn-default" action="admin_edit" id="${accountInstance.id}" >Edit</g:link>
+
+					<div class="form-row">
+						<span class="form-label full">Username</span>
+						<span class="input-container">
+							${accountInstance.username}
+						</span>
+						<br class="clear"/>
+					</div>
 				
-				<g:actionSubmit class="btn btn-danger" action="admin_delete" value="Delete" onclick="return confirm('Are you sure?');" />
-			</g:form>
+
+					<div class="form-row">
+						<span class="form-label full">Email</span>
+						<span class="input-container">
+							<g:textField type="email" name="email" required="" value="${accountInstance?.email}" class="form-control twofifty" disabled="disabled"/>
+						</span>
+						<br class="clear"/>
+					</div>
+				
+
+
+					<div class="form-row">
+						<span class="form-label full">Name</span>
+						<span class="input-container">
+							<g:textField class="form-control twohundred"  name="name" value="${accountInstance?.name}" disabled="disabled"/>
+						</span>
+						<br class="clear"/>
+					</div>
+
+
+					<div class="form-row">
+						<span class="form-label full">Address 1</span>
+						<span class="input-container">
+							<g:textField class="threehundred form-control"  name="address1" value="${accountInstance?.address1}" disabled="disabled"/>
+						</span>
+						<br class="clear"/>
+					</div>
+				
+				
+				
+					<div class="form-row ">
+						<span class="form-label full">Address 2</span>
+						<span class="input-container">
+							<g:textField class="threehundred form-control"  name="address2" value="${accountInstance?.address2}" disabled="disabled"/>
+						</span>
+						<br class="clear"/>
+					</div>
+
+
+
+
+					<div class="form-row">
+						<span class="form-label full">City</span>
+						<span class="input-container">
+							<g:textField class="twotwentyfive form-control"  name="city" value="${accountInstance?.city}" disabled="disabled"/>
+						</span>
+						<br class="clear"/>
+					</div>
+				
+				
+
+					<div class="form-row">
+						<span class="form-label full">State</span>
+						<span class="input-container">	
+							<g:select name="state.id"
+									from="${State.list()}"
+									value="${accountInstance?.state?.id}"
+									optionKey="id" 
+									optionValue="name" 
+									class="form-control"
+									disabled="disabled"/>
+						</span>
+						<br class="clear"/>	
+					</div>
+				
+				
+				
+
+					<div class="form-row">
+						<span class="form-label full">Zip</span>
+						<span class="input-container">
+							<g:textField class="onefifty form-control"  name="zip" value="${accountInstance?.zip}" disabled="disabled"/>
+						</span>
+						<br class="clear"/>
+					</div>
+				
+
+
+					<div class="form-row">
+						<span class="form-label full">Phone</span>
+						<span class="input-container">
+							<g:textField class="twofifty form-control"  name="phone" value="${accountInstance?.phone}" disabled="disabled"/>
+						</span>
+						<br class="clear"/>
+					</div>
+
+				
+
+					<div class="form-row">
+						<span class="form-label full">Is Adminstrator</span>
+						<span class="input-container">
+							<g:checkBox name="admin" value="${accountInstance.hasAdminRole}" checked="${accountInstance.hasAdminRole}" disabled="disabled"/>
+							<span class="information">All Accounts are customers by default.</span>		</span>
+						<br class="clear"/>
+					</div>	
+				
+				
+
+					<div class="buttons-container">
+				
+						<g:form>
+	        			
+							<g:hiddenField name="id" value="${accountInstance?.id}" />
+							
+							
+							<g:link class="btn btn-default" action="admin_edit" id="${accountInstance.id}">Edit Account</g:link>
+							
+						</g:form>
+		
+					</div>
+				
+				</g:form>
+	
+			</div>
+	
 		</div>
+		
 	</body>
 </html>

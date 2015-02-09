@@ -17,11 +17,11 @@
 		
 		<div class="form-container">
 			
-			<h1 class="maintenance-header">Show Product
+			<h2>Show Product
 			
 				<g:link controller="product" action="list" class="btn btn-default pull-right">Back</g:link>
 				<br class="clear"/>
-			</h1>
+			</h2>
 			
 			<br class="clear"/>
 			
@@ -236,7 +236,7 @@
 				
 				<div class="buttons-container">	
 					<g:link controller="product" action="list" class="btn btn-default">Back to List</g:link>
-					<g:link controller="product" action="edit" id="${productInstance.id}" class="btn btn-primary">Edit Product</g:link>
+					<g:link controller="product" action="edit" id="${productInstance.id}" class="btn btn-default">Edit Product</g:link>
 				</div>
 				
 				

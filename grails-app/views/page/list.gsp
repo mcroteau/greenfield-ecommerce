@@ -16,19 +16,21 @@
 		<div id="list-page" class="content scaffold-list" role="main">
 
 			<h2 class="floatleft">Pages</h2>
+		
+			<g:link controller="page" action="create" class="btn btn-primary pull-right">New Custom Page</g:link>
+		
+			<br class="clear"/>
 			
 			<g:if test="${flash.message}">
 				<div class="alert alert-info" role="status">${flash.message}</div>
 			</g:if>
 			
-			<g:link controller="page" action="create" class="btn btn-primary pull-right">New Custom Page</g:link>
 			
 			<br style="clear:both">
 			
 			<table class="table">
 				<thead>
 					<tr>
-						<g:sortableColumn property="dateCreated" title="${message(code: 'page.dateCreated.label', default: 'Date Created')}" />
 						<g:sortableColumn property="title" title="Title" />
 						
 						<th>url</th>
@@ -41,9 +43,7 @@
 				<g:each in="${pageInstanceList}" status="i" var="pageInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 				
-						<td><g:link action="show" id="${pageInstance.id}"><g:formatDate date="${pageInstance.dateCreated}" format="dd MMM yyyy" /></g:link></td>
-					
-						<td>${pageInstance.title}</td>
+						<td><g:link action="show" id="${pageInstance.id}">${pageInstance.title}</g:link></td>
 					
 						<td>/${applicationService.getContextName()}/page/store_view/${pageInstance.title} &nbsp;&nbsp;
 						<a href="/${applicationService.getContextName()}/page/store_view/${URLEncoder.encode("${pageInstance.title}", "UTF-8")}" class="information" target="_blank">Test</a></td>

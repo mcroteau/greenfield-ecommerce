@@ -49,6 +49,7 @@ class ProductOptionController {
 				flash.variantMessage = "Variant Name must be specified"
 				request.productInstance = productOptionInstance.product
 				request.productOptionInstance = productOptionInstance
+				request.variants = productOptionInstance.variants
 				render(view : 'edit')
 				return
 			}
@@ -58,6 +59,7 @@ class ProductOptionController {
 				request.name = params.name
 				request.productInstance = productOptionInstance.product
 				request.productOptionInstance = productOptionInstance
+				request.variants = productOptionInstance.variants
 				render(view : 'edit')
 				return
 			}

@@ -8,78 +8,108 @@
 	<head>
 		<meta name="layout" content="admin">
 		<g:set var="entityName" value="${message(code: 'page.label', default: 'Page')}" />
-		<title><g:message code="default.show.label" args="[entityName]" /></title>
+		<title>Show Page</title>
 	</head>
 	<body>
 
-
-		<div id="show-page" class="content scaffold-show" role="main">
+	<div class="form-outer-container">
+	
+		<div class="form-container">
+		
+			<h2>Show Page
+				<g:link controller="page" action="list" class="btn btn-default pull-right">Back to Pages</g:link>
+				<br class="clear"/>
+			</h1>
+		
+			<br class="clear"/>
+		
+		
+			<div class="messages">
+		
+				<g:if test="${flash.message}">
+					<div class="alert alert-info" role="status">${flash.message}</div>
+				</g:if>
+		
+				<g:if test="${flash.error}">
+					<div class="alert alert-danger" role="status">${flash.error}</div>
+				</g:if>
+				
+				<g:hasErrors bean="${pageInstance}">
+					<div class="alert alert-danger">
+						<ul>
+							<g:eachError bean="${pageInstance}" var="error">
+								<li><g:message error="${error}"/></li>
+							</g:eachError>
+						</ul>
+					</div>
+				</g:hasErrors>
 			
-			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
-			
-			<g:if test="${flash.message}">
-				<div class="alert alert-info" role="status">${flash.message}</div>
-			</g:if>
-			
-			<div class="form-group">
-				<label>URL</label>/${applicationService.getContextName()}/page/store_view/${pageInstance.title} &nbsp;&nbsp;
-					<a href="/${applicationService.getContextName()}/page/store_view/${URLEncoder.encode("${pageInstance.title}", "UTF-8")}" class="btn btn-sm btn-default">Test</a>
 			</div>
 			
+		
+			<g:form method="post" >
 			
-			<ol class="property-list page">
+
+				<g:hiddenField name="id" value="${pageInstance?.id}" />
+
+				<div class="form-row">
+					<span class="form-label full secondary">Url</span>
+					<span class="input-container">
+						<span class="information">
+							/${applicationService.getContextName()}/page/store_view/${pageInstance.title} &nbsp;&nbsp;
+												<a href="/${applicationService.getContextName()}/page/store_view/${URLEncoder.encode("${pageInstance.title}", "UTF-8")}"  target="_blank">Test</a>
+						</span>
+					</span>
+					<br class="clear"/>
+				</div>
 			
-				<g:if test="${pageInstance?.title}">
-				<li class="fieldcontain">
-					<span id="title-label" class="property-label"><g:message code="page.title.label" default="Title" /></span>
-					
-						<span class="property-value" aria-labelledby="title-label"><g:fieldValue bean="${pageInstance}" field="title"/></span>
-					
-				</li>
-				</g:if>
+				
+				<div class="form-row">
+					<span class="form-label full secondary">Title 
+						<span class="information secondary block">Title must be unique</span>
+					</span>
+					<span class="input-container">
+						<input name="title" type="text" class="form-control" value="${pageInstance?.title}" disabled="disabled"/>
+					</span>
+					<br class="clear"/>
+				</div>
+				
+				
 			
-				<g:if test="${pageInstance?.content}">
-				<li class="fieldcontain">
-					<span id="content-label" class="property-label"><g:message code="page.content.label" default="Content" /></span>
-					
-						<span class="property-value" aria-labelledby="content-label"><g:fieldValue bean="${pageInstance}" field="content"/></span>
-					
-				</li>
-				</g:if>
+				<div class="form-row">
+					<span class="form-label full secondary">Description 
+					</span>
+					<span class="input-container">
+						<g:textArea class="form-control" name="content" id="content" cols="40" rows="10" maxlength="65535" value="${pageInstance?.content}"  disabled="disabled"/>
+						<br class="clear"/>
+					</span>
+					<br class="clear"/>
+				</div>
 			
-				<g:if test="${pageInstance?.dateCreated}">
-				<li class="fieldcontain">
-					<span id="dateCreated-label" class="property-label"><g:message code="page.dateCreated.label" default="Date Created" /></span>
-					
-						<span class="property-value" aria-labelledby="dateCreated-label"><g:formatDate date="${pageInstance?.dateCreated}" /></span>
-					
-				</li>
-				</g:if>
 			
-				<g:if test="${pageInstance?.lastUpdated}">
-				<li class="fieldcontain">
-					<span id="lastUpdated-label" class="property-label"><g:message code="page.lastUpdated.label" default="Last Updated" /></span>
-					
-						<span class="property-value" aria-labelledby="lastUpdated-label"><g:formatDate date="${pageInstance?.lastUpdated}" /></span>
-					
-				</li>
-				</g:if>
+				<div class="form-row">
+				</div>
 			
-			</ol>
-			<g:form>
-				<fieldset class="buttons">
-					<g:hiddenField name="id" value="${pageInstance?.id}" />
-					
-					<g:link class="btn btn-default" action="edit" id="${pageInstance?.id}">Edit</g:link>
-					
+			
+			
+				<div class="buttons-container">
 
 					<g:if test="${pageInstance.title != "Home"}">
 						<g:actionSubmit class="btn btn-danger" action="delete" value="Delete" onclick="return confirm('Are you sure?');" />
 					</g:if>
 					
-				</fieldset>
+					<g:link class="btn btn-default" action="edit" id="${pageInstance?.id}">Edit</g:link>
+					
+					
+				</div>
+				
 			</g:form>
+			
 		</div>
+	</div>
+	
+
+
 	</body>
 </html>
 

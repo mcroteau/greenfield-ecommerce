@@ -20,10 +20,10 @@
 		
 		<div class="form-container">
 			
-			<h1 class="maintenance-header">Show Catalog
-				<g:link controller="catalog" action="list" class="btn btn-default pull-right">Back</g:link>
+			<h2>Show Catalog
+				<g:link controller="catalog" action="list" class="btn btn-default pull-right">Back to Catalogs</g:link>
 				<br class="clear"/>
-			</h1>
+			</h2>
 			
 			<br class="clear"/>
 			
@@ -93,7 +93,7 @@
 				
 					<g:link controller="catalog" action="list" class="btn btn-default" >Back to List</g:link>
 				
-					<g:link controller="catalog" action="edit" id="${catalogInstance?.id}" class="btn btn-primary">Edit Catalog</g:link>
+					<g:link controller="catalog" action="edit" id="${catalogInstance?.id}" class="btn btn-default">Edit Catalog</g:link>
 				</div>
 				
 				

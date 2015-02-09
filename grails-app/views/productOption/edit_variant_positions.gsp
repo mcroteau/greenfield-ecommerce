@@ -33,6 +33,11 @@
 				background:#fff !important;
 				height:45px;
 			}
+			.order-number{
+				display:inline-block;
+				font-weight:bold;
+				margin-right:15px;
+			}
 		</style>
 		
 	</head>
@@ -40,11 +45,11 @@
 		
 		<div class="content">
 		
-			<h1>${productOptionInstance.name} : Order Variants
-				<g:link controller="productOption" action="edit" name="edit" class="btn btn-default pull-right" id="${productOptionInstance.id}">Back</g:link>
-			</h1>
+			<h2>Order Variants
+				<g:link controller="productOption" action="edit" name="edit" class="btn btn-default pull-right" id="${productOptionInstance.id}">Back to Product Options</g:link>
+			</h2>
 			
-			<p>Click, drag and drop variant to desired positions.  Click "Update Variant Positions" to save changes</p>
+			<p class="information secondary">Click, drag and drop variant to desired positions.  Click "Update Variant Positions" to save changes</p>
 			
 			<div class="clear" style="margin-top:20px;"></div>
 
@@ -58,7 +63,7 @@
 				
 				<ul id="variants">
 					<g:each in="${variants}" var="variant">
-				  		<li data-id="${variant.id}">${variant.name}</li>
+				  		<li data-id="${variant.id}"><span class="order-number"></span>${variant.name}</li>
 					</g:each>
 				</ul>
 				
@@ -91,6 +96,8 @@ $(document).ready(function() {
 		$variants.find('li').each(function(index, element){
 			var $element = $(element);
 			if($element.html() != ""){
+				var number = index + 1
+				$element.find('.order-number').html(number)
 				positions.push($element.data("id"));
 			}
 		})

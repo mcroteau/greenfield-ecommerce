@@ -22,8 +22,8 @@
 		
 		<div class="form-container">
 			
-			<h1 class="maintenance-header">Edit Catalog
-				<g:link controller="catalog" action="list" class="btn btn-default pull-right">Back</g:link>
+			<h2>Edit Catalog
+				<g:link controller="catalog" action="list" class="btn btn-default pull-right">Back to Catalogs</g:link>
 				<br class="clear"/>
 			</h1>
 			

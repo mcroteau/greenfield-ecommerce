@@ -13,14 +13,13 @@
 	<body>
 	
 	<div class="form-outer-container">
-		
-		
-		<div class="form-container" style="text-align:left !important">
+				
+		<div class="form-container" >
 			
-			<h1 class="maintenance-header">Create Product
+			<h2>Create Product
 				<g:link controller="product" action="list" class="btn btn-default pull-right">Back</g:link>
 				<br class="clear"/>
-			</h1>
+			</h2>
 			
 			<br class="clear"/>
 			
