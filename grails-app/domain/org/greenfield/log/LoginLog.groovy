@@ -6,7 +6,8 @@ class LoginLog {
 
 	Account account
 	String ipAddress
-	
+	Date date	
+		
 	Date dateCreated
 	Date lastUpdated
 

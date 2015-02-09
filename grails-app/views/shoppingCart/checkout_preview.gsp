@@ -282,7 +282,8 @@ ${applicationService.getHeader("Shopping Cart")}
 			
 $(document).ready(function(){
 
-	var $tokenInput = $('#stripeToken'),
+	var $submitBtn = $('#submit'),
+		$tokenInput = $('#stripeToken'),
 		$cardNumberInput = $('#creditcard_number'),
 		$cardCvcInput = $('#creditcard_cvc'),
 		$cardExpMonth = $('#creditcard_exp_month'),
@@ -299,12 +300,20 @@ $(document).ready(function(){
 		<g:set var="publishableKey" value="${applicationService.getStripeLivePublishableKey()}"/>
 	</g:if>
 	
-	Stripe.setPublishableKey("${publishableKey}");
+	
+	<g:if test="${publishableKey == ""}">
+		alert("Error\nThis site has not been properly configured with Stripe Account information.  Please make sure you have created a Stripe Account and successfully entered API Keys in the Greenfield Stripe Settings area");
+		$submitBtn.attr("disabled", "disabled");
+	</g:if>
+	
 
-	$('#submit').click(checkCreditCardValues);
+
+	Stripe.setPublishableKey("${publishableKey}");
+	$submitBtn.click(checkCreditCardValues);
+
+
 
 	function checkout(){
-		//console.info('submit form, process payment, create transaction', $checkoutForm);
 		$checkoutForm.submit();
 	}
 
@@ -329,10 +338,12 @@ $(document).ready(function(){
 				$cardCvcInput.val() != "" &&
 				$cardExpMonth.val() != "" &&
 				$cardExpYear.val() != ""){
+			$submitBtn.attr("disabled", "disabled");	
 			getStripeToken();
 			$processing.show();
 		}else{
 			alert('Please make sure all credit card information is provided')
+			$submitBtn.removeAttr("disabled");	
 		}
 	}
 	

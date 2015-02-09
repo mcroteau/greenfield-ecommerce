@@ -1,9 +1,9 @@
 
-LoginLog - dropped 'date', added dateCreated & lastUpdated
+LoginLog - added dateCreated & lastUpdated
 
 + CatalogViewLog
 + ProductViewLog
 + PageViewLog
 + SearchLog
 
-+ DevelopmentDataService 
++ DevelopmentDataService

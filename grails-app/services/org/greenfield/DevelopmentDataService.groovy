@@ -159,6 +159,8 @@ class DevelopmentDataService {
 			def customer = Account.get(customerId)
 			
 			if(customer.username != "admin"){
+			
+				def orderDate = generateRandomDate()
 
 				int productId = rand.nextInt(productMax) + 1
 				def product = Product.get(productId)
@@ -173,7 +175,10 @@ class DevelopmentDataService {
 				shoppingCart.account = customer
 				shoppingCart.status = ShoppingCartStatus.TRANSACTION.description()
 				shoppingCart.save(flush:true)
-
+				
+				shoppingCart.dateCreated = orderDate
+				
+				
 				def shoppingCartItem = new ShoppingCartItem()
 				shoppingCartItem.quantity = quantity
 				shoppingCartItem.product = product
@@ -189,7 +194,6 @@ class DevelopmentDataService {
 		
 		
 				def transaction = new Transaction()
-				def orderDate = generateRandomDate()
 			
 				//println "${customer.username} : ${product.name} x ${quantity} -> ${orderDate.getDateString()}"
 			
