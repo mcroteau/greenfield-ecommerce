@@ -1,9 +1,0 @@
-
-LoginLog - added dateCreated & lastUpdated
-
-+ CatalogViewLog
-+ ProductViewLog
-+ PageViewLog
-+ SearchLog
-
-+ DevelopmentDataService

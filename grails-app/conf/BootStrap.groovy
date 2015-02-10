@@ -25,7 +25,7 @@ import groovy.io.FileType
 
 class BootStrap {
 
-	def developmentDataService
+	//def developmentDataService
 
 	def adminRole
 	def customerRole
