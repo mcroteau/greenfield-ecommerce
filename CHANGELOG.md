@@ -13,7 +13,7 @@ This is a changelog for Greenfield developers.  All future changes to this proje
 	* # Catalogs
 	* # Customers
 	* # Abandoned Carts (Total for life of Application)
-	* Date Range Selected Statistics
+	* Date Range Statistics
 		* Gross Sales $
 		* Total Orders
 		* Average Order $
