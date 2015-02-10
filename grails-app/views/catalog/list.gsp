@@ -16,7 +16,7 @@
 		<div id="list-catalog" class="content scaffold-list" role="main">
 			
 			<h2 class="">Catalogs
-				<g:link controller="catalog" action="create" class="btn btn-primary pull-right">New Catalog</g:link>
+				<g:link controller="catalog" action="create" class="btn btn-primary pull-right" >New Catalog</g:link>
 			</h2>
 			
 			<g:if test="${flash.error}">

@@ -18,11 +18,6 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=About Us</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
 	<td>id=login</td>
 	<td></td>
 </tr>
@@ -38,7 +33,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>css=button.btn.btn-default</td>
+	<td>id=customer_login</td>
 	<td></td>
 </tr>
 <tr>
@@ -90,11 +85,6 @@
 	<td>type</td>
 	<td>id=price</td>
 	<td>10.50</td>
-</tr>
-<tr>
-	<td>selectWindow</td>
-	<td>null</td>
-	<td></td>
 </tr>
 <tr>
 	<td>type</td>

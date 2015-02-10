@@ -78,12 +78,12 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Edit</td>
+	<td>link=Edit Product</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Manage Options</td>
+	<td>link=Manage Product Options</td>
 	<td></td>
 </tr>
 <tr>
@@ -136,7 +136,6 @@
 	<td>link=Logout</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>

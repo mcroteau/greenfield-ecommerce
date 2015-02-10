@@ -30,7 +30,7 @@ ${applicationService.getHeader("Login")}
 			</div>
 			
 			<input type="hidden" name="targetUri" value="${targetUri}" />
-			<button type="submit" class="btn btn-default">Login</button>
+			<button type="submit" class="btn btn-default" id="customer_login">Login</button>
 			
 		</g:form>
 	</div>

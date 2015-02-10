@@ -58,7 +58,7 @@
 							<span class="information secondary block">Name must be unique</span>
 						</span>
 						<span class="input-container">
-							<input name="name" type="text" class="form-control threefifty" value="${catalogInstance?.name}"/>
+							<input name="name" type="text" class="form-control threefifty" value="${catalogInstance?.name}" id="name"/>
 						</span>
 						<br class="clear"/>
 					</div>

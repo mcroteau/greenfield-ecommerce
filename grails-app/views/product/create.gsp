@@ -48,7 +48,7 @@
 						<span class="information secondary block">Name must be unique</span>
 					</span>
 					<span class="input-container">
-						<input name="name" type="text" class="form-control threefifty" value="${productInstance?.name}"/>
+						<input name="name" type="text" class="form-control threefifty" value="${productInstance?.name}" id="name"/>
 					</span>
 					<br class="clear"/>
 				</div>
@@ -75,7 +75,7 @@
 				<div class="form-row">
 					<span class="form-label full secondary">Price $</span>
 					<span class="input-container">
-						<input name="price" type="text" class="form-control " style="width:150px" value="${productInstance?.price}"/>
+						<input name="price" type="text" class="form-control " style="width:150px" value="${productInstance?.price}" id="price"/>
 					</span>
 					<br class="clear"/>
 				</div>
@@ -87,7 +87,7 @@
 				<div class="form-row">
 					<span class="form-label full secondary">Quantity</span>
 					<span class="input-container">
-						<input name="quantity" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.quantity}"/>
+						<input name="quantity" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.quantity}" id="quantity"/>
 						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:150px;">Quantity of 0 will categorize product as “out of stock”</span>
 					</span>
 					<br class="clear"/>
@@ -117,7 +117,7 @@
 				<div class="form-row">
 					<span class="form-label full secondary">Weight</span>
 					<span class="input-container">
-						<input name="weight" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.weight}"/>
+						<input name="weight" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.weight}" id="weight"/>
 						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:300px;">Weight is required at a minimum to calculate shipping realtime via <a href="http://www.easypost.com" target="_blank">EasyPost</a>. </span>
 					</span>
 					<br class="clear"/>
