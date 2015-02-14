@@ -43,7 +43,7 @@ class BootStrap {
 		createRoles()
 		createAdmin()
 		println 'Accounts : ' + Account.count()
-		createDevelopmentData()
+		//createDevelopmentData()
 	}
 	
 	
@@ -51,7 +51,6 @@ class BootStrap {
 		def developmentData = new DevelopmentData()
 		developmentData.init()
 	}
-	
 	
 	
 
