@@ -2,6 +2,19 @@
 
 This is a changelog for Greenfield developers.  All future changes to this project will be listed here.
 
+##Greenfield 1.1.1
+
+###Updates
+* Added AdminMenuFilters to highlight active menu option
+* Small admin style improvements
+
+### Bug Fixes
+* Moved development data generation from service to plain groovy class
+* Increased size of input boxes for Stripe settings
+* Removed old .backup files
+
+
+
 
 ## Greenfield 1.1.0
 
