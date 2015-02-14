@@ -17,8 +17,6 @@
 
 	<h2>Stripe Settings</h2>
 	
-	<p class="information secondary">Stripe is a developer-friendly way to accept payments online.  You will need a Stripe account to accept payments with Greenfield. <a href="http://stripe.com" target="_blank">Stripe's Website</a>.</p>
-
 
 	<g:if test="${flash.message}">
 		<div class="alert alert-info" role="status">${flash.message}</div>
@@ -34,23 +32,19 @@
 	</ul>
 	
 	
-	<style type="text/css">
-		.form-group .form-control{
-			display:inline-block;
-			width:350px;
-		}
-	</style>
-	
 	
 	<form action="save_stripe_settings" class="form-horizontal">
 
+	
+		<p class="information secondary" style="margin-top:0px !important; margin-bottom:20px;">Stripe is a developer-friendly way to accept payments online.  You will need a Stripe account to accept payments with Greenfield. <a href="http://stripe.com" target="_blank">Stripe's Website</a>.</p>
+		
 
 		<h4>Development Settings</h4>
 	
 		<div class="form-row">
 			<span class="form-label twohundred">Development API Key/Secret Key</span>
 			<span class="input-container">
-				<input type="text" class="form-control" name="devApiKey" value="${stripe_settings.devApiKey}"/>
+				<input type="text" class="form-control threehundred" name="devApiKey" value="${stripe_settings.devApiKey}"/>
 			</span>
 			<br class="clear"/>
 		</div>
@@ -58,7 +52,7 @@
 		<div class="form-row">
 			<span class="form-label twohundred">Development Publishable Key</span>
 			<span class="input-container">
-				<input type="text" class="form-control" name="devPublishableKey" value="${stripe_settings.devPublishableKey}"/>
+				<input type="text" class="form-control threehundred" name="devPublishableKey" value="${stripe_settings.devPublishableKey}"/>
 			</span>
 			<br class="clear"/>
 		</div>
@@ -69,7 +63,7 @@
 		<div class="form-row">
 			<span class="form-label twohundred">Live API Key/Secret Key</span>
 			<span class="input-container">
-				<input type="text" class="form-control" name="prodApiKey" value="${stripe_settings.prodApiKey}"/>
+				<input type="text" class="form-control threehundred" name="prodApiKey" value="${stripe_settings.prodApiKey}"/>
 			</span>
 			<br class="clear"/>
 		</div>
@@ -77,7 +71,7 @@
 		<div class="form-row">
 			<span class="form-label twohundred">Live Publishable Key</span>
 			<span class="input-container">
-				<input type="text" class="form-control" name="prodPublishableKey" value="${stripe_settings.prodPublishableKey}"/>
+				<input type="text" class="form-control threehundred" name="prodPublishableKey" value="${stripe_settings.prodPublishableKey}"/>
 			</span>
 			<br class="clear"/>
 		</div>		

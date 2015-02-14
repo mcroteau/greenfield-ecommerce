@@ -18,14 +18,13 @@ import org.greenfield.Country
 import org.greenfield.Transaction
 import grails.util.Environment
 
+import org.greenfield.DevelopmentData
 
 import java.util.Random
-import groovy.io.FileType
+import groovy.io.FileType			
 			
 
 class BootStrap {
-
-	//def developmentDataService
 
 	def adminRole
 	def customerRole
@@ -44,10 +43,14 @@ class BootStrap {
 		createRoles()
 		createAdmin()
 		println 'Accounts : ' + Account.count()
-
-		//developmentDataService.generate()
+		createDevelopmentData()
 	}
 	
+	
+	def createDevelopmentData(){
+		def developmentData = new DevelopmentData()
+		developmentData.init()
+	}
 	
 	
 	
