@@ -15,6 +15,12 @@ This is a changelog for Greenfield developers.  All future changes to this proje
 
 
 
+## Greenfield 1.1.2
+
+### New Features
+
+* Added a Health Check endpoint
+
 
 
 ## Greenfield 1.1.0
