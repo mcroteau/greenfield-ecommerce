@@ -2,6 +2,17 @@
 
 This is a changelog for Greenfield developers.  All future changes to this project will be listed here.
 
+
+
+## Greenfield 1.1.2
+
+### New Features
+
+* Added a Health Check endpoint
+
+
+
+
 ##Greenfield 1.1.1
 
 ###Updates
@@ -14,12 +25,6 @@ This is a changelog for Greenfield developers.  All future changes to this proje
 * Removed old .backup files
 
 
-
-## Greenfield 1.1.2
-
-### New Features
-
-* Added a Health Check endpoint
 
 
 
