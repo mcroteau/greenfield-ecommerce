@@ -49,7 +49,7 @@
 			
 			
 				<div class="form-row">
-					<span class="form-label full secondary">Url</span>
+					<span class="form-label twohundred secondary">Url</span>
 					<span class="input-container">
 						<span class="secondary">
 							/${applicationService.getContextName()}/catalog/products/${catalogInstance.id} &nbsp;
@@ -63,7 +63,7 @@
 				
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Name 
+					<span class="form-label twohundred secondary">Name 
 					</span>
 					<span class="input-container">
 						<input name="name" type="text" class="form-control threefifty" value="${catalogInstance?.name}" disabled="disabled"/>
@@ -76,7 +76,7 @@
 				
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Description 
+					<span class="form-label twohundred secondary">Description 
 					</span>
 					<span class="input-container">
 						<textArea class="form-control" name="description" id="description" cols="40" rows="10" maxlength="65535" disabled="disabled">${catalogInstance?.description}</textarea>

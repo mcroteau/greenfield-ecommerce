@@ -54,7 +54,7 @@
 			
 				<g:form action="save" >
 					<div class="form-row">
-						<span class="form-label full secondary">Name 
+						<span class="form-label twohundred secondary">Name 
 							<span class="information secondary block">Name must be unique</span>
 						</span>
 						<span class="input-container">
@@ -64,9 +64,22 @@
 					</div>
 					
 					
+
+					<div class="form-row">
+						<span class="form-label twohundred secondary">Location</span>
+						<span class="input-container">
+							<select name="location" class="form-control" style="width:auto">
+								<option value="">-- Top Level --</option>
+								${catalogOptions}
+							</select>
+						</span>
+						<br class="clear"/>
+					</div>
+					
+					
 				
 					<div class="form-row">
-						<span class="form-label full secondary">Description 
+						<span class="form-label twohundred secondary">Description 
 						</span>
 						<span class="input-container">
 							<span class="information secondary block">Editor below allows to switch between HTML source and plain text</span>

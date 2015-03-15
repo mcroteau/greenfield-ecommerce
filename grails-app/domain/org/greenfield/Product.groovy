@@ -24,10 +24,7 @@ class Product {
 	double weight
 	
 	
-	Catalog catalog
-	static belongsTo = [ catalog: Catalog ]
-	
-	static hasMany = [ additionalPhotos: AdditionalPhoto, productOptions: ProductOption ]
+	static hasMany = [ catalogs: Catalog, additionalPhotos: AdditionalPhoto, productOptions: ProductOption ]
 	
 	
 	static mapping = {

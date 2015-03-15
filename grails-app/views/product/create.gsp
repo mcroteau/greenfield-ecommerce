@@ -57,15 +57,6 @@
 				
 				<div class="form-row">
 					<span class="form-label full secondary">Catalog</span>
-					<span class="input-container">
-						<g:select id="catalog" name='catalog.id' value="${productInstance?.catalog?.id}"
-						    noSelection="${['null':'Select One...']}"
-						    from='${Catalog?.list()}'
-						    optionKey="id" 
-							optionValue="name"
-							class="form-control autowidth"
-							value="${productInstance?.catalog}"></g:select>
-					</span>
 					<br class="clear"/>
 				</div>
 

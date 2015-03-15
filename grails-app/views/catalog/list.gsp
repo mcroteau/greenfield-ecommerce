@@ -8,8 +8,7 @@
 <html>
 	<head>
 		<meta name="layout" content="admin">
-		<g:set var="entityName" value="${message(code: 'catalog.label', default: 'Catalog')}" />
-		<title><g:message code="default.list.label" args="[entityName]" /></title>
+		<title>Greenfield : Catalog Administration</title>
 	</head>
 	<body>
 
@@ -28,39 +27,26 @@
 			</g:if>
 			
 			
-			<g:if test="${catalogInstanceList.size() > 0}">
+			<g:if test="${catalogsList?.size() > 0}">
 				<table class="table">
 					<thead>
 						<tr>
-					
-							<g:sortableColumn property="id" title="Id" />
-					
-							<g:sortableColumn property="name" title="${message(code: 'catalog.name.label', default: 'Name')}" />
-						
-							<th>url</th>
+							<th>Name</th>
 							<th></th>
-							
 						</tr>
 					</thead>
 					<tbody>
-					<g:each in="${catalogInstanceList}" status="i" var="catalogInstance">
-						<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						
-							<td>${fieldValue(bean: catalogInstance, field: "id")}</td>
-						
-							<td><g:link controller="catalog" action="edit" params="[id: catalogInstance.id]" >${fieldValue(bean: catalogInstance, field: "name")}</g:link></td>
-							
-							<td>/${applicationService.getContextName()}/catalog/show/${catalogInstance.id} &nbsp;<a href="/${applicationService.getContextName()}/catalog/products/${URLEncoder.encode("${catalogInstance.id}", "UTF-8")}" target="_blank" class="information">Test</a></td>
-							
-							<td><g:link controller="catalog" action="edit" params="[id: catalogInstance.id]">Edit</g:link></td>
-							
-						</tr>
-					</g:each>
+						<g:each in="${catalogsList}" var="catalogData">
+							<tr>
+								<td>${catalogData.name} <span class="information secondary" style="font-size:11px;">(${catalogData.path})</span>
+								</td>
+								<td>
+									<g:link controller="catalog" action="edit" params="[id: catalogData.id]">Edit</g:link>
+								</td>
+							</tr>
+						</g:each>
 					</tbody>
 				</table>
-				<div class="pagination">
-					<g:paginate total="${catalogInstanceTotal}" />
-				</div>
 			</g:if>
 			<g:else>
 				<p>No Catalogs found..</p>

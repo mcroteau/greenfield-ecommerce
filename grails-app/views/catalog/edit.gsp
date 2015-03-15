@@ -59,7 +59,7 @@
 				
 			
 				<div class="form-row">
-					<span class="form-label full secondary">Url</span>
+					<span class="form-label twohundred secondary">Url</span>
 					<span class="input-container">
 						<span class="secondary">
 							/${applicationService.getContextName()}/catalog/products/${catalogInstance.id} &nbsp;
@@ -73,7 +73,7 @@
 				
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Name 
+					<span class="form-label twohundred secondary">Name 
 						<span class="information secondary block">Name must be unique</span>
 					</span>
 					<span class="input-container">
@@ -83,11 +83,23 @@
 				</div>
 				
 				
-
 				
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Description 
+					<span class="form-label twohundred secondary">Location</span>
+					<span class="input-container">
+						<select name="location" class="form-control" id="location" style="width:auto">
+							<option value="">-- Top Level --</option>
+							${catalogOptions}
+						</select>
+					</span>
+					<br class="clear"/>
+				</div>
+				
+				
+
+				<div class="form-row">
+					<span class="form-label twohundred secondary">Description 
 					</span>
 					<span class="input-container">
 						<span class="information secondary block">Editor below allows both HTML source and plain text</span>
@@ -114,6 +126,20 @@
 			</g:form>
 		</div>
 	</div>
-					
+		
+<script type="text/javascript">
+
+<g:if test="${catalogInstance.parentCatalog}">
+	$(document).ready(function(){
+	
+		var $select = $('#location');
+		var id = ${catalogInstance?.parentCatalog.id};
+		
+		$select.val(id)
+	});
+</g:if>	
+
+</script>
+			
 </body>
 </html>

@@ -9,13 +9,16 @@ import org.apache.shiro.SecurityUtils
 @Mixin(BaseController)
 class CatalogController {
 
+	def numberSpaces = 1
+	
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+
+
 
     def index() {
         redirect(action: "list", params: params)
     }
     
-	
 	
 	def products(Long id){
 		def catalogInstance = Catalog.findById(id)
@@ -57,45 +60,77 @@ class CatalogController {
 	
 	
 
+	def getFullCatalogPathOLD(catalog){
+		def path = new StringBuffer()
+		if(catalog.parentCatalog){
+			path.insert(0, catalog.parentCatalog?.name)
+			if(catalog.parentCatalog?.parentCatalog){
+				path.insert(0, getFullCatalogPath(catalog.parentCatalog))
+			}
+		}
+		return path.toString()
+	}
+	
+	
+	def getFullCatalogPath(catalog){
+		def path = new StringBuffer()
+		path.append(catalog.name)
+		if(catalog.parentCatalog){
+			path.insert(0, getFullCatalogPath(catalog.parentCatalog) + "&nbsp;&nbsp;&#187;&nbsp;&nbsp;")
+		}
+		return path.toString()
+	}
 	
 	
     def list(Integer max) {
 		authenticatedAdmin { adminAccount -> 
-			params.max = Math.min(max ?: 10, 100)
-        	[catalogInstanceList: Catalog.list(params), catalogInstanceTotal: Catalog.count()]
+			
+			def catalogInstanceList = Catalog.list()
+			def catalogsListDisplay = [:]
+			def catalogsList = []
+			
+			catalogInstanceList.each { catalog ->
+				def catalogData = [:]
+				def catalogPath = ""
+				if(catalog.parentCatalog){
+					catalogPath = getFullCatalogPath(catalog)
+				}else{
+					catalogPath = "Top Level"
+				}
+				
+				catalogData.id = catalog.id
+				catalogData.path = catalogPath
+				catalogData.name = catalog.name
+				catalogsList.add(catalogData)
+			}
+
+			
+        	[ catalogsList: catalogsList ]
     	}
 	}
-
 
 
 
     def create() {
 		authenticatedAdmin { adminAccount -> 
-	    	[catalogInstance: new Catalog(params)]
+			
+			numberSpaces = 1
+			def catalogOptions = getCatalogOptions()
+			
+	    	[ catalogInstance: new Catalog(params), catalogOptions: catalogOptions ]
     	}
 	}
 
 
 
-    def save() {
-		authenticatedAdmin { adminAccount ->
-    	    def catalogInstance = new Catalog(params)
-    	    if (!catalogInstance.save(flush: true)) {
-				flash.error = "Something went wrong while saving product. Please try again."
-    	        render(view: "create", model: [catalogInstance: catalogInstance])
-    	        return
-    	    }
-    	
-    	    flash.message = "Successfully saved product"
-    	    redirect(action: "show", id: catalogInstance.id)
-    	}
-    }	
-		
-		
 		
     def show(Long id) {
 		authenticatedAdminCatalog { adminAccount, catalogInstance ->	
-    	    [catalogInstance: catalogInstance ]			
+			
+			numberSpaces = 1
+			def catalogOptions = getCatalogOptions()
+			
+    	    [ catalogInstance: catalogInstance, catalogOptions: catalogOptions ]			
 		}
     }
 
@@ -104,8 +139,48 @@ class CatalogController {
 
     def edit(Long id) {
 		authenticatedAdminCatalog { adminAccount, catalogInstance ->	
-    	    [catalogInstance: catalogInstance ]			
+			
+			numberSpaces = 1
+			def catalogOptions = getCatalogOptions()
+			
+    	    [ catalogInstance: catalogInstance, catalogOptions: catalogOptions ]			
 		}
+    }
+	
+	
+	
+    def save() {
+		authenticatedAdmin { adminAccount ->
+    	    def catalogInstance = new Catalog(params)
+			def parentCatalog
+			if(params.location){
+				catalogInstance.toplevel = false
+				parentCatalog = Catalog.get(params.location)
+				if(!parentCatalog){
+					flash.message = "Something went wrong while saving the Catalog.  Please try again.  Be sure to select a valid location"
+    	        	render(view: "create", model: [catalogInstance: catalogInstance])
+    	        	return
+				}
+			}else{
+				catalogInstance.toplevel = true
+			}
+			
+    	    if (!catalogInstance.save(flush: true)) {
+				flash.error = "Something went wrong while saving catalog. Please try again."
+    	        render(view: "create", model: [catalogInstance: catalogInstance])
+    	        return
+    	    }
+    		
+			if(parentCatalog){
+				catalogInstance.parentCatalog = parentCatalog
+				catalogInstance.save(flush:true)
+				parentCatalog.addToSubcatalogs(catalogInstance)
+				parentCatalog.save(flush:true)
+			}
+		
+    	    flash.message = "Successfully saved catalog"
+    	    redirect(action: "show", id: catalogInstance.id)
+    	}
     }
 	
 	
@@ -147,4 +222,44 @@ class CatalogController {
     	    }
     	}
 	}
+	
+	
+
+	
+	def getCatalogOptions(){
+		def catalogOptions = ""
+		def toplevelCatalogs = Catalog.findAllByToplevel(true)
+		toplevelCatalogs.each{ catalog ->
+			catalogOptions += "<option value=\"${catalog.id}\">${catalog.name}</option>"
+			if(catalog.subcatalogs){
+				def optionsString = getAllSubcatalogOptions(catalog)
+				catalogOptions += optionsString
+			}
+		}
+		return catalogOptions
+	}
+	
+	
+	def getAllSubcatalogOptions(catalog){
+		def subcatalogs = ""
+		catalog.subcatalogs.each{ subcatalog ->
+			def spaceString = ""
+			for(def m = 0; m < numberSpaces; m++){
+				spaceString += "|&nbsp;&nbsp;&nbsp;&nbsp;"
+			}
+			subcatalogs += "<option value=\"${subcatalog.id}\">${spaceString}${subcatalog.name}</option>"
+			if(subcatalog.subcatalogs){
+				numberSpaces++
+				def subOptionsString = getAllSubcatalogOptions(subcatalog)
+				subcatalogs += subOptionsString
+			}
+		}
+		
+		if(numberSpaces > 1){
+			--numberSpaces
+		}
+		return subcatalogs
+	}
+	
+	
 }
