@@ -252,11 +252,43 @@ class ProductController {
 
     def edit(Long id) {
 		authenticatedAdminProduct { adminAccount, productInstance ->
-    	    [productInstance: productInstance]
+			def catalogPathsList = getCatalogPathList()
+    	    [productInstance: productInstance, catalogPathsList: catalogPathsList ]
 		}
     }
 	
 
+	def getCatalogPathList(){
+		def catalogInstanceList = Catalog.list()
+		def catalogsList = []
+		
+		catalogInstanceList.each { catalog ->
+			def catalogData = [:]
+			def catalogPath = ""
+			if(catalog.parentCatalog){
+				catalogPath = getFullCatalogPath(catalog)
+			}else{
+				catalogPath = "Top Level"
+			}
+			
+			catalogData.id = catalog.id
+			catalogData.path = catalogPath
+			catalogData.name = catalog.name
+			catalogsList.add(catalogData)
+		}
+		return catalogsList
+	}
+	
+	def getFullCatalogPath(catalog){
+		def path = new StringBuffer()
+		path.append(catalog.name)
+		if(catalog?.parentCatalog){
+			path.insert(0, getFullCatalogPath(catalog.parentCatalog) + "&nbsp;&nbsp;&#xBB;&nbsp;&nbsp;")
+		}
+		return path.toString()
+	}
+	
+	
 	
 
     def update(Long id, Long version) {

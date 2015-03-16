@@ -95,21 +95,11 @@ class CatalogController {
 	
 	
 	
-	def getFullCatalogPath(catalog){
-		def path = new StringBuffer()
-		path.append(catalog.name)
-		if(catalog?.parentCatalog){
-			path.insert(0, getFullCatalogPath(catalog.parentCatalog) + "&nbsp;&nbsp;&#187;&nbsp;&nbsp;")
-		}
-		return path.toString()
-	}
-	
 	
     def list(Integer max) {
 		authenticatedAdmin { adminAccount -> 
 			
 			def catalogInstanceList = Catalog.list()
-			def catalogsListDisplay = [:]
 			def catalogsList = []
 			
 			catalogInstanceList.each { catalog ->
@@ -133,6 +123,17 @@ class CatalogController {
 	}
 
 
+	def getFullCatalogPath(catalog){
+		def path = new StringBuffer()
+		path.append(catalog.name)
+		if(catalog?.parentCatalog){
+			path.insert(0, getFullCatalogPath(catalog.parentCatalog) + "&nbsp;&nbsp;&#xBB;&nbsp;&nbsp;")
+		}
+		return path.toString()
+	}
+	
+	
+	
 
     def create() {
 		authenticatedAdmin { adminAccount -> 
@@ -268,7 +269,7 @@ class CatalogController {
     	        flash.message = "Successfully deleted the product"
     	        redirect(action: "list")
     	    }catch (DataIntegrityViolationException e) {
-    	        flash.message = "Something went wrong when deleting product. Please make sure no products currently belong to this catalog"
+    	        flash.message = "Something went wrong while deleting catalog. Please make sure no products currently belong to this catalog as well as it has no subcatalogs"
     	        redirect(action: "show", id: id)
     	    }
     	}

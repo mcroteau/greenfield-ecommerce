@@ -399,6 +399,8 @@ h1.maintenance-header{
 
 .input-container .label{
 	font-weight:normal;
+	margin:5px 3px;
+	display:inline-block;
 }
 
 .information{

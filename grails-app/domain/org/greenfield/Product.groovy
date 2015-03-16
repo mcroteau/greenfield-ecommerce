@@ -29,6 +29,7 @@ class Product {
 	
 	static mapping = {
 		description type: "text"
+        catalogs cascade: 'all-delete-orphan'
         additionalPhotos cascade: 'all-delete-orphan'
         productOptions cascade: 'all-delete-orphan'
 	}

@@ -1,16 +1,15 @@
 <%@ page import="org.greenfield.Product" %>
-<%@ page import="org.greenfield.Catalog" %>
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
 
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="layout" content="admin">
-		<g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}" />
-		<title>Edit Product</title>
-	</head>
-	<body>
+<head>
+	<meta name="layout" content="admin">
+	<g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}" />
+	<title>Edit Product</title>
+</head>
+<body>
 	
 	<div class="form-outer-container">
 		
@@ -83,16 +82,9 @@
 			
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Catalog</span>
-					<span class="input-container">
-						<g:select id="catalog" name='catalog.id' 
-							value="${productInstance?.catalog?.id}"
-						    noSelection="${['null':'Select One...']}"
-						    from='${Catalog?.list()}'
-						    optionKey="id" 
-							optionValue="name"
-							class="form-control autowidth"></g:select>
-					</span>
+					<span class="form-label full secondary">Catalogs</span>
+					<div class="input-container" id="catalogsDiv">
+					</div>
 					<br class="clear"/>
 				</div>
 
@@ -262,5 +254,45 @@
 		
 	</div>
 	
-	</body>
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+		var $catalogsDiv = $('#catalogsDiv');
+		var catalogs = {}
+		<g:each in="${productInstance.catalogs}" var="${catalog}">
+			var catalog = { 
+				id : ${catalog.id},
+				name : "${catalog.name}"
+			}
+			catalogs[catalog.name] = catalog
+		</g:each>
+		
+		var catalogPathsList = {}
+		<g:each in="${catalogPathsList}" var="catalogData">
+			var catalog = { 
+				id : ${catalogData.id},
+				name : "${catalogData.name}",
+				path : "${catalogData.path}"
+			}
+			catalogPathsList[catalog.name] = catalog
+		</g:each>
+		
+		
+		for(var name in catalogs){
+			if(catalogs.hasOwnProperty(name)){
+				console.log("here...")
+				var path = catalogPathsList[name].path
+				if(path == "Top Level"){
+					path = catalogPathsList[name].name
+				}
+				var html = "<span class=\"label label-default\">" + path + "</span><br/>";
+				$catalogsDiv.append(html)
+			}
+		}
+		console.log(catalogs)
+			
+	})
+</script>	
+	
+</body>
 </html>

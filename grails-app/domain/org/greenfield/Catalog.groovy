@@ -15,8 +15,9 @@ class Catalog {
 	
 	
 	static mapping = {
+		sort name: "asc"
 		description type: "text"
-		subcatalogs sort: 'name', order: 'asc'
+		subcatalogs sort: "name", order: "asc"
 	}
 	
 	static constraints = {

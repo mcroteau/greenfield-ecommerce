@@ -125,4 +125,78 @@ class DevelopmentController {
 	}
 	
 	
+	def createTestProducts(){
+		def books = Catalog.findByName("Books")
+		def computers = Catalog.findByName("Computers & Technology")
+		def programming = Catalog.findByName("Programming")
+		def certification = Catalog.findByName("Certification")
+		def web = Catalog.findByName("Web Programming")
+		def algorithms = Catalog.findByName("Algorithms")
+		def apple = Catalog.findByName("Apple Programming")
+		
+		//web programming books
+		(1..30).each{ i ->
+			def webbook = new Product()
+			webbook.name = "Web Programming ${i}"
+			webbook.price = i * 10
+			webbook.quantity = i * 3
+			webbook.weight = 16
+			webbook.save(flush:true)
+			
+			webbook.addToCatalogs(books)
+			webbook.addToCatalogs(computers)
+			webbook.addToCatalogs(programming)
+			webbook.addToCatalogs(web)
+			webbook.save(flush:true)
+		}
+		
+		
+		(1..45).each{ i ->	
+			def algobook = new Product()
+			algobook.name = "Algorithms ${i}"
+			algobook.price = i * 10
+			algobook.quantity = i * 3
+			algobook.weight = 16
+			algobook.save(flush:true)
+			
+			algobook.addToCatalogs(books)
+			algobook.addToCatalogs(computers)
+			algobook.addToCatalogs(programming)
+			algobook.addToCatalogs(algorithms)
+			algobook.save(flush:true)
+		}
+		
+		
+		(1..30).each{ i ->	
+			def applebook = new Product()
+			applebook.name = "Apple Programming ${i}"
+			applebook.price = i * 10
+			applebook.quantity = i * 3
+			applebook.weight = 16
+			applebook.save(flush:true)
+			
+			applebook.addToCatalogs(books)
+			applebook.addToCatalogs(computers)
+			applebook.addToCatalogs(programming)
+			applebook.addToCatalogs(apple)
+			applebook.save(flush:true)
+		}
+		
+		
+		(1..30).each{ i ->	
+			def certbook = new Product()
+			certbook.name = "Certification ${i}"
+			certbook.price = i * 10
+			certbook.quantity = i * 3
+			certbook.weight = 16
+			certbook.save(flush:true)
+			
+			certbook.addToCatalogs(books)
+			certbook.addToCatalogs(computers)
+			certbook.addToCatalogs(certification)
+			certbook.save(flush:true)
+		}
+		
+	}
+	
 }
