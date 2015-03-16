@@ -72,7 +72,18 @@
 				</div>
 				
 				
-
+				
+				<div class="form-row">
+					<span class="form-label twohundred secondary">Location</span>
+					<span class="input-container">
+						<select name="location" class="form-control" id="location" style="width:auto" disabled="disabled">
+							<option value="">-- Top Level --</option>
+							${catalogOptions}
+						</select>
+					</span>
+					<br class="clear"/>
+				</div>
+				
 				
 				
 				<div class="form-row">
@@ -99,6 +110,21 @@
 				
 		</div>
 	</div>
+			
+			
+<script type="text/javascript">
+
+<g:if test="${catalogInstance.parentCatalog}">
+	$(document).ready(function(){
+	
+		var $select = $('#location');
+		var id = ${catalogInstance?.parentCatalog.id};
+		
+		$select.val(id)
+	});
+</g:if>	
+
+</script>
 					
 </body>
 </html>

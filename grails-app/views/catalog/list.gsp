@@ -16,6 +16,7 @@
 			
 			<h2 class="">Catalogs
 				<g:link controller="catalog" action="create" class="btn btn-primary pull-right" >New Catalog</g:link>
+				<g:link controller="catalog" action="menu_view" class="btn btn-default pull-right" style="display:inline-block;margin-right:5px"><span class="glyphicon glyphicon-th-list"></span></g:link>
 			</h2>
 			
 			<g:if test="${flash.error}">
@@ -38,7 +39,8 @@
 					<tbody>
 						<g:each in="${catalogsList}" var="catalogData">
 							<tr>
-								<td>${catalogData.name} <span class="information secondary" style="font-size:11px;">(${catalogData.path})</span>
+								<td>${catalogData.name} <br/>
+									<span class="information secondary" style="font-size:11px;">(${catalogData.path})</span>
 								</td>
 								<td>
 									<g:link controller="catalog" action="edit" params="[id: catalogData.id]">Edit</g:link>

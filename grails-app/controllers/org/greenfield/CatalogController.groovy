@@ -18,8 +18,43 @@ class CatalogController {
     def index() {
         redirect(action: "list", params: params)
     }
+
     
 	
+	def menu_view(){
+		def catalogMenuString = "<ul class=\"admin-catalog-menu\">"
+		def toplevelCatalogs = Catalog.findAllByToplevel(true)
+		toplevelCatalogs.each{ catalog ->
+			catalogMenuString += "<li>${catalog.name}"
+			if(catalog.subcatalogs){
+				def subcatalogMenuString = getAllSubcatalogLists(catalog)
+				catalogMenuString += subcatalogMenuString
+			}
+			catalogMenuString += "</li>"
+		}
+		catalogMenuString += "</ul>"
+		
+		[ catalogMenuString : catalogMenuString ]
+	}
+	
+	
+	def getAllSubcatalogLists(catalog){
+		def subcatalogsMenu = "<ul class=\"admin-subcatalog-menu\">"
+		catalog.subcatalogs.sort { it.id }
+		catalog.subcatalogs.each{ subcatalog ->
+			subcatalogsMenu += "<li>${subcatalog.name}"
+			if(subcatalog.subcatalogs){
+				subcatalogsMenu += getAllSubcatalogLists(subcatalog)
+			}
+			subcatalogsMenu += "</li>"
+		}
+		subcatalogsMenu += "</ul>"
+		
+		return subcatalogsMenu
+	}
+
+
+
 	def products(Long id){
 		def catalogInstance = Catalog.findById(id)
 		
@@ -59,23 +94,11 @@ class CatalogController {
 	}	
 	
 	
-
-	def getFullCatalogPathOLD(catalog){
-		def path = new StringBuffer()
-		if(catalog.parentCatalog){
-			path.insert(0, catalog.parentCatalog?.name)
-			if(catalog.parentCatalog?.parentCatalog){
-				path.insert(0, getFullCatalogPath(catalog.parentCatalog))
-			}
-		}
-		return path.toString()
-	}
-	
 	
 	def getFullCatalogPath(catalog){
 		def path = new StringBuffer()
 		path.append(catalog.name)
-		if(catalog.parentCatalog){
+		if(catalog?.parentCatalog){
 			path.insert(0, getFullCatalogPath(catalog.parentCatalog) + "&nbsp;&nbsp;&#187;&nbsp;&nbsp;")
 		}
 		return path.toString()
@@ -128,7 +151,7 @@ class CatalogController {
 		authenticatedAdminCatalog { adminAccount, catalogInstance ->	
 			
 			numberSpaces = 1
-			def catalogOptions = getCatalogOptions()
+			def catalogOptions = getCatalogOptionsWithCatalog(catalogInstance)
 			
     	    [ catalogInstance: catalogInstance, catalogOptions: catalogOptions ]			
 		}
@@ -141,7 +164,7 @@ class CatalogController {
 		authenticatedAdminCatalog { adminAccount, catalogInstance ->	
 			
 			numberSpaces = 1
-			def catalogOptions = getCatalogOptions()
+			def catalogOptions = getCatalogOptionsWithCatalog(catalogInstance)
 			
     	    [ catalogInstance: catalogInstance, catalogOptions: catalogOptions ]			
 		}
@@ -151,7 +174,9 @@ class CatalogController {
 	
     def save() {
 		authenticatedAdmin { adminAccount ->
-    	    def catalogInstance = new Catalog(params)
+    	    
+			def catalogInstance = new Catalog(params)
+			
 			def parentCatalog
 			if(params.location){
 				catalogInstance.toplevel = false
@@ -171,14 +196,16 @@ class CatalogController {
     	        return
     	    }
     		
+			
 			if(parentCatalog){
 				catalogInstance.parentCatalog = parentCatalog
 				catalogInstance.save(flush:true)
 				parentCatalog.addToSubcatalogs(catalogInstance)
 				parentCatalog.save(flush:true)
-			}
-		
-    	    flash.message = "Successfully saved catalog"
+			}		
+    	    
+			
+			flash.message = "Successfully saved catalog"
     	    redirect(action: "show", id: catalogInstance.id)
     	}
     }
@@ -190,6 +217,30 @@ class CatalogController {
 		authenticatedAdminCatalog { adminAccount, catalogInstance ->	
     	
         	catalogInstance.properties = params
+			
+			def parentCatalog
+			if(params.location){
+				catalogInstance.toplevel = false
+				parentCatalog = Catalog.get(params.location)
+				if(!parentCatalog){
+					flash.message = "Something went wrong while saving the Catalog.  Please try again.  Be sure to select a valid location"
+    	        	render(view: "create", model: [catalogInstance: catalogInstance])
+    	        	return
+				}
+				catalogInstance.parentCatalog = parentCatalog
+				catalogInstance.save(flush:true)
+				parentCatalog.addToSubcatalogs(catalogInstance)
+				parentCatalog.save(flush:true)
+			}else{
+				catalogInstance.toplevel = true
+				if(catalogInstance.parentCatalog){
+					parentCatalog = catalogInstance.parentCatalog
+					parentCatalog.removeFromSubcatalogs(catalogInstance)
+					parentCatalog.save(flush:true)
+					catalogInstance.parentCatalog = null
+				}
+			}
+			
         	
         	if (!catalogInstance.save(flush: true)) {
 				flash.error = "Something went wrong while trying to update. Please try again"
@@ -225,6 +276,22 @@ class CatalogController {
 	
 	
 
+	
+	def getCatalogOptionsWithCatalog(catalogInstance){
+		def catalogOptions = ""
+		def toplevelCatalogs = Catalog.findAllByToplevel(true)
+		toplevelCatalogs.each{ catalog ->
+			if(catalogInstance != catalog){
+				catalogOptions += "<option value=\"${catalog.id}\">${catalog.name}</option>"
+				if(catalog.subcatalogs){
+					def optionsString = getAllSubcatalogOptions(catalog)
+					catalogOptions += optionsString
+				}
+			}
+		}
+		return catalogOptions
+	}
+	
 	
 	def getCatalogOptions(){
 		def catalogOptions = ""
