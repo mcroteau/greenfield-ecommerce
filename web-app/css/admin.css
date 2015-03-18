@@ -473,6 +473,7 @@ h1.maintenance-header{
 	opacity:1.0 !important;
 	font-size:12px;
 	text-transform:uppercase;
+	outline:none !important;
 	/***
 	-webkit-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.10);
 	-moz-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.10);
@@ -675,3 +676,19 @@ float:left;
 .nav-tabs > li > a:hover{
 	background:#efefef;
 }
+
+
+
+
+
+#catalog-selection-backdrop{
+	z-index:1001;
+	opacity:1;
+	position:fixed;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	background:rgba(0,0,0,0.30);
+}
+

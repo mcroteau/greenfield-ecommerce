@@ -261,9 +261,10 @@ class ProductController {
 		}
     }
 	
+	
 
 	def getCatalogIdSelectionList(catalogIdsArray){	
-		def catalogMenuString = "<ul class=\"catalog-list admin-catalog-selection\">"
+		def catalogMenuString = "<ul class=\"catalog_list admin-catalog-selection\">"
 		def toplevelCatalogs = Catalog.findAllByToplevel(true)
 		toplevelCatalogs.each{ catalog ->
 			def checked = ""
@@ -282,7 +283,7 @@ class ProductController {
 	
 	
 	def getAllSubcatalogLists(catalog, catalogIdsArray){
-		def subcatalogsMenu = "<ul class=\"catalog-list admin-subcatalog-selection\">"
+		def subcatalogsMenu = "<ul class=\"catalog_list admin-subcatalog-selection\">"
 		catalog.subcatalogs.sort { it.id }
 		catalog.subcatalogs.each{ subcatalog ->
 			def checked = ""
@@ -305,16 +306,24 @@ class ProductController {
 
     def update(Long id, Long version) {
 		authenticatedAdminProduct { adminAccount, productInstance ->
+
+			def productCatalogIdsArray = []
+			if(productInstance?.catalogs){
+				productCatalogIdsArray = productInstance?.catalogs.collect { it.id }
+			}
+			def catalogIdSelectionList = getCatalogIdSelectionList(productCatalogIdsArray)
+			
 			
 			if(!params.catalogIds){
-				flash.message = "You must select a catalog in order to make the product visible from a catalog menu.  Please specify at least 1 catalog before continuing."
-    	        render(view: "edit", model: [productInstance: productInstance])
+				flash.error = "<strong>No Catalogs Defined</strong><br/> You must select a catalog in order to make the product visible from a catalog menu. <br/>Please specify at least <strong>1 catalog</strong> before continuing."
+    	        render(view: "edit", model: [productInstance: productInstance, catalogIdSelectionList: catalogIdSelectionList ])
     	        return
 			}
 			
 			def catalogIdsArray = params.catalogIds.split(',').collect{it as int}
+			
 			if(!catalogIdsArray){
-				flash.message = "Something went wrong while processing update. Please try again."
+				flash.error = "Something went wrong while processing update. Please try again."
 				render(view: "edit", model: [productInstance: productInstance])
 				return
 			}    	  
@@ -323,15 +332,11 @@ class ProductController {
 			catalogIdsArray.each{ catalogId ->
 				def catalog = Catalog.get(catalogId)
 				if(catalog){
-					println catalog.name
 					productInstance.addToCatalogs(catalog)
 					productInstance.save(flush:true)
 				}
 			}
-			    
-			render(view: "edit", model: [productInstance: productInstance, catalogIdsArray: catalogIdsArray])
-    	    return
-			
+
 			
 			def imageFile = request.getFile('image')
 			BufferedImage originalImage = null;
@@ -382,8 +387,8 @@ class ProductController {
 					ImageIO.write(originalImage, "jpg",new File(imageLocation));
 				
 				}else{
-					flash.message = "please provide product image"
-		       	 	render(view: "create", model: [productInstance: productInstance])
+					flash.error = "please provide product image"
+		       	 	render(view: "edit", model: [productInstance: productInstance])
 				}
 				
 		    } catch (IOException e) {
