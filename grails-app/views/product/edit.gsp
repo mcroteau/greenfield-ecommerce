@@ -10,11 +10,33 @@
 	<title>Edit Product</title>
 </head>
 <body>
+
+	<style type="text/css">
+		#catalog-selection-container{
+			text-align:left;
+			border:solid 1px #ddd;
+			width:550px;
+			background:#f8f8f8;
+			padding:0px 20px 20px 20px;
+		}
+		
+		#catalog-selection-container ul li{
+			list-style:none;
+			padding:3px 0px;
+		}
+	</style>
+
 	
 	<div class="form-outer-container">
 		
 		
 		<div class="form-container">
+			
+			<div id="catalog-selection-container">
+				<h3>Product Catalogs</h3>
+				<p class="information secondary">Selecting a Subcatalog will automatically select all parent Catalogs up to the top level Catalog.</p>
+				${catalogIdSelectionList}
+			</div>
 			
 			<h2>Edit Product
 				<g:link controller="product" action="list" class="btn btn-default pull-right">Back</g:link>
@@ -83,8 +105,13 @@
 				
 				<div class="form-row">
 					<span class="form-label full secondary">Catalogs</span>
-					<div class="input-container" id="catalogsDiv">
-					</div>
+					<span class="input-container threefifty" id="catalogsDiv">
+						<g:each in="${productInstance.catalogs}" var="catalog">
+							<span class="label label-default">${catalog.name}</span>
+						</g:each>
+						<br/>
+						<input type="text" value="" id="catalogIds" name="catalogIds"/>
+					</span>
 					<br class="clear"/>
 				</div>
 
@@ -257,40 +284,58 @@
 <script type="text/javascript">
 	
 	$(document).ready(function(){
-		var $catalogsDiv = $('#catalogsDiv');
-		var catalogs = {}
-		<g:each in="${productInstance.catalogs}" var="${catalog}">
-			var catalog = { 
-				id : ${catalog.id},
-				name : "${catalog.name}"
-			}
-			catalogs[catalog.name] = catalog
-		</g:each>
-		
-		var catalogPathsList = {}
-		<g:each in="${catalogPathsList}" var="catalogData">
-			var catalog = { 
-				id : ${catalogData.id},
-				name : "${catalogData.name}",
-				path : "${catalogData.path}"
-			}
-			catalogPathsList[catalog.name] = catalog
-		</g:each>
-		
-		
-		for(var name in catalogs){
-			if(catalogs.hasOwnProperty(name)){
-				console.log("here...")
-				var path = catalogPathsList[name].path
-				if(path == "Top Level"){
-					path = catalogPathsList[name].name
-				}
-				var html = "<span class=\"label label-default\">" + path + "</span><br/>";
-				$catalogsDiv.append(html)
-			}
-		}
-		console.log(catalogs)
+	
+		var $catalogsIdsInput = $('#catalogIds'),
+			$catalogSelectionDiv = $('#catalog-selection-container')
+			$catalogCheckboxes = $catalogSelectionDiv.find('.catalog_checkbox');
 			
+		var catalogIds = ${catalogIdsArray};
+		var catalogIdsString = catalogIds.join();
+		
+		console.log(catalogIds, catalogIdsString)
+		console.log($catalogCheckboxes.length)
+		
+		$catalogsIdsInput.val(catalogIdsString);
+		
+		$catalogCheckboxes.click(selectCheckbox)
+		
+		function selectCheckbox(event){
+			var $checkbox = $(event.target)
+			
+			if($checkbox.is(':checked')){
+				checkParentCheckboxes($checkbox)
+			}
+
+			clearSetSelectedCatalogs()
+		}
+		
+		function checkParentCheckboxes($checkbox){
+			var $parentListElements = $checkbox.parents('li')
+			
+			$parentListElements.each(function(index, parentListElement){
+				var $checkbox = $(parentListElement).children('.catalog_checkbox')
+				console.log($checkbox)
+				if(!$checkbox.is(':checked')){
+					$checkbox.prop('checked', true)
+				}	
+			})
+			
+			console.log($parentListElements)
+		}
+		
+		
+		function clearSetSelectedCatalogs(){
+			var idsArray = []
+			$catalogsIdsInput.val("");
+			$catalogCheckboxes.each(function(index, checkbox){
+				var $checkbox = $(checkbox)
+				if($checkbox.is(':checked')){
+					idsArray.push($checkbox.data('id'))
+				}
+			})
+			$catalogsIdsInput.val(idsArray.join())
+		}
+		
 	})
 </script>	
 	

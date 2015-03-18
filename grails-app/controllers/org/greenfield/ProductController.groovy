@@ -252,40 +252,52 @@ class ProductController {
 
     def edit(Long id) {
 		authenticatedAdminProduct { adminAccount, productInstance ->
-			def catalogPathsList = getCatalogPathList()
-    	    [productInstance: productInstance, catalogPathsList: catalogPathsList ]
+			def catalogIdsArray = []
+			if(productInstance?.catalogs){
+				catalogIdsArray = productInstance?.catalogs.collect { it.id }
+			}
+			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
+    	    [ productInstance: productInstance, catalogIdsArray: catalogIdsArray, catalogIdSelectionList: catalogIdSelectionList ]
 		}
     }
 	
 
-	def getCatalogPathList(){
-		def catalogInstanceList = Catalog.list()
-		def catalogsList = []
-		
-		catalogInstanceList.each { catalog ->
-			def catalogData = [:]
-			def catalogPath = ""
-			if(catalog.parentCatalog){
-				catalogPath = getFullCatalogPath(catalog)
-			}else{
-				catalogPath = "Top Level"
+	def getCatalogIdSelectionList(catalogIdsArray){	
+		def catalogMenuString = "<ul class=\"catalog-list admin-catalog-selection\">"
+		def toplevelCatalogs = Catalog.findAllByToplevel(true)
+		toplevelCatalogs.each{ catalog ->
+			def checked = ""
+			if(catalogIdsArray.contains(catalog.id)){
+				checked = "checked"
 			}
-			
-			catalogData.id = catalog.id
-			catalogData.path = catalogPath
-			catalogData.name = catalog.name
-			catalogsList.add(catalogData)
+			catalogMenuString += "<li><input type=\"checkbox\" id=\"checkbox_${catalog.id}\" class=\"catalog_checkbox\" data-id=\"${catalog.id}\" data-name=\"${catalog.name}\" ${checked}>&nbsp;${catalog.name}"
+			if(catalog.subcatalogs){
+				def subcatalogMenuString = getAllSubcatalogLists(catalog, catalogIdsArray)
+				catalogMenuString += subcatalogMenuString
+			}
+			catalogMenuString += "</li>"
 		}
-		return catalogsList
+		catalogMenuString += "</ul>"
 	}
 	
-	def getFullCatalogPath(catalog){
-		def path = new StringBuffer()
-		path.append(catalog.name)
-		if(catalog?.parentCatalog){
-			path.insert(0, getFullCatalogPath(catalog.parentCatalog) + "&nbsp;&nbsp;&#xBB;&nbsp;&nbsp;")
+	
+	def getAllSubcatalogLists(catalog, catalogIdsArray){
+		def subcatalogsMenu = "<ul class=\"catalog-list admin-subcatalog-selection\">"
+		catalog.subcatalogs.sort { it.id }
+		catalog.subcatalogs.each{ subcatalog ->
+			def checked = ""
+			if(catalogIdsArray.contains(subcatalog.id)){
+				checked = "checked"
+			}
+			subcatalogsMenu += "<li><input type=\"checkbox\" id=\"checkbox_${subcatalog.id}\" class=\"catalog_checkbox\" data-id=\"${subcatalog.id}\" data-name=\"${subcatalog.name}\" ${checked}>&nbsp;${subcatalog.name}"
+			if(subcatalog.subcatalogs){
+				subcatalogsMenu += getAllSubcatalogLists(subcatalog, catalogIdsArray)
+			}
+			subcatalogsMenu += "</li>"
 		}
-		return path.toString()
+		subcatalogsMenu += "</ul>"
+		
+		return subcatalogsMenu
 	}
 	
 	
@@ -293,7 +305,34 @@ class ProductController {
 
     def update(Long id, Long version) {
 		authenticatedAdminProduct { adminAccount, productInstance ->
-		
+			
+			if(!params.catalogIds){
+				flash.message = "You must select a catalog in order to make the product visible from a catalog menu.  Please specify at least 1 catalog before continuing."
+    	        render(view: "edit", model: [productInstance: productInstance])
+    	        return
+			}
+			
+			def catalogIdsArray = params.catalogIds.split(',').collect{it as int}
+			if(!catalogIdsArray){
+				flash.message = "Something went wrong while processing update. Please try again."
+				render(view: "edit", model: [productInstance: productInstance])
+				return
+			}    	  
+			
+			productInstance.catalogs = null
+			catalogIdsArray.each{ catalogId ->
+				def catalog = Catalog.get(catalogId)
+				if(catalog){
+					println catalog.name
+					productInstance.addToCatalogs(catalog)
+					productInstance.save(flush:true)
+				}
+			}
+			    
+			render(view: "edit", model: [productInstance: productInstance, catalogIdsArray: catalogIdsArray])
+    	    return
+			
+			
 			def imageFile = request.getFile('image')
 			BufferedImage originalImage = null;
 			def fullFileName = imageFile.getOriginalFilename()
@@ -353,6 +392,8 @@ class ProductController {
 			
 			productInstance.properties = params
 			
+			
+			
     	    if (!productInstance.save(flush: true)) {
 				flash.message = "Something went wrong while trying to update. Please try again."
     	        render(view: "edit", model: [productInstance: productInstance])
@@ -360,7 +401,7 @@ class ProductController {
     	    }
     	
     	    flash.message = "Successfully updated product"
-    	    redirect(action: "show", id: productInstance.id)
+    	    redirect(action: "edit", id: productInstance.id)
     	}
 	}
 
