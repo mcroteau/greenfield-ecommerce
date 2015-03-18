@@ -5,12 +5,28 @@
 
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="layout" content="admin">
-		<g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}" />
-		<title>Create Product</title>
-	</head>
-	<body>
+<head>
+	<meta name="layout" content="admin">
+	<g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}" />
+	<title>Create Product</title>
+</head>
+<body>
+	
+	
+	<div id="catalog-selection-backdrop"></div>
+	
+	<div id="catalog-selection-modal">
+		<h3>Product Catalogs</h3>
+		<p class="information secondary">Selecting a Subcatalog will automatically select all parent Catalogs up to the top level Catalog.</p>
+		<div id="catalog-selection-container">
+			${catalogIdSelectionList}
+		</div>
+		<a href="javascript:" class="btn btn-default pull-right" style="margin-top:15px;" id="close-catalogs-select-modal">Accept &amp; Close</a>
+		<br class="clear"/>
+	</div>
+	
+	
+	
 	
 	<div class="form-outer-container">
 				
@@ -56,7 +72,15 @@
 			
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Catalog</span>
+					<span class="form-label full secondary">Catalogs<br/>
+						<a href="javascript:" id="catalog-selection-modal-link">Add/Remove Catalogs</a>
+					</span>
+					<span class="input-container threefifty" id="selected-catalogs-span">
+						<g:each in="${productInstance?.catalogs}" var="catalog">
+							<span class="label label-default">${catalog.name}</span>
+						</g:each>
+					</span>
+					<input type="hidden" value="" id="catalogIds" name="catalogIds"/>
 					<br class="clear"/>
 				</div>
 
@@ -165,6 +189,20 @@
 		</div>
 		
 	</div>
+
+
+<script type="text/javascript" src="${resource(dir:'js/product_catalogs.js')}"></script>
+		
+<script type="text/javascript">
+	
+	var catalogIds = [];
+	<g:if test="${catalogIdsArray}">
+		catalogIds = ${catalogIdsArray};
+	</g:if>
+	var catalogIdsString = catalogIds.join();
+
+</script>	
+
 	
 	</body>
 </html>

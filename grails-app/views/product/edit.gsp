@@ -10,45 +10,6 @@
 	<title>Edit Product</title>
 </head>
 <body>
-
-	<style type="text/css">
-		#catalog-selection-modal{
-			padding:0px 20px 20px 20px;
-			height:600px;
-			width:600px;
-			padding:10px 30px 30px 30px;
-			z-index:2000;
-			opacity:1;
-			left:50%;
-			top:50%;
-			margin-top:-300px;
-			margin-left:-300px;
-			position:absolute;
-			background:#ffffff;
-			text-align:left;
-			border-radius: 3px 3px 3px 3px;
-			-moz-border-radius: 3px 3px 3px 3px;
-			-webkit-border-radius: 3px 3px 3px 3px;
-			-webkit-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.5);
-			-moz-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.5);
-			box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.5);
-		}
-		
-		#catalog-selection-container{
-			padding: 10px 0px;
-			border-top:solid 1px #ddd;
-			border-bottom:solid 1px #ddd;
-			height:430px;
-			width:100%;
-			overflow: auto;
-		}
-		
-		#catalog-selection-modal ul li{
-			list-style:none;
-			padding:3px 0px;
-		}
-	</style>
-
 	
 	
 	<div id="catalog-selection-backdrop"></div>
@@ -143,11 +104,11 @@
 						<a href="javascript:" id="catalog-selection-modal-link">Add/Remove Catalogs</a>
 					</span>
 					<span class="input-container threefifty" id="selected-catalogs-span">
-						<g:each in="${productInstance.catalogs}" var="catalog">
+						<g:each in="${productInstance?.catalogs}" var="catalog">
 							<span class="label label-default">${catalog.name}</span>
 						</g:each>
 					</span>
-					<input type="text" value="" id="catalogIds" name="catalogIds"/>
+					<input type="hidden" value="" id="catalogIds" name="catalogIds"/>
 					<br class="clear"/>
 				</div>
 
@@ -317,122 +278,17 @@
 		
 	</div>
 	
+
+<script type="text/javascript" src="${resource(dir:'js/product_catalogs.js')}"></script>
+		
 <script type="text/javascript">
 	
-	$(document).ready(function(){
-	
-		var $modal = $('#catalog-selection-modal'),
-			$backdrop = $('#catalog-selection-backdrop');
-	
-		var $catalogsIdsInput = $('#catalogIds'),
-			$catalogSelectionModalBtn = $('#catalog-selection-modal-link'),
-			$catalogSelectionDiv = $('#catalog-selection-container'),
-			$selectedCatalogsSpan = $('#selected-catalogs-span'),
-			$closeCatalogSelectionModalBtn = $('#close-catalogs-select-modal')
-			$catalogCheckboxes = $catalogSelectionDiv.find('.catalog_checkbox');
-			
-			
-			
-		var catalogIds = [];
-		<g:if test="${catalogIdsArray}">
-			catalogIds = ${catalogIdsArray};
-		</g:if>
-		var catalogIdsString = catalogIds.join();
-		
-		$catalogsIdsInput.val(catalogIdsString);
-		$catalogCheckboxes.click(selectCheckbox);
-		$catalogSelectionModalBtn.click(showModal);
-		$closeCatalogSelectionModalBtn.click(hideModal);
-		$backdrop.click(hideModal);
-		
-		
-		
-		function selectCheckbox(event){
-			var $checkbox = $(event.target)
-			
-			if($checkbox.is(':checked')){
-				checkParentCheckboxes($checkbox)
-			}
+	var catalogIds = [];
+	<g:if test="${catalogIdsArray}">
+		catalogIds = ${catalogIdsArray};
+	</g:if>
+	var catalogIdsString = catalogIds.join();
 
-			if(!$checkbox.is(':checked')){
-				deselectChildCheckboxes($checkbox)
-			}
-			
-			clearSetSelectedCatalogs()
-		}
-		
-		
-		
-		function checkParentCheckboxes($checkbox){
-			var $parentListElements = $checkbox.parents('li')
-			
-			$parentListElements.each(function(index, parentListElement){
-				var $checkbox = $(parentListElement).children('.catalog_checkbox')
-				if(!$checkbox.is(':checked')){
-					$checkbox.prop('checked', true)
-				}	
-			})
-		}
-		
-		
-		function deselectChildCheckboxes($checkbox){
-			var $parentListElement = $checkbox.parent('li')
-			var $subcatalogList = $parentListElement.children('.catalog_list');
-			var $subcatalogListElements = $subcatalogList.children('li')
-			//console.log('deselect child checkboxes', $parentListElement, $subcatalogList, $subcatalogListElements);
-			$subcatalogListElements.each(function(index, listElement){
-				var $childCheckbox = $(listElement).find('.catalog_checkbox');
-				$childCheckbox.prop('checked', false)
-			})
-		}
-		
-		
-		
-		function clearSetSelectedCatalogs(){
-			var idsArray = []
-			$catalogsIdsInput.val("");
-			$selectedCatalogsSpan.empty();
-			$catalogCheckboxes.each(function(index, checkbox){
-				var $checkbox = $(checkbox)
-				if($checkbox.is(':checked')){
-					idsArray.push($checkbox.data('id'))
-					var spanHtml = "<span class=\"label label-default\">" + $checkbox.data('name') + "</span>";
-					$selectedCatalogsSpan.append(spanHtml);
-				}
-			})
-			$catalogsIdsInput.val(idsArray.join())
-		}
-		
-		
-		function showModal(){
-			$backdrop.animate({
-				"opacity" : 1,
-				"z-index" : 1000
-			}, 100, function(){
-				$modal.animate({
-					"opacity" : 1,
-					"z-index" : 1010
-				}, 50, function(){
-				});
-			});	
-		};
-				
-		
-		function hideModal(){
-			$modal.animate({
-				"opacity" : 0,
-				"z-index" : -1
-			}, 0, function(){
-				$backdrop.animate({
-					"opacity" : 0,
-					"z-index" : -2
-				}, 0, function(){
-				});	
-			}); 
-		};
-		
-		
-	})
 </script>	
 	
 </body>

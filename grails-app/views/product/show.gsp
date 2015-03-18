@@ -80,16 +80,11 @@
 			
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Catalog</span>
-					<span class="input-container">
-						<g:select id="catalog" name='catalog.id' 
-							value="${productInstance?.catalog?.id}"
-						    noSelection="${['null':'Select One...']}"
-						    from='${Catalog?.list()}'
-						    optionKey="id" 
-							optionValue="name"
-							class="form-control autowidth"
-							disabled="disabled"></g:select>
+					<span class="form-label full secondary">Catalogs</span>
+					<span class="input-container threefifty" id="selected-catalogs-span">
+						<g:each in="${productInstance?.catalogs}" var="catalog">
+							<span class="label label-default">${catalog.name}</span>
+						</g:each>
 					</span>
 					<br class="clear"/>
 				</div>
@@ -236,7 +231,7 @@
 				
 				<div class="buttons-container">	
 					<g:link controller="product" action="list" class="btn btn-default">Back to List</g:link>
-					<g:link controller="product" action="edit" id="${productInstance.id}" class="btn btn-default">Edit Product</g:link>
+					<g:link controller="product" action="edit" id="${productInstance.id}" class="btn btn-info">Edit Product</g:link>
 				</div>
 				
 				

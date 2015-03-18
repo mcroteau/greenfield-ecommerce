@@ -139,7 +139,16 @@ class ProductController {
 	
     def create() {
 		authenticatedAdmin { adminAccount ->
-			[productInstance: new Product(params)]
+			
+			def productInstance = new Product(params)
+			
+			def catalogIdsArray = []
+			if(productInstance?.catalogs){
+				catalogIdsArray = productInstance?.catalogs.collect { it.id }
+			}
+			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
+			
+			[ productInstance: productInstance, catalogIdSelectionList: catalogIdSelectionList ]
     	}
 	}	
 	
@@ -219,10 +228,8 @@ class ProductController {
 					def imageLocation = "${baseDirectory}${fileName}.jpg"
 					ImageIO.write(originalImage, "jpg",new File(imageLocation));
 				
-				}else{
-					flash.message = "please provide product image"
-		       	 	render(view: "create", model: [productInstance: productInstance])
 				}
+				
 				
 		    } catch (IOException e) {
 		    	e.printStackTrace();
@@ -233,18 +240,48 @@ class ProductController {
 		        return
 		    }
 		
+		
+			if(!params.catalogIds){
+				flash.error = "<strong>No Catalogs Defined</strong><br/> You must select a catalog in order to make the product visible from a catalog menu. <br/>Please specify at least <strong>1 catalog</strong> before continuing."
+    	        redirect(action: "edit", id: productInstance.id )
+    	        return
+			}
+			
+			def catalogIdsArray = params.catalogIds.split(',').collect{it as int}
+			
+			if(!catalogIdsArray){
+				flash.error = "Something went wrong while processing update. Please try again."
+    	        redirect(action: "edit", id: productInstance.id )
+				return
+			}    	  
+			
+			productInstance.catalogs = null
+			catalogIdsArray.each{ catalogId ->
+				def catalog = Catalog.get(catalogId)
+				if(catalog){
+					productInstance.addToCatalogs(catalog)
+					productInstance.save(flush:true)
+				}
+			}
+			
+		
 		    flash.message = "Successfully created product"
 		    redirect(action: "show", id: productInstance.id)		
 		}	
     }
 	
+	
+	
 
 
-    def show(Long id) {
+    
+	def show(Long id) {
 		authenticatedAdminProduct { adminAccount, productInstance ->
     	    [productInstance: productInstance]
 		}
     }
+	
+	
 	
 	
 
@@ -260,6 +297,7 @@ class ProductController {
     	    [ productInstance: productInstance, catalogIdsArray: catalogIdsArray, catalogIdSelectionList: catalogIdSelectionList ]
 		}
     }
+	
 	
 	
 
@@ -300,6 +338,9 @@ class ProductController {
 		
 		return subcatalogsMenu
 	}
+	
+	
+	
 	
 	
 	
@@ -386,10 +427,8 @@ class ProductController {
 					def imageLocation = "${baseDirectory}${fileName}.jpg"
 					ImageIO.write(originalImage, "jpg",new File(imageLocation));
 				
-				}else{
-					flash.error = "please provide product image"
-		       	 	render(view: "edit", model: [productInstance: productInstance])
 				}
+				
 				
 		    } catch (IOException e) {
 		    	e.printStackTrace();
@@ -406,7 +445,7 @@ class ProductController {
     	    }
     	
     	    flash.message = "Successfully updated product"
-    	    redirect(action: "edit", id: productInstance.id)
+    	    redirect(action: "show", id: productInstance.id)
     	}
 	}
 
