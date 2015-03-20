@@ -63,7 +63,26 @@ class CatalogController {
 			redirect(controller : 'store', action : 'index')
 		}
 		
-		def products = Product.findAllByCatalogAndDisabledAndQuantityGreaterThan(catalogInstance, false, 0)
+		def allProducts = Product.createCriteria().list{
+			and{
+				eq("disabled", false)
+				gt("quantity", 0)
+				catalogs {
+		    		idEq(id)
+		 		}
+			}
+		}
+		def productsTotal = allProducts.size()
+		
+		def products = Product.createCriteria().list(max: 10, offset: params.offset){
+			and{
+				eq("disabled", false)
+				gt("quantity", 0)
+				catalogs {
+		    		idEq(catalogInstance.id)
+		 		}
+			}
+		}
 		
 		def catalogViewLog = new CatalogViewLog()
 		catalogViewLog.catalog = catalogInstance
@@ -78,7 +97,7 @@ class CatalogController {
 		
 		catalogViewLog.save(flush:true)
 		
-		[products : products, catalogInstance: catalogInstance]
+		[products : products,  productsTotal: productsTotal, catalogInstance: catalogInstance]
 	}
 	
 	

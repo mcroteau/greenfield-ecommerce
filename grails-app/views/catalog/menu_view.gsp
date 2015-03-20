@@ -17,6 +17,7 @@
 			}
 			#menu-view-container ul li{
 				list-style:none !important;
+				padding:3px 0px;
 			}
 		</style>
 	</head>

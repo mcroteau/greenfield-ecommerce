@@ -2,6 +2,7 @@ package org.greenfield
 
 import org.apache.shiro.SecurityUtils
 import java.math.BigDecimal;
+import groovy.text.SimpleTemplateEngine
  	   
 class ApplicationService {
 
@@ -43,7 +44,7 @@ class ApplicationService {
 		
 		header = split[0];
 		
-		header = header.replace("[[CATALOGS]]", getCatalogs())
+		//header = header.replace("[[CATALOGS]]", getCatalogsMain())
 		header = header.replace("[[SEARCH_BOX]]", getSearchBox())
 		header = header.replace("[[SHOPPING_CART]]", getShoppingCart())
 		header = header.replace("[[ACCOUNT]]", getAccount())
@@ -56,8 +57,8 @@ class ApplicationService {
 		
 		footer = split[1];
 
-
-		footer = footer.replace("[[CATALOGS]]", getCatalogs())
+		
+		//footer = footer.replace("[[CATALOGS]]", getCatalogsMain())
 		footer = footer.replace("[[SEARCH_BOX]]", getSearchBox())
 		footer = footer.replace("[[SHOPPING_CART]]", getShoppingCart())
 		footer = footer.replace("[[ACCOUNT]]", getAccount())
@@ -75,6 +76,23 @@ class ApplicationService {
 	}
 	
 	
+	
+	def getHeader(Catalog catalogInstance, String title){
+		if(!header)refresh()
+		
+		def title_full = getStoreName() + " : " + title
+		
+		header = header.replace("[[TITLE]]", title_full)
+		header = header.replace("[[META_KEYWORDS]]", getMetaKeywords())
+		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
+		header = header.replace("[[CONTEXT_NAME]]", getContextName())
+		header = header.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance))
+		
+		return this.header
+	}
+	
+	
+	
 	def getHeader(String title){
 		if(!header)refresh()
 		
@@ -84,6 +102,7 @@ class ApplicationService {
 		header = header.replace("[[META_KEYWORDS]]", getMetaKeywords())
 		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
 		header = header.replace("[[CONTEXT_NAME]]", getContextName())
+		header = header.replace("[[CATALOGS]]", getCatalogsMain())
 		
 		return this.header
 	}
@@ -91,29 +110,173 @@ class ApplicationService {
 	def getHeader(){
 		if(!header)refresh()
 		header = header.replace("[[TITLE]]", "Greenfield")
+		header = header.replace("[[CATALOGS]]", getCatalogsMain())
 		return this.header
 	}
 	
 	def getFooter(){
 		if(!footer)refresh()
+		footer = footer.replace("[[CATALOGS]]", getCatalogsMain())
 		return this.footer
 	}
 	
-	
-	def getCatalogs(){
+	//TODO : uncomment products count in both methods
+	def getCatalogsByCatalog(catalogInstance){
 		
-		def catalogString = "<ul class=\"catalogs-list\">"
-		def catalogs = Catalog.findAll()
+		def template = '<li class="catalog-list-element ${activeClass}"><a href="${link}" title="${name}">${name}<span class="catalog-products-count">(${productsCount})</span></a></li>'
 		
-		//TODO : Refactor, could hurt performance
-		catalogs.each {
-			def products = Product.findByCatalogAndQuantityGreaterThan(it, 0)
-			if(products){
-				catalogString += "<li class=\"catalog-link\"><a href=\"/${getContextName()}/catalog/products/${it.id}\">${it.name}</a></li>"
+		if(catalogInstance?.toplevel && !catalogInstance?.subcatalogs){
+			return getCatalogsMain(catalogInstance)
+		}
+		
+		def catalogsString = "<div class=\"catalogs-list-container\">"
+		catalogsString += getReturnLink(catalogInstance)
+		catalogsString += getCatalogHeader(catalogInstance)
+		
+		catalogsString += "<ul class=\"subcatalog-list catalog-list\">"
+		def catalogsList = getCatalogList(catalogInstance)
+		if(catalogsList){
+			catalogsList.each { c ->
+				def productsCount = getCatalogProductsCount(c)
+				//if(productsCount > 0){
+					def link = "/${getContextName()}/catalog/products/${c.id}"
+					def activeClass = c.id == catalogInstance.id ? "active-catalog" : ""
+					def catalogData = [
+						 	"link" : link, 
+							"name" : c.name, 
+							productsCount : productsCount, 
+							activeClass : activeClass 
+					]
+					def engine = new SimpleTemplateEngine()
+					def result = engine.createTemplate(template).make(catalogData)
+					catalogsString += result.toString()
+				//}
 			}
 		}
-		catalogString += "</ul>"
+		catalogsString += "</ul>"
+		catalogsString += "</div>"
+		return catalogsString
 	}
+	
+	
+	def getReturnLink(catalogInstance){
+		def template = '<span class="catalog-return-link">&#xAB;&nbsp;<a href="${link}">${name}</a></span>'
+		
+		def returnCatalog = getReturnCatalog(catalogInstance)
+
+		def link = "/${getContextName()}/"
+		def name = "Main Menu"
+		if(returnCatalog){
+			link = "/${getContextName()}/catalog/products/${returnCatalog.id}"
+			name = returnCatalog.name
+		}
+
+		def catalogData = [
+			"link" : link, 
+			"name" : name,
+		]
+		def engine = new SimpleTemplateEngine()
+		def result = engine.createTemplate(template).make(catalogData)
+		return result.toString()
+	}
+	
+	
+	def getReturnCatalog(catalogInstance){
+		def returnCatalog = catalogInstance
+		if(catalogInstance.subcatalogs){
+			if(catalogInstance.parentCatalog){
+				returnCatalog = catalogInstance.parentCatalog
+			}else{
+				returnCatalog = null
+			}
+		}else{
+			if(catalogInstance?.parentCatalog?.parentCatalog){
+				returnCatalog = catalogInstance?.parentCatalog?.parentCatalog
+			}
+		}
+		return returnCatalog
+	}
+	
+	
+	def getCatalogHeader(catalogInstance){
+		def catalogHeader = ""
+		if(catalogInstance.subcatalogs){
+			catalogHeader = "<span class=\"catalog-list-header\">${catalogInstance?.name}</span>"
+		}else{
+			if(!catalogInstance.toplevel){
+				catalogHeader = "<span class=\"catalog-list-header\">${catalogInstance?.parentCatalog?.name}</span>"
+			}
+		}
+		return catalogHeader
+	}	
+	
+	
+	def getCatalogList(catalogInstance){
+		def catalogsList = []
+		if(catalogInstance.subcatalogs){
+			catalogsList = catalogInstance.subcatalogs
+		}else{
+			if(!catalogInstance.toplevel){
+				catalogsList = catalogInstance?.parentCatalog?.subcatalogs
+			}else{
+				catalogsList = Catalog.findAllByToplevel(true)
+			}
+		}
+		return catalogsList
+	}
+	
+	
+	def getCatalogsMain(){
+		getCatalogsMain(null)
+	}
+
+
+	def getCatalogsMain(catalogInstance){	
+	
+		def template = '<li class="catalog-list-element ${activeClass}"><a href="${link}" title="${name}">${name}</a></li>'
+	
+		def toplevelCatalogs = Catalog.findAllByToplevel(true)
+		def	catalogsString= "<div class=\"catalogs-list-container\">"
+		catalogsString += "<ul class=\"main-catalogs-list\">"
+		
+		if(toplevelCatalogs){
+			toplevelCatalogs.each { c ->
+				def productsCount = getCatalogProductsCount(c)
+				//if(productsCount > 0){
+					def link = "/${getContextName()}/catalog/products/${c.id}"
+					def activeClass = c.id == catalogInstance?.id ? "active-catalog" : ""
+					def catalogData = [
+						 	"link" : link, 
+							"name" : c.name, 
+							productsCount : productsCount, 
+							activeClass : activeClass 
+					]
+
+					def engine = new SimpleTemplateEngine()
+					def result = engine.createTemplate(template).make(catalogData)
+					catalogsString += result.toString()
+				//}
+			}
+		}
+		catalogsString += "</ul>"
+		catalogsString += "</div>"
+	 	return catalogsString
+	}
+	
+	
+	def getCatalogProductsCount(catalogInstance){
+		def productsCount = Product.createCriteria().count{
+			and{
+				eq("disabled", false)
+				gt("quantity", 0)
+				catalogs {
+		    		idEq(catalogInstance.id)
+		 		}
+			}
+		}
+		return productsCount
+	}
+	
 	
 	
 	def getSearchBox(){

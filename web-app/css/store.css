@@ -134,8 +134,8 @@ body, html{
 }
 #product-navigation{
 	float:left;
-	width:200px;
-	padding:20px;
+	width:210px;
+	padding:15px;
 	background:#fff;
 	border:solid 1px #ddd;
 }
@@ -155,7 +155,7 @@ body, html{
 #content{
 	padding:20px;
 	float:left;
-	width:670px;
+	width:660px;
 	background:#fff;
 	margin:0px 0px 40px 20px;
 	border:solid 1px #ddd;
@@ -180,4 +180,38 @@ body, html{
 #powered a{
 }
 #footer a{
+}
+
+
+.catalog-list{}
+
+.subcatalog-list li{
+	padding-left: 10px;
+}
+
+.catalog-products-count{
+	font-size: 11px;
+	display: inline-block;
+	margin-left: 5px;
+}
+
+.catalog-list-element{}
+
+.active-catalog{
+	font-weight:bold;
+}
+
+.catalog-return-link{
+	font-size:12px;
+	display:block;
+	margin-top:15px;
+	margin-bottom:5px
+}
+
+.catalog-list-header{
+	font-weight:bold;
+	/** color:rgba(0,0,0,0.24); **/
+	margin-left:8px;
+	font-size:11px;
+	text-transform:uppercase;
 }

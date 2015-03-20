@@ -1,7 +1,7 @@
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
 
-${applicationService.getHeader("Products")}
+${applicationService.getHeader(catalogInstance, "Products")}
 
 <style type="text/css">
 .catalog-product{
@@ -36,6 +36,35 @@ ${applicationService.getHeader("Products")}
 	font-size:17px;
 	font-weight:bold;
 }
+
+.nextLink,
+.step,
+.currentStep,
+.prevLink {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #428bca;
+    float: left;
+    line-height: 1.42857;
+    margin-left: -1px;
+    padding: 6px 12px;
+    position: relative;
+    text-decoration: none !important;
+}
+.nextLink:hover,
+.step:hover,
+.currentStep:hover,
+.prevLink:hover{
+	text-decoration:none;
+}
+.currentStep {
+    background-color: #428bca;
+    border-color: #428bca;
+    color: #fff;
+    cursor: default;
+    z-index: 2;
+}
+
 </style>
 
 <h2>${catalogInstance?.name}</h2>
@@ -67,4 +96,9 @@ ${applicationService.getHeader("Products")}
 </g:each>
 <br style="clear:both"/>
 
+
+<g:paginate total="${productsTotal}"
+        params="${[id: catalogInstance?.id ]}"
+		class="pull-right" />
+		
 ${applicationService.getFooter()}
