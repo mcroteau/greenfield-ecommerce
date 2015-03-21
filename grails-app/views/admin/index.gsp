@@ -274,7 +274,7 @@
     	            	
 						<g:if test="${storeStatistics.productStats.size() > 5}">
 							<div class="view-all-container">
-								<a href="javascript:" class="view-all" data-type="products" data-title="TOP VIEW PRODUCTS">View All</a>
+								<a href="javascript:" class="view-all" data-type="products" data-title="TOP VIEWED PRODUCTS">View All</a>
 							</div>
 						</g:if>
 					</g:if>

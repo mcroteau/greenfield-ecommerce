@@ -63,7 +63,7 @@ class CatalogController {
 			redirect(controller : 'store', action : 'index')
 		}
 		
-		def allProducts = Product.createCriteria().list{
+		def productsTotal = Product.createCriteria().count{
 			and{
 				eq("disabled", false)
 				gt("quantity", 0)
@@ -72,7 +72,6 @@ class CatalogController {
 		 		}
 			}
 		}
-		def productsTotal = allProducts.size()
 		
 		def products = Product.createCriteria().list(max: 10, offset: params.offset){
 			and{

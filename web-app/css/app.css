@@ -1,3 +1,38 @@
+
+.catalog-list{}
+
+.subcatalog-list li{
+	padding-left: 10px;
+}
+
+.catalog-products-count{
+	font-size: 11px;
+	display: inline-block;
+	margin-left: 5px;
+}
+
+.catalog-list-element{}
+
+.active-catalog{
+	font-weight:bold;
+}
+
+.catalog-return-link{
+	font-size:12px;
+	display:block;
+	margin-top:15px;
+	margin-bottom:5px
+}
+
+.catalog-list-header{
+	font-weight:bold;
+	/** color:rgba(0,0,0,0.24); **/
+	margin-left:8px;
+	font-size:11px;
+	text-transform:uppercase;
+}
+
+
 input[type="text"],
 input[type="password"]{				
 	-moz-box-shadow: inset 0 2px 4px -2px #bbb;
@@ -14,3 +49,112 @@ input[type="password"]{
 	color:#777;
 	font-style:italic;
 }
+
+.catalog-product{
+	width:180px;
+	height:265px;
+	float:left;
+	margin:10px 10px;
+}
+
+.catalog-product img{
+	width:180px;
+	text-align:center;
+	border:solid 1px #ddd;
+}
+.catalog-product p{
+	margin:0px;
+	padding:0px;
+}
+.catalog-product a{
+	color:#222;
+}
+
+.product-name,
+.product-price{
+	text-align:center
+}
+
+.product-name{
+	color:#222;
+}
+.product-price{
+	font-size:17px;
+	font-weight:bold;
+}
+
+.nextLink,
+.step,
+.currentStep,
+.prevLink {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #428bca;
+    float: left;
+    line-height: 1.42857;
+    margin-left: -1px;
+    padding: 6px 12px;
+    position: relative;
+    text-decoration: none !important;
+}
+.nextLink:hover,
+.step:hover,
+.currentStep:hover,
+.prevLink:hover{
+	text-decoration:none;
+}
+.currentStep {
+    background-color: #428bca;
+    border-color: #428bca;
+    color: #fff;
+    cursor: default;
+    z-index: 2;
+}
+
+
+
+
+
+.product_photos_wrapper{
+	float:left;
+	height:auto;
+	width:auto;
+}
+.product_details{
+	float:left;
+	width:320px;
+	margin-left:30px;
+	text-align:center;
+}
+.product_details .description{
+	text-align:left;
+}
+.images_preview{
+	margin-top:10px;
+}
+.images_preview img{
+	cursor:hand
+}
+.product_name{
+	margin-bottom:20px;
+}
+.product_price{
+	font-weight:bold;
+}
+#submit{
+	margin-bottom:50px;
+}
+.preview_image{
+	cursor:pointer;
+	cursor:hand;
+}
+
+.breadcrumbs{
+	font-size: 12px;
+	margin:0px 0px 20px 0px;
+}
+
+.breadcrumbs a{
+	color: rgba(0,0,0,0.54);
+}
+

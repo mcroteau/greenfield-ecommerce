@@ -3,41 +3,26 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${applicationService.getHeader("Product Details")}
+<%
+	def catalogInstance = null
+	def productCatalogIds = productInstance.catalogs.collect{ it.id }
+	if(session.catalogInstance && productCatalogIds.contains(session?.catalogInstance?.id)){
+		catalogInstance = session.catalogInstance
+	}
+%>
+	
+${applicationService.getHeader(catalogInstance, "Product Details")}
 
-<style type="text/css">
-.product_photos_wrapper{
-	float:left;
-}
-.product_details{
-	float:left;
-	width:270px;
-	margin-left:30px;
-	text-align:center;
-}
-.product_details .description{
-	text-align:left;
-}
-.images_preview{
-	margin-top:10px;
-}
-.images_preview img{
-	cursor:hand
-}
-.name{
-	margin-bottom:20px;
-}
-.price{
-	font-weight:bold;
-}
-#submit{
-	margin-bottom:50px;
-}
-.preview_image{
-	cursor:pointer;
-	cursor:hand;
-}
-</style>
+
+<% if(catalogInstance){ %>
+	<div class="breadcrumbs">
+		${applicationService.getBreadcrumbs(catalogInstance)}
+	</div>
+<%}%>
+
+
+<% session.catalogInstance = null %>
+
 
 	<div class="product_details_wrapper">
 
@@ -74,9 +59,9 @@ ${applicationService.getHeader("Product Details")}
 				
 				<g:if test="${productInstance?.detailsImageUrl}">
 					<img src="/${applicationService.getContextName()}/${productInstance?.detailsImageUrl}" 
-					data-link="/${applicationService.getContextName()}/${productInstance?.imageUrl}" 
-					style="height:50px;" 
-					class="preview_image"/>
+						data-link="/${applicationService.getContextName()}/${productInstance?.imageUrl}" 
+						style="height:50px;" 
+						class="preview_image"/>
 				</g:if>
 				
 				
@@ -121,8 +106,8 @@ ${applicationService.getHeader("Product Details")}
 		
 		<div class="product_details">
 			<g:form controller="shoppingCart" action="add" class="form-inline">
-				<h1 class="name">${productInstance.name}</h1>
-				<h2 class="price" style="margin-top:0px;">$${applicationService.formatPrice(productInstance.price)}</h2>
+				<h1 class="product_name">${productInstance.name}</h1>
+				<h2 class="product_price" style="margin-top:0px;">$${applicationService.formatPrice(productInstance.price)}</h2>
 				
 				<div style="text-align:left; margin-top:20px;">
 				

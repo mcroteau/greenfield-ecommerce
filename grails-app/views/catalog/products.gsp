@@ -3,69 +3,12 @@
 
 ${applicationService.getHeader(catalogInstance, "Products")}
 
-<style type="text/css">
-.catalog-product{
-	width:180px;
-	height:265px;
-	float:left;
-	margin:10px 10px;
-}
 
-.catalog-product img{
-	width:180px;
-	text-align:center;
-	border:solid 1px #ddd;
-}
-.catalog-product p{
-	margin:0px;
-	padding:0px;
-}
-.catalog-product a{
-	color:#222;
-}
 
-.product-name,
-.product-price{
-	text-align:center
-}
+<div class="breadcrumbs">
+	${applicationService.getBreadcrumbs(catalogInstance)}
+</div>
 
-.product-name{
-	color:#222;
-}
-.product-price{
-	font-size:17px;
-	font-weight:bold;
-}
-
-.nextLink,
-.step,
-.currentStep,
-.prevLink {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    color: #428bca;
-    float: left;
-    line-height: 1.42857;
-    margin-left: -1px;
-    padding: 6px 12px;
-    position: relative;
-    text-decoration: none !important;
-}
-.nextLink:hover,
-.step:hover,
-.currentStep:hover,
-.prevLink:hover{
-	text-decoration:none;
-}
-.currentStep {
-    background-color: #428bca;
-    border-color: #428bca;
-    color: #fff;
-    cursor: default;
-    z-index: 2;
-}
-
-</style>
 
 <h2>${catalogInstance?.name}</h2>
 

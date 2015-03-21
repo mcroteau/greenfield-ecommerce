@@ -3,7 +3,8 @@ package org.greenfield
 import org.apache.shiro.SecurityUtils
 import java.math.BigDecimal;
 import groovy.text.SimpleTemplateEngine
- 	   
+import org.springframework.web.context.request.RequestContextHolder 	   
+	   
 class ApplicationService {
 
     def grailsApplication
@@ -123,6 +124,13 @@ class ApplicationService {
 	//TODO : uncomment products count in both methods
 	def getCatalogsByCatalog(catalogInstance){
 		
+		if(!catalogInstance){
+			return getCatalogsMain(catalogInstance)
+		}
+		
+		def session = RequestContextHolder.currentRequestAttributes().getSession()
+		session.catalogInstance = catalogInstance
+		
 		def template = '<li class="catalog-list-element ${activeClass}"><a href="${link}" title="${name}">${name}<span class="catalog-products-count">(${productsCount})</span></a></li>'
 		
 		if(catalogInstance?.toplevel && !catalogInstance?.subcatalogs){
@@ -183,7 +191,7 @@ class ApplicationService {
 	
 	def getReturnCatalog(catalogInstance){
 		def returnCatalog = catalogInstance
-		if(catalogInstance.subcatalogs){
+		if(catalogInstance?.subcatalogs){
 			if(catalogInstance.parentCatalog){
 				returnCatalog = catalogInstance.parentCatalog
 			}else{
@@ -200,10 +208,10 @@ class ApplicationService {
 	
 	def getCatalogHeader(catalogInstance){
 		def catalogHeader = ""
-		if(catalogInstance.subcatalogs){
+		if(catalogInstance?.subcatalogs){
 			catalogHeader = "<span class=\"catalog-list-header\">${catalogInstance?.name}</span>"
 		}else{
-			if(!catalogInstance.toplevel){
+			if(!catalogInstance?.toplevel){
 				catalogHeader = "<span class=\"catalog-list-header\">${catalogInstance?.parentCatalog?.name}</span>"
 			}
 		}
@@ -213,10 +221,10 @@ class ApplicationService {
 	
 	def getCatalogList(catalogInstance){
 		def catalogsList = []
-		if(catalogInstance.subcatalogs){
+		if(catalogInstance?.subcatalogs){
 			catalogsList = catalogInstance.subcatalogs
 		}else{
-			if(!catalogInstance.toplevel){
+			if(!catalogInstance?.toplevel){
 				catalogsList = catalogInstance?.parentCatalog?.subcatalogs
 			}else{
 				catalogsList = Catalog.findAllByToplevel(true)
@@ -275,6 +283,25 @@ class ApplicationService {
 			}
 		}
 		return productsCount
+	}
+	
+	
+	def getFullBreadcrumbs(catalogInstance){
+		def path = new StringBuffer()
+		def link = "/${getContextName()}/catalog/products/${catalogInstance.id}"
+		path.append("<a href=\"${link}\">" + catalogInstance?.name + "</a>")
+		if(catalogInstance?.parentCatalog){
+			path.insert(0, getFullBreadcrumbs(catalogInstance.parentCatalog) + "&nbsp;&nbsp;&#xBB;&nbsp;&nbsp;")
+		}else{
+			path.insert(0, "<a href=\"/${getContextName()}/\">Home</a>&nbsp;&nbsp;&#xBB;&nbsp;&nbsp;")
+		}
+		return path.toString()
+	}
+	
+	
+	def getBreadcrumbs(catalogInstance){
+		def breadcrumbs = getFullBreadcrumbs(catalogInstance)
+		return breadcrumbs
 	}
 	
 	

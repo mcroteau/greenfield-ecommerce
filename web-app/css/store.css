@@ -181,37 +181,3 @@ body, html{
 }
 #footer a{
 }
-
-
-.catalog-list{}
-
-.subcatalog-list li{
-	padding-left: 10px;
-}
-
-.catalog-products-count{
-	font-size: 11px;
-	display: inline-block;
-	margin-left: 5px;
-}
-
-.catalog-list-element{}
-
-.active-catalog{
-	font-weight:bold;
-}
-
-.catalog-return-link{
-	font-size:12px;
-	display:block;
-	margin-top:15px;
-	margin-bottom:5px
-}
-
-.catalog-list-header{
-	font-weight:bold;
-	/** color:rgba(0,0,0,0.24); **/
-	margin-left:8px;
-	font-size:11px;
-	text-transform:uppercase;
-}
