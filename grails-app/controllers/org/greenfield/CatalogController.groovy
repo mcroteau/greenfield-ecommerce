@@ -58,6 +58,9 @@ class CatalogController {
 	def products(Long id){
 		def catalogInstance = Catalog.findById(id)
 		
+		def offset = params.offset ? params.offset : 0
+		def max = 10
+		
 		if(!catalogInstance){	
 			flash.message = "Unable to find Catalog..."
 			redirect(controller : 'store', action : 'index')
@@ -96,7 +99,7 @@ class CatalogController {
 		
 		catalogViewLog.save(flush:true)
 		
-		[products : products,  productsTotal: productsTotal, catalogInstance: catalogInstance]
+		[products : products,  productsTotal: productsTotal, catalogInstance: catalogInstance, offset : offset, max : max ]
 	}
 	
 	
@@ -132,6 +135,7 @@ class CatalogController {
 				catalogData.id = catalog.id
 				catalogData.path = catalogPath
 				catalogData.name = catalog.name
+				catalogData.productsCount = getCatalogProductsCount(catalog)
 				catalogsList.add(catalogData)
 			}
 
@@ -140,6 +144,20 @@ class CatalogController {
     	}
 	}
 
+
+	def getCatalogProductsCount(catalogInstance){
+		def productsCount = Product.createCriteria().count{
+			and{
+				catalogs {
+		    		idEq(catalogInstance.id)
+		 		}
+			}
+		}
+		return productsCount
+	}
+	
+	
+	
 
 	def getFullCatalogPath(catalog){
 		def path = new StringBuffer()
@@ -284,10 +302,11 @@ class CatalogController {
 				CatalogViewLog.executeUpdate("delete CatalogViewLog c where c.catalog = :catalog", [catalog : catalogInstance])
 			
     	        catalogInstance.delete(flush: true)
-    	        flash.message = "Successfully deleted the product"
+    	        flash.message = "Successfully deleted the catalog"
     	        redirect(action: "list")
     	    }catch (DataIntegrityViolationException e) {
     	        flash.message = "Something went wrong while deleting catalog. Please make sure no products currently belong to this catalog as well as it has no subcatalogs"
+				e.printStackTrace()
     	        redirect(action: "show", id: id)
     	    }
     	}

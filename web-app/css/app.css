@@ -87,13 +87,14 @@ input[type="password"]{
 .step,
 .currentStep,
 .prevLink {
-    background-color: #fff;
-    border: 1px solid #ddd;
+	font-size:12px;
     color: #428bca;
     float: left;
+    background-color: #fff;
+    border: 1px solid #ddd;
     line-height: 1.42857;
     margin-left: -1px;
-    padding: 6px 12px;
+    padding: 4px 8px;
     position: relative;
     text-decoration: none !important;
 }
@@ -106,7 +107,10 @@ input[type="password"]{
 .currentStep {
     background-color: #428bca;
     border-color: #428bca;
+	background-color: #efefef;
+	border-color:#ddd;
     color: #fff;
+	color:rgba(0,0,0,0.87);
     cursor: default;
     z-index: 2;
 }
@@ -158,3 +162,19 @@ input[type="password"]{
 	color: rgba(0,0,0,0.54);
 }
 
+.catalog-products-header{
+}
+
+.catalog-products-header-count{
+	color:rgba(0,0,0,0.54);
+	text-align:left;
+	padding-top:10px;
+	font-size:12px;
+	margin-right:20px;
+}
+
+.catalog-products-header-pagination{
+	width:auto;
+	float:right;
+	margin-bottom:20px;
+}
