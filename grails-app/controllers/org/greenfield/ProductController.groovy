@@ -139,6 +139,11 @@ class ProductController {
 	
     def create() {
 		authenticatedAdmin { adminAccount ->
+			if(Catalog.count() == 0){
+				flash.message = "You must create at least one Catalog before creating Products"
+				redirect(controller:'catalog', action: 'create')
+				return
+			}
 			
 			def productInstance = new Product(params)
 			

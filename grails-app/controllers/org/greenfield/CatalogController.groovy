@@ -57,6 +57,11 @@ class CatalogController {
 
 	def products(Long id){
 		def catalogInstance = Catalog.findById(id)
+		if(!catalogInstance){
+			flash.message = "Catalog cannot be found"
+			redirect(uri: '/',)	
+			return
+		}
 		
 		def offset = params.offset ? params.offset : 0
 		def max = 10
