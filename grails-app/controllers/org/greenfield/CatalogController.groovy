@@ -62,9 +62,9 @@ class CatalogController {
 			redirect(uri: '/',)	
 			return
 		}
-		
+
+		def max = 12
 		def offset = params.offset ? params.offset : 0
-		def max = 10
 		
 		if(!catalogInstance){	
 			flash.message = "Unable to find Catalog..."
@@ -81,7 +81,7 @@ class CatalogController {
 			}
 		}
 		
-		def products = Product.createCriteria().list(max: 10, offset: params.offset){
+		def products = Product.createCriteria().list(max: max, offset: params.offset){
 			and{
 				eq("disabled", false)
 				gt("quantity", 0)

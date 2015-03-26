@@ -22,7 +22,7 @@ public class DevelopmentData {
 
 
 	def MAX_DAYS              = 90
-	def PRODUCTS_COUNT        = 20
+	def MAX_PRODUCTS          = 30
 	def CUSTOMERS_COUNT       = 20
 	def ORDERS_COUNT          = 108
 	def PAGE_VIEWS_COUNT      = 430
@@ -72,9 +72,9 @@ public class DevelopmentData {
 		
 		createCatalogs()
 		createProducts()
-		//createCustomers()
-		//createOrders()
-		//createActivityLogs()
+		createCustomers()
+		createOrders()
+		createActivityLogs()
 	}
 	
 	
@@ -93,6 +93,7 @@ public class DevelopmentData {
 		
 		println "Catalogs : ${Catalog.count()}"
 	}
+	
 	
 	
 	def createSubcatalogs(catalogData, parentCatalog){
@@ -114,26 +115,21 @@ public class DevelopmentData {
 	
 	
 	
-	
 	def createProducts(){
 		catalogs.each { c ->
 			def catalog = Catalog.findByName(c.name)
 			if(!c.subcatalogs){
-				(1..16).each{ i ->
-					def product = new Product()
-					product.name = "${catalog.name} ${i}"
-					product.price = i * 10
-					product.quantity = i * 3
-					product.weight = 16
-					product.addToCatalogs(catalog)
-					product.save(flush:true)
-				}
+				def catalogIdsArray = []
+				catalogIdsArray.add(catalog.id)
+				createCatalogProducts(catalogIdsArray)
 			}else{
 				createSubcatalogProducts(c, catalog)
 			}
 		}
 		println "Products : ${Product.count()}"
 	}
+	
+	
 	
 	
 	def createSubcatalogProducts(catalogData, parentCatalog){
@@ -144,26 +140,30 @@ public class DevelopmentData {
 			}else{
 				def ids = getCatalogIdsArray(catalog)
 				def catalogIdsArray = ids.split(',').collect{it as int}
-		
-				Random rand = new Random()
-				def numberProducts = rand.nextInt(25)
-				
-				(1..numberProducts).each{ i ->
-					def product = new Product()
-					product.price = i * 10
-					product.quantity = i * 3
-					product.weight = 16
-					catalogIdsArray.each {
-						def cc = Catalog.get(it)
-						product.addToCatalogs(cc)
-					}
-					def lastCatalogId = catalogIdsArray[catalogIdsArray.size() - 1 ]
-					def lastCatalog = Catalog.get(lastCatalogId)
-					product.name = "${lastCatalog.name} ${i}"
-					
-					product.save(flush:true)
-				}
+				createCatalogProducts(catalogIdsArray)
 			}
+		}
+	}
+	
+	
+	def createCatalogProducts(catalogIdsArray){
+		Random rand = new Random()
+		def numberProducts = rand.nextInt(MAX_PRODUCTS) + 1
+		
+		(1..numberProducts).each{ i ->
+			def product = new Product()
+			product.price = i * 10
+			product.quantity = i * 3
+			product.weight = 16
+			catalogIdsArray.each {
+				def cc = Catalog.get(it)
+				product.addToCatalogs(cc)
+			}
+			def lastCatalogId = catalogIdsArray[catalogIdsArray.size() - 1 ]
+			def lastCatalog = Catalog.get(lastCatalogId)
+			product.name = "${lastCatalog.name} ${i}"
+			
+			product.save(flush:true)
 		}
 	}
 	

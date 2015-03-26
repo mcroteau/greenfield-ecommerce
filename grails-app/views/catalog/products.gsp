@@ -20,7 +20,10 @@ ${applicationService.getHeader(catalogInstance, "Products")}
 	<div class="catalog-products-header">
 	
 		<div class="catalog-products-header-pagination">
-			<g:paginate total="${productsTotal}"
+			<g:paginate 
+				max="12"
+				maxsteps="5"
+				total="${productsTotal}"
 		        params="${[id: catalogInstance?.id ]}"
 				class="pull-right" />
 		</div>
@@ -66,7 +69,10 @@ ${applicationService.getHeader(catalogInstance, "Products")}
 	
 	
 	<div style="width:auto;float:right;margin-bottom:20px;">
-		<g:paginate total="${productsTotal}"
+		<g:paginate 
+			max="12"
+			maxsteps="5"
+			total="${productsTotal}"
 	        params="${[id: catalogInstance?.id ]}"
 			class="pull-right" />
 	</div>
