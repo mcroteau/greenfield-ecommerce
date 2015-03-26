@@ -190,12 +190,10 @@ class ApplicationService {
 	
 	
 	def getReturnCatalog(catalogInstance){
-		def returnCatalog = catalogInstance
+		def returnCatalog = null
 		if(catalogInstance?.subcatalogs){
 			if(catalogInstance.parentCatalog){
 				returnCatalog = catalogInstance.parentCatalog
-			}else{
-				returnCatalog = null
 			}
 		}else{
 			if(catalogInstance?.parentCatalog?.parentCatalog){

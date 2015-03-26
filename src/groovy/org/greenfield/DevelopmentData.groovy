@@ -34,9 +34,36 @@ public class DevelopmentData {
 	
 	def queries = ["gaming systems", "slot machines", "rummy sets", "double decks", "porcelain dice", "dice set", "poker chips", "chip sets", "game machines", "price is right", "las vegas", "shot glasses", "poker tables", "table tops"]	
 	
-	
-	def catalogs = ["Card Decks", "Poker Chips", "Porcelain Dice", "Slot Machines", "Everything Rummy", "Gaming Systems", "Table Tops", "Poker Tables", "T-Shirts", "Hats", "Coffee Mugs", "Shot Glasses", "Beer Mugs" ]
-	
+	def catalogs = [ 
+		[ 
+			"name" : "Poker",
+			"subcatalogs" : [
+				[ "name" : "Poker Tables" ],
+				[
+					"name" : "Poker Chips",
+					"subcatalogs" : [
+						[ "name" : "Ceramic Poker Chips"],
+						[ "name" : "Clay Poker Chips"],
+						[ "name" : "Composite Poker Chips"]
+					]
+				],
+				[ "name" : "Poker Chip Cases" ]
+			]
+		 ],
+		 [ "name" : "Card Decks" ],
+		 [ "name" : "Gaming Systems" ],
+		 [ 
+		 	"name" : "Collectibles",
+		 	"subcatalogs" : [
+				[ "name" : "Coffee Mugs" ],
+				[ "name" : "Ornaments" ],
+				[ "name" : "Coasters" ],
+				[ "name" : "Keychains" ],
+				[ "name" : "Magnets" ]
+			]
+		]
+	]
+
 	
 	def init(){
 		println "***************************************"
@@ -45,63 +72,111 @@ public class DevelopmentData {
 		
 		createCatalogs()
 		createProducts()
-		createCustomers()
-		createOrders()
-		createActivityLogs()
+		//createCustomers()
+		//createOrders()
+		//createActivityLogs()
 	}
 	
 	
+
 	
-	def createCatalogs(){	
-	
-		if(Catalog.count() == 0){
-			catalogs.each(){ name ->
-				def catalog = new Catalog()
-				catalog.name = name
-				catalog.save(flush:true)
+	def createCatalogs(){
+		catalogs.each{ c ->
+			def catalog = new Catalog()
+			catalog.name = c.name
+			catalog.toplevel = true
+			catalog.save(flush:true)
+			if(c.subcatalogs){
+				createSubcatalogs(c, catalog)
 			}
 		}
-
-		println "Catalogs : ${Catalog.count()}"	
+		
+		println "Catalogs : ${Catalog.count()}"
 	}
+	
+	
+	def createSubcatalogs(catalogData, parentCatalog){
+		catalogData.subcatalogs.each { c ->
+			def subcatalog = new Catalog()
+			subcatalog.name = c.name
+			subcatalog.toplevel = false
+			subcatalog.parentCatalog = parentCatalog
+			subcatalog.save(flush:true)
+			
+			parentCatalog.addToSubcatalogs(subcatalog)
+			parentCatalog.save(flush:true)
+			
+			if(c.subcatalogs){
+				createSubcatalogs(c, subcatalog)
+			}
+		}
+	}
+	
 	
 	
 	
 	def createProducts(){
-		
-		def max = 50
-		int catalogMax = Catalog.count()
-		Random rand = new Random()
-		
-		(1..PRODUCTS_COUNT).each {
-			
-			int id = rand.nextInt(catalogMax) + 1
-			def catalog = Catalog.get(id)
-			
-			def num = rand.nextInt(max)
-			
-			if(catalog){
-				def product = new Product()
-				product.productNo = num + "no"
-				product.name = catalog.name + " " + it
-				product.description = "description of product ${it}"
-				product.quantity = num * 5
-				product.price = num
-				product.weight = num * 2
-				product.length = 5
-				product.height = 5
-				product.width = 5
-				product.imageUrl = "images/app/no-image.jpg"
-				product.detailsImageUrl = "images/app/no-image.jpg"
-				product.catalog = catalog
-				product.save(flush:true)
+		catalogs.each { c ->
+			def catalog = Catalog.findByName(c.name)
+			if(!c.subcatalogs){
+				(1..16).each{ i ->
+					def product = new Product()
+					product.name = "${catalog.name} ${i}"
+					product.price = i * 10
+					product.quantity = i * 3
+					product.weight = 16
+					product.addToCatalogs(catalog)
+					product.save(flush:true)
+				}
+			}else{
+				createSubcatalogProducts(c, catalog)
 			}
-			
 		}
-		
-		println "Products : ${Product.count()} "
+		println "Products : ${Product.count()}"
 	}
 	
+	
+	def createSubcatalogProducts(catalogData, parentCatalog){
+		catalogData.subcatalogs.each { c ->
+			def catalog = Catalog.findByName(c.name)
+			if(c.subcatalogs){
+				createSubcatalogProducts(c, catalog)
+			}else{
+				def ids = getCatalogIdsArray(catalog)
+				def catalogIdsArray = ids.split(',').collect{it as int}
+		
+				Random rand = new Random()
+				def numberProducts = rand.nextInt(25)
+				
+				(1..numberProducts).each{ i ->
+					def product = new Product()
+					product.price = i * 10
+					product.quantity = i * 3
+					product.weight = 16
+					catalogIdsArray.each {
+						def cc = Catalog.get(it)
+						product.addToCatalogs(cc)
+					}
+					def lastCatalogId = catalogIdsArray[catalogIdsArray.size() - 1 ]
+					def lastCatalog = Catalog.get(lastCatalogId)
+					product.name = "${lastCatalog.name} ${i}"
+					
+					product.save(flush:true)
+				}
+			}
+		}
+	}
+	
+	
+	
+	def getCatalogIdsArray(catalog){
+		def ids = new StringBuffer()
+		ids.append(catalog.id)
+		if(catalog.parentCatalog){
+			ids.insert(0, getCatalogIdsArray(catalog.parentCatalog) + ",")
+		}
+		return ids.toString()
+	}
 	
 	
 	
