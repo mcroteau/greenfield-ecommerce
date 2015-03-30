@@ -174,9 +174,6 @@ class ProductController {
 			def productInstance = new Product(params)
 			
 			def catalogIdsArray = []
-			if(productInstance?.catalogs){
-				catalogIdsArray = productInstance?.catalogs.collect { it.id }
-			}
 			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
 			
 	    	if(!productInstance.validate()){
