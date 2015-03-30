@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:8080/" />
-<title>add_cart</title>
+<title>remove-cart</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">add_cart</td></tr>
+<tr><td rowspan="1" colspan="3">remove-cart</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -43,17 +43,12 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Collectibles</td>
+	<td>id=shopping-cart</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=product-name-3</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=submit</td>
+	<td>name=submit</td>
 	<td></td>
 </tr>
 <tr>
@@ -61,6 +56,7 @@
 	<td>id=logout</td>
 	<td></td>
 </tr>
+
 </tbody></table>
 </body>
 </html>

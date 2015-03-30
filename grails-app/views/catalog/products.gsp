@@ -57,7 +57,7 @@ ${applicationService.getHeader(catalogInstance, "Products")}
 			</g:link>
 	
 			<g:link controller="product" action="details" id="${productInstance.id}">
-				<p class="product-name">${productInstance.name}</p>
+				<p class="product-name" id="product-name-${productInstance.id}">${productInstance.name}</p>
 			</g:link>
 	
 			<g:link controller="product" action="details" id="${productInstance.id}">

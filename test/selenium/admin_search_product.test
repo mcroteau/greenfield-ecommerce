@@ -39,7 +39,7 @@
 <tr>
 	<td>type</td>
 	<td>id=searchbox</td>
-	<td>wal</td>
+	<td>key chain</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -56,7 +56,6 @@
 	<td>link=Logout</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>

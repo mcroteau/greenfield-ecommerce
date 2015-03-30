@@ -98,7 +98,7 @@
 							<td>$${applicationService.formatPrice(productInstance.price)}</td>
 						
 						
-							<td><g:link controller="product" action="edit" params="[id: productInstance.id]" >Edit</g:link></td>
+							<td><g:link controller="product" action="edit" params="[id: productInstance.id]" class="edit-product-${productInstance.id}">Edit</g:link></td>
 						</tr>
 					</g:each>
 					</tbody>

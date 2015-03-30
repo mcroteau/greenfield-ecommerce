@@ -11,11 +11,13 @@
 <tr><td><a href="save_base_settings.test">save_base_settings</a></td></tr>
 <tr><td><a href="save_email_settings.test">save_email_settings</a></td></tr>
 <tr><td><a href="save_stripe_settings.test">save_stripe_settings</a></td></tr>
-<tr><td><a href="create_catalog_product.test">create_catalog_product</a></td></tr>
-<tr><td><a href="create_product_options.test">create_product_options</a></td></tr>
+<tr><td><a href="create-catalogs.test">create-catalogs</a></td></tr>
+<tr><td><a href="create-products.test">create-products</a></td></tr>
+<tr><td><a href="create-product-options.test">create-product-options</a></td></tr>
 <tr><td><a href="register.test">register</a></td></tr>
 <tr><td><a href="update_account.test">update_account</a></td></tr>
 <tr><td><a href="add_cart.test">add_cart</a></td></tr>
+<tr><td><a href="remove-cart.test">remove-cart</a></td></tr>
 <tr><td><a href="search_add_cart.test">search_add_cart</a></td></tr>
 <tr><td><a href="checkout.test">checkout</a></td></tr>
 <tr><td><a href="review_order.test">review_order</a></td></tr>

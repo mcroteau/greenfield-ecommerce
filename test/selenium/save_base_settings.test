@@ -39,7 +39,7 @@
 <tr>
 	<td>type</td>
 	<td>name=storeName</td>
-	<td>Gift Shop</td>
+	<td>Suited Spades Gift Shop</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -76,7 +76,6 @@
 	<td>link=Logout</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>
