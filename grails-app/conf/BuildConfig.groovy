@@ -68,6 +68,8 @@ grails.project.dependency.resolution = {
     	compile ":asset-pipeline:1.9.9"
 	
     	runtime ":hibernate4:4.3.6.1"
+		//compile ":postgresql-extensions:4.4.0"
+		
 		//runtime ":hibernate:3.6.10.18"
     	
 		runtime ":database-migration:1.4.0"
