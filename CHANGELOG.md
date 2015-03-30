@@ -3,6 +3,9 @@
 This is a changelog for Greenfield developers.  All future changes to this project will be listed here.
 
 
+alter table catalog add column toplevel boolean;
+update catalog set toplevel = true where id > 0;
+
 
 ## Greenfield 1.1.2
 

@@ -310,7 +310,7 @@ class CatalogController {
     	        flash.message = "Successfully deleted the catalog"
     	        redirect(action: "list")
     	    }catch (DataIntegrityViolationException e) {
-    	        flash.message = "Something went wrong while deleting catalog. Please make sure no products currently belong to this catalog as well as it has no subcatalogs"
+    	        flash.message = "Something went wrong while deleting catalog. <br/>Please make sure no products currently belong to this catalog. <br/>In addition make sure this catalog has no subcatalogs"
 				e.printStackTrace()
     	        redirect(action: "show", id: id)
     	    }

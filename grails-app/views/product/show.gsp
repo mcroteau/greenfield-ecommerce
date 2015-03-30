@@ -119,7 +119,8 @@
 					<span class="form-label full secondary">Main Image</span>
 					<span class="input-container">
 						<g:if test="${productInstance.detailsImageUrl}">
-							<img src="/${applicationService.getContextName()}/${productInstance.detailsImageUrl}" height="50" width="50" style="margin-bottom:0px !important"/>
+							<a href="/${applicationService.getContextName()}/${productInstance.detailsImageUrl}" target="_blank"><img src="/${applicationService.getContextName()}/${productInstance.detailsImageUrl}" height="50" width="50" style="margin-bottom:0px !important"/>
+							</a>
 						</g:if>
 						<g:else>
 							<img src="/${applicationService.getContextName()}/images/app/no-image.jpg" height="50" width="50" style="margin-bottom:0px !important"/>

@@ -146,7 +146,7 @@ class ApplicationService {
 		if(catalogsList){
 			catalogsList.each { c ->
 				def productsCount = getCatalogProductsCount(c)
-				//if(productsCount > 0){
+				if(productsCount > 0){
 					def link = "/${getContextName()}/catalog/products/${c.id}"
 					def activeClass = c.id == catalogInstance.id ? "active-catalog" : ""
 					def catalogData = [
@@ -158,7 +158,7 @@ class ApplicationService {
 					def engine = new SimpleTemplateEngine()
 					def result = engine.createTemplate(template).make(catalogData)
 					catalogsString += result.toString()
-				//}
+				}
 			}
 		}
 		catalogsString += "</ul>"
@@ -248,7 +248,7 @@ class ApplicationService {
 		if(toplevelCatalogs){
 			toplevelCatalogs.each { c ->
 				def productsCount = getCatalogProductsCount(c)
-				//if(productsCount > 0){
+				if(productsCount > 0){
 					def link = "/${getContextName()}/catalog/products/${c.id}"
 					def activeClass = c.id == catalogInstance?.id ? "active-catalog" : ""
 					def catalogData = [
@@ -261,7 +261,7 @@ class ApplicationService {
 					def engine = new SimpleTemplateEngine()
 					def result = engine.createTemplate(template).make(catalogData)
 					catalogsString += result.toString()
-				//}
+				}
 			}
 		}
 		catalogsString += "</ul>"

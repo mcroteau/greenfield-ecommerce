@@ -141,7 +141,7 @@ class ProductController {
 		authenticatedAdmin { adminAccount ->
 			if(Catalog.count() == 0){
 				flash.message = "You must create at least one Catalog before creating Products"
-				redirect(controller:'catalog', action: 'create')
+				redirect(controller:'product', action: 'list')
 				return
 			}
 			
@@ -173,13 +173,19 @@ class ProductController {
 		    
 			def productInstance = new Product(params)
 			
+			def catalogIdsArray = []
+			if(productInstance?.catalogs){
+				catalogIdsArray = productInstance?.catalogs.collect { it.id }
+			}
+			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
+			
 	    	if(!productInstance.validate()){
 				println "**************************"
 				println "***      INVALID       ***"
 				println "**************************"
 				
 				flash.message = "Information is invalid, please make sure name is unique"
-				render(view:"create",  model: [productInstance: productInstance])
+				render(view:"create",  model: [productInstance: productInstance, catalogIdSelectionList: catalogIdSelectionList])
 				return
 			}	
 				
@@ -241,7 +247,7 @@ class ProductController {
 		    }
 			
 		    if (!productInstance.save(flush: true)) {
-		        render(view: "create", model: [productInstance: productInstance])
+		        render(view: "create", model: [productInstance: productInstance, catalogIdSelectionList: catalogIdSelectionList])
 		        return
 		    }
 		
@@ -252,16 +258,16 @@ class ProductController {
     	        return
 			}
 			
-			def catalogIdsArray = params.catalogIds.split(',').collect{it as int}
+			def catalogSelectedIdsArray = params.catalogIds.split(',').collect{it as int}
 			
-			if(!catalogIdsArray){
+			if(!catalogSelectedIdsArray){
 				flash.error = "Something went wrong while processing update. Please try again."
     	        redirect(action: "edit", id: productInstance.id )
 				return
 			}    	  
 			
 			productInstance.catalogs = null
-			catalogIdsArray.each{ catalogId ->
+			catalogSelectedIdsArray.each{ catalogId ->
 				def catalog = Catalog.get(catalogId)
 				if(catalog){
 					productInstance.addToCatalogs(catalog)
