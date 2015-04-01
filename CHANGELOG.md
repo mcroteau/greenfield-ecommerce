@@ -10,12 +10,19 @@ This is a changelog for Greenfield developers.  All future changes to this proje
 * Multi-Catalog - Products can now belong to multiple catalogs
 * Sub-Catalogs - Catalogs can now have sub catalogs
 * Breadcrumbs - Added breadcrumb navigation on catalog and product views
-* Updated Catalog Product Results Information - Limited number of pages to display, updated results counter
-* Refactored Product Import
+
+
+####Updates
+
+* Refactored Product Import - Now have to manually add products to catalogs after import
+* Updated Catalog Results Information - Limited number of pages to display, updated results counter
+
 
 ####Database Changes
 
 You will need to run sql commands in `2.0.0.sql` script located in root sql directory
+
+
 
 
 
@@ -24,6 +31,8 @@ You will need to run sql commands in `2.0.0.sql` script located in root sql dire
 #### New Features
 
 * Added a Health Check endpoint
+
+
 
 
 
