@@ -30,7 +30,7 @@
 		<div class="form-container">
 			
 			<h2>Edit Product
-				<g:link controller="product" action="list" class="btn btn-default pull-right">Back</g:link>
+				<g:link controller="product" action="list" class="btn btn-default pull-right">Back to List</g:link>
 				<br class="clear"/>
 			</h2>
 			

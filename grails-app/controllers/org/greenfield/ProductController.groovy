@@ -297,6 +297,10 @@ class ProductController {
 
     def edit(Long id) {
 		authenticatedAdminProduct { adminAccount, productInstance ->
+			if(Catalog.count() == 0){
+				flash.error = "Product will not display in store front until Catalogs have been created and products have been added to Catalogs."
+			}
+			
 			def catalogIdsArray = []
 			if(productInstance?.catalogs){
 				catalogIdsArray = productInstance?.catalogs.collect { it.id }

@@ -17,8 +17,13 @@
 			<h1>Product Import</h1>
 			
 			<g:if test="${flash.message}">
-				<div class="alert alert-info" role="status">${flash.message}</div>
+				<div class="alert alert-info">${flash.message}</div>
 			</g:if>
+			
+			<g:if test="${flash.error}">
+				<div class="alert alert-danger">${flash.error}</div>
+			</g:if>
+			
 			
 			
 			<div style="width:600px;">
@@ -35,18 +40,19 @@
 						<g:submitButton name="add" class="btn btn-primary" value="Import Products" />
 					</div>
 					
-					<p style="font-size:12px; color:#777">Product import will create catalogs if they do not already exist</p>
+					<p style="font-size:12px;" class="secondary">Products will need to be manually added to Catalogs after import</p>
 					
-					<p style="font-size:12px; color:#777">File should be comma separated value (csv) formatted with the following values</p>
+					<p style="font-size:12px;" class="secondary">File should be comma separated value (csv) formatted with the following values</p>
 					
-					<p style="font-size:12px; color:#777">
-						1. Name, 2. Catalog, 3. Quantity, 4. Price, 5. Description
+					<p style="font-size:12px;" class="secondary">
+						1. Name, 2. Quantity, 3. Price, 4. Weight, 5. Description
 					</p>
 					
-					<ul style="font-size:12px; color:#777">
+					<ul style="font-size:12px;" class="secondary">
 						<li>All columns must contain values</li>
 						<li>No Headings</li>
 						<li>No $ signs or commas in values</li>
+						<li>Weight is in ounces</li>
 					</ul>
 					
 				</g:uploadForm>

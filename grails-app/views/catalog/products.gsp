@@ -31,7 +31,9 @@ ${applicationService.getHeader(catalogInstance, "Products")}
 		<div class="catalog-products-header-count">
 			<% if(offset && max){
 				def first = Integer.parseInt(request.offset) + 1
-				def last = first + max - 1%>
+				def last = first + max - 1
+				if(last > productsTotal)last = productsTotal
+			%>
 				Showing <strong>${first}-${last}</strong> of <strong>${productsTotal}</strong> Results
 			<%}else{%>
 				<strong>${productsTotal}</strong> Total Results

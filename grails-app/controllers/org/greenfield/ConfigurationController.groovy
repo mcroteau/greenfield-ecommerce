@@ -600,6 +600,7 @@ class ConfigurationController {
  
  	   	def count = 0
 		def skipped = 0
+		def errored = 0
 		String line;
 		
 		try {
@@ -609,31 +610,22 @@ class ConfigurationController {
 				def fields = line.split(",")
 				
 				try{
+				
 					def name = fields[0]
-					def catalogName = fields[1]
-					def quantity = fields[2]
-					def price = fields[3]
+					def quantity = Integer.parseInt(fields[1])
+					def price = new BigDecimal(fields[2])
+					def weight = new BigDecimal(fields[3])
 					def description = fields[4]
 
 					def existingProduct = Product.findByName(name)
 					
 					if(!existingProduct){
-						def catalog
-						def existingCatalog = Catalog.findByName(catalogName)
-						
-						if(!existingCatalog){
-							catalog = new Catalog()
-							catalog.name = catalogName
-							catalog.save(flush:true)
-						}else{
-							catalog = existingCatalog
-						}
 						
 						def product = new Product()
 						product.name = name
-						product.quantity = Integer.parseInt(quantity)
-						product.price = new BigDecimal(price)
-						product.catalog = catalog
+						product.quantity = quantity
+						product.price = price
+						product.weight = weight
 						product.description = description
 						product.save(flush:true)
 						count++
@@ -643,8 +635,9 @@ class ConfigurationController {
 						skipped++
 					}
 					
-				}catch(ArrayIndexOutOfBoundsException ae){
+				}catch(Exception ae){
 					println ae
+					errored++
 				}
 			}
 			
@@ -667,6 +660,10 @@ class ConfigurationController {
  	   	if(count > 0){
 			flash.message = "Successfully imported <strong>${count}</strong> products"
 		}
+		if(errored > 0){
+			flash.error = "Errored on <strong>${errored}</strong> products.  Please review file and results to resolve"
+		}
+	
 		
 		render(view: 'import_products_view')
 	}
