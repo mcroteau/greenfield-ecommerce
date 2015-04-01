@@ -3,10 +3,20 @@
 This is a changelog for Greenfield developers.  All future changes to this project will be listed here.
 
 
-alter table catalog add column toplevel boolean;
-update catalog set toplevel = true where id > 0;	
+## Greenfield 2.0.0
 
-alter table product drop column catalog_id;
+### New Features
+
+* Multi-Catalog - Products can now belong to multiple catalogs
+* Sub-Catalogs - Catalogs can now have sub catalogs
+* Breadcrumbs - Added breadcrumb navigation on catalog and product views
+* Updated Catalog Product Results Information - Limited number of pages to display, updated results counter
+* Refactored Product Import
+
+###Database Changes
+
+You will need to run sql commands in `2.0.0.sql` script located in root sql directory
+
 
 
 ## Greenfield 1.1.2
