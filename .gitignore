@@ -13,3 +13,6 @@ stacktrace.log
 
 # project release file
 *.war
+
+# project settings
+web-app/settings/settings.properties
