@@ -16,3 +16,4 @@ stacktrace.log
 
 # project settings
 web-app/settings/settings.properties
+web-app/settings/*.properties
