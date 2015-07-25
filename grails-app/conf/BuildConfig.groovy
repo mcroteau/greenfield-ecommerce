@@ -53,9 +53,15 @@ grails.project.dependency.resolution = {
 		//compile "cglib:cglib:3.1" //hibernate3 dependency
 		
         //compile "postgresql:postgresql:9.1-901.jdbc4"
+		
+		//TODO:remove
+		//compile "com.stripe:stripe-java:1.32.1"
 		compile "com.stripe:stripe-java:1.23.0"
+		
 		compile "javax.mail:mail:1.4"
-		compile "com.easypost:easypost-java:2.0.9"
+		
+		//TODO:remove
+		//compile "com.easypost:easypost-java:2.0.9"
 		compile "com.google.code.gson:gson:2.3.1"
     }
 

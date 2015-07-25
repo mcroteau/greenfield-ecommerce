@@ -43,7 +43,8 @@ class BootStrap {
 		createRoles()
 		createAdmin()
 		println 'Accounts : ' + Account.count()
-		//createDevelopmentData()
+		//TODO:comment out
+		createDevelopmentData()
 	}
 	
 	
