@@ -4,83 +4,89 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:8080/" />
-<title>update_account</title>
+<title>save_shipping_settings</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">update_account</td></tr>
+<tr><td rowspan="1" colspan="3">save_shipping_settings</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/greenfield/</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Home</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=login</td>
+	<td>/greenfield/admin</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>id=username</td>
-	<td>mikec</td>
+	<td>admin</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>id=password</td>
-	<td>mikec</td>
+	<td>admin</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>css=button.btn.btn-default</td>
+	<td>//button[@type='submit']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=my-account</td>
+	<td>link=Settings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Shipping Settings</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=name</td>
-	<td>J. Fresco</td>
+	<td>name=address1</td>
+	<td>1020 W 12th Avenue</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=address1</td>
-	<td>21 Valley Lane</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=city</td>
-	<td>Venus</td>
+	<td>name=city</td>
+	<td>Anchorage</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>id=state.id</td>
-	<td>label=Florida</td>
+	<td>id=shipState</td>
+	<td>label=Alaska</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=zip</td>
-	<td>33960</td>
+	<td>name=zip</td>
+	<td>99501</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=easypostEnabled</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=testApiKey</td>
+	<td>3oIDR1L0V0Dq640mOLNRvg</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=liveApiKey</td>
+	<td>test_only</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@value='Update Profile']</td>
+	<td>id=submit</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=logout</td>
+	<td>link=Logout</td>
 	<td></td>
 </tr>
+
 </tbody></table>
 </body>
 </html>

@@ -62,6 +62,8 @@ grails.project.dependency.resolution = {
 		
 		//TODO:remove
 		//compile "com.easypost:easypost-java:2.0.9"
+		runtime "com.easypost:easypost-java:2.1.2"
+		
 		compile "com.google.code.gson:gson:2.3.1"
     }
 
