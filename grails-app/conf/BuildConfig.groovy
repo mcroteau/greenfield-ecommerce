@@ -54,16 +54,9 @@ grails.project.dependency.resolution = {
 		
         //compile "postgresql:postgresql:9.1-901.jdbc4"
 		
-		//TODO:remove
-		//compile "com.stripe:stripe-java:1.23.0"
 		compile "com.stripe:stripe-java:1.32.1"
-		
 		compile "javax.mail:mail:1.4"
-		
-		//TODO:remove
-		//compile "com.easypost:easypost-java:2.0.9"
 		runtime "com.easypost:easypost-java:2.1.2"
-		
 		compile "com.google.code.gson:gson:2.3.1"
     }
 
