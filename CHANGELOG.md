@@ -3,6 +3,17 @@
 This is a changelog for Greenfield developers.  All future changes to this project will be listed here.
 
 
+## Greenfield 2.0.1
+
+####Updates
+
+* Resolved EasyPost dependency issue - Added latest EasyPost jar to project lib directory
+* Updated Selenium tests - Added shipping settings test
+* Upgraded Stripe dependency to latest release
+
+
+
+
 ## Greenfield 2.0.0
 
 #### New Features
