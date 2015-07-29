@@ -163,10 +163,12 @@
 			
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Weight</span>
+					<span class="form-label full secondary">Weight
+						<span class="information secondary" style="display:block">* Important : Weight is in ounces</span>
+					</span>
 					<span class="input-container">
 						<input name="weight" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.weight}"/>
-						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:300px;">Weight is required at a minimum to calculate shipping realtime via <a href="http://www.easypost.com" target="_blank">EasyPost</a>. </span>
+						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:300px;">Weight is in ounces & is required at a minimum to calculate shipping realtime via <a href="http://www.easypost.com" target="_blank">EasyPost</a>. </span>
 					</span>
 					<br class="clear"/>
 				</div>
