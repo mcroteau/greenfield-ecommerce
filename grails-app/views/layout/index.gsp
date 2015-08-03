@@ -54,9 +54,9 @@
 					name="css" 
 					class="form-control">${css}</textarea>
 			
-			<br/>
+			<br class="clear"/>
 			
-			<g:submitButton class="btn btn-primary pull-right" name="updateLayout" value="Update Store Layout & CSS" />
+			<g:submitButton class="btn btn-primary pull-right" name="updateLayout" value="Update Store Layout & CSS" style="margin-bottom:30px;margin-top:30px;" />
 			
 		</g:form>
 		

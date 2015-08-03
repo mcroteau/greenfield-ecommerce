@@ -108,6 +108,7 @@ class ApplicationService {
 		return this.header
 	}
 	
+	
 	def getHeader(){
 		if(!header)refresh()
 		header = header.replace("[[TITLE]]", "Greenfield")
@@ -115,11 +116,14 @@ class ApplicationService {
 		return this.header
 	}
 	
+	
 	def getFooter(){
 		if(!footer)refresh()
 		footer = footer.replace("[[CATALOGS]]", getCatalogsMain())
+		footer = footer.replace("[[CONTEXT_NAME]]", getContextName())
 		return this.footer
 	}
+	
 	
 	//TODO : uncomment products count in both methods
 	def getCatalogsByCatalog(catalogInstance){
@@ -127,7 +131,7 @@ class ApplicationService {
 		if(!catalogInstance){
 			return getCatalogsMain(catalogInstance)
 		}
-		
+
 		def session = RequestContextHolder.currentRequestAttributes().getSession()
 		session.catalogInstance = catalogInstance
 		

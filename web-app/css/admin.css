@@ -24,7 +24,7 @@ span, p, table, td, th{
 	right:0;
 	top:0;
 	bottom:0;
-	height:300px;
+	height:375px;
 	z-index:-1000;
 	position:fixed;
 	background:#1c695b;
@@ -39,7 +39,7 @@ span, p, table, td, th{
 	min-height:500px;
 	background:#fff;
 	margin:50px auto;
-	margin:25px auto;
+	margin:25px auto 80px auto;
 	padding:15px 25px 30px 15px;
 	border-radius: 3px 3px 3px 3px;
 	-moz-border-radius: 3px 3px 3px 3px;
@@ -55,11 +55,12 @@ span, p, table, td, th{
 #admin-nav-container{
 	width:145px;
 	float:left;
+	margin-bottom:200px;
 	padding-bottom:15px;
 	background:#384249;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
+	-webkit-border-radius: 3px;	
 }
 
 

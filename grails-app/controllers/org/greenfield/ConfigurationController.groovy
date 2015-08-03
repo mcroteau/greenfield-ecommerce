@@ -589,83 +589,88 @@ class ConfigurationController {
 	}
 	
 	
-	def import_products_view(){}
+	def import_products_view(){
+		authenticatedAdmin{ adminAccount ->
+		}
+	}
+	
 	
 	def import_products(){
-		def file = request.getFile('file')
-		def is = file.getInputStream()
-		
-		BufferedReader br = null;
-		StringBuilder sb = new StringBuilder();
- 
- 	   	def count = 0
-		def skipped = 0
-		def errored = 0
-		String line;
-		
-		try {
-	
-			br = new BufferedReader(new InputStreamReader(is));
-			while ((line = br.readLine()) != null) {
-				def fields = line.split(",")
-				
-				try{
-				
-					def name = fields[0]
-					def quantity = Integer.parseInt(fields[1])
-					def price = new BigDecimal(fields[2])
-					def weight = new BigDecimal(fields[3])
-					def description = fields[4]
-
-					def existingProduct = Product.findByName(name)
+		authenticatedAdmin{ adminAccount ->
+			def file = request.getFile('file')
+			def is = file.getInputStream()
+			
+			BufferedReader br = null;
+			StringBuilder sb = new StringBuilder();
+        	
+ 	   		def count = 0
+			def skipped = 0
+			def errored = 0
+			String line;
+			
+			try {
+	    	
+				br = new BufferedReader(new InputStreamReader(is));
+				while ((line = br.readLine()) != null) {
+					def fields = line.split(",")
 					
-					if(!existingProduct){
+					try{
+					
+						def name = fields[0]
+						def quantity = Integer.parseInt(fields[1])
+						def price = new BigDecimal(fields[2])
+						def weight = new BigDecimal(fields[3])
+						def description = fields[4]
+        	
+						def existingProduct = Product.findByName(name)
 						
-						def product = new Product()
-						product.name = name
-						product.quantity = quantity
-						product.price = price
-						product.weight = weight
-						product.description = description
-						product.save(flush:true)
-						count++
+						if(!existingProduct){
+							
+							def product = new Product()
+							product.name = name
+							product.quantity = quantity
+							product.price = price
+							product.weight = weight
+							product.description = description
+							product.save(flush:true)
+							count++							
+							
+						}else{
+							skipped++
+						}
 						
-						
-					}else{
-						skipped++
+					}catch(Exception ae){
+						println ae
+						errored++
 					}
-					
-				}catch(Exception ae){
-					println ae
-					errored++
+				}
+				
+			} catch (IOException e) {
+				flash.error = "Something went wrong while trying to import.  Please confirm correct formatting"
+				e.printStackTrace();
+			} finally {
+				if (br != null) {
+					try {
+						br.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			
-		} catch (IOException e) {
-			flash.error = "Something went wrong while trying to import.  Please confirm correct formatting"
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			if(count == 0 && skipped > 0){
+				flash.message = "Products already exist"
 			}
+ 	   		if(count > 0){
+				flash.message = "Successfully imported <strong>${count}</strong> products"
+			}
+			if(errored > 0){
+				flash.error = "Errored on <strong>${errored}</strong> products.  Please review file and results to resolve"
+			}
+	    	
+			
+			render(view: 'import_products_view')
 		}
-		
-		if(count == 0 && skipped > 0){
-			flash.message = "Products already exist"
-		}
- 	   	if(count > 0){
-			flash.message = "Successfully imported <strong>${count}</strong> products"
-		}
-		if(errored > 0){
-			flash.error = "Errored on <strong>${errored}</strong> products.  Please review file and results to resolve"
-		}
-	
-		
-		render(view: 'import_products_view')
 	}
 	
 }

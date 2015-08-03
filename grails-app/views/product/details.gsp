@@ -21,9 +21,6 @@ ${applicationService.getHeader(catalogInstance, "Product Details")}
 <%}%>
 
 
-<% session.catalogInstance = null %>
-
-
 	<div class="product_details_wrapper">
 
 		<g:if test="${flash.message}">
