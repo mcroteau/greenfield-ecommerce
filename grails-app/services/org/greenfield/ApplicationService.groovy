@@ -311,7 +311,7 @@ class ApplicationService {
 	def getSearchBox(){
 		def cartHtml = "<form action=\"/${getContextName()}/product/search\">" 
 		cartHtml+= "<div id=\"searchbox\">" 
-		cartHtml+= "<input type=\"text\" name=\"query\" name=\"search\"/>" 
+		cartHtml+= "<input type=\"text\" name=\"query\" name=\"search\" id=\"search-input\"/>" 
 		cartHtml+= "<input type=\"submit\" id=\"search-button\" value=\"Search\" name=\"search-button\"/>"
 		cartHtml+= "</div></form>"
 	}

@@ -74,7 +74,7 @@ body, html{
 	-webkit-box-shadow: inset 0 4px 7px -2px #bbb;
 	box-shadow: inset 0 4px 7px -2px #bbb;
 }
-#searchbox  input[type="submit"]{
+#search-button{
 	color:#fff;
 	font-size:14px;
 	text-decoration:none;

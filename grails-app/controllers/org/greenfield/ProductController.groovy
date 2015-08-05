@@ -27,16 +27,17 @@ class ProductController {
 	
 	def search(){		
 		if(params.query && params.query.length() >= 4){
-			def p1 = Product.findAll("from Product as p where UPPER(p.name) like UPPER('%${params.query}%') AND p.disabled = false AND p.quantity > 0")
-			def p2 = Product.findAll("from Product as p where UPPER(p.description) like UPPER('%${params.query}%') AND p.disabled = false AND p.quantity > 0")
+			def max = 12
+			def offset = params.offset ? params.offset : 0
 			
-			p1.collect( { productA ->
-			    def productB = p2.find { it.name == productA.name }
-				p2.remove(productB)
-			})
-
-			def products = p1 + p2
-			
+			def productNameCriteria = Product.createCriteria()
+			def products = productNameCriteria.list(max: max, offset: offset, sort: "name", order: "desc"){
+				or {
+					ilike("name", "%${params.query}%")
+					ilike("description", "%${params.query}%")
+				}
+			}
+				
 			
 			def searchLog = new SearchLog()
 			searchLog.query = params.query.toLowerCase()
@@ -50,7 +51,7 @@ class ProductController {
 			searchLog.save(flush:true)
 			
 			
-			[products : products]
+			[products : products, offset : offset, max : max, query : params.query ]
 		}else{
 			flash.message = "Search query must be at least 4 characters"
 		}

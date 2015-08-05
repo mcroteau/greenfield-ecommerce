@@ -3,58 +3,58 @@
 %>
 
 ${applicationService.getHeader("Search Results")}
-<style type="text/css">
-.catalog-product{
-	width:170px;
-	float:left;
-	height:265px;
-	margin:10px 15px;
-}
-.catalog-product img{
-	width:170px;
-	text-align:center;
-	border:solid 1px #ddd;
-}
-.catalog-product p{
-	margin:0px;
-	padding:0px;
-}
-.catalog-product a{
-	color:#222;
-}
 
-.product-name,
-.product-price{
-	text-align:center
-}
-
-.product-name{
-	color:#222;
-}
-.product-price{
-	font-size:17px;
-	font-weight:bold;
-}
-</style>
-
-<h1>Search Results</h1>
+<h3>Search Results for "${query}"</h3>
 			
 <g:if test="${flash.message}">
 	<div class="alert alert-info" role="status">${flash.message}</div>
 </g:if>
 			
 <g:if test="${products?.size() > 0}">
+	
+
+	<div class="catalog-products-header-pagination">
+		<g:paginate 
+			max="12"
+			maxsteps="5"
+			total="${products.totalCount}"
+	        params="${[ query : query ]}"
+			class="pull-right" />
+	</div>
+	
+	
+	<div class="catalog-products-header-count">
+		<% if(offset && max){
+			def first = Integer.parseInt(request.offset) + 1
+			def last = first + max - 1
+			if(last > products.totalCount)last = products.totalCount
+		%>
+			Showing <strong>${first}-${last}</strong> of <strong>${products.totalCount}</strong> Results
+		<%}else{%>
+			<strong>${products.totalCount}</strong> Total Results
+		<%}%>
+	</div>
+	
+	
+	<br class="clear"/>
+	
+	
 	<g:each in="${products}" status="i" var="productInstance">
 		
 		<div class="catalog-product">
 			<g:link controller="product" action="details" id="${productInstance.id}">
 				<div class="product-image">
-					<img src="/${applicationService.getContextName()}/${productInstance.detailsImageUrl}" style="width:200px;" />
+					<g:if test="${productInstance.detailsImageUrl}">
+						<img src="/${applicationService.getContextName()}/${productInstance.detailsImageUrl}" />
+					</g:if>
+					<g:else>
+						<img src="/${applicationService.getContextName()}/images/app/no-image.jpg" style="border:solid 1px #ddd">
+					</g:else>
 				</div>
 			</g:link>
 	
 			<g:link controller="product" action="details" id="${productInstance.id}">
-				<p class="product-name">${productInstance.name}</p>
+				<p class="product-name" id="product-name-${productInstance.id}">${productInstance.name}</p>
 			</g:link>
 	
 			<g:link controller="product" action="details" id="${productInstance.id}">
@@ -63,6 +63,24 @@ ${applicationService.getHeader("Search Results")}
 		</div>
 	</g:each>
 	<br style="clear:both"/>
+	<br style="clear:both"/>
+	
+	<div class="catalog-products-header-pagination">
+		<g:paginate 
+			max="12"
+			maxsteps="5"
+			total="${products.totalCount}"
+	        params="${[ query : query ]}"
+			class="pull-right" />
+	</div>
+	
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#search-input').val("${query}");
+		})
+	</script>
+	
 </g:if>
 <g:else>
 		<p>No search results found</p>
