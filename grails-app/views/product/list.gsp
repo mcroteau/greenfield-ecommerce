@@ -9,7 +9,7 @@
 	<head>
 		<meta name="layout" content="admin">
 		<g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}" />
-		<title><g:message code="default.list.label" args="[entityName]" /></title>
+		<title>Greenfield : Products</title>
 		<style type="text/css">
 			input#searchbox{
 				float:right;

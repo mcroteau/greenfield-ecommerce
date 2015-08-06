@@ -9,7 +9,7 @@
 	<head>
 		<meta name="layout" content="admin">
 		<g:set var="entityName" value="${message(code: 'page.label', default: 'Page')}" />
-		<title><g:message code="default.list.label" args="[entityName]" /></title>
+		<title>Greenfield : Pages</title>
 	</head>
 	<body>
 	

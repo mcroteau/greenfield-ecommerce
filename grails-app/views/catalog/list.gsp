@@ -8,7 +8,7 @@
 <html>
 	<head>
 		<meta name="layout" content="admin">
-		<title>Greenfield : Catalog Administration</title>
+		<title>Greenfield : Catalogs</title>
 	</head>
 	<body>
 

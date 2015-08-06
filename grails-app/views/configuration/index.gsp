@@ -4,7 +4,7 @@
 	<head>
 		<meta name="layout" content="admin">
 		<g:set var="entityName" value="${message(code: 'catalog.label', default: 'Catalog')}" />
-		<title><g:message code="default.create.label" args="[entityName]" /></title>
+		<title>Greenfield : Import/Upload</title>
 	</head>
 	<body>
 		

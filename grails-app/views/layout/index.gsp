@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<meta name="layout" content="admin">
-		<title>Update Layout</title>
+		<title>Greenfield : Store Layout</title>
 		
 		<script type="text/javascript" src="${resource(dir:'js/allow-tab.js')}"></script>
 		

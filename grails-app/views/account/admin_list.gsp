@@ -5,7 +5,7 @@
 	<head>
 		<meta name="layout" content="admin">
 		<g:set var="entityName" value="${message(code: 'account.label', default: 'Account')}" />
-		<title><g:message code="default.list.label" args="[entityName]" /></title>
+		<title>Greenfield : Accounts</title>
 	</head>
 	<body>
 

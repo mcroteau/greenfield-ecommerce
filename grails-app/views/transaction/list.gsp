@@ -8,7 +8,7 @@
 	<head>
 		<meta name="layout" content="admin">
 		<g:set var="entityName" value="${message(code: 'transaction.label', default: 'Transaction')}" />
-		<title><g:message code="default.list.label" args="[entityName]" /></title>
+		<title>Greenfield : Orders</title>
 	</head>
 	<body>
 

@@ -4,7 +4,7 @@
 <head>
   	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  	<meta name="layout" content="admin" />
-	<title><g:message code="app.name"  /> </title>
+	<title>Greenfield  : Dashboard</title>
 	
 	<script type="text/javascript" src="${resource(dir:'js/lib/mustache/mustache.min.js')}"></script>
 	

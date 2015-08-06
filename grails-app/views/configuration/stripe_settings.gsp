@@ -4,7 +4,7 @@
 <head>
 	<meta name="layout" content="admin">
 	<g:set var="entityName" value="${message(code: 'catalog.label', default: 'Catalog')}" />
-	<title>Stripe Settings</title>
+	<title>Greenfield : Stripe Settings</title>
 	<style type="text/css">
 		.section{
 			margin:10px 20px 30px 0px;
