@@ -9,12 +9,5 @@ class ShiroSecurityFilters {
 				}
 	    	}
 		}
-		roleMaintenance(controller: "role", action: "(create|edit|save|update|delete|list)") {
-		    before = {
-		        accessControl {
-		            role("ROLE_ADMIN")
-		        }
-		    }
-		}
     }
 }
