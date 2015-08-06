@@ -256,7 +256,8 @@ class AccountController {
 						accountInstance.addToPermissions("account:customer_profile,customer_update,customer_order_history:" + accountInstance.id)
 						accountInstance.save(flush:true)
 					
-						sendNewRegistrationEmails(accountInstance)
+						sendAdminEmail(accountInstance)
+						sendThankYouEmail(accountInstance)
 			
 						flash.message = "You have successfully registered... "
 			
@@ -288,8 +289,33 @@ class AccountController {
 	
 	
 	
+	def sendAdminEmail(Account accountInstance){
+		try { 
+			
+			def fromAddress = applicationService.getSupportEmailAddress()
+			def customerSubject = "${applicationService.getStoreName()} : New Registration."
+			
+			File templateFile = grailsAttributes.getApplicationContext().getResource(  "/templates/email/registration-notification.html").getFile();
+    	
+			def binding = [ "companyName" : applicationService.getStoreName(),
+				 			"accountInstance" : accountInstance ]
+			def engine = new SimpleTemplateEngine()
+			def template = engine.createTemplate(templateFile).make(binding)
+			def bodyString = template.toString()
+			
+			emailService.send(applicationService.getAdminEmailAddress(), fromAddress, customerSubject, bodyString)
+			
+			
+		}catch(Exception e){
+			e.printStackTrace()
+		}
+	}
 	
-	def sendNewRegistrationEmails(Account accountInstance){
+	
+	
+	
+	
+	def sendThankYouEmail(Account accountInstance){
 		try { 
 			def fromAddress = applicationService.getSupportEmailAddress()
 			def customerToAddress = accountInstance.email
@@ -303,14 +329,7 @@ class AccountController {
 			def template = engine.createTemplate(templateFile).make(binding)
 			def bodyString = template.toString()
 			
-			def adminEmail = applicationService.getAdminEmailAddress()
-			def allEmails = customerToAddress
-			if(adminEmail){
-			 	allEmails += ",${adminEmail}"
-			}
-			
-			
-			emailService.send(allEmails, fromAddress, customerSubject, bodyString)
+			emailService.send(customerToAddress, fromAddress, customerSubject, bodyString)
 			
 			
 		}catch(Exception e){

@@ -40,7 +40,7 @@ ${applicationService.getHeader(catalogInstance, "Product Details")}
 			<g:else>
 				<img src="/${applicationService.getContextName()}/images/app/no-image.jpg" 
 					id="main_preview" 
-					style="border:solid 1px #ddd"/>
+					style="width:300px;border:solid 1px #ddd"/>
 			</g:else>
 			
 			
