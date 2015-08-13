@@ -8,7 +8,8 @@ This is a changelog for Greenfield developers.  All future changes to this proje
 
 ####Updates
 
-* Updated search results to include # of results and pagination
+* Updated search results to include # of results
+* Added pagination to search results
 * Created separate admin email for new registrations
 * Added Selenium tests for Easypost api calls for shipping calculation and label generation
 * Small modifications & style changes
