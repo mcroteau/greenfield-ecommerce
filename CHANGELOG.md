@@ -3,6 +3,29 @@
 This is a changelog for Greenfield developers.  All future changes to this project will be listed here.
 
 
+
+## Greenfield 2.0.2
+
+####Updates
+
+* Updated search results to include # of results and pagination
+* Created separate admin email for new registrations
+* Added Selenium tests for Easypost api calls for shipping calculation and label generation
+* Small modifications & style changes
+
+
+####Bug Fixes
+
+* Secured product import
+* Updated store front layout to render CONTEXT_NAME in footer
+* Refresh product page maintains catalog breadcrumbs
+* Modified administration template to render sub gsp page title
+* Test cleanup removing old/stale tests
+
+
+
+
+
 ## Greenfield 2.0.1
 
 ####Updates
@@ -10,6 +33,7 @@ This is a changelog for Greenfield developers.  All future changes to this proje
 * Resolved EasyPost dependency issue - Added latest EasyPost jar to project lib directory
 * Updated Selenium tests - Added shipping settings test
 * Upgraded Stripe dependency to latest release
+
 
 
 
