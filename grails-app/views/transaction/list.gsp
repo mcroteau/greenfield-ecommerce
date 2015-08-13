@@ -60,7 +60,7 @@
 				
 						<td>$${applicationService.formatPrice(transactionInstance.total)}</td>
 					
-						<td><g:link action="show" params="[id: transactionInstance.id]">Show </g:link></td>
+						<td><g:link action="show" params="[id: transactionInstance.id]" class="show-transaction-${transactionInstance.id}">Show </g:link></td>
 					
 					</tr>
 				</g:each>
