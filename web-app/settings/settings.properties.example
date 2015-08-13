@@ -26,4 +26,3 @@ stripe.development.apiKey=
 stripe.development.publishableKey=
 stripe.production.apiKey=
 stripe.production.publishableKey=
-
