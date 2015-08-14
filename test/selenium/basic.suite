@@ -23,6 +23,9 @@
 <tr><td><a href="checkout.test">checkout</a></td></tr>
 <tr><td><a href="review_order.test">review_order</a></td></tr>
 <tr><td><a href="admin_search_product.test">admin_search_product</a></td></tr>
+<tr><td><a href="add_product_weight.test">add_product_weight</a></td></tr>
+<tr><td><a href="calculate_shipping.test">calculate_shipping</a></td></tr>
+<tr><td><a href="show_shipping_label.test">show_shipping_label</a></td></tr>
 </tbody></table>
 </body>
 </html>
