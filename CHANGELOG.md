@@ -18,7 +18,7 @@ This is a changelog for Greenfield developers.  All future changes to this proje
 ####Bug Fixes
 
 * Secured product import
-* Updated store front layout to render CONTEXT_NAME in footer
+* Updated store front layout to render CONTEXT_NAME tag in footer
 * Refresh product page maintains catalog breadcrumbs
 * Modified administration template to render sub gsp page title
 * Test cleanup removing old/stale tests
