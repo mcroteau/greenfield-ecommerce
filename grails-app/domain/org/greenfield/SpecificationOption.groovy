@@ -1,13 +1,11 @@
 package org.greenfield
 
-class Specification {
+class SpecificationOption {
 
 	String name
 
 	Date dateCreated
 	Date lastUpdated
-	
-	static hasMany = [ specificationOptions: SpecificationOption ]
 	
 	
 	static mapping = {
@@ -16,6 +14,6 @@ class Specification {
 	
 	static constraints = {
 		name(nullable:false, unique:true)
-		id generator: 'sequence', params:[sequence:'ID_SPECIFICATION_PK_SEQ']
+		id generator: 'sequence', params:[sequence:'ID_SPECIFICATION_OPTION_PK_SEQ']
     }
 }

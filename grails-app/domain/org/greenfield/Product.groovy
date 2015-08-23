@@ -24,7 +24,7 @@ class Product {
 	double weight
 	
 	
-	static hasMany = [ catalogs: Catalog, additionalPhotos: AdditionalPhoto, productOptions: ProductOption ]
+	static hasMany = [ catalogs: Catalog, additionalPhotos: AdditionalPhoto, productOptions: ProductOption, productSpecifications: ProductSpecification ]
 	
 	
 	static mapping = {
