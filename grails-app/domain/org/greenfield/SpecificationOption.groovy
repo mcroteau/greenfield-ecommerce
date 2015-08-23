@@ -7,6 +7,8 @@ class SpecificationOption {
 	Date dateCreated
 	Date lastUpdated
 	
+	static hasMany = [ products: Product ]
+	
 	
 	static mapping = {
 		sort name: "asc"

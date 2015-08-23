@@ -11,7 +11,7 @@ class Catalog {
 	boolean toplevel
 	
 	Catalog parentCatalog
-	static hasMany = [ subcatalogs: Catalog, filterAttributes : FilterAttribute ]
+	static hasMany = [ subcatalogs: Catalog, specifications : Specification ]
 	
 	
 	static mapping = {

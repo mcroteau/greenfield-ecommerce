@@ -6,6 +6,9 @@ class Specification {
 
 	Date dateCreated
 	Date lastUpdated
+
+
+	static belongsTo = [ catalog: Catalog ]
 	
 	static hasMany = [ specificationOptions: SpecificationOption ]
 	
