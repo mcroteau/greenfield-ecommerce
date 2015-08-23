@@ -388,6 +388,7 @@ class ProductController {
 				if(catalog){
 					productInstance.addToCatalogs(catalog)
 					productInstance.save(flush:true)
+					//TODO: 
 				}
 			}
 

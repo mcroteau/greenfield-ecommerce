@@ -44,7 +44,7 @@ class BootStrap {
 		createAdmin()
 		println 'Accounts : ' + Account.count()
 		//Development Data
-		//createDevelopmentData()
+		createDevelopmentData()
 	}
 	
 	
