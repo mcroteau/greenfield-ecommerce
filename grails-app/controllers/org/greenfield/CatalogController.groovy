@@ -71,25 +71,38 @@ class CatalogController {
 			redirect(controller : 'store', action : 'index')
 		}
 		
-		def productsTotal = Product.createCriteria().count{
-			and{
-				eq("disabled", false)
-				gt("quantity", 0)
-				catalogs {
-		    		idEq(id)
-		 		}
+		def products
+		def productsTotal
+		if(params.filter == "true"){
+			println "here..."
+			println "params: ${params}"
+		
+		}else{
+		
+			productsTotal = Product.createCriteria().count{
+				and{
+					eq("disabled", false)
+					gt("quantity", 0)
+					catalogs {
+			    		idEq(id)
+			 		}
+				}
 			}
+		
+			products = Product.createCriteria().list(max: max, offset: params.offset){
+				and{
+					eq("disabled", false)
+					gt("quantity", 0)
+					catalogs {
+			    		idEq(catalogInstance.id)
+			 		}
+				}
+			}
+			
 		}
 		
-		def products = Product.createCriteria().list(max: max, offset: params.offset){
-			and{
-				eq("disabled", false)
-				gt("quantity", 0)
-				catalogs {
-		    		idEq(catalogInstance.id)
-		 		}
-			}
-		}
+		
+
 		
 		def catalogViewLog = new CatalogViewLog()
 		catalogViewLog.catalog = catalogInstance
