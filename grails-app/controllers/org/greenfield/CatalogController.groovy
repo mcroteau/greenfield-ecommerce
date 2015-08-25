@@ -76,7 +76,6 @@ class CatalogController {
 		if(params.filter == "true"){
 			println "here..."
 			println "params: ${params}"
-		
 		}else{
 		
 			productsTotal = Product.createCriteria().count{
