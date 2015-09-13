@@ -7,11 +7,9 @@ class Specification {
 	Date dateCreated
 	Date lastUpdated
 
-
 	static belongsTo = [ catalog: Catalog ]
 	
 	static hasMany = [ specificationOptions: SpecificationOption ]
-	
 	
 	static mapping = {
 		sort name: "asc"
@@ -21,4 +19,5 @@ class Specification {
 		name(nullable:false, unique:true)
 		id generator: 'sequence', params:[sequence:'ID_SPECIFICATION_PK_SEQ']
     }
+	
 }

@@ -9,7 +9,6 @@ class SpecificationOption {
 	
 	static hasMany = [ products: Product ]
 	
-	
 	static mapping = {
 		sort name: "asc"
 	}
@@ -18,4 +17,5 @@ class SpecificationOption {
 		name(nullable:false, unique:true)
 		id generator: 'sequence', params:[sequence:'ID_SPECIFICATION_OPTION_PK_SEQ']
     }
+	
 }
