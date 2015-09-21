@@ -4,6 +4,7 @@ CHANGELOG.md
 .settings
 .launch
 .tmproj
+.idea
 
 # logs
 stacktrace.log

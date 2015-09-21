@@ -309,8 +309,6 @@ class CatalogController {
 
 
 
-
-
     def delete(Long id) {
 		authenticatedAdminCatalog { adminAccount, catalogInstance ->
     	    try {
@@ -330,6 +328,13 @@ class CatalogController {
 	}
 	
 	
+	
+	def specifications(Long id){
+		authenticatedAdminCatalog { adminAccount, catalogInstance ->
+			[catalogInstance : catalogInstance]
+		}
+	}
+	
 
 	
 	def getCatalogOptionsWithCatalog(catalogInstance){
@@ -348,6 +353,7 @@ class CatalogController {
 	}
 	
 	
+	
 	def getCatalogOptions(){
 		def catalogOptions = ""
 		def toplevelCatalogs = Catalog.findAllByToplevel(true)
@@ -360,6 +366,7 @@ class CatalogController {
 		}
 		return catalogOptions
 	}
+	
 	
 	
 	def getAllSubcatalogOptions(catalog){

@@ -3,12 +3,11 @@ package org.greenfield
 class Specification {
 
 	String name
-
+	boolean applySubcatalogs
+	
 	Date dateCreated
 	Date lastUpdated
 
-	static belongsTo = [ catalog: Catalog ]
-	
 	static hasMany = [ specificationOptions: SpecificationOption ]
 	
 	static mapping = {

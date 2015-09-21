@@ -388,5 +388,40 @@ class BaseController {
 			c.call account, productOption
 		}
 	}
+
+
+	private def authenticatedAdminSpecification(Closure c){
+		def subject = SecurityUtils.getSubject();
+
+		if(!subject.isAuthenticated()){
+			flash.message = "Please sign in to continue"
+			forward(controller : 'auth', action: 'login')
+			return
+		}
+
+		if(!subject.hasRole(RoleName.ROLE_ADMIN.description())){
+			flash.message = "Unauthorized to view admin section"
+			forward(controller : 'store', action: 'index')
+			return
+		}
+
+		def account = Account.findByUsername(subject.principal)
+		def specification = Specification.get(params.id)
+
+
+		if (!specification) {
+			flash.message = "Specification not found..."
+			forward(controller: 'catalog', action: "list")
+			return
+		}
+
+		if(!account){
+			flash.message = "Please login to continue"
+			forward(controller: 'auth', action: 'login')
+			return
+		}else{
+			c.call account, specification
+		}
+	}
 	
 }

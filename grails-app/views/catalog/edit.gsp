@@ -114,9 +114,27 @@
 				</div>
 				
 				
+				<div class="form-row">
+					<span class="form-label full secondary">Specifications
+						<g:link controller="catalog" action="specifications" id="${catalogInstance.id}" class="information" style="display:block">Manage Specifications</g:link>
+
+						<span class="information secondary" style="display:inline-block; margin-left:15px;">Specifications are used for store front product filtering</span>
+					</span>
+					<span class="input-container sized">
+						<g:if test="${catalogInstance.specifications.size() > 0}">
+							<g:each in="${catalogInstance.specifications}" var="specification">
+								<span class="label label-default">${specification.name}</span>
+							</g:each>
+						</g:if>
+						<g:else>
+							<g:link controller="specification" action="create" id="${catalogInstance.id}" class="btn btn-default">Add Specifications</g:link>
+						</g:else>
+					</span>
+					<br class="clear"/>
+				</div>
+				
 				
 				<div class="buttons-container">
-				
 					<g:actionSubmit class="btn btn-danger" action="delete" value="Delete" formnovalidate="" onclick="return confirm('Are you sure you want to delete this Catalog?');" />
 				
 					<g:actionSubmit class="btn btn-primary" action="update" value="Update" />
