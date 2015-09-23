@@ -43,19 +43,20 @@
 						<br class="clear"/>
 					</div>
 					
-					
-					<div class="form-row">
-						<span class="form-label secondary">Apply to subcatalogs</span>
-						<span class="input-container">
-							<input type="checkbox" ${specification?.applySubcatalogs} name="applySubcatalogs" id="applySubcatalogs"/>
-							<br/>
-							<g:each in="${catalogInstance.subcatalogs}" var="subcatalog">
-								<span class="label label-default">${subcatalog.name}</span>
-							</g:each>
-						</span>
-						<br class="clear"/>
-					</div>
-					
+
+					<g:if test="${catalogInstance.subcatalogs}">
+						<div class="form-row">
+							<span class="form-label secondary">Apply to subcatalogs</span>
+							<span class="input-container">
+								<input type="checkbox" ${specification?.applySubcatalogs} name="applySubcatalogs" id="applySubcatalogs"/>
+								<br/>
+								<g:each in="${catalogInstance.subcatalogs}" var="subcatalog">
+									<span class="label label-default">${subcatalog.name}</span>
+								</g:each>
+							</span>
+							<br class="clear"/>
+						</div>
+					</g:if>
 					
 					<g:submitButton name="save" class="btn btn-primary" value="Save Specification" />
 					

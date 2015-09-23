@@ -26,6 +26,7 @@ class SpecificationController {
 				
 				if(params.applySubcatalogs == "on"){
 					specification.applySubcatalogs = true
+					specification.save(flush:true)
 					catalogInstance.subcatalogs.each(){ subcatalog ->
 						subcatalog.addToSpecifications(specification)
 						subcatalog.save(flush:true)
@@ -50,8 +51,65 @@ class SpecificationController {
 			[ specificationInstance: specificationInstance, catalogInstance: catalogInstance ]
 		}
 	}
-	
-	
+
+
+	def update(){
+		authenticatedAdminSpecification { adminAccount, specificationInstance ->
+
+			if(params.name){
+
+				specificationInstance.name = params.name
+
+				if(params.applySubcatalogs == "on"){
+					specificationInstance.applySubcatalogs = true
+				}else{
+					specificationInstance.applySubcatalogs = false
+				}
+
+				specificationInstance.save(flush:true)
+
+				flash.message = "Successfully updated specification"
+
+			}else{
+				flash.message = "Name cannot be blank"
+			}
+
+			redirect(action:'edit', id : specificationInstance.id, params:[catalogId : params.catalogId] )
+
+		}
+	}
+
+
+	def add_option(){
+		authenticatedAdminSpecification { adminAccount, specificationInstance ->
+			if(params.name){
+				def option = new SpecificationOption()
+				option.name = params.name
+				option.specification = specificationInstance
+				option.save(flush:true)
+
+				specificationInstance.addToSpecificationOptions(option)
+				specificationInstance.save(flush:true)
+
+				flash.message = "Successfully created option"
+
+			}else{
+				flash.optionMessage = "Name cannot be blank"
+			}
+
+			redirect(action:'edit', id : specificationInstance.id, params:[catalogId : params.catalogId] )
+		}
+	}
+
+
+	def edit_option(){
+		authenticatedAdminSpecificationOption { adminAccount, specificationOptionInstance ->
+			def catalogInstance = Catalog.get(params.catalogId)
+			[ specificationOption : specificationOptionInstance, catalogInstance: catalogInstance ]
+		}
+	}
+
+
 	//TODO:remove
 	def delete_all(){
 		def catalogs = Catalog.list()
