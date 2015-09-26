@@ -16,7 +16,7 @@
 			<div class="form-container">
 
 				<h2>Edit Option
-					<g:link controller="specification" action="edit" name="edit" class="btn btn-default pull-right" id="${specificationOption.specification.id}">Back to Specification</g:link>
+					<g:link controller="specification" action="edit" name="edit" class="btn btn-default pull-right" id="${specificationOption.specification.id}" params="[catalogId : catalogInstance.id]">Back to Specification</g:link>
 				</h2>
 
 				<div class="clear" style="margin-top:20px;"></div>

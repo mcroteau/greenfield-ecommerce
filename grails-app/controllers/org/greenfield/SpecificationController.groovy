@@ -110,6 +110,35 @@ class SpecificationController {
 	}
 
 
+
+	def update_option(){
+		authenticatedAdminSpecificationOption { adminAccount, specificationOptionInstance ->
+			if(params.name){
+
+				specificationOptionInstance.name = params.name
+				specificationOptionInstance.save(flush:true)
+
+				flash.message = "Successfully updated option"
+
+			}else{
+				flash.message = "Name cannot be blank"
+			}
+
+			redirect(action:"edit_option", id : specificationOptionInstance.id, params : [catalogId : params.catalogId])
+		}
+	}
+
+
+
+	def delete_option(){
+		authenticatedAdminSpecificationOption { adminAccount, specificationOptionInstance ->
+			def specificationInstance = specificationOptionInstance.specification;
+			specificationOptionInstance.delete(flush:true)
+			redirect(action: "edit", id: specificationInstance.id, params: [catalogId: params.catalogId])
+		}
+	}
+
+
 	//TODO:remove
 	def delete_all(){
 		def catalogs = Catalog.list()
