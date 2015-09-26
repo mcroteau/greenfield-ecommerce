@@ -61,7 +61,7 @@
 						<thead>
 							<tr>
 								<th>Name</th>
-								<th><g:link action="edit_option_positions" id="${specificationInstance.id}" class="btn btn-default btn-xs pull-right">Edit Ordering <span class="glyphicon glyphicon-sort"></span></g:link></th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -70,8 +70,9 @@
 								<td>${option.name}</td>
 								<td>
 									<g:link class="btn btn-default" action="edit_option" id="${option.id}" params="[ catalogId : catalogInstance.id ]">Edit</g:link>
-									<g:form action="remove_option" method="post" id="${option.id}" style="display:inline-block;">
-										<g:actionSubmit class="btn btn-default" controller="specification" action="remove_option" value="Delete" id="${option.id}" formnovalidate="" onclick="return confirm('Are you sure?');" />
+									<g:form action="delete_option" method="post" id="${option.id}" style="display:inline-block;">
+										<input type="hidden" name="catalogId" value="${catalogInstance.id}"/>
+										<g:actionSubmit class="btn btn-default" controller="specification" action="delete_option" value="Delete" id="${option.id}" formnovalidate="" onclick="return confirm('Are you sure?');" />
 									</g:form>
 								</td>
 							</tr>

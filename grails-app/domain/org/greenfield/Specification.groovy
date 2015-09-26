@@ -12,6 +12,7 @@ class Specification {
 	
 	static mapping = {
 		sort name: "asc"
+		specificationOptions sort: 'name', order: 'asc'
 	}
 	
 	static constraints = {
