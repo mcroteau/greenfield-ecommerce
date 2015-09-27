@@ -9,54 +9,55 @@
 		<title>Add Specification</title>
 	</head>
 	<body>
-		
+
+        <div id="catalog-selection-backdrop"></div>
+
+        <div id="catalog-selection-modal">
+            <h3>Product Catalogs</h3>
+            <p class="information secondary">Selecting a Subcatalog will automatically select all parent Catalogs up to the top level Catalog.</p>
+            <div id="catalog-selection-container">
+                ${catalogIdSelectionList}
+            </div>
+            <a href="javascript:" class="btn btn-default pull-right" style="margin-top:15px;" id="close-catalogs-select-modal">Accept &amp; Close</a>
+            <br class="clear"/>
+        </div>
+
+
 		<div class="content">
 		
 			<h2>Add Specification
-				<g:link controller="catalog" action="edit" name="edit" class="btn btn-default pull-right" id="${catalogInstance.id}">Back to Catalog</g:link>
+				<g:link controller="specification" action="list" name="list" class="btn btn-default pull-right">Back to Specifications</g:link>
 			</h2>
 		
 			<g:if test="${flash.message}">
 				<div class="alert alert-info" role="status">${flash.message}</div>
 			</g:if>
-			
-			
-			<div style="width:400px;float:left">
+
+
+			<div id="create-specification-container">
 			
 				<g:form action="save" method="post">
-					
-					<input type="hidden" name="id" value="${catalogInstance.id}"/>
-					
-					<div class="form-row">
-						<span class="form-label secondary">Catalog</span>
-						<span class="input-container">
-							<span class="label label-default">${catalogInstance?.name}</span>
-						</span>
-						<br class="clear"/>
-					</div>
-					
+
 					<div class="form-row">
 						<span class="form-label secondary">Name</span>
 						<span class="input-container">
-							<input type="text" name="name" class="form-control" value="${specification?.name}" style="width:200px;display:inline-block"/>
+							<input type="text" name="name" class="form-control" value="${name}" style="width:200px;display:inline-block"/>
 						</span>
 						<br class="clear"/>
 					</div>
 					
-
-					<g:if test="${catalogInstance.subcatalogs}">
-						<div class="form-row">
-							<span class="form-label secondary">Apply to subcatalogs</span>
-							<span class="input-container">
-								<input type="checkbox" ${specification?.applySubcatalogs} name="applySubcatalogs" id="applySubcatalogs"/>
-								<br/>
-								<g:each in="${catalogInstance.subcatalogs}" var="subcatalog">
-									<span class="label label-default">${subcatalog.name}</span>
-								</g:each>
-							</span>
-							<br class="clear"/>
-						</div>
-					</g:if>
+					<div class="form-row">
+						<span class="form-label secondary">Catalogs<br/>
+							<a href="javascript:" id="catalog-selection-modal-link">Add/Remove Catalogs</a>
+						</span>
+						<span class="input-container threefifty" id="selected-catalogs-span">
+							<g:each in="${specification?.catalogs}" var="catalog">
+								<span class="label label-default">${catalog.name}</span>
+							</g:each>
+						</span>
+						<input type="hidden" value="" id="catalogIds" name="catalogIds"/>
+						<br class="clear"/>
+					</div>
 					
 					<g:submitButton name="save" class="btn btn-primary" value="Save Specification" />
 					
@@ -68,6 +69,18 @@
 				
 		</div>
 
-	
+    <!-- TODO: move to generic javascript file -->
+    <script type="text/javascript" src="${resource(dir:'js/product_catalogs.js')}"></script>
+
+    <script type="text/javascript">
+
+        var catalogIds = [];
+        <g:if test="${catalogIdsArray}">
+            catalogIds = ${catalogIdsArray};
+        </g:if>
+        var catalogIdsString = catalogIds.join();
+
+    </script>
+
 	</body>
 </html>

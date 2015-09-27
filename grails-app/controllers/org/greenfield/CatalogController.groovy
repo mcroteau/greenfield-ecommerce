@@ -327,14 +327,6 @@ class CatalogController {
     	}
 	}
 	
-	
-	
-	def specifications(Long id){
-		authenticatedAdminCatalog { adminAccount, catalogInstance ->
-			[catalogInstance : catalogInstance]
-		}
-	}
-	
 
 	
 	def getCatalogOptionsWithCatalog(catalogInstance){

@@ -17,7 +17,8 @@
 			<h2 class="">Catalogs
 				<g:link controller="catalog" action="create" class="btn btn-primary pull-right" >New Catalog</g:link>
 				<g:link controller="catalog" action="menu_view" class="btn btn-default pull-right" style="display:inline-block;margin-right:5px">Menu View</g:link>
-			</h2>
+            	<g:link controller="specification" action="list" class="btn btn-default pull-right" style="margin-right:5px">Specifications</g:link>
+            </h2>
 			
 			<g:if test="${flash.error}">
 				<div class="alert alert-danger" role="status">${flash.error}</div>

@@ -16,7 +16,7 @@
 			<div class="form-container">
 
 				<h2>Edit Option
-					<g:link controller="specification" action="edit" name="edit" class="btn btn-default pull-right" id="${specificationOption.specification.id}" params="[catalogId : catalogInstance.id]">Back to Specification</g:link>
+					<g:link controller="specification" action="edit" name="edit" class="btn btn-default pull-right" id="${specificationOption.specification.id}">Back to Specification</g:link>
 				</h2>
 
 				<div class="clear" style="margin-top:20px;"></div>
@@ -32,15 +32,6 @@
 					<div style="width:550px;">
 
 						<input type="hidden" name="id" value="${specificationOption.id}"/>
-						<input type="hidden" name="catalogId" value="${catalogInstance.id}"/>
-
-						<div class="form-row">
-							<span class="form-label medium">Catalog</span>
-							<span class="input-container">
-								<span class="label label-default">${catalogInstance?.name}</span>
-							</span>
-							<br class="clear"/>
-						</div>
 
 
 						<div class="form-row">
@@ -63,7 +54,7 @@
 
 						<div class="buttons-container">
 
-							<g:link controller="specification" action="edit" name="edit" class="btn btn-default" id="${specificationOption.specification.id}" params="[catalogId : catalogInstance.id]" style="margin-right:10px;">Back</g:link>
+							<g:link controller="specification" action="edit" name="edit" class="btn btn-default" id="${specificationOption.specification.id}" style="margin-right:10px;">Back</g:link>
 
             				<g:submitButton name="update" class="btn btn-primary" value="Update Option" />
         				</div>

@@ -12,8 +12,9 @@ class Catalog {
 	
 	Catalog parentCatalog
 	static hasMany = [ subcatalogs: Catalog, specifications : Specification ]
-	
-	
+
+	static mappedBy = [ specifications: "catalog" ]
+
 	static mapping = {
 		sort name: "asc"
 		description type: "text"

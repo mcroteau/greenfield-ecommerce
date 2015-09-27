@@ -5,41 +5,77 @@ import org.greenfield.BaseController
 @Mixin(BaseController)
 class SpecificationController {
 
+
+	def list(){
+		authenticatedAdmin{ adminAccount ->
+			def specifications = Specification.list()
+			[ specifications : specifications ]
+		}
+	}
+
+
 	def create(Long id){
-		authenticatedAdminCatalog { adminAccount, catalogInstance ->
-			[ catalogInstance : catalogInstance ]
+		authenticatedAdmin { adminAccount ->
+			def specificationInstance = new Specification(params)
+			def catalogIdsArray = []
+			if(specificationInstance?.catalogs){
+				catalogIdsArray = specificationInstance?.catalogs.collect { it.id }
+			}
+			//TODO: move getCatalogIdSelectionList to utility class
+			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
+
+			def name = params.name ? params.name : ""
+			[ catalogIdSelectionList: catalogIdSelectionList, name : name ]
 		}
 	}
 	
 	
 	def save(Long id){
-		authenticatedAdminCatalog { adminAccount, catalogInstance ->
+		authenticatedAdmin { adminAccount ->
 			if(params.name){
+
+				if(!params.catalogIds){
+					flash.message = "You must assign at least one catalog to continue saving the specification"
+					redirect(action: "create", params : [ name : params.name ] )
+					return
+				}
 
 				def specification = new Specification()
 				specification.name = params.name
-				specification.applySubcatalogs = false
-				specification.save(flush:true)
-				
-				catalogInstance.addToSpecifications(specification)
-				catalogInstance.save(flush:true)
-				
-				if(params.applySubcatalogs == "on"){
-					specification.applySubcatalogs = true
-					specification.save(flush:true)
-					catalogInstance.subcatalogs.each(){ subcatalog ->
-						subcatalog.addToSpecifications(specification)
-						subcatalog.save(flush:true)
+
+				def catalogSelectedIdsArray = params.catalogIds.split(',').collect{it as int}
+
+				if(!catalogSelectedIdsArray){
+					flash.error = "You must assign at least one catalog to continue saving the specification"
+					redirect(action: "create" )
+					return
+				}
+
+				specification.catalogs = null
+				specification.catalog = null
+				catalogSelectedIdsArray.eachWithIndex {  catalogId, index ->
+
+					def catalog = Catalog.get(catalogId)
+					if(catalog){
+						if(index == 0){
+							//add base catalog
+							specification.catalog = catalog
+						}
+						specification.addToCatalogs(catalog)
+						specification.save(flush:true)
+
+						catalog.addToSpecifications(specification)
+						catalog.save(flush:true)
 					}
+
 				}
 
 				flash.message = "Successfully added specification, you can now add options"
-				redirect(controller : 'specification', action: 'edit', id : specification.id, params : [ catalogId : catalogInstance.id] )
+				redirect(controller : 'specification', action: 'edit', id : specification.id )
 				
 			}else{
 				flash.message = "Name cannot be blank"
-				request.catalogInstance = catalogInstance
-				render(view : 'add_product_option')
+				redirect(action:'create')
 			}
 		}
 	}
@@ -47,8 +83,12 @@ class SpecificationController {
 	
 	def edit(Long id){
 		authenticatedAdminSpecification { adminAccount, specificationInstance ->
-			def catalogInstance = Catalog.get(params.catalogId)
-			[ specificationInstance: specificationInstance, catalogInstance: catalogInstance ]
+			def catalogIdsArray = []
+			if(specificationInstance?.catalogs){
+				catalogIdsArray = specificationInstance?.catalogs.collect { it.id }
+			}
+			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
+			[ specificationInstance: specificationInstance, catalogIdSelectionList: catalogIdSelectionList, catalogIdsArray: catalogIdsArray ]
 		}
 	}
 
@@ -60,13 +100,35 @@ class SpecificationController {
 
 				specificationInstance.name = params.name
 
-				if(params.applySubcatalogs == "on"){
-					specificationInstance.applySubcatalogs = true
-				}else{
-					specificationInstance.applySubcatalogs = false
+				def catalogSelectedIdsArray = []
+				if(params.catalogIds){
+					catalogSelectedIdsArray = params.catalogIds.split(',').collect{it as int}
 				}
 
-				specificationInstance.save(flush:true)
+				if(!catalogSelectedIdsArray){
+					flash.message = "You must assign at least one catalog to continue saving the specification"
+					redirect(action: "edit", id: specificationInstance.id)
+					return
+				}
+
+				specificationInstance.catalogs = null
+				specificationInstance.catalog = null
+				catalogSelectedIdsArray.eachWithIndex {  catalogId, index ->
+
+					def catalog = Catalog.get(catalogId)
+					if(catalog){
+						if(index == 0){
+							//add base catalog
+							specificationInstance.catalog = catalog
+						}
+						specificationInstance.addToCatalogs(catalog)
+						specificationInstance.save(flush:true)
+
+						catalog.addToSpecifications(specificationInstance)
+						catalog.save(flush:true)
+					}
+
+				}
 
 				flash.message = "Successfully updated specification"
 
@@ -74,7 +136,7 @@ class SpecificationController {
 				flash.message = "Name cannot be blank"
 			}
 
-			redirect(action:'edit', id : specificationInstance.id, params:[catalogId : params.catalogId] )
+			redirect(action:'edit', id : specificationInstance.id)
 
 		}
 	}
@@ -97,15 +159,14 @@ class SpecificationController {
 				flash.optionMessage = "Name cannot be blank"
 			}
 
-			redirect(action:'edit', id : specificationInstance.id, params:[catalogId : params.catalogId] )
+			redirect(action:'edit', id : specificationInstance.id)
 		}
 	}
 
 
 	def edit_option(){
 		authenticatedAdminSpecificationOption { adminAccount, specificationOptionInstance ->
-			def catalogInstance = Catalog.get(params.catalogId)
-			[ specificationOption : specificationOptionInstance, catalogInstance: catalogInstance ]
+			[ specificationOption : specificationOptionInstance ]
 		}
 	}
 
@@ -124,7 +185,7 @@ class SpecificationController {
 				flash.message = "Name cannot be blank"
 			}
 
-			redirect(action:"edit_option", id : specificationOptionInstance.id, params : [catalogId : params.catalogId])
+			redirect(action:"edit_option", id : specificationOptionInstance.id)
 		}
 	}
 
@@ -134,23 +195,46 @@ class SpecificationController {
 		authenticatedAdminSpecificationOption { adminAccount, specificationOptionInstance ->
 			def specificationInstance = specificationOptionInstance.specification;
 			specificationOptionInstance.delete(flush:true)
-			redirect(action: "edit", id: specificationInstance.id, params: [catalogId: params.catalogId])
+			redirect(action: "edit", id: specificationInstance.id)
 		}
 	}
 
 
-	//TODO:remove
-	def delete_all(){
-		def catalogs = Catalog.list()
-		catalogs.each(){ catalog ->
-			if(catalog.specifications){
-				catalog.specifications.each(){ specification ->
-					catalog.removeFromSpecifications(specification)
-					specification.delete(flush:true)
-				}
+
+	def getCatalogIdSelectionList(catalogIdsArray){
+		def catalogMenuString = "<ul class=\"catalog_list admin-catalog-selection\">"
+		def toplevelCatalogs = Catalog.findAllByToplevel(true)
+		toplevelCatalogs.each{ catalog ->
+			def checked = ""
+			if(catalogIdsArray.contains(catalog.id)){
+				checked = "checked"
 			}
+			catalogMenuString += "<li><input type=\"checkbox\" id=\"checkbox_${catalog.id}\" class=\"catalog_checkbox\" data-id=\"${catalog.id}\" data-name=\"${catalog.name}\" ${checked}>&nbsp;${catalog.name}"
+			if(catalog.subcatalogs){
+				def subcatalogMenuString = getAllSubcatalogLists(catalog, catalogIdsArray)
+				catalogMenuString += subcatalogMenuString
+			}
+			catalogMenuString += "</li>"
 		}
-		render "${Specification.count()}"
+		catalogMenuString += "</ul>"
 	}
 
+	def getAllSubcatalogLists(catalog, catalogIdsArray){
+		def subcatalogsMenu = "<ul class=\"catalog_list admin-subcatalog-selection\">"
+		catalog.subcatalogs.sort { it.id }
+		catalog.subcatalogs.each{ subcatalog ->
+			def checked = ""
+			if(catalogIdsArray.contains(subcatalog.id)){
+				checked = "checked"
+			}
+			subcatalogsMenu += "<li><input type=\"checkbox\" id=\"checkbox_${subcatalog.id}\" class=\"catalog_checkbox\" data-id=\"${subcatalog.id}\" data-name=\"${subcatalog.name}\" ${checked}>&nbsp;${subcatalog.name}"
+			if(subcatalog.subcatalogs){
+				subcatalogsMenu += getAllSubcatalogLists(subcatalog, catalogIdsArray)
+			}
+			subcatalogsMenu += "</li>"
+		}
+		subcatalogsMenu += "</ul>"
+
+		return subcatalogsMenu
+	}
 }
