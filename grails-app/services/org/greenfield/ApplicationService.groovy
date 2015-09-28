@@ -135,7 +135,7 @@ class ApplicationService {
     def getCatalogFilters(catalogInstance){
         //TODO:remove multiple has many relationships catalog & specification
         println "here..." + catalogInstance
-        def filtersString = "<h3 id=\"catalog-filter-header\">Refine By</h3>"
+        def filtersString = '<div id="catalog-filter-container"><h3 id="catalog-filter-header">Refine By</h3>'
 
         def c = Specification.createCriteria()
         def results = c.list {
@@ -184,7 +184,9 @@ class ApplicationService {
         }
 
         if(specificationsCount == 0){
-            filtersString = ""
+            filtersString = ''
+        }else{
+            filtersString += '</div>'
         }
 
         return filtersString
@@ -195,7 +197,7 @@ class ApplicationService {
 
     def getFilterOptionTemplate(){
         return '<li class="catalog-filter-option">' +
-            '<input type="checkbox" name="filter-checkbox-${specificationOption.id}" class="catalog-filter-checkbox" data-name="${specificationName}" data-option-id="${specificationOption.id}"/>' +
+            '<input type="checkbox" id="${specificationName}-${specificationOption.id}" name="filter-checkbox-${specificationOption.id}" class="catalog-filter-checkbox" data-name="${specificationName}" data-option-id="${specificationOption.id}"/>' +
             '${specificationOption.name}' +
             '<span class=\"filter-product-count\">(${specificationOption.products.size()})</span>' +
          '</li>'

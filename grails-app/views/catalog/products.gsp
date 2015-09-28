@@ -89,18 +89,74 @@ ${applicationService.getHeader(catalogInstance, "Products")}
 <script type="text/javascript">
     var $filters = $('.catalog-filter-checkbox');
 
+	var protocol = window.location.protocol,
+	    host = window.location.host,
+	    path = window.location.pathname,
+	    href = window.location.href;
+
+    var paramsIndex = href.indexOf("?");
+    var post = "",
+        postParams = [];
+
+    if(paramsIndex > -1){
+        post = href.substring(paramsIndex + 1, href.length);
+        postParams = post.split('&')
+    }
+
+
+    if(!$.isEmptyObject(postParams)){
+        $(postParams).each(function(index, fullParam){
+            var index = fullParam.indexOf("=");
+            var param = fullParam.substring(0, index);
+            var paramValue = fullParam.substring(index + 1, fullParam.length)
+
+            var id = param + '-' + paramValue;
+
+            if(id){
+                var $checkbox = $('#' + id);
+                if($checkbox){
+                    $checkbox.prop('checked', true);
+                }
+            }
+
+        })
+    }
+
+
     if(!$.isEmptyObject($filters)){
-        console.log('found filters');
         $filters.change(filterProducts)
     }
 
+
     function filterProducts(event){
-        var $target = $(event.target)
 
-        var specification = $target.data('name');
-        var optionId = $target.data('option-id');
+        var filters = "?";
 
-        console.log(specification, optionId);
+        var count = 0;
+        var checkedCount = $('#catalog-filter-container :checkbox:checked').length;
+
+        $filters.each(function(index, checkbox){
+            var $checkbox = $(checkbox);
+            if($checkbox.is(':checked')){
+                count++
+                console.log($checkbox.data('option-id'));
+                var name = $checkbox.data('name');
+                var id = $checkbox.data('option-id');
+                var filter = name + '=' + id
+
+                var postparam = "&";
+                if(checkedCount == count){
+                    postparam = ""
+                }
+                filter += postparam
+                filters += filter
+            }
+        });
+
+        var pre = protocol + '//' + host;
+
+        var url = pre + path + filters;
+        window.location = url;
     }
 
 </script>

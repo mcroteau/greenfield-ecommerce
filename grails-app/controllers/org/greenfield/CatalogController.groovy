@@ -73,10 +73,20 @@ class CatalogController {
 		
 		def products
 		def productsTotal
-		if(params.filter == "true"){
-			println "here..."
-			println "params: ${params}"
-		}else{
+
+		if(params.size > 3){
+
+            Collection<?> keys = params.keySet()
+            for (Object key : keys) {
+                //check if key=action and key=controller which is grails default params
+                if (!key.equals("action") && !key.equals("controller") && !key.equals("id")) {
+                    println key //print out params-name
+                    //println params.get(key) //print out params-value
+                    //TODO:add domain field for param name lowercased and underscored
+                }
+            }
+
+        }else{
 		
 			productsTotal = Product.createCriteria().count{
 				and{
