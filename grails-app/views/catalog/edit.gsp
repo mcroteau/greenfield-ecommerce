@@ -116,7 +116,7 @@
 				
 				<div class="form-row">
 					<span class="form-label full secondary">Specifications
-						<g:link controller="catalog" action="specifications" id="${catalogInstance.id}" class="information" style="display:block">Manage Specifications</g:link>
+						<g:link controller="specification" action="list" id="${catalogInstance.id}" class="information" style="display:block">Manage Specifications</g:link>
 
 						<span class="information secondary" style="display:inline-block; margin-left:15px;">Specifications are used for store front product filtering</span>
 					</span>

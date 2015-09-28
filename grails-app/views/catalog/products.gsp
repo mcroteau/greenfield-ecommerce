@@ -84,5 +84,25 @@ ${applicationService.getHeader(catalogInstance, "Products")}
 <g:else>
 	<p>No products found for selected catalog</p>
 </g:else>
-		
+
+
+<script type="text/javascript">
+    var $filters = $('.catalog-filter-checkbox');
+
+    if(!$.isEmptyObject($filters)){
+        console.log('found filters');
+        $filters.change(filterProducts)
+    }
+
+    function filterProducts(event){
+        var $target = $(event.target)
+
+        var specification = $target.data('name');
+        var optionId = $target.data('option-id');
+
+        console.log(specification, optionId);
+    }
+
+</script>
+
 ${applicationService.getFooter()}

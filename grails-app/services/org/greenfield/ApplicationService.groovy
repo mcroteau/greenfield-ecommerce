@@ -55,6 +55,7 @@ class ApplicationService {
 		header = header.replace("[[REGISTER]]", getRegister())
 		header = header.replace("[[ORDER_HISTORY]]", getOrderHistory())
 		header = header.replace("[[ADMIN_LINK]]", getAdminLink())
+        //header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters())
 		
 		footer = split[1];
 
@@ -88,6 +89,7 @@ class ApplicationService {
 		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
 		header = header.replace("[[CONTEXT_NAME]]", getContextName())
 		header = header.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance))
+        header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance))
 		
 		return this.header
 	}
@@ -123,8 +125,84 @@ class ApplicationService {
 		footer = footer.replace("[[CONTEXT_NAME]]", getContextName())
 		return this.footer
 	}
-	
-	
+
+
+	def getCatalogFilters(){
+        return getCatalogFilters(null)
+	}
+
+
+    def getCatalogFilters(catalogInstance){
+        //TODO:remove multiple has many relationships catalog & specification
+        println "here..." + catalogInstance
+        def filtersString = "<h3 id=\"catalog-filter-header\">Refine By</h3>"
+
+        def c = Specification.createCriteria()
+        def results = c.list {
+            catalogs {
+                idEq(catalogInstance.id)
+            }
+        }
+
+        def specificationsCount = 0
+
+        results?.each{ specification ->
+
+            def optionsCount = 0
+
+            if(specification.specificationOptions){
+
+                def optionString = '<h4 class="specification-name">' + specification.name + '</h4>'
+                optionString += '<ul class="catalog-filter-list">'
+                def specificationName = specification.name.replaceAll(" ", "_").toLowerCase()
+                specification.specificationOptions.each{ specificationOption ->
+
+                    println "*********************"
+                    println specificationOption.products.size()
+                    println "*********************"
+
+                    if(specificationOption.products.size() > 0){
+                        def binding = [ "specificationOption": specificationOption, "specificationName": specificationName ]
+                        def filterTmpl = getFilterOptionTemplate()
+                        def engine = new groovy.text.SimpleTemplateEngine()
+                        def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
+                        optionString += template.toString()
+
+                        optionsCount++
+                    }
+                }
+
+                if(optionsCount > 0){
+                    optionString += '</ul>'
+                    specificationsCount++
+                }else{
+                    optionString = ""
+                }
+
+                filtersString += optionString
+            }
+        }
+
+        if(specificationsCount == 0){
+            filtersString = ""
+        }
+
+        return filtersString
+    }
+
+
+
+
+    def getFilterOptionTemplate(){
+        return '<li class="catalog-filter-option">' +
+            '<input type="checkbox" name="filter-checkbox-${specificationOption.id}" class="catalog-filter-checkbox" data-name="${specificationName}" data-option-id="${specificationOption.id}"/>' +
+            '${specificationOption.name}' +
+            '<span class=\"filter-product-count\">(${specificationOption.products.size()})</span>' +
+         '</li>'
+    }
+
+
+
 	//TODO : uncomment products count in both methods
 	def getCatalogsByCatalog(catalogInstance){
 		

@@ -253,8 +253,28 @@
 					<br class="clear"/>
 				</div>
 				
-				
-				
+
+
+
+				<div class="form-row">
+					<span class="form-label full secondary">Product Specifications
+						<g:link controller="productSpecification" action="manage" id="${productInstance.id}" class="information" style="display:block">Manage Product Specifications</g:link>
+					</span>
+					<span class="input-container sized">
+						<g:if test="${productInstance.productSpecifications.size() > 0}">
+							<g:each in="${productInstance.productSpecifications}" var="productSpecification">
+								<span class="label label-default">${productSpecification.specificationOption.specification.name}:&nbsp;${productSpecification.specificationOption.name}</span>
+							</g:each>
+						</g:if>
+						<g:else>
+							<g:link controller="productSpecification" action="manage" id="${productInstance.id}" class="btn btn-default">Add Product Specification</g:link>
+						</g:else>
+					</span>
+					<br class="clear"/>
+				</div>
+
+
+
 				
 				<div class="form-row">
 					<span class="form-label full hint">Disabled</span>

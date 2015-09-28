@@ -5,6 +5,17 @@ import org.greenfield.BaseController
 @Mixin(BaseController)
 class SpecificationController {
 
+	//TODO:remove
+	def catalogs(){
+		def specification = Specification.get(1)
+		render(specification.catalogs)
+	}
+
+	//TODO:remove
+	def test(){
+		def catalog = Catalog.get(1)
+		render(catalog.specifications)
+	}
 
 	def list(){
 		authenticatedAdmin{ adminAccount ->

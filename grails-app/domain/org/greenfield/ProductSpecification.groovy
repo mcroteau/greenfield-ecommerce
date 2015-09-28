@@ -2,7 +2,6 @@ package org.greenfield
 
 class ProductSpecification {
 
-	boolean allowFiltering
 	SpecificationOption specificationOption
 	
 	static belongsTo = [ product: Product ]
