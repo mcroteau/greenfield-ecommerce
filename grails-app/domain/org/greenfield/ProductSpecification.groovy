@@ -2,6 +2,7 @@ package org.greenfield
 
 class ProductSpecification {
 
+    
 	SpecificationOption specificationOption
 	
 	static belongsTo = [ product: Product ]

@@ -33,8 +33,7 @@
                     <br class="clear"/>
                 </div>
 
-
-                <g:if test="${availableSpecifications}">
+                <g:if test="${availableSpecifications.size() > 0}">
 
                     <g:each in="${availableSpecifications}" var="specification">
 
@@ -74,8 +73,14 @@
                                 <br/>
                             </div>
                         </g:if>
+                        <g:else>
+                            <div class="alert alert-info">No specification options defined for any of the catalogs defined for this product</div>
+                        </g:else>
                     </g:each>
                 </g:if>
+                <g:else>
+                    <div class="alert alert-info">No specifications defined for any of the catalogs defined for this product</div>
+                </g:else>
 
 			</div>
 			

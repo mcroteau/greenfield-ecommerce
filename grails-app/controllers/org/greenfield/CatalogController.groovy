@@ -74,17 +74,59 @@ class CatalogController {
 		def products
 		def productsTotal
 
-		if(params.size > 3){
+
+        productsTotal = products?.size() ? products.size() : 0
+
+        println "products : " + products?.size()
+
+
+		if(params.size() > 3 && notPaginationParams(params)){
+
+            def combinations = []
 
             Collection<?> keys = params.keySet()
-            for (Object key : keys) {
-                //check if key=action and key=controller which is grails default params
-                if (!key.equals("action") && !key.equals("controller") && !key.equals("id")) {
-                    println key //print out params-name
-                    //println params.get(key) //print out params-value
-                    //TODO:add domain field for param name lowercased and underscored
+            for (Object param : keys) {
+
+                def optionIds = params.list(param)
+                if(param != "action" &&
+                        param != "controller" &&
+                        param != "id" &&
+                        param != "offset" &&
+                        param != "max" &&
+                        optionIds){
+                    //println "param : " + param + " -> " + optionIds
+                    combinations.push(optionIds)
                 }
             }
+
+            //combinations = [1, 5, 10], [2, 3]
+            //[1, 2], [5, 2], [10, 2], [3, 1], [3, 5], [3, 10]
+            combinations = combinations.combinations()
+
+            println "combinations : " + combinations
+
+            combinations.unique()
+
+            println "unique : " + combinations
+
+            products = []
+            combinations.each { ids ->
+                def ps = Product.executeQuery '''
+                    select prd from Product as prd
+                        join prd.productSpecifications as sp
+                        join sp.specificationOption as opt
+                    where opt.id in :ids
+                    group by prd
+                    having count(prd) = :count''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong()]
+
+                println "ps : " + ps
+                if(ps){
+                    products.addAll(ps)
+                }
+            }
+
+            println "# products: " + products
+
 
         }else{
 		
@@ -128,9 +170,16 @@ class CatalogController {
 		
 		[products : products,  productsTotal: productsTotal, catalogInstance: catalogInstance, offset : offset, max : max ]
 	}
-	
-	
-	
+
+
+	def notPaginationParams(params){
+        if(params.offset || params.max){
+            return false
+        }
+        return true
+    }
+
+
 	
 	def catalog_products(String name){
 		if(params.name){

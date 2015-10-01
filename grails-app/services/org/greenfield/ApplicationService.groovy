@@ -134,7 +134,6 @@ class ApplicationService {
 
     def getCatalogFilters(catalogInstance){
         //TODO:remove multiple has many relationships catalog & specification
-        println "here..." + catalogInstance
         def filtersString = '<div id="catalog-filter-container"><h3 id="catalog-filter-header">Refine By</h3>'
 
         def c = Specification.createCriteria()
@@ -157,19 +156,14 @@ class ApplicationService {
                 def specificationName = specification.name.replaceAll(" ", "_").toLowerCase()
                 specification.specificationOptions.each{ specificationOption ->
 
-                    println "*********************"
-                    println specificationOption.products.size()
-                    println "*********************"
-
-                    if(specificationOption.products.size() > 0){
+                    //if(specificationOption.products.size() > 0){
                         def binding = [ "specificationOption": specificationOption, "specificationName": specificationName ]
-                        def filterTmpl = getFilterOptionTemplate()
                         def engine = new groovy.text.SimpleTemplateEngine()
                         def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
                         optionString += template.toString()
 
                         optionsCount++
-                    }
+                    //}
                 }
 
                 if(optionsCount > 0){
@@ -198,8 +192,8 @@ class ApplicationService {
     def getFilterOptionTemplate(){
         return '<li class="catalog-filter-option">' +
             '<input type="checkbox" id="${specificationName}-${specificationOption.id}" name="filter-checkbox-${specificationOption.id}" class="catalog-filter-checkbox" data-name="${specificationName}" data-option-id="${specificationOption.id}"/>' +
-            '${specificationOption.name}' +
-            '<span class=\"filter-product-count\">(${specificationOption.products.size()})</span>' +
+            '${specificationOption.name} : ${specificationOption.id}' +
+            //'<span class=\"filter-product-count\">(${specificationOption.products.size()})</span>' +
          '</li>'
     }
 

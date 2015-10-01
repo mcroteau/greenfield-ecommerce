@@ -54,6 +54,9 @@ class SpecificationController {
 				def specification = new Specification()
 				specification.name = params.name
 
+				def searchName = specification.name.replaceAll(" ", "_").toLowerCase()
+				specification.searchName = searchName
+
 				def catalogSelectedIdsArray = params.catalogIds.split(',').collect{it as int}
 
 				if(!catalogSelectedIdsArray){
@@ -110,6 +113,9 @@ class SpecificationController {
 			if(params.name){
 
 				specificationInstance.name = params.name
+
+				def searchName = specificationInstance.name.replaceAll(" ", "_").toLowerCase()
+				specification.searchName = searchName
 
 				def catalogSelectedIdsArray = []
 				if(params.catalogIds){

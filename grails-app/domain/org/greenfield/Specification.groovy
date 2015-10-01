@@ -3,6 +3,7 @@ package org.greenfield
 class Specification {
 
 	String name
+	String searchName
 	
 	Date dateCreated
 	Date lastUpdated
