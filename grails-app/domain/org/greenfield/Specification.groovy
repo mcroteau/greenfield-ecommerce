@@ -8,7 +8,8 @@ class Specification {
 	Date dateCreated
 	Date lastUpdated
 
-	static belongsTo = [ catalog: Catalog ]
+    SortedSet specificationOptions
+
 	static hasMany = [ specificationOptions: SpecificationOption, catalogs: Catalog ]
 	
 	static mapping = {
@@ -16,7 +17,7 @@ class Specification {
 	}
 
 	static constraints = {
-		name(nullable:false, unique:true)
+		name(nullable:false)
 		id generator: 'sequence', params:[sequence:'ID_SPECIFICATION_PK_SEQ']
     }
 	

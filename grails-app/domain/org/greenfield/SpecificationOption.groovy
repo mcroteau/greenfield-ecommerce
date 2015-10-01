@@ -15,8 +15,8 @@ class SpecificationOption implements Comparable {
 		sort name: "asc"
 	}
 
-	int compareTo(obj){
-		name.compareTo(obj.name)
+	int compareTo(obj) {
+        name.compareTo(obj.name)
 	}
 
 	static constraints = {

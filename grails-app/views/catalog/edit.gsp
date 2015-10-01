@@ -121,8 +121,8 @@
 						<span class="information secondary" style="display:inline-block; margin-left:15px;">Specifications are used for store front product filtering</span>
 					</span>
 					<span class="input-container sized">
-						<g:if test="${catalogInstance.specifications.size() > 0}">
-							<g:each in="${catalogInstance.specifications}" var="specification">
+						<g:if test="${specifications?.size() > 0}">
+							<g:each in="${specifications}" var="specification">
 								<span class="label label-default">${specification.name}</span>
 							</g:each>
 						</g:if>

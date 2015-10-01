@@ -11,7 +11,9 @@ class Catalog {
 	boolean toplevel
 	
 	Catalog parentCatalog
-	static hasMany = [ subcatalogs: Catalog, specifications : Specification ]
+	//TODO:remove
+	//static hasMany = [ subcatalogs: Catalog, specifications : Specification ]
+	static hasMany = [ subcatalogs: Catalog ]
 
 	static mappedBy = [ specifications: "catalog" ]
 

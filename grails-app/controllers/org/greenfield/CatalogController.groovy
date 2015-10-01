@@ -117,7 +117,11 @@ class CatalogController {
                         join sp.specificationOption as opt
                     where opt.id in :ids
                     group by prd
-                    having count(prd) = :count''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong()]
+                    having count(prd) = :count
+                    and
+                    disabled = false
+                    and
+                    quantity > 0''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong()]
 
                 println "ps : " + ps
                 if(ps){
@@ -129,16 +133,16 @@ class CatalogController {
 
 
         }else{
-		
-			productsTotal = Product.createCriteria().count{
-				and{
-					eq("disabled", false)
-					gt("quantity", 0)
-					catalogs {
-			    		idEq(id)
-			 		}
-				}
-			}
+		//TODO:remove
+//			productsTotal = Product.createCriteria().count{
+//				and{
+//					eq("disabled", false)
+//					gt("quantity", 0)
+//					catalogs {
+//			    		idEq(id)
+//			 		}
+//				}
+//			}
 		
 			products = Product.createCriteria().list(max: max, offset: params.offset){
 				and{
@@ -149,6 +153,8 @@ class CatalogController {
 			 		}
 				}
 			}
+
+			productsTotal = products.size()
 			
 		}
 		
@@ -278,8 +284,13 @@ class CatalogController {
 			
 			numberSpaces = 1
 			def catalogOptions = getCatalogOptionsWithCatalog(catalogInstance)
-			
-    	    [ catalogInstance: catalogInstance, catalogOptions: catalogOptions ]			
+            def c = Specification.createCriteria()
+            def specifications = c.list {
+                catalogs {
+                    idEq(catalogInstance.id)
+                }
+            }
+    	    [ catalogInstance: catalogInstance, catalogOptions: catalogOptions, specifications: specifications ]
 		}
     }
 	

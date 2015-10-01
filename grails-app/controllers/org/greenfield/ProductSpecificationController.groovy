@@ -5,6 +5,84 @@ import org.greenfield.BaseController
 @Mixin(BaseController)
 class ProductSpecificationController {
 
+    //TODO:remove
+    def generate(){
+
+        def allOptions = [
+            [
+                "name" : "Brand",
+                "searchName" : "brand",
+                "options" : [
+                    [ "name" : "Brybelly" ],
+                    [ "name" : "Rush Creek" ],
+                    [ "name" : "Giantex" ]
+                ]
+            ],
+            [
+                "name" : "Size",
+                "searchName" : "size",
+                "options" : [
+                    [ "name" : "Small" ],
+                    [ "name" : "Medium" ],
+                    [ "name" : "Large" ]
+                ]
+            ],
+            [
+                "name" : "Color",
+                "searchName" : "color",
+                "options" : [
+                    [ "name" : "Red" ],
+                    [ "name" : "Blue" ],
+                    [ "name" : "Yellow" ]
+                ]
+            ]
+        ]
+
+
+        def product1 = Product.get(1)
+        def catalogs = product1.catalogs
+
+        allOptions.each { option ->
+            def specification = new Specification()
+            specification.name = option.name
+            specification.searchName = option.searchName
+            specification.save(flush:true)
+
+            println "new before:" + Specification.count()
+            catalogs.each { catalog ->
+                specification.addToCatalogs(catalog)
+                specification.save(flush:true)
+            }
+
+            println "new after:" + Specification.count()
+            option.options.each {
+                def specficationOption = new SpecificationOption()
+                specficationOption.name = it.name
+                specficationOption.specification = specification
+                specficationOption.save(flush:true)
+
+                specification.addToSpecificationOptions(specficationOption)
+                specification.save(flush:true)
+            }
+        }
+
+        //TODO:remove belongsTo relationship to Catalog in Specification
+
+
+
+    }
+
+    def tmp_delete(){
+        println "before : " + Specification.count()
+        def specifications = Specification.list()
+        specifications.each {
+            it.delete(flush:true)
+        }
+        println "done deleting : " + Specification.count()
+    }
+
+
+    //TODO:remove
     def delete_all(){
         ProductSpecification.executeUpdate('delete from ProductSpecification')
         def specificationOptions = SpecificationOption.list()
@@ -15,6 +93,8 @@ class ProductSpecificationController {
         }
     }
 
+
+    //TODO:remove
     def count(){
         render(ProductSpecification.count())
     }

@@ -45,6 +45,8 @@ class SpecificationController {
 		authenticatedAdmin { adminAccount ->
 			if(params.name){
 
+                println "here..."
+
 				if(!params.catalogIds){
 					flash.message = "You must assign at least one catalog to continue saving the specification"
 					redirect(action: "create", params : [ name : params.name ] )
@@ -56,6 +58,9 @@ class SpecificationController {
 
 				def searchName = specification.name.replaceAll(" ", "_").toLowerCase()
 				specification.searchName = searchName
+                specification.save(flush:true)
+
+                println "saved? " + specification?.id
 
 				def catalogSelectedIdsArray = params.catalogIds.split(',').collect{it as int}
 
@@ -66,20 +71,23 @@ class SpecificationController {
 				}
 
 				specification.catalogs = null
-				specification.catalog = null
+				//TODO:remove
+                //specification.catalog = null
 				catalogSelectedIdsArray.eachWithIndex {  catalogId, index ->
 
 					def catalog = Catalog.get(catalogId)
 					if(catalog){
-						if(index == 0){
-							//add base catalog
-							specification.catalog = catalog
-						}
+                        //TODO:remove
+//						if(index == 0){
+//							//add base catalog
+//							specification.catalog = catalog
+//						}
 						specification.addToCatalogs(catalog)
 						specification.save(flush:true)
 
-						catalog.addToSpecifications(specification)
-						catalog.save(flush:true)
+                        //TODO:remove
+//						catalog.addToSpecifications(specification)
+//						catalog.save(flush:true)
 					}
 
 				}
@@ -115,7 +123,7 @@ class SpecificationController {
 				specificationInstance.name = params.name
 
 				def searchName = specificationInstance.name.replaceAll(" ", "_").toLowerCase()
-				specification.searchName = searchName
+                specificationInstance.searchName = searchName
 
 				def catalogSelectedIdsArray = []
 				if(params.catalogIds){
@@ -129,20 +137,24 @@ class SpecificationController {
 				}
 
 				specificationInstance.catalogs = null
-				specificationInstance.catalog = null
+
+                //TODO:remove
+//				specificationInstance.catalog = null
 				catalogSelectedIdsArray.eachWithIndex {  catalogId, index ->
 
 					def catalog = Catalog.get(catalogId)
 					if(catalog){
-						if(index == 0){
-							//add base catalog
-							specificationInstance.catalog = catalog
-						}
+                        //TODO:remove
+//						if(index == 0){
+//							//add base catalog
+//							specificationInstance.catalog = catalog
+//						}
 						specificationInstance.addToCatalogs(catalog)
 						specificationInstance.save(flush:true)
 
-						catalog.addToSpecifications(specificationInstance)
-						catalog.save(flush:true)
+						//TODO:remove
+//						catalog.addToSpecifications(specificationInstance)
+//						catalog.save(flush:true)
 					}
 
 				}

@@ -29,7 +29,6 @@ class ApplicationService {
 	
 	
 	def refresh(){
-	
 		if(!grailsApplication){
 			grailsApplication = new Page().domainClass.grailsApplication
 		}
@@ -55,11 +54,11 @@ class ApplicationService {
 		header = header.replace("[[REGISTER]]", getRegister())
 		header = header.replace("[[ORDER_HISTORY]]", getOrderHistory())
 		header = header.replace("[[ADMIN_LINK]]", getAdminLink())
-        //header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters())
-		
+
+
 		footer = split[1];
 
-		
+
 		//footer = footer.replace("[[CATALOGS]]", getCatalogsMain())
 		footer = footer.replace("[[SEARCH_BOX]]", getSearchBox())
 		footer = footer.replace("[[SHOPPING_CART]]", getShoppingCart())
@@ -81,7 +80,7 @@ class ApplicationService {
 	
 	def getHeader(Catalog catalogInstance, String title){
 		if(!header)refresh()
-		
+
 		def title_full = getStoreName() + " : " + title
 		
 		header = header.replace("[[TITLE]]", title_full)
@@ -90,8 +89,8 @@ class ApplicationService {
 		header = header.replace("[[CONTEXT_NAME]]", getContextName())
 		header = header.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance))
         header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance))
-		
-		return this.header
+
+		return header
 	}
 	
 	
@@ -106,8 +105,10 @@ class ApplicationService {
 		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
 		header = header.replace("[[CONTEXT_NAME]]", getContextName())
 		header = header.replace("[[CATALOGS]]", getCatalogsMain())
-		
-		return this.header
+        header = header.replace("[[CATALOG_FILTERS]]", "")
+		println "**** overriding? ****"
+
+		return header
 	}
 	
 	
@@ -115,7 +116,7 @@ class ApplicationService {
 		if(!header)refresh()
 		header = header.replace("[[TITLE]]", "Greenfield")
 		header = header.replace("[[CATALOGS]]", getCatalogsMain())
-		return this.header
+		return header
 	}
 	
 	
@@ -123,21 +124,15 @@ class ApplicationService {
 		if(!footer)refresh()
 		footer = footer.replace("[[CATALOGS]]", getCatalogsMain())
 		footer = footer.replace("[[CONTEXT_NAME]]", getContextName())
-		return this.footer
-	}
-
-
-	def getCatalogFilters(){
-        return getCatalogFilters(null)
+		return footer
 	}
 
 
     def getCatalogFilters(catalogInstance){
-        //TODO:remove multiple has many relationships catalog & specification
         def filtersString = '<div id="catalog-filter-container"><h3 id="catalog-filter-header">Refine By</h3>'
 
         def c = Specification.createCriteria()
-        def results = c.list {
+        def specifications = c.list {
             catalogs {
                 idEq(catalogInstance.id)
             }
@@ -145,7 +140,7 @@ class ApplicationService {
 
         def specificationsCount = 0
 
-        results?.each{ specification ->
+        specifications?.each{ specification ->
 
             def optionsCount = 0
 
@@ -155,14 +150,14 @@ class ApplicationService {
                 optionString += '<ul class="catalog-filter-list">'
                 def specificationName = specification.name.replaceAll(" ", "_").toLowerCase()
                 specification.specificationOptions.each{ specificationOption ->
-
+                    //TODO:remove
                     //if(specificationOption.products.size() > 0){
-                        def binding = [ "specificationOption": specificationOption, "specificationName": specificationName ]
-                        def engine = new groovy.text.SimpleTemplateEngine()
-                        def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
-                        optionString += template.toString()
+                    def binding = [ "specificationOption": specificationOption, "specificationName": specificationName ]
+                    def engine = new groovy.text.SimpleTemplateEngine()
+                    def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
+                    optionString += template.toString()
 
-                        optionsCount++
+                    optionsCount++
                     //}
                 }
 
