@@ -11,7 +11,7 @@
 	}
 %>
 	
-${applicationService.getHeader(catalogInstance, "Product Details")}
+${applicationService.getHeader(catalogInstance, "Product Details", true)}
 
 
 <% if(catalogInstance){ %>

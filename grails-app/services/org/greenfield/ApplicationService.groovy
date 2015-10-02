@@ -78,7 +78,7 @@ class ApplicationService {
 	
 	
 	
-	def getHeader(Catalog catalogInstance, String title){
+	def getHeader(Catalog catalogInstance, String title, boolean productPage){
 		if(!header)refresh()
 
 		def title_full = getStoreName() + " : " + title
@@ -88,7 +88,7 @@ class ApplicationService {
 		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
 		header = header.replace("[[CONTEXT_NAME]]", getContextName())
 		header = header.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance))
-        header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance))
+        header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage))
 
 		return header
 	}
@@ -106,7 +106,6 @@ class ApplicationService {
 		header = header.replace("[[CONTEXT_NAME]]", getContextName())
 		header = header.replace("[[CATALOGS]]", getCatalogsMain())
         header = header.replace("[[CATALOG_FILTERS]]", "")
-		println "**** overriding? ****"
 
 		return header
 	}
@@ -128,54 +127,59 @@ class ApplicationService {
 	}
 
 
-    def getCatalogFilters(catalogInstance){
-        def filtersString = '<div id="catalog-filter-container"><h3 id="catalog-filter-header">Refine By</h3>'
+    def getCatalogFilters(catalogInstance, productPage){
 
-        def c = Specification.createCriteria()
-        def specifications = c.list {
-            catalogs {
-                idEq(catalogInstance.id)
-            }
-        }
+        def filtersString = ''
 
-        def specificationsCount = 0
+        if(!productPage){
+            filtersString = '<div id="catalog-filter-container"><h3 id="catalog-filter-header">Refine By</h3>'
 
-        specifications?.each{ specification ->
-
-            def optionsCount = 0
-
-            if(specification.specificationOptions){
-
-                def optionString = '<h4 class="specification-name">' + specification.name + '</h4>'
-                optionString += '<ul class="catalog-filter-list">'
-                def specificationName = specification.name.replaceAll(" ", "_").toLowerCase()
-                specification.specificationOptions.each{ specificationOption ->
-                    //TODO:remove
-                    //if(specificationOption.products.size() > 0){
-                    def binding = [ "specificationOption": specificationOption, "specificationName": specificationName ]
-                    def engine = new groovy.text.SimpleTemplateEngine()
-                    def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
-                    optionString += template.toString()
-
-                    optionsCount++
-                    //}
+            def c = Specification.createCriteria()
+            def specifications = c.list {
+                catalogs {
+                    idEq(catalogInstance.id)
                 }
-
-                if(optionsCount > 0){
-                    optionString += '</ul>'
-                    specificationsCount++
-                }else{
-                    optionString = ""
-                }
-
-                filtersString += optionString
             }
-        }
 
-        if(specificationsCount == 0){
-            filtersString = ''
-        }else{
-            filtersString += '</div>'
+            def specificationsCount = 0
+
+            specifications?.each{ specification ->
+
+                def optionsCount = 0
+
+                if(specification.specificationOptions){
+
+                    def optionString = '<h4 class="specification-name">' + specification.name + '</h4>'
+                    optionString += '<ul class="catalog-filter-list">'
+                    def specificationName = specification.name.replaceAll(" ", "_").toLowerCase()
+                    specification.specificationOptions.each{ specificationOption ->
+                        //TODO:remove
+                        //if(specificationOption.products.size() > 0){
+                        def binding = [ "specificationOption": specificationOption, "specificationName": specificationName ]
+                        def engine = new groovy.text.SimpleTemplateEngine()
+                        def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
+                        optionString += template.toString()
+
+                        optionsCount++
+                        //}
+                    }
+
+                    if(optionsCount > 0){
+                        optionString += '</ul>'
+                        specificationsCount++
+                    }else{
+                        optionString = ""
+                    }
+
+                    filtersString += optionString
+                }
+            }
+
+            if(specificationsCount == 0){
+                filtersString = ''
+            }else{
+                filtersString += '</div>'
+            }
         }
 
         return filtersString

@@ -75,7 +75,6 @@ class CatalogController {
 		def productsTotal
 
 
-        productsTotal = products?.size() ? products.size() : 0
 
         println "products : " + products?.size()
 
@@ -87,14 +86,15 @@ class CatalogController {
             Collection<?> keys = params.keySet()
             for (Object param : keys) {
 
-                def optionIds = params.list(param)
+                def optionIdsString = params.get(param)
                 if(param != "action" &&
                         param != "controller" &&
                         param != "id" &&
                         param != "offset" &&
                         param != "max" &&
-                        optionIds){
-                    //println "param : " + param + " -> " + optionIds
+                        optionIdsString){
+                    //println "param : " + param + " -> " + optionIdsString
+                    def optionIds = optionIdsString.split("-")
                     combinations.push(optionIds)
                 }
             }
@@ -109,40 +109,48 @@ class CatalogController {
 
             println "unique : " + combinations
 
-            products = []
-            combinations.each { ids ->
-                def ps = Product.executeQuery '''
-                    select prd from Product as prd
-                        join prd.productSpecifications as sp
-                        join sp.specificationOption as opt
-                    where opt.id in :ids
-                    group by prd
-                    having count(prd) = :count
-                    and
-                    disabled = false
-                    and
-                    quantity > 0''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong()]
 
-                println "ps : " + ps
-                if(ps){
-                    products.addAll(ps)
-                }
-            }
+            products = []
+//            def countTotal = 0
+//            combinations.each { ids ->
+//                def ps = Product.executeQuery '''
+//                    select prd from Product as prd
+//                        join prd.productSpecifications as sp
+//                        join sp.specificationOption as opt
+//                    where opt.id in :ids
+//                    group by prd
+//                    having count(prd) = :count
+//                    and
+//                    disabled = false
+//                    and
+//                    quantity > 0''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong()]
+//
+//                println "ps : " + ps
+//                if(ps){
+//                    products.addAll(ps)
+//                }
+//            }
+
+
+            products = []
 
             println "# products: " + products
 
+            productsTotal = products?.size() ? products.size() : 0
+            //products = products.drop(offset).take(max)
+
 
         }else{
-		//TODO:remove
-//			productsTotal = Product.createCriteria().count{
-//				and{
-//					eq("disabled", false)
-//					gt("quantity", 0)
-//					catalogs {
-//			    		idEq(id)
-//			 		}
-//				}
-//			}
+
+			productsTotal = Product.createCriteria().count{
+				and{
+					eq("disabled", false)
+					gt("quantity", 0)
+					catalogs {
+			    		idEq(id)
+			 		}
+				}
+			}
 		
 			products = Product.createCriteria().list(max: max, offset: params.offset){
 				and{
@@ -153,8 +161,6 @@ class CatalogController {
 			 		}
 				}
 			}
-
-			productsTotal = products.size()
 			
 		}
 		

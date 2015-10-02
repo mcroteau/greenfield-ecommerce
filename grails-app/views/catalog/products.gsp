@@ -1,7 +1,33 @@
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
 
-${applicationService.getHeader(catalogInstance, "Products")}
+${applicationService.getHeader(catalogInstance, "Products", false)}
+
+
+<%
+
+println request
+
+println params
+
+def pageParams = [:]
+
+Collection<?> keys = params.keySet()
+for (Object param : keys) {
+
+    def optionIds = params.list(param)
+    if(param != "action" &&
+            param != "controller" &&
+            param != "id" &&
+            param != "offset" &&
+            param != "max" &&
+            optionIds){
+
+
+    }
+}
+
+%>
 
 
 
@@ -24,7 +50,7 @@ ${applicationService.getHeader(catalogInstance, "Products")}
 				max="12"
 				maxsteps="5"
 				total="${productsTotal}"
-		        params="${[id: catalogInstance?.id ]}"
+		        params="${[id: catalogInstance?.id, "test": "test" ]}"
 				class="pull-right" />
 		</div>
 		
@@ -130,18 +156,28 @@ ${applicationService.getHeader(catalogInstance, "Products")}
 
     function filterProducts(event){
 
-        var filters = "?";
+        var filtersParams = "?";
 
         var count = 0;
         var checkedCount = $('#catalog-filter-container :checkbox:checked').length;
 
+        var filtersMap = {};
+
         $filters.each(function(index, checkbox){
             var $checkbox = $(checkbox);
             if($checkbox.is(':checked')){
-                count++
-                console.log($checkbox.data('option-id'));
+
                 var name = $checkbox.data('name');
                 var id = $checkbox.data('option-id');
+
+                if(name in filtersMap){
+                    filtersMap[name].push(id)
+                }else{
+                    filtersMap[name] = []
+                    filtersMap[name].push(id)
+                }
+
+                /**
                 var filter = name + '=' + id
 
                 var postparam = "&";
@@ -150,12 +186,29 @@ ${applicationService.getHeader(catalogInstance, "Products")}
                 }
                 filter += postparam
                 filters += filter
+                **/
             }
         });
 
+
+        console.log("filtersMap", filtersMap);
+        for(var filterKey in filtersMap){
+            console.log('here...');
+            var ids = filtersMap[filterKey]
+            console.log(filterKey, ids)
+
+            var filterParam = filterKey + "=" + ids.join("-") + "&"
+            filtersParams += filterParam
+
+        }
+
+        filtersParams = filtersParams.substring(0, filtersParams.length - 1);
+        console.log(filtersParams);
+
+
         var pre = protocol + '//' + host;
 
-        var url = pre + path + filters;
+        var url = pre + path + filtersParams;
         window.location = url;
     }
 
