@@ -74,11 +74,6 @@ class CatalogController {
 		def products
 		def productsTotal
 
-
-
-        println "products : " + products?.size()
-
-
 		if(params.size() > 3 && notPaginationParams(params)){
 
             def combinations = []
@@ -102,43 +97,36 @@ class CatalogController {
             //combinations = [1, 5, 10], [2, 3]
             //[1, 2], [5, 2], [10, 2], [3, 1], [3, 5], [3, 10]
             combinations = combinations.combinations()
-
-            println "combinations : " + combinations
+            //TODO:remove printlns
+            //println "combinations : " + combinations
 
             combinations.unique()
 
-            println "unique : " + combinations
+            //println "unique : " + combinations
 
 
             products = []
-//            def countTotal = 0
-//            combinations.each { ids ->
-//                def ps = Product.executeQuery '''
-//                    select prd from Product as prd
-//                        join prd.productSpecifications as sp
-//                        join sp.specificationOption as opt
-//                    where opt.id in :ids
-//                    group by prd
-//                    having count(prd) = :count
-//                    and
-//                    disabled = false
-//                    and
-//                    quantity > 0''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong()]
-//
-//                println "ps : " + ps
-//                if(ps){
-//                    products.addAll(ps)
-//                }
-//            }
+            def countTotal = 0
+            combinations.each { ids ->
+                def ps = Product.executeQuery '''
+                    select prd from Product as prd
+                        join prd.productSpecifications as sp
+                        join sp.specificationOption as opt
+                    where opt.id in :ids
+                    group by prd
+                    having count(prd) = :count
+                    and
+                    disabled = false
+                    and
+                    quantity > 0''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong()]
 
-
-            products = []
-
-            println "# products: " + products
+                if(ps){
+                    products.addAll(ps)
+                }
+            }
 
             productsTotal = products?.size() ? products.size() : 0
-            //products = products.drop(offset).take(max)
-
+            products = products.drop(offset).take(max)
 
         }else{
 

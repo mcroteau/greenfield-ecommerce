@@ -6,26 +6,28 @@ ${applicationService.getHeader(catalogInstance, "Products", false)}
 
 <%
 
-println request
-
-println params
-
 def pageParams = [:]
+
+pageParams["id"] = catalogInstance?.id
 
 Collection<?> keys = params.keySet()
 for (Object param : keys) {
-
-    def optionIds = params.list(param)
+    def optionIdsString = params.get(param)
     if(param != "action" &&
             param != "controller" &&
             param != "id" &&
             param != "offset" &&
             param != "max" &&
-            optionIds){
+            optionIdsString){
 
-
+        //def optionIds = optionIdsString.split("-")
+        //System.out.println  "gsp : " + optionIds
+        System.out.println  "gsp : " + optionIdsString
+        pageParams[param] = optionIdsString
     }
 }
+
+System.out.println pageParams
 
 %>
 
@@ -50,7 +52,8 @@ for (Object param : keys) {
 				max="12"
 				maxsteps="5"
 				total="${productsTotal}"
-		        params="${[id: catalogInstance?.id, "test": "test" ]}"
+		        //params="${[id: catalogInstance?.id, "test": "test" ]}"
+		        params="${pageParams}"
 				class="pull-right" />
 		</div>
 		
@@ -136,15 +139,19 @@ for (Object param : keys) {
             var param = fullParam.substring(0, index);
             var paramValue = fullParam.substring(index + 1, fullParam.length)
 
-            var id = param + '-' + paramValue;
+            var values = paramValue.split("-")
 
-            if(id){
-                var $checkbox = $('#' + id);
-                if($checkbox){
-                    $checkbox.prop('checked', true);
-                }
+            if(values){
+                $(values).each(function(index, value){
+                    var id = param + '-' + value;
+                    if(id){
+                        var $checkbox = $('#' + id);
+                        if($checkbox){
+                            $checkbox.prop('checked', true);
+                        }
+                    }
+                });
             }
-
         })
     }
 
@@ -176,26 +183,12 @@ for (Object param : keys) {
                     filtersMap[name] = []
                     filtersMap[name].push(id)
                 }
-
-                /**
-                var filter = name + '=' + id
-
-                var postparam = "&";
-                if(checkedCount == count){
-                    postparam = ""
-                }
-                filter += postparam
-                filters += filter
-                **/
             }
         });
 
 
-        console.log("filtersMap", filtersMap);
         for(var filterKey in filtersMap){
-            console.log('here...');
             var ids = filtersMap[filterKey]
-            console.log(filterKey, ids)
 
             var filterParam = filterKey + "=" + ids.join("-") + "&"
             filtersParams += filterParam
@@ -203,8 +196,6 @@ for (Object param : keys) {
         }
 
         filtersParams = filtersParams.substring(0, filtersParams.length - 1);
-        console.log(filtersParams);
-
 
         var pre = protocol + '//' + host;
 
