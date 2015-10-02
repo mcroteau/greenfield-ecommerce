@@ -68,10 +68,9 @@ class ProductSpecificationController {
 
         //TODO:remove belongsTo relationship to Catalog in Specification
 
-
-
     }
 
+    //TODO:remove
     def tmp_delete(){
         println "before : " + Specification.count()
         def specifications = Specification.list()
