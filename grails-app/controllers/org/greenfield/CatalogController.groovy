@@ -74,7 +74,13 @@ class CatalogController {
 		def products
 		def productsTotal
 
-		if(params.size() > 3 && notPaginationParams(params)){
+		if(isFilterRequest(params)){
+
+            //TODO:remove all console.logs
+            println "*****************"
+            println "filter"
+            println params
+            println "*****************"
 
             def combinations = []
 
@@ -129,8 +135,10 @@ class CatalogController {
 
             println products
 
+            products = products.sort{ it.name }
+
             productsTotal = products?.size() ? products.size() : 0
-            products = products.drop(offset).take(max)
+            products = products.drop(offset.toInteger()).take(max.toInteger())
 
         }else{
 
@@ -176,13 +184,32 @@ class CatalogController {
 	}
 
 
-	def notPaginationParams(params){
-        if(params.offset || params.max){
+
+
+    def isFilterRequest(params){
+        /**
+         *
+         * request is larger than 3 parameters and not equal to 5 with pagination
+         *
+         */
+        println "size:" + params.size()
+        println "p : " + (params.size() >= 3) + ":" + (params.size() == 5 && paginationParams(params))
+        if(params.size() == 3 ||
+                (params.size() == 5 && paginationParams(params))){
             return false
         }
+        println "*********"
+        println "return true"
         return true
     }
 
+
+    def paginationParams(params){
+        if(params.offset && params.max){
+            return true
+        }
+        return false;
+    }
 
 	
 	def catalog_products(String name){

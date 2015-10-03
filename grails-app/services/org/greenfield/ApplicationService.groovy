@@ -3,8 +3,10 @@ package org.greenfield
 import org.apache.shiro.SecurityUtils
 import java.math.BigDecimal;
 import groovy.text.SimpleTemplateEngine
-import org.springframework.web.context.request.RequestContextHolder 	   
-	   
+import org.springframework.web.context.request.RequestContextHolder
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+
+
 class ApplicationService {
 
     def grailsApplication
@@ -78,7 +80,7 @@ class ApplicationService {
 	
 	
 	
-	def getHeader(Catalog catalogInstance, String title, boolean productPage){
+	def getHeader(Catalog catalogInstance, String title, boolean productPage, GrailsParameterMap params){
 		if(!header)refresh()
 
 		def title_full = getStoreName() + " : " + title
@@ -87,7 +89,7 @@ class ApplicationService {
 		header = header.replace("[[META_KEYWORDS]]", getMetaKeywords())
 		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
 		header = header.replace("[[CONTEXT_NAME]]", getContextName())
-		header = header.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance))
+		header = header.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance, params))
         header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage))
 
 		return header
@@ -199,7 +201,7 @@ class ApplicationService {
 
 
 	//TODO : uncomment products count in both methods
-	def getCatalogsByCatalog(catalogInstance){
+	def getCatalogsByCatalog(catalogInstance, params){
 		
 		if(!catalogInstance){
 			return getCatalogsMain(catalogInstance)
@@ -224,13 +226,16 @@ class ApplicationService {
 			catalogsList.each { c ->
 				def productsCount = getCatalogProductsCount(c)
 				if(productsCount > 0){
-					def link = "/${getContextName()}/catalog/products/${c.id}"
+
+                    def filterParams = getFilterParameters(params)
+
+					def link = "/${getContextName()}/catalog/products/${c.id}${filterParams}"
 					def activeClass = c.id == catalogInstance.id ? "active-catalog" : ""
 					def catalogData = [
-						 	"link" : link, 
-							"name" : c.name, 
-							productsCount : productsCount, 
-							activeClass : activeClass 
+                        "link" : link,
+                        "name" : c.name,
+                        "productsCount" : productsCount,
+                        "activeClass" : activeClass
 					]
 					def engine = new SimpleTemplateEngine()
 					def result = engine.createTemplate(template).make(catalogData)
@@ -242,7 +247,39 @@ class ApplicationService {
 		catalogsString += "</div>"
 		return catalogsString
 	}
-	
+
+
+
+    def getFilterParameters(params){
+        def filterParams = "?"
+        def count = 0
+
+        Collection<?> keys = params.keySet()
+        for (Object param : keys) {
+            def optionIdsString = params.get(param)
+            if(param != "action" &&
+                    param != "controller" &&
+                    param != "id" &&
+                    param != "offset" &&
+                    param != "max" &&
+                    optionIdsString){
+                filterParams += param + "=" + optionIdsString + "&"
+                count++
+            }
+        }
+
+        if(count == 0){
+            filterParams = ""
+        }else{
+            filterParams = filterParams.substring(0, filterParams.length() - 1);
+        }
+
+        println "filterParams : " + filterParams
+
+        return filterParams
+    }
+
+
 	
 	def getReturnLink(catalogInstance){
 		def template = '<span class="catalog-return-link">&#xAB;&nbsp;<a href="${link}">${name}</a></span>'

@@ -1,13 +1,10 @@
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
 
-${applicationService.getHeader(catalogInstance, "Products", false)}
-
+${applicationService.getHeader(catalogInstance, "Products", false, params)}
 
 <%
-
 def pageParams = [:]
-
 pageParams["id"] = catalogInstance?.id
 
 Collection<?> keys = params.keySet()
@@ -19,19 +16,10 @@ for (Object param : keys) {
             param != "offset" &&
             param != "max" &&
             optionIdsString){
-
-        //def optionIds = optionIdsString.split("-")
-        //System.out.println  "gsp : " + optionIds
-        System.out.println  "gsp : " + optionIdsString
         pageParams[param] = optionIdsString
     }
 }
-
-System.out.println pageParams
-
 %>
-
-
 
 <div class="breadcrumbs">
 	${applicationService.getBreadcrumbs(catalogInstance)}
@@ -52,7 +40,6 @@ System.out.println pageParams
 				max="12"
 				maxsteps="5"
 				total="${productsTotal}"
-		        //params="${[id: catalogInstance?.id, "test": "test" ]}"
 		        params="${pageParams}"
 				class="pull-right" />
 		</div>
@@ -93,7 +80,13 @@ System.out.println pageParams
 	
 			<g:link controller="product" action="details" id="${productInstance.id}">
 				<p class="product-price">$${applicationService.formatPrice(productInstance.price)}</p>
-	        </g:link>	
+	        </g:link>
+
+            <g:if test="${productInstance.productSpecifications.size() > 0}">
+                <g:each in="${productInstance.productSpecifications}" var="productSpecification">
+                    <span class="label label-default">${productSpecification.specificationOption.specification.name}:&nbsp;${productSpecification.specificationOption.name}</span>
+                </g:each>
+            </g:if>
 		</div>
 	</g:each>
 	<br style="clear:both"/>
@@ -104,7 +97,7 @@ System.out.println pageParams
 			max="12"
 			maxsteps="5"
 			total="${productsTotal}"
-	        params="${[id: catalogInstance?.id ]}"
+		    params="${pageParams}"
 			class="pull-right" />
 	</div>
 	<br class="clear"/>		

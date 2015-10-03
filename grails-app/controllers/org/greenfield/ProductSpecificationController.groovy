@@ -99,7 +99,7 @@ class ProductSpecificationController {
         ]
 
 
-        def product1 = Product.get(9)
+        def product1 = Product.get(18)
         def catalogs = product1.catalogs
 
         allOptions.each { option ->
