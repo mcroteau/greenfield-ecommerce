@@ -98,11 +98,11 @@ class CatalogController {
             //[1, 2], [5, 2], [10, 2], [3, 1], [3, 5], [3, 10]
             combinations = combinations.combinations()
             //TODO:remove printlns
-            //println "combinations : " + combinations
+            println "combinations : " + combinations
 
             combinations.unique()
 
-            //println "unique : " + combinations
+            println "unique : " + combinations
 
 
             products = []
@@ -112,18 +112,22 @@ class CatalogController {
                     select prd from Product as prd
                         join prd.productSpecifications as sp
                         join sp.specificationOption as opt
-                    where opt.id in :ids
+                        join prd.catalogs as c
+                    where c.id = :catalogId
+                    and opt.id in :ids
                     group by prd
                     having count(prd) = :count
                     and
                     disabled = false
                     and
-                    quantity > 0''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong()]
+                    quantity > 0''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong(), catalogId: id]
 
                 if(ps){
                     products.addAll(ps)
                 }
             }
+
+            println products
 
             productsTotal = products?.size() ? products.size() : 0
             products = products.drop(offset).take(max)
