@@ -5,6 +5,8 @@ import org.greenfield.BaseController
 @Mixin(BaseController)
 class SpecificationController {
 
+    def numberSpaces = 1
+
 	//TODO:remove
 	def catalogs(){
 		def specification = Specification.get(1)
@@ -17,6 +19,70 @@ class SpecificationController {
 		render(catalog.specifications)
 	}
 
+
+    def set_product_specifications(Long id){
+        authenticatedAdminSpecification { adminAccount, specificationInstance ->
+            def specifications = params.productSpecifications.split(",")
+            println "*********************"
+            println specifications
+            println "*********************"
+            specifications.each{ specification ->
+                def details = specification.split("-")
+
+                def productId = details.getAt(0)
+                def optionId = details.getAt(1)
+
+                println "productId : " + productId + "  optionId : " + optionId
+
+                def option = SpecificationOption.get(optionId)
+                def product = Product.get(productId)
+
+                if(option && product){
+                    def existingProductSpecifcation = ProductSpecification.findBySpecificationOptionAndProduct(option, product)
+                    if(!existingProductSpecifcation){
+                        def productSpecification = new ProductSpecification()
+                        productSpecification.specificationOption = option
+                        productSpecification.product = product
+                        productSpecification.save(flush:true)
+
+                        product.addToProductSpecifications(productSpecification)
+                        product.save(flush:true)
+                    }
+                }
+            }
+        }
+
+        println "product specifications : " + ProductSpecification.count()
+        flash.message = "Successfully set product specifications"
+        redirect(action: 'product_specifications', id: id)
+    }
+
+
+
+    def product_specifications(Long id){
+        authenticatedAdminSpecification { adminAccount, specificationInstance ->
+            def catalogOptions = getCatalogOptions()
+            def products = []
+            def catalog = null
+
+            if(params.catalogId){
+                catalog = Catalog.get(params.catalogId)
+
+                if(catalog){
+                    def c = Product.createCriteria()
+                    products = c.list{
+                        catalogs{
+                            idEq(params.catalogId.toLong())
+                        }
+                    }
+                }
+            }
+            println "products : " + products
+            [ specificationInstance: specificationInstance, catalogOptions: catalogOptions, products: products, catalogInstance: catalog ]
+        }
+    }
+
+
 	def list(){
 		authenticatedAdmin{ adminAccount ->
 			def specifications = Specification.list()
@@ -25,7 +91,7 @@ class SpecificationController {
 	}
 
 
-	def create(Long id){
+	def create(){
 		authenticatedAdmin { adminAccount ->
 			def specificationInstance = new Specification(params)
 			def catalogIdsArray = []
@@ -266,4 +332,43 @@ class SpecificationController {
 
 		return subcatalogsMenu
 	}
+
+
+    //TODO: move to utlities class
+    def getCatalogOptions(){
+        def catalogOptions = ""
+        def toplevelCatalogs = Catalog.findAllByToplevel(true)
+        toplevelCatalogs.each{ catalog ->
+            catalogOptions += "<option value=\"${catalog.id}\">${catalog.name}</option>"
+            if(catalog.subcatalogs){
+                def optionsString = getAllSubcatalogOptions(catalog)
+                catalogOptions += optionsString
+            }
+        }
+        return catalogOptions
+    }
+
+
+    //TODO: move to utlities class
+    def getAllSubcatalogOptions(catalog){
+        def subcatalogs = ""
+        catalog.subcatalogs.each{ subcatalog ->
+            def spaceString = ""
+            for(def m = 0; m < numberSpaces; m++){
+                spaceString += "|&nbsp;&nbsp;&nbsp;&nbsp;"
+            }
+            subcatalogs += "<option value=\"${subcatalog.id}\">${spaceString}${subcatalog.name}</option>"
+            if(subcatalog.subcatalogs){
+                numberSpaces++
+                def subOptionsString = getAllSubcatalogOptions(subcatalog)
+                subcatalogs += subOptionsString
+            }
+        }
+
+        if(numberSpaces > 1){
+            --numberSpaces
+        }
+        return subcatalogs
+    }
+
 }

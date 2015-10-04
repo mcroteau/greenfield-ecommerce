@@ -65,6 +65,8 @@
 
 					<div style="text-align:center">
 						<g:submitButton name="update" class="btn btn-primary" value="Update Specification Settings" style="margin: 0px auto 0px auto;"/>
+					    <br/><br/>
+					    <g:link action="product_specifications" id="${specificationInstance.id}" class="btn btn-default">Product Specifications</g:link>
 					</div>
 
 					<br class="clear"/>

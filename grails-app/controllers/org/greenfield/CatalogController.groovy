@@ -135,8 +135,6 @@ class CatalogController {
 
             println products
 
-            products = products.sort{ it.name }
-
             productsTotal = products?.size() ? products.size() : 0
             products = products.drop(offset.toInteger()).take(max.toInteger())
 
@@ -187,11 +185,6 @@ class CatalogController {
 
 
     def isFilterRequest(params){
-        /**
-         *
-         * request is larger than 3 parameters and not equal to 5 with pagination
-         *
-         */
         println "size:" + params.size()
         println "p : " + (params.size() >= 3) + ":" + (params.size() == 5 && paginationParams(params))
         if(params.size() == 3 ||
@@ -219,9 +212,9 @@ class CatalogController {
 			request.products = products
 			render view:'products'
 		}
-	}	
-	
-	
+	}
+
+
 	
 	
     def list(Integer max) {

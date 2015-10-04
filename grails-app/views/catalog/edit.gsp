@@ -16,9 +16,7 @@
 <body>
 	
 	
-	
 	<div class="form-outer-container">
-		
 		
 		<div class="form-container">
 			
@@ -28,7 +26,6 @@
 			</h1>
 			
 			<br class="clear"/>
-			
 
 			
 			<div class="messages">
