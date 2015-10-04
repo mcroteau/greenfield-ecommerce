@@ -39,16 +39,19 @@ class ProductSpecificationController {
 
             def brandOption = new ProductSpecification()
             brandOption.specificationOption = brand
+            brandOption.specification = brandSpecification
             brandOption.product = product
             brandOption.save(flush:true)
 
             def sizeOption = new ProductSpecification()
             sizeOption.specificationOption = size
+            sizeOption.specification = sizeSpecification
             sizeOption.product = product
             sizeOption.save(flush:true)
 
             def colorOption = new ProductSpecification()
             colorOption.specificationOption = color
+            colorOption.specification = colorSpecification
             colorOption.product = product
             colorOption.save(flush:true)
 
@@ -216,6 +219,7 @@ class ProductSpecificationController {
 
             def productSpecification = new ProductSpecification()
             productSpecification.specificationOption = specificationOption
+            productSpecification.specification = specification
             productSpecification.product = productInstance
             productSpecification.save(flush:true)
 

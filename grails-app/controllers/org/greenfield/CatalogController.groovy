@@ -110,7 +110,7 @@ class CatalogController {
 
             println "unique : " + combinations
 
-
+            //TODO:implement pagination without getting all products
             products = []
             def countTotal = 0
             combinations.each { ids ->

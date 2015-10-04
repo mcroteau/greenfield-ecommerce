@@ -11,9 +11,10 @@ class SpecificationOption implements Comparable {
 
 	static hasMany = [ products: Product ]
 
-	static mapping = {
-		sort name: "asc"
-	}
+    //TODO:remove
+//	static mapping = {
+//		sort name: "asc"
+//	}
 
 	int compareTo(obj) {
         name.compareTo(obj.name)

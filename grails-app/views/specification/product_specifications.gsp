@@ -29,27 +29,32 @@
 
 			
 			<div class="messages">
-			
 				<g:if test="${flash.message}">
 					<div class="alert alert-info" role="status">${flash.message}</div>
 				</g:if>
-
 			</div>
-			
-			
-			
+
+
 			<g:form method="post" action="set_product_specifications" id="${specificationInstance.id}">
 
 				<g:hiddenField name="catalogId" value="${catalogInstance?.id}" />
 				<g:hiddenField name="id" value="${specificationInstance?.id}" />
 				<input type="hidden" name="productSpecifications" id="productSpecifications" name="product_specifications" value=""/>
 
+				<div class="form-row">
+					<span class="form-label twohundred secondary">Specification</span>
+					<span class="input-container">
+					    <h3 style="margin:0px !important"><span class="label label-default">${specificationInstance.name}</span></h3>
+					</span>
+					<br class="clear"/>
+				</div>
+
 
 				<div class="form-row">
 					<span class="form-label twohundred secondary">Select Catalog</span>
 					<span class="input-container">
 						<select name="catalog" class="form-control" id="catalog" style="width:auto">
-						    <option>Select Catalog</option>
+						    <option value="">Select Catalog</option>
 							${catalogOptions}
 						</select>
 					</span>
@@ -68,10 +73,10 @@
                         <tbody>
                             <g:each in="${products}" var="product">
                                 <tr>
-                                    <td>${product.name}</td>
-                                    <td>
+                                    <td style="text-align:left">${product.name}</td>
+                                    <td style="text-align:left">
                                         <select class="product_specification" name="product_specification_${product.id}">
-                                            <option>None</option>
+                                            <option value="${product.id}-NONE">None</option>
                                             <g:each in="${specificationInstance.specificationOptions}" var="option">
                                                 <%
                                                     def selected = ""
@@ -89,14 +94,20 @@
                             </g:each>
                         </tbody>
                     </table>
-                </g:if>
+                    <div class="btn-group">
+                        <g:paginate
+                            total="${productsTotal}"
+                            id="${specificationInstance?.id}"
+                            params="[catalogId : params.catalogId]"/>
+                    </div>
 
-
-				<g:if test="${products}">
                     <div class="buttons-container">
                         <g:actionSubmit class="btn btn-primary" action="set_product_specifications" value="Set Product ${specificationInstance.name} Options" />
                     </div>
                 </g:if>
+                <g:else>
+                    <div class="alert alert-info">Select a catalog to view products and assign product specifications</div>
+                </g:else>
 			</g:form>
 		</div>
 	</div>
@@ -130,11 +141,20 @@
 
         $catalog.change(changeCatalogs)
         $specifications.change(updateSpecification)
-
+        setProductSpecifications();
 
         if(catalogId != "00"){
-            console.log(catalogId)
             $catalog.val(catalogId)
+        }
+
+
+        function setProductSpecifications(){
+            var productSpecifications = ""
+            $specifications.each(function(index, specification){
+               var $specification = $(specification)
+               var value = $specification.val()
+               console.log(value)
+            });
         }
 
 
@@ -142,7 +162,6 @@
             var specifications = $('#specifications').val()
             var $target = $(event.target);
             var optionId = $target.val()
-            console.log(optionId)
             var productSpecifications = ""
 
             $productSpecifications.val("")
@@ -154,14 +173,12 @@
             });
             productSpecifications = productSpecifications.substring(0, productSpecifications.length - 1);
             $productSpecifications.val(productSpecifications)
-            console.log(productSpecifications)
         }
 
 
         function changeCatalogs(){
             var id = $catalog.val()
-            console.log('here...', pre, id)
-            var url = pre + "?catalogId=" + id
+            var url = pre + "?catalogId=" + id + "&offset=0&max=10";
             window.location = url
         }
 

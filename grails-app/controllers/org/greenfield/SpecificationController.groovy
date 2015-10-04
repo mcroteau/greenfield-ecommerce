@@ -22,65 +22,104 @@ class SpecificationController {
 
     def set_product_specifications(Long id){
         authenticatedAdminSpecification { adminAccount, specificationInstance ->
-            def specifications = params.productSpecifications.split(",")
-            println "*********************"
-            println specifications
-            println "*********************"
-            specifications.each{ specification ->
-                def details = specification.split("-")
 
-                def productId = details.getAt(0)
-                def optionId = details.getAt(1)
+            def max = params.max ? params.max : 10
+            def offset = params.offset ? params.offset : 0
 
-                println "productId : " + productId + "  optionId : " + optionId
+            if(params.productSpecifications){
 
-                def option = SpecificationOption.get(optionId)
-                def product = Product.get(productId)
+                def specifications = params.productSpecifications.split(",")
 
-                if(option && product){
-                    def existingProductSpecifcation = ProductSpecification.findBySpecificationOptionAndProduct(option, product)
-                    if(!existingProductSpecifcation){
+                specifications.each { specification ->
+                    def details = specification.split("-")
+
+                    def productId = details.getAt(0)
+                    def optionId = details.getAt(1)
+
+                    def option = [:]
+                    def product = Product.get(productId)
+
+                    if(optionId == "NONE"){
+                        println "********** equals NONE **********"
+                        def existingProductSpec = ProductSpecification.findBySpecification(specificationInstance)
+                        if(existingProductSpec){
+                            existingProductSpec.delete(flush:true)
+                        }
+                    }else{
+                        option = SpecificationOption.get(optionId)
+                    }
+
+                    if(option && product) {
+                        def existingProductSpecification = ProductSpecification.findBySpecificationAndProduct(specificationInstance, product)
+
+                        if (existingProductSpecification) {
+                            existingProductSpecification.delete(flush: true)
+                        }
+
                         def productSpecification = new ProductSpecification()
+                        productSpecification.specification = specificationInstance
                         productSpecification.specificationOption = option
                         productSpecification.product = product
-                        productSpecification.save(flush:true)
+                        productSpecification.save(flush: true)
 
                         product.addToProductSpecifications(productSpecification)
-                        product.save(flush:true)
+                        product.save(flush: true)
+
                     }
                 }
-            }
-        }
 
-        println "product specifications : " + ProductSpecification.count()
-        flash.message = "Successfully set product specifications"
-        redirect(action: 'product_specifications', id: id)
+                flash.message = "Successfully set product specifications"
+
+            }else{
+                flash.message = "No changes were made"
+            }
+            println "*********************"
+            println "product specifications : " + ProductSpecification.count()
+            println "*********************"
+            redirect(action: 'product_specifications', id: id, params: [catalogId: params.catalogId, max: max, offset: offset])
+
+        }
     }
 
 
 
     def product_specifications(Long id){
         authenticatedAdminSpecification { adminAccount, specificationInstance ->
-            def catalogOptions = getCatalogOptions()
+            def max = params.max ? params.max : 10
+            def offset = params.offset ? params.offset : 0
+//            def catalogOptions = getCatalogOptions()
+            def catalogOptions = getCatalogOptions(specificationInstance)
             def products = []
+            def productsTotal = 0
             def catalog = null
 
             if(params.catalogId){
                 catalog = Catalog.get(params.catalogId)
 
                 if(catalog){
+
+                    productsTotal = Product.createCriteria().count{
+                        and{
+                            catalogs {
+                                idEq(params.catalogId.toLong())
+                            }
+                        }
+                    }
+
                     def c = Product.createCriteria()
-                    products = c.list{
+                    products = c.list(max: max, offset: offset){
                         catalogs{
                             idEq(params.catalogId.toLong())
                         }
                     }
+
                 }
             }
             println "products : " + products
-            [ specificationInstance: specificationInstance, catalogOptions: catalogOptions, products: products, catalogInstance: catalog ]
+            [ specificationInstance: specificationInstance, catalogOptions: catalogOptions, products: products, productsTotal: productsTotal, catalogInstance: catalog ]
         }
     }
+
 
 
 	def list(){
@@ -111,8 +150,6 @@ class SpecificationController {
 		authenticatedAdmin { adminAccount ->
 			if(params.name){
 
-                println "here..."
-
 				if(!params.catalogIds){
 					flash.message = "You must assign at least one catalog to continue saving the specification"
 					redirect(action: "create", params : [ name : params.name ] )
@@ -126,8 +163,6 @@ class SpecificationController {
 				specification.searchName = searchName
                 specification.save(flush:true)
 
-                println "saved? " + specification?.id
-
 				def catalogSelectedIdsArray = params.catalogIds.split(',').collect{it as int}
 
 				if(!catalogSelectedIdsArray){
@@ -137,23 +172,13 @@ class SpecificationController {
 				}
 
 				specification.catalogs = null
-				//TODO:remove
-                //specification.catalog = null
+
 				catalogSelectedIdsArray.eachWithIndex {  catalogId, index ->
 
 					def catalog = Catalog.get(catalogId)
 					if(catalog){
-                        //TODO:remove
-//						if(index == 0){
-//							//add base catalog
-//							specification.catalog = catalog
-//						}
 						specification.addToCatalogs(catalog)
 						specification.save(flush:true)
-
-                        //TODO:remove
-//						catalog.addToSpecifications(specification)
-//						catalog.save(flush:true)
 					}
 
 				}
@@ -204,25 +229,12 @@ class SpecificationController {
 
 				specificationInstance.catalogs = null
 
-                //TODO:remove
-//				specificationInstance.catalog = null
 				catalogSelectedIdsArray.eachWithIndex {  catalogId, index ->
-
 					def catalog = Catalog.get(catalogId)
 					if(catalog){
-                        //TODO:remove
-//						if(index == 0){
-//							//add base catalog
-//							specificationInstance.catalog = catalog
-//						}
 						specificationInstance.addToCatalogs(catalog)
 						specificationInstance.save(flush:true)
-
-						//TODO:remove
-//						catalog.addToSpecifications(specificationInstance)
-//						catalog.save(flush:true)
 					}
-
 				}
 
 				flash.message = "Successfully updated specification"
@@ -334,8 +346,18 @@ class SpecificationController {
 	}
 
 
+    def getCatalogOptions(specificationInstance){
+        def catalogOptions = ""
+        specificationInstance.catalogs.each{ catalog ->
+            catalogOptions += "<option value=\"${catalog.id}\">${catalog.name}</option>"
+        }
+        return catalogOptions
+    }
+
+
+    //TODO: consider deleting if use different method
     //TODO: move to utlities class
-    def getCatalogOptions(){
+    def getCatalogOptionsOriginal(){
         def catalogOptions = ""
         def toplevelCatalogs = Catalog.findAllByToplevel(true)
         toplevelCatalogs.each{ catalog ->
@@ -349,6 +371,7 @@ class SpecificationController {
     }
 
 
+    //TODO: consider deleting if use different method
     //TODO: move to utlities class
     def getAllSubcatalogOptions(catalog){
         def subcatalogs = ""

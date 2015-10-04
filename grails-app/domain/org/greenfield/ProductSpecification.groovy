@@ -2,10 +2,9 @@ package org.greenfield
 
 class ProductSpecification {
 
-    
 	SpecificationOption specificationOption
 	
-	static belongsTo = [ product: Product ]
+	static belongsTo = [ product: Product, specification: Specification ]
 
 	Date dateCreated
 	Date lastUpdated
