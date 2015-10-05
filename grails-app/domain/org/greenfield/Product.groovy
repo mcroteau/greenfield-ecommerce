@@ -31,6 +31,7 @@ class Product {
 		description type: "text"
         additionalPhotos cascade: 'all-delete-orphan'
         productOptions cascade: 'all-delete-orphan'
+        productSpecifications cascade: "all-delete-orphan"
 	}
 	
     static constraints = {

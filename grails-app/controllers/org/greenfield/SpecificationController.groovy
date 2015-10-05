@@ -39,10 +39,16 @@ class SpecificationController {
                     def option = [:]
                     def product = Product.get(productId)
 
-                    if(optionId == "NONE"){
-                        println "********** equals NONE **********"
-                        def existingProductSpec = ProductSpecification.findBySpecification(specificationInstance)
+                    if(optionId == "NONE" && product){
+                        println "\n********** equals NONE **********"
+                        def existingProductSpec = ProductSpecification.findBySpecificationAndProduct(specificationInstance, product)
+
+
                         if(existingProductSpec){
+                            println "********** existingProductSpec **********"
+                            println "existing product spec : " + product.name + " : " + existingProductSpec.specificationOption.name
+                            println "\n"
+                            product.removeFromProductSpecifications(existingProductSpec)
                             existingProductSpec.delete(flush:true)
                         }
                     }else{
@@ -53,7 +59,8 @@ class SpecificationController {
                         def existingProductSpecification = ProductSpecification.findBySpecificationAndProduct(specificationInstance, product)
 
                         if (existingProductSpecification) {
-                            existingProductSpecification.delete(flush: true)
+                            product.removeFromProductSpecifications(existingProductSpecification)
+                            existingProductSpecification.delete(flush:true)
                         }
 
                         def productSpecification = new ProductSpecification()
@@ -93,25 +100,43 @@ class SpecificationController {
             def productsTotal = 0
             def catalog = null
 
+            def ids = specificationInstance.catalogs.collect{ it.id }
+
+            println "ids : " + ids
+
             if(params.catalogId){
                 catalog = Catalog.get(params.catalogId)
 
                 if(catalog){
 
-                    productsTotal = Product.createCriteria().count{
-                        and{
-                            catalogs {
-                                idEq(params.catalogId.toLong())
-                            }
-                        }
-                    }
+//                    productsTotal = Product.createCriteria().count{
+//                        and{
+//                            catalogs {
+//                                idEq(params.catalogId.toLong())
+//                            }
+//                        }
+//                    }
+//
+//                    def c = Product.createCriteria()
+//                    products = c.list(max: max, offset: offset){
+//                        catalogs{
+//                            idEq(params.catalogId.toLong())
+//                        }
+//                    }
 
-                    def c = Product.createCriteria()
-                    products = c.list(max: max, offset: offset){
-                        catalogs{
-                            idEq(params.catalogId.toLong())
-                        }
-                    }
+                    productsTotal = 0
+                    products = []
+
+                    products = Product.executeQuery '''
+                        select prd from Product as prd
+                            join prd.catalogs as c
+                        and c.id in :ids
+                        group by prd
+                        having count(prd) = :count''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong(), catalogId: params.catalogId.toLong()]
+
+
+                    //TODO:remove
+                    //products = removeNonCatalogProducts(products, specificationInstance)
 
                 }
             }
@@ -119,6 +144,39 @@ class SpecificationController {
             [ specificationInstance: specificationInstance, catalogOptions: catalogOptions, products: products, productsTotal: productsTotal, catalogInstance: catalog ]
         }
     }
+
+    //TODO:remove
+//    def removeNonCatalogProducts(products, specificationInstance){
+//        def specificationCatalogs = specificationInstance.catalogs
+//
+//        def ids = specificationCatalogs.collect{ it.id }
+//
+//        println "*********************"
+//        println ids
+//        println "*********************"
+//
+//        def cleanedProducts = []
+//
+//        products.eachWithIndex{ product, index ->
+//            println index
+//            def allExists = true
+//            def catalogs = product.catalogs
+//            def catalogIds = catalogs.collect{ it.id }
+//            if(catalogIds.size() == ids.size()){
+//                catalogIds.each{ it ->
+//                    if(!ids.contains(it)){
+//                        allExists = false
+//                    }
+//                }
+//            }
+//
+//            if(allExists){
+//                cleanedProducts.push(product)
+//            }
+//
+//        }
+//        return cleanedProducts
+//    }
 
 
 

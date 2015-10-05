@@ -40,6 +40,9 @@
 				<g:hiddenField name="catalogId" value="${catalogInstance?.id}" />
 				<g:hiddenField name="id" value="${specificationInstance?.id}" />
 				<input type="hidden" name="productSpecifications" id="productSpecifications" name="product_specifications" value=""/>
+				<input type="hidden" name="max" value="${params.max}"/>
+				<input type="hidden" name="offset" value="${params.offset}"/>
+
 
 				<div class="form-row">
 					<span class="form-label twohundred secondary">Specification</span>
