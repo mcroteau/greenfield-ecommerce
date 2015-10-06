@@ -44,10 +44,29 @@
 				<input type="hidden" name="offset" value="${params.offset}"/>
 
 
+                <style type="text/css">
+                    .form-row{
+                        margin-bottom:8px !important;
+                    }
+                    .information{
+                        color:rgba(0,0,0,0.54)
+                    }
+                </style>
 				<div class="form-row">
 					<span class="form-label twohundred secondary">Specification</span>
 					<span class="input-container">
 					    <h3 style="margin:0px !important"><span class="label label-default">${specificationInstance.name}</span></h3>
+					</span>
+					<br class="clear"/>
+				</div>
+
+                <div class="form-row">
+					<span class="form-label twohundred secondary">Catalogs</span>
+					<span class="input-container" id="selected-catalogs-span">
+						<g:each in="${specificationInstance?.catalogs}" var="catalog">
+							<span class="label label-default">${catalog.name}</span>
+						</g:each>
+						<p class="information">Only products that are associated with the catalogs listed above will be displayed</p>
 					</span>
 					<br class="clear"/>
 				</div>

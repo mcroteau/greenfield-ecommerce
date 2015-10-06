@@ -20,6 +20,74 @@ class SpecificationController {
 	}
 
 
+    def product_specifications(Long id){
+        authenticatedAdminSpecification { adminAccount, specificationInstance ->
+            def max = params.max ? params.max : 10
+            def offset = params.offset ? params.offset : 0
+
+            def catalogOptions = getCatalogOptions(specificationInstance)
+            def products = []
+            def productsTotal = 0
+            def catalog = null
+
+
+            if(params.catalogId){
+                catalog = Catalog.get(params.catalogId)
+
+                if(catalog){
+
+                    def subcatalogIds = []
+                    def specificationIds = specificationInstance.catalogs.collect{ it.id }
+                    setSubcatalogIds(catalog, subcatalogIds)
+
+                    println "subcatalog ids : " + subcatalogIds
+
+                    if(subcatalogIds){
+                        def ids = []
+                        subcatalogIds.each { it ->
+                            if(specificationIds.contains(it)){
+                                ids.push(it)
+                            }
+                        }
+
+                        println "ids : " + ids
+
+                        productsTotal = Product.createCriteria().count{
+                            catalogs{
+                                'in'('id', ids)
+                            }
+                        }
+
+                        products = Product.createCriteria().list(max: max, offset: offset){
+                            catalogs{
+                                'in'('id', ids)
+                            }
+                        }
+                    }
+
+                }
+            }
+            //println "products : " + products
+            [ specificationInstance: specificationInstance, catalogOptions: catalogOptions, products: products, productsTotal: productsTotal, catalogInstance: catalog ]
+        }
+    }
+
+
+    def setSubcatalogIds(catalog, subcatalogIds){
+        if(catalog.subcatalogs){
+            catalog.subcatalogs.each{ it ->
+                if(it.subcatalogs){
+                    setSubcatalogIds(it, subcatalogIds)
+                }else{
+                    subcatalogIds.push(it.id)
+                }
+            }
+        }else{
+            subcatalogIds.push(catalog.id)
+        }
+    }
+
+
     def set_product_specifications(Long id){
         authenticatedAdminSpecification { adminAccount, specificationInstance ->
 
@@ -87,96 +155,6 @@ class SpecificationController {
 
         }
     }
-
-
-
-    def product_specifications(Long id){
-        authenticatedAdminSpecification { adminAccount, specificationInstance ->
-            def max = params.max ? params.max : 10
-            def offset = params.offset ? params.offset : 0
-//            def catalogOptions = getCatalogOptions()
-            def catalogOptions = getCatalogOptions(specificationInstance)
-            def products = []
-            def productsTotal = 0
-            def catalog = null
-
-            def ids = specificationInstance.catalogs.collect{ it.id }
-
-            println "ids : " + ids
-
-            if(params.catalogId){
-                catalog = Catalog.get(params.catalogId)
-
-                if(catalog){
-
-//                    productsTotal = Product.createCriteria().count{
-//                        and{
-//                            catalogs {
-//                                idEq(params.catalogId.toLong())
-//                            }
-//                        }
-//                    }
-//
-//                    def c = Product.createCriteria()
-//                    products = c.list(max: max, offset: offset){
-//                        catalogs{
-//                            idEq(params.catalogId.toLong())
-//                        }
-//                    }
-
-                    productsTotal = 0
-                    products = []
-
-                    products = Product.executeQuery '''
-                        select prd from Product as prd
-                            join prd.catalogs as c
-                        and c.id in :ids
-                        group by prd
-                        having count(prd) = :count''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong(), catalogId: params.catalogId.toLong()]
-
-
-                    //TODO:remove
-                    //products = removeNonCatalogProducts(products, specificationInstance)
-
-                }
-            }
-            println "products : " + products
-            [ specificationInstance: specificationInstance, catalogOptions: catalogOptions, products: products, productsTotal: productsTotal, catalogInstance: catalog ]
-        }
-    }
-
-    //TODO:remove
-//    def removeNonCatalogProducts(products, specificationInstance){
-//        def specificationCatalogs = specificationInstance.catalogs
-//
-//        def ids = specificationCatalogs.collect{ it.id }
-//
-//        println "*********************"
-//        println ids
-//        println "*********************"
-//
-//        def cleanedProducts = []
-//
-//        products.eachWithIndex{ product, index ->
-//            println index
-//            def allExists = true
-//            def catalogs = product.catalogs
-//            def catalogIds = catalogs.collect{ it.id }
-//            if(catalogIds.size() == ids.size()){
-//                catalogIds.each{ it ->
-//                    if(!ids.contains(it)){
-//                        allExists = false
-//                    }
-//                }
-//            }
-//
-//            if(allExists){
-//                cleanedProducts.push(product)
-//            }
-//
-//        }
-//        return cleanedProducts
-//    }
 
 
 
@@ -406,7 +384,8 @@ class SpecificationController {
 
     def getCatalogOptions(specificationInstance){
         def catalogOptions = ""
-        specificationInstance.catalogs.each{ catalog ->
+        def catalogs = specificationInstance.catalogs.sort{ it.name }
+        catalogs.each{ catalog ->
             catalogOptions += "<option value=\"${catalog.id}\">${catalog.name}</option>"
         }
         return catalogOptions

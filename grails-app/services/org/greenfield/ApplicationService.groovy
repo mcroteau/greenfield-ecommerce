@@ -350,7 +350,7 @@ class ApplicationService {
 		getCatalogsMain(null)
 	}
 
-
+	//TODO:check to make sure this function gets called and set filters
 	def getCatalogsMain(catalogInstance){	
 	
 		def template = '<li class="catalog-list-element ${activeClass}"><a href="${link}" title="${name}">${name}</a></li>'

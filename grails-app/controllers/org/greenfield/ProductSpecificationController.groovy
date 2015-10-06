@@ -102,7 +102,7 @@ class ProductSpecificationController {
         ]
 
 
-        def product1 = Product.get(18)
+        def product1 = Product.get(29)
         def catalogs = product1.catalogs
 
         allOptions.each { option ->
@@ -132,6 +132,7 @@ class ProductSpecificationController {
         //TODO:remove belongsTo relationship to Catalog in Specification
 
     }
+
 
     //TODO:remove
     def tmp_delete(){
