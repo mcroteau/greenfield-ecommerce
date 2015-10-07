@@ -14,6 +14,8 @@ class Specification {
 	
 	static mapping = {
 		sort name: "asc"
+        //specificationOptions cascade: "all-delete-orphan"
+        specificationOptions cascade: "all"
 	}
 
 	static constraints = {

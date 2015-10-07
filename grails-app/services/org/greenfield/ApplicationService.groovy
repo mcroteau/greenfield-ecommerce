@@ -199,10 +199,11 @@ class ApplicationService {
     }
 
 
-
+    def catalogcount = 0
 	//TODO : uncomment products count in both methods
 	def getCatalogsByCatalog(catalogInstance, params){
-		
+		println "get catalogs by catalog count " + catalogcount
+	    catalogcount++
 		if(!catalogInstance){
 			return getCatalogsMain(catalogInstance)
 		}
@@ -215,7 +216,11 @@ class ApplicationService {
 		if(catalogInstance?.toplevel && !catalogInstance?.subcatalogs){
 			return getCatalogsMain(catalogInstance)
 		}
-		
+
+		println "***************"
+		println "passed get catalogs main"
+		println "***************"
+
 		def catalogsString = "<div class=\"catalogs-list-container\">"
 		catalogsString += getReturnLink(catalogInstance)
 		catalogsString += getCatalogHeader(catalogInstance)
@@ -273,8 +278,6 @@ class ApplicationService {
         }else{
             filterParams = filterParams.substring(0, filterParams.length() - 1);
         }
-
-        println "filterParams : " + filterParams
 
         return filterParams
     }
@@ -352,7 +355,9 @@ class ApplicationService {
 
 	//TODO:check to make sure this function gets called and set filters
 	def getCatalogsMain(catalogInstance){	
-	
+		println "************************"
+		println "get catalogs main"
+		println "************************"
 		def template = '<li class="catalog-list-element ${activeClass}"><a href="${link}" title="${name}">${name}</a></li>'
 	
 		def toplevelCatalogs = Catalog.findAllByToplevel(true)

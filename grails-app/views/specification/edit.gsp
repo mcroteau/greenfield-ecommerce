@@ -27,6 +27,13 @@
 		<div class="content">
 
 			<h2>Edit Specification
+				&nbsp;
+				<g:form action="delete" method="post" id="${specificationInstance.id}" style="float:right;display:inline-block;margin:0px;">
+                    <g:actionSubmit class="btn btn-danger" action="delete" value="Delete"
+                        id="${specificationInstance.id}" formnovalidate=""
+                        style="float:right;display:inline-block;margin-left:5px;"
+                        onclick="return confirm('Are you sure you want to delete this specification?');" />
+                </g:form>
 				<g:link controller="specification" action="list" name="list" class="btn btn-default pull-right">Back to Specifications</g:link>
             </h2>
 

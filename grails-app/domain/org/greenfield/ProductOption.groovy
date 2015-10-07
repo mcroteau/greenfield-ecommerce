@@ -10,6 +10,7 @@ class ProductOption {
 	
 	static mapping = {
 	    sort "name"
+        variants cascade: "all-delete-orphan"
 	}
 	
     static constraints = {

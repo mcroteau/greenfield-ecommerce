@@ -15,7 +15,7 @@
 		
 			<h2>Specifications
 				<g:link controller="specification" action="create" name="edit" class="btn btn-primary pull-right" style="margin-left:10px;">Add Specification</g:link>
-				<g:link action="edit" name="edit" class="btn btn-default pull-right">Back to Catalogs</g:link>
+				<g:link controller="catalog" action="list" name="list" class="btn btn-default pull-right">Back to Catalogs</g:link>
 			</h2>
 
 		

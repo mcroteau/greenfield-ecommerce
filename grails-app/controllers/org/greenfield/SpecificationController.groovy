@@ -7,18 +7,6 @@ class SpecificationController {
 
     def numberSpaces = 1
 
-	//TODO:remove
-	def catalogs(){
-		def specification = Specification.get(1)
-		render(specification.catalogs)
-	}
-
-	//TODO:remove
-	def test(){
-		def catalog = Catalog.get(1)
-		render(catalog.specifications)
-	}
-
 
     def product_specifications(Long id){
         authenticatedAdminSpecification { adminAccount, specificationInstance ->
@@ -242,7 +230,7 @@ class SpecificationController {
 	}
 
 
-	def update(){
+	def update(Long id){
 		authenticatedAdminSpecification { adminAccount, specificationInstance ->
 
 			if(params.name){
@@ -279,10 +267,28 @@ class SpecificationController {
 				flash.message = "Name cannot be blank"
 			}
 
-			redirect(action:'edit', id : specificationInstance.id)
+			redirect(action:'edit', id: specificationInstance.id)
 
 		}
 	}
+
+
+    def delete(Long id){
+		authenticatedAdminSpecification { adminAccount, specificationInstance ->
+            try{
+                //def productSpecifications = ProductSpecification.findAll
+
+                specificationInstance.delete(flush:true)
+                flash.message = "Successfully deleted specification"
+                redirect(action: 'list')
+            }catch(Exception e){
+                e.printStackTrace()
+                flash.message = "Something went wrong while deleting specification"
+                redirect(action:'edit', id: specificationInstance.id)
+            }
+		}
+    }
+
 
 
 	def add_option(){
@@ -392,43 +398,43 @@ class SpecificationController {
     }
 
 
-    //TODO: consider deleting if use different method
-    //TODO: move to utlities class
-    def getCatalogOptionsOriginal(){
-        def catalogOptions = ""
-        def toplevelCatalogs = Catalog.findAllByToplevel(true)
-        toplevelCatalogs.each{ catalog ->
-            catalogOptions += "<option value=\"${catalog.id}\">${catalog.name}</option>"
-            if(catalog.subcatalogs){
-                def optionsString = getAllSubcatalogOptions(catalog)
-                catalogOptions += optionsString
-            }
-        }
-        return catalogOptions
-    }
-
-
-    //TODO: consider deleting if use different method
-    //TODO: move to utlities class
-    def getAllSubcatalogOptions(catalog){
-        def subcatalogs = ""
-        catalog.subcatalogs.each{ subcatalog ->
-            def spaceString = ""
-            for(def m = 0; m < numberSpaces; m++){
-                spaceString += "|&nbsp;&nbsp;&nbsp;&nbsp;"
-            }
-            subcatalogs += "<option value=\"${subcatalog.id}\">${spaceString}${subcatalog.name}</option>"
-            if(subcatalog.subcatalogs){
-                numberSpaces++
-                def subOptionsString = getAllSubcatalogOptions(subcatalog)
-                subcatalogs += subOptionsString
-            }
-        }
-
-        if(numberSpaces > 1){
-            --numberSpaces
-        }
-        return subcatalogs
-    }
+    ////TODO: consider deleting if use different method
+    ////TODO: move to utlities class
+    //def getCatalogOptionsOriginal(){
+    //    def catalogOptions = ""
+    //    def toplevelCatalogs = Catalog.findAllByToplevel(true)
+    //    toplevelCatalogs.each{ catalog ->
+    //        catalogOptions += "<option value=\"${catalog.id}\">${catalog.name}</option>"
+    //        if(catalog.subcatalogs){
+    //            def optionsString = getAllSubcatalogOptions(catalog)
+    //            catalogOptions += optionsString
+    //        }
+    // //   }
+    //    return catalogOptions
+    //}
+//
+//
+    ////TODO: consider deleting if use different method
+    ////TODO: move to utlities class
+    //def getAllSubcatalogOptions(catalog){
+    //    def subcatalogs = ""
+    //    catalog.subcatalogs.each{ subcatalog ->
+    //        def spaceString = ""
+    //        for(def m = 0; m < numberSpaces; m++){
+    //            spaceString += "|&nbsp;&nbsp;&nbsp;&nbsp;"
+    //        }
+    //        subcatalogs += "<option value=\"${subcatalog.id}\">${spaceString}${subcatalog.name}</option>"
+    //        if(subcatalog.subcatalogs){
+    //            numberSpaces++
+    //            def subOptionsString = getAllSubcatalogOptions(subcatalog)
+    //            subcatalogs += subOptionsString
+    //        }
+    //    }
+//
+    //    if(numberSpaces > 1){
+    //        --numberSpaces
+    //    }
+    //    return subcatalogs
+    //}
 
 }
