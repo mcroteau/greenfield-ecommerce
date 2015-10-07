@@ -276,7 +276,14 @@ class SpecificationController {
     def delete(Long id){
 		authenticatedAdminSpecification { adminAccount, specificationInstance ->
             try{
-                //def productSpecifications = ProductSpecification.findAll
+                def productSpecifications = ProductSpecification.findAllBySpecification(specificationInstance)
+                if(productSpecifications){
+                    productSpecifications.each{ productSpecification ->
+                        def product = productSpecification.product
+                        product.removeFromProductSpecifications(productSpecification)
+                        productSpecification.delete(flush:true)
+                    }
+                }
 
                 specificationInstance.delete(flush:true)
                 flash.message = "Successfully deleted specification"

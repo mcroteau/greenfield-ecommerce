@@ -6,6 +6,12 @@ import org.greenfield.BaseController
 class ProductSpecificationController {
 
     //TODO:remove
+    def test(){
+        render(ProductSpecification.list())
+    }
+
+
+    //TODO:remove
     def add_products(){
 
         def c = Product.createCriteria()
