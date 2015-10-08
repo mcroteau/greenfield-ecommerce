@@ -245,10 +245,28 @@ class SpecificationController {
 					catalogSelectedIdsArray = params.catalogIds.split(',').collect{it as int}
 				}
 
-				if(!catalogSelectedIdsArray){
+				if(!catalogSelectedIdsArray && !specificationInstance?.catalogs){
 					flash.message = "You must assign at least one catalog to continue saving the specification"
 					redirect(action: "edit", id: specificationInstance.id)
 					return
+				}
+
+				if(specificationInstance.catalogs){
+				    specificationInstance.catalogs.each { catalog ->
+                        def products = Product.createCriteria().list{
+                            catalogs{
+                                idEq(catalog.id)
+                            }
+                        }
+
+                        products.each { product ->
+                            def productSpecifications = ProductSpecification.findAllByProductAndSpecification(product, specificationInstance)
+                            productSpecifications.each { it ->
+                                product.removeFromProductSpecifications(it)
+                                it.delete(flush:true)
+                            }
+                        }
+				    }
 				}
 
 				specificationInstance.catalogs = null

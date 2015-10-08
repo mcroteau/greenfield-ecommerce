@@ -147,7 +147,26 @@ ${applicationService.getHeader(catalogInstance, "Product Details", true, params)
 		
 
 		<div class="description" style="clear:both;"><p>${productInstance.description}</p></div>
-		
+
+        <style type="text/css">
+            .product-specifications{
+
+            }
+        </style>
+        <g:if test="${productInstance.productSpecifications}">
+		    <div class="product-specifications">
+                <h2>Product Specifications</h2>
+                <table class="table">
+                    <g:each in="${productInstance.productSpecifications}" var="productSpecification">
+                        <tr>
+                            <th>${productSpecification.specification.name}</th>
+                            <td>${productSpecification.specificationOption.name}</td>
+                        </tr>
+                    </g:each>
+                </table>
+		    </div>
+		</g:if>
+
 		<br style="clear:both"/>
 	</div>
 
