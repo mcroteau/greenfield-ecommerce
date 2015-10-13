@@ -11,11 +11,8 @@ class Catalog {
 	boolean toplevel
 	
 	Catalog parentCatalog
-	//TODO:remove
-	//static hasMany = [ subcatalogs: Catalog, specifications : Specification ]
-	static hasMany = [ subcatalogs: Catalog ]
 
-	static mappedBy = [ specifications: "catalog" ]
+	static hasMany = [ subcatalogs: Catalog ]
 
 	static mapping = {
 		sort name: "asc"

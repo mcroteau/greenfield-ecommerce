@@ -9,6 +9,7 @@ class SpecificationOption implements Comparable {
 
 	static belongsTo = [ specification: Specification ]
 
+	//TODO:remove or refactor
 	static hasMany = [ products: Product ]
 
     //TODO:remove
