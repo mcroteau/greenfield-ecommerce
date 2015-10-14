@@ -385,12 +385,9 @@ class SpecificationController {
 	def update_option(){
 		authenticatedAdminSpecificationOption { adminAccount, specificationOptionInstance ->
 			if(params.name){
-
 				specificationOptionInstance.name = params.name
 				specificationOptionInstance.save(flush:true)
-
 				flash.message = "Successfully updated option"
-
 			}else{
 				flash.message = "Name cannot be blank"
 			}
@@ -409,6 +406,44 @@ class SpecificationController {
 		}
 	}
 
+
+
+    def manage_options_positions(Long id){
+		authenticatedAdminSpecification { adminAccount, specificationInstance ->
+            def specificationOptions = SpecificationOption.findAllBySpecification(specificationInstance)
+            [ specificationOptions: specificationOptions ]
+        }
+    }
+
+
+
+    def update_options_positions(Long id){
+		authenticatedAdminSpecification { adminAccount, specificationInstance ->
+			if(!params.positions){
+				flash.message = "Something went wrong while saving positions ..."
+				redirect(action:'manage_options_positions', id: id)
+				return
+			}
+			
+			def positions = params.positions.split(',').collect{it as int}
+			
+			if(!positions){
+				flash.message = "Something went wrong while saving positions ..."
+				redirect(action:'manage_options_positions', id: id)
+				return
+			}
+			
+			positions.eachWithIndex(){ specificationOptionId, position ->
+				def specificationOption = SpecificationOption.get(specificationOptionId)
+				specificationOption.position = position
+				specificationOption.save(flush:true)
+			}
+			
+			flash.message = "Successfully updated positions"
+			redirect(action : 'manage_options_positions', id: id)
+        }
+    }
+    
 
 
 	def getCatalogIdSelectionList(catalogIdsArray){
