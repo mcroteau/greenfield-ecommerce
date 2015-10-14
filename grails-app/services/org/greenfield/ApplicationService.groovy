@@ -141,6 +141,7 @@ class ApplicationService {
                 catalogs {
                     idEq(catalogInstance.id)
                 }
+                order("position", "asc")
             }
 
             def specificationsCount = 0

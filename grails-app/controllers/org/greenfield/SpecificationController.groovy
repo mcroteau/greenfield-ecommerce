@@ -148,8 +148,8 @@ class SpecificationController {
 
 	def list(){
 		authenticatedAdmin{ adminAccount ->
-			def specifications = Specification.list()
-			[ specifications : specifications ]
+			def specifications = Specification.list()            
+            [ specifications : specifications ]
 		}
 	}
 
@@ -183,8 +183,9 @@ class SpecificationController {
 				def specification = new Specification()
 				specification.name = params.name
 
-				def searchName = specification.name.replaceAll(" ", "_").toLowerCase()
-				specification.searchName = searchName
+				def filterName = specification.name.replaceAll(" ", "_").toLowerCase()
+				specification.filterName = filterName
+                specification.position = 0
                 specification.save(flush:true)
 
 				def catalogSelectedIdsArray = params.catalogIds.split(',').collect{it as int}
@@ -237,8 +238,8 @@ class SpecificationController {
 
 				specificationInstance.name = params.name
 
-				def searchName = specificationInstance.name.replaceAll(" ", "_").toLowerCase()
-                specificationInstance.searchName = searchName
+				def filterName = specificationInstance.name.replaceAll(" ", "_").toLowerCase()
+                specificationInstance.filterName = filterName
 
 				def catalogSelectedIdsArray = []
 				if(params.catalogIds){
@@ -314,6 +315,41 @@ class SpecificationController {
 		}
     }
 
+
+    def manage_positions(){
+        authenticatedAdmin { adminAccount ->
+            def specifications = Specification.list()
+            [ specifications: specifications ]
+        }
+    }
+
+    
+    def update_positions(){    
+        authenticatedAdmin { adminAccount ->
+			if(!params.positions){
+				flash.message = "Something went wrong while saving positions ..."
+				redirect(action:'manage_positions')
+				return
+			}
+			
+			def positions = params.positions.split(',').collect{it as int}
+			
+			if(!positions){
+				flash.message = "Something went wrong while saving positions ..."
+				redirect(action:'manage_positions')
+				return
+			}
+			
+			positions.eachWithIndex(){ specificationId, position ->
+				def specification = Specification.get(specificationId)
+				specification.position = position
+				specification.save(flush:true)
+			}
+			
+			flash.message = "Successfully updated positions"
+			redirect(action : 'manage_positions')
+        }
+    }
 
 
 	def add_option(){
@@ -392,6 +428,7 @@ class SpecificationController {
 		}
 		catalogMenuString += "</ul>"
 	}
+    
 
 	def getAllSubcatalogLists(catalog, catalogIdsArray){
 		def subcatalogsMenu = "<ul class=\"catalog_list admin-subcatalog-selection\">"
@@ -411,8 +448,8 @@ class SpecificationController {
 
 		return subcatalogsMenu
 	}
-
-
+    
+    
     def getCatalogOptions(specificationInstance){
         def catalogOptions = ""
         def catalogs = specificationInstance.catalogs.sort{ it.name }
@@ -422,44 +459,5 @@ class SpecificationController {
         return catalogOptions
     }
 
-
-    ////TODO: consider deleting if use different method
-    ////TODO: move to utlities class
-    //def getCatalogOptionsOriginal(){
-    //    def catalogOptions = ""
-    //    def toplevelCatalogs = Catalog.findAllByToplevel(true)
-    //    toplevelCatalogs.each{ catalog ->
-    //        catalogOptions += "<option value=\"${catalog.id}\">${catalog.name}</option>"
-    //        if(catalog.subcatalogs){
-    //            def optionsString = getAllSubcatalogOptions(catalog)
-    //            catalogOptions += optionsString
-    //        }
-    // //   }
-    //    return catalogOptions
-    //}
-//
-//
-    ////TODO: consider deleting if use different method
-    ////TODO: move to utlities class
-    //def getAllSubcatalogOptions(catalog){
-    //    def subcatalogs = ""
-    //    catalog.subcatalogs.each{ subcatalog ->
-    //        def spaceString = ""
-    //        for(def m = 0; m < numberSpaces; m++){
-    //            spaceString += "|&nbsp;&nbsp;&nbsp;&nbsp;"
-    //        }
-    //        subcatalogs += "<option value=\"${subcatalog.id}\">${spaceString}${subcatalog.name}</option>"
-    //        if(subcatalog.subcatalogs){
-    //            numberSpaces++
-    //            def subOptionsString = getAllSubcatalogOptions(subcatalog)
-    //            subcatalogs += subOptionsString
-    //        }
-    //    }
-//
-    //    if(numberSpaces > 1){
-    //        --numberSpaces
-    //    }
-    //    return subcatalogs
-    //}
 
 }

@@ -3,7 +3,8 @@ package org.greenfield
 class Specification {
 
 	String name
-	String searchName
+	String filterName
+    int position
 	
 	Date dateCreated
 	Date lastUpdated
@@ -13,13 +14,13 @@ class Specification {
 	static hasMany = [ specificationOptions: SpecificationOption, catalogs: Catalog ]
 	
 	static mapping = {
-		sort name: "asc"
-        //specificationOptions cascade: "all-delete-orphan"
-        specificationOptions cascade: "all"
-	}
+		sort position: "asc"
+        specificationOptions cascade: "all-delete-orphan"
+    }
 
 	static constraints = {
 		name(nullable:false)
+        position(nullable:false)
 		id generator: 'sequence', params:[sequence:'ID_SPECIFICATION_PK_SEQ']
     }
 	

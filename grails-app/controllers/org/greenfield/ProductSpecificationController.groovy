@@ -80,7 +80,8 @@ class ProductSpecificationController {
         def allOptions = [
             [
                 "name" : "Brand",
-                "searchName" : "brand",
+                "filterName" : "brand",
+                "position" : 3,
                 "options" : [
                     [ "name" : "Brybelly" ],
                     [ "name" : "Rush Creek" ],
@@ -89,7 +90,8 @@ class ProductSpecificationController {
             ],
             [
                 "name" : "Size",
-                "searchName" : "size",
+                "filterName" : "size",
+                "position" : 1,
                 "options" : [
                     [ "name" : "Small" ],
                     [ "name" : "Medium" ],
@@ -98,7 +100,8 @@ class ProductSpecificationController {
             ],
             [
                 "name" : "Color",
-                "searchName" : "color",
+                "filterName" : "color",
+                "position" : 2,
                 "options" : [
                     [ "name" : "Red" ],
                     [ "name" : "Blue" ],
@@ -114,7 +117,8 @@ class ProductSpecificationController {
         allOptions.each { option ->
             def specification = new Specification()
             specification.name = option.name
-            specification.searchName = option.searchName
+            specification.filterName = option.filterName
+            specification.position = option.position
             specification.save(flush:true)
 
             println "new before:" + Specification.count()
