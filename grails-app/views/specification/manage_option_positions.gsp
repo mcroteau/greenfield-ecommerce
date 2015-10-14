@@ -6,18 +6,18 @@
 <html>
 	<head>
 		<meta name="layout" content="admin">
-		<title>Order Specifications</title>
+		<title>Order Options</title>
 	
 		
 		<script type="text/javascript" src="${resource(dir:'js/lib/jquery-ui/1.11.2/jquery-ui.min.js')}"></script>
 			
 		<style type="text/css">
-			#specifications{
+			#specificationOption{
 				padding:0px;
 				width:400px;
 				float:left;
 			}
-			#specifications li{
+			#specificationOptions li{
 				list-style:none;
 				display:block;
 				padding:10px 15px;
@@ -45,11 +45,14 @@
 		
 		<div class="content">
 		
-			<h2>Order Specifications
-				<g:link action="list" name="list" class="btn btn-default pull-right">Back to Specifications</g:link>
+			<h2>Order Options
+				<g:link action="edit" name="edit" class="btn btn-default pull-right" id="${specificationInstance.id}">Back to Specification</g:link>
 			</h2>
 			
-			<p class="information secondary">Click, drag and drop specification to desired positions.  Click "Update Specification Positions" to save changes</p>
+            
+            
+            
+			<p class="information secondary">Click, drag and drop option to desired positions.  Click "Update Option Positions" to save changes</p>
 			
 			<div class="clear" style="margin-top:20px;"></div>
 
@@ -57,17 +60,17 @@
 				<div class="alert alert-info" role="status">${flash.message}</div>
 			</g:if>
 			
-			<g:form action="update_positions" method="post">
+			<g:form action="update_option_positions" method="post">
 				
 				<input type="hidden" name="positions" id="positions" value="">
 				
-				<ul id="specifications">
-					<g:each in="${specifications}" var="specification">
-				  		<li data-id="${specification.id}"><span class="order-number"></span>${specification.name}</li>
+				<ul id="specificationOptions">
+					<g:each in="${specificationOptions}" var="specificationOption">
+				  		<li data-id="${specificationOption.id}"><span class="order-number"></span>${specificationOption.name}</li>
 					</g:each>
 				</ul>
 				
-				<input type="submit" value="Update Specification Positions" class="btn btn-primary" style="float:left; margin-left:30px;"/>
+				<input type="submit" value="Update Option Positions" class="btn btn-primary" style="float:left; margin-left:30px;"/>
 				
 			</g:form>
 			
@@ -79,21 +82,21 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-	var $specifications = $('#specifications'),
+	var $specificationOptions = $('#specificationOptions'),
 		$positionsInput = $('#positions');
 	
 	var positions = [];
 	
-	$specifications.sortable({
+	$specificationOptions.sortable({
 		placeholder: "position-highlight",
 		stop : updatePositions
 	});
 	
-	$specifications.disableSelection();
+	$specificationOptions.disableSelection();
 	
 	function updatePositions(){
 		positions = [];
-		$specifications.find('li').each(function(index, element){
+		$specificationOptions.find('li').each(function(index, element){
 			var $element = $(element);
 			if($element.html() != ""){
 				var number = index + 1

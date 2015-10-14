@@ -408,16 +408,16 @@ class SpecificationController {
 
 
 
-    def manage_options_positions(Long id){
+    def manage_option_positions(Long id){
 		authenticatedAdminSpecification { adminAccount, specificationInstance ->
             def specificationOptions = SpecificationOption.findAllBySpecification(specificationInstance)
-            [ specificationOptions: specificationOptions ]
+            [ specificationInstance: specificationInstance, specificationOptions: specificationOptions ]
         }
     }
 
 
 
-    def update_options_positions(Long id){
+    def update_option_positions(Long id){
 		authenticatedAdminSpecification { adminAccount, specificationInstance ->
 			if(!params.positions){
 				flash.message = "Something went wrong while saving positions ..."

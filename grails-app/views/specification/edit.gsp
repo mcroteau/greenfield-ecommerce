@@ -88,7 +88,7 @@
 						<thead>
 							<tr>
 								<th>Name</th>
-								<th></th>
+								<th><g:link action="manage_option_positions" id="${specificationInstance.id}" class="btn btn-default btn-xs pull-right">Edit Ordering <span class="glyphicon glyphicon-sort"></span></g:link></th>
 							</tr>
 						</thead>
 						<tbody>
