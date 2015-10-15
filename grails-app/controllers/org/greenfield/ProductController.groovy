@@ -389,7 +389,7 @@ class ProductController {
             productInstance.catalogs.each{ catalog ->
                 def products = Product.createCriteria().list{
                     catalogs{
-                        idEq(productInstance.id)
+                        idEq(catalog.id)
                     }
                 }
                 products.each { product ->
