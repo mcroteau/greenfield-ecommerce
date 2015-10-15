@@ -9,7 +9,8 @@ class Specification {
 	Date dateCreated
 	Date lastUpdated
 
-    SortedSet specificationOptions
+    //TODO:remove
+    //SortedSet specificationOptions
 
 	static hasMany = [ specificationOptions: SpecificationOption, catalogs: Catalog ]
 	

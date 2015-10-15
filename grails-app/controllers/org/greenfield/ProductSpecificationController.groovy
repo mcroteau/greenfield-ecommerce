@@ -121,22 +121,23 @@ class ProductSpecificationController {
             specification.position = option.position
             specification.save(flush:true)
 
-            println "new before:" + Specification.count()
             catalogs.each { catalog ->
                 specification.addToCatalogs(catalog)
                 specification.save(flush:true)
             }
 
-            println "new after:" + Specification.count()
             option.options.each {
                 def specficationOption = new SpecificationOption()
                 specficationOption.name = it.name
+                specficationOption.position = 0
                 specficationOption.specification = specification
                 specficationOption.save(flush:true)
 
                 specification.addToSpecificationOptions(specficationOption)
                 specification.save(flush:true)
+                println "specification options : " + specification.specificationOptions.size()
             }
+            println "new after:" + Specification.count() + " : " + SpecificationOption.count()
         }
 
         //TODO:remove belongsTo relationship to Catalog in Specification

@@ -73,7 +73,7 @@
 					<div style="text-align:center">
 						<g:submitButton name="update" class="btn btn-primary" value="Update Specification Settings" style="margin: 0px auto 0px auto;"/>
 					    <br/><br/>
-					    <g:link action="product_specifications" id="${specificationInstance.id}" class="btn btn-default">Product Specifications</g:link>
+					    <g:link action="product_specifications" id="${specificationInstance.id}" class="btn btn-default">Product Associations</g:link>
 					</div>
 
 					<br class="clear"/>
@@ -92,7 +92,11 @@
 							</tr>
 						</thead>
 						<tbody>
-						<g:each in="${specificationInstance.specificationOptions}" status="i" var="option">
+                        <%
+                        def specificationOptions = specificationInstance.specificationOptions?.sort{ it.name }
+                        specificationOptions = specificationOptions.sort{ it.position }
+                        %>
+						<g:each in="${specificationOptions}" status="i" var="option">
 							<tr id="variant_${option.id}">
 								<td>${option.name}</td>
 								<td>

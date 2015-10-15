@@ -12,7 +12,7 @@
 		<script type="text/javascript" src="${resource(dir:'js/lib/jquery-ui/1.11.2/jquery-ui.min.js')}"></script>
 			
 		<style type="text/css">
-			#specificationOption{
+			#specificationOptions{
 				padding:0px;
 				width:400px;
 				float:left;
@@ -60,7 +60,7 @@
 				<div class="alert alert-info" role="status">${flash.message}</div>
 			</g:if>
 			
-			<g:form action="update_option_positions" method="post">
+			<g:form action="update_option_positions" method="post" id="${specificationInstance.id}">
 				
 				<input type="hidden" name="positions" id="positions" value="">
 				

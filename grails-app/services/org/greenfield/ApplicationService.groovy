@@ -155,7 +155,10 @@ class ApplicationService {
                     def optionString = '<h4 class="specification-name">' + specification.name + '</h4>'
                     optionString += '<ul class="catalog-filter-list">'
                     def specificationName = specification.name.replaceAll(" ", "_").toLowerCase()
-                    specification.specificationOptions.each{ specificationOption ->
+                    
+                    def specificationOptions = specification.specificationOptions.sort{ it.name }
+                    specificationOptions = specificationOptions.sort{ it.position }
+                    specificationOptions.each{ specificationOption ->
                         //TODO:remove
                         //if(specificationOption.products.size() > 0){
                         def binding = [ "specificationOption": specificationOption, "specificationName": specificationName ]

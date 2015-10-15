@@ -41,7 +41,11 @@
                                 <td>${specification.name}</td>
                                 <td>
                                     <g:if test="${specification.specificationOptions.size() > 0 }">
-                                        <g:each in="${specification.specificationOptions}" var="option">
+                                        <%
+                                        def specificationOptions = specification.specificationOptions?.sort{ it.name }
+                                        specificationOptions = specificationOptions.sort{ it.position }
+                                        %>
+                                        <g:each in="${specificationOptions}" var="option">
                                             <span class="label label-default" style="margin:1px !important; display:inline-block">${option.name}</span>
                                         </g:each>
                                     </g:if>

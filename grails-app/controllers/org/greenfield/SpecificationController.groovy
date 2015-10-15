@@ -148,8 +148,10 @@ class SpecificationController {
 
 	def list(){
 		authenticatedAdmin{ adminAccount ->
-			def specifications = Specification.list()            
-            [ specifications : specifications ]
+			def specifications = Specification.list()    
+            //TODO:remove specificationOptions
+            def specificationOptions = SpecificationOption.list()        
+            [ specifications : specifications, specificationOptions: specificationOptions ]
 		}
 	}
 
@@ -358,6 +360,7 @@ class SpecificationController {
 				def option = new SpecificationOption()
 				option.name = params.name
 				option.specification = specificationInstance
+                option.position = position
 				option.save(flush:true)
 
 				specificationInstance.addToSpecificationOptions(option)
@@ -411,6 +414,8 @@ class SpecificationController {
     def manage_option_positions(Long id){
 		authenticatedAdminSpecification { adminAccount, specificationInstance ->
             def specificationOptions = SpecificationOption.findAllBySpecification(specificationInstance)
+            specificationOptions = specificationOptions.sort{ it.name }
+            specificationOptions = specificationOptions.sort{ it.position }
             [ specificationInstance: specificationInstance, specificationOptions: specificationOptions ]
         }
     }
@@ -421,7 +426,7 @@ class SpecificationController {
 		authenticatedAdminSpecification { adminAccount, specificationInstance ->
 			if(!params.positions){
 				flash.message = "Something went wrong while saving positions ..."
-				redirect(action:'manage_options_positions', id: id)
+				redirect(action: 'manage_option_positions', id: id)
 				return
 			}
 			
@@ -429,7 +434,7 @@ class SpecificationController {
 			
 			if(!positions){
 				flash.message = "Something went wrong while saving positions ..."
-				redirect(action:'manage_options_positions', id: id)
+				redirect(action: 'manage_option_positions', id: id)
 				return
 			}
 			
@@ -440,7 +445,7 @@ class SpecificationController {
 			}
 			
 			flash.message = "Successfully updated positions"
-			redirect(action : 'manage_options_positions', id: id)
+			redirect(action: 'manage_option_positions', id: id)
         }
     }
     
