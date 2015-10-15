@@ -382,6 +382,27 @@ class ProductController {
 				return
 			}    	  
 			
+            println "*******************************************"
+            println "remove product specifications from product"
+            println "*******************************************"
+            //remove product specifications from product
+            productInstance.catalogs.each{ catalog ->
+                def products = Product.createCriteria().list{
+                    catalogs{
+                        idEq(productInstance.id)
+                    }
+                }
+                products.each { product ->
+                    def productSpecifications = ProductSpecification.findAllByProduct(product)
+                    productSpecifications.each { productSpecification ->
+                        product.removeFromProductSpecifications(productSpecification)
+                        productSpecification.delete(flush:true)
+                    }
+                }
+            }
+            
+            
+            
 			productInstance.catalogs = null
 			catalogIdsArray.each{ catalogId ->
 				def catalog = Catalog.get(catalogId)

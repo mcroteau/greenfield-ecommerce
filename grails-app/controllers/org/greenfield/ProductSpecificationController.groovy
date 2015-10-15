@@ -7,7 +7,7 @@ class ProductSpecificationController {
 
     //TODO:remove
     def test(){
-        render(ProductSpecification.list())
+        render(ProductSpecification.count())
     }
 
 

@@ -7,7 +7,6 @@ class SpecificationController {
 
     def numberSpaces = 1
 
-
     def product_specifications(Long id){
         authenticatedAdminSpecification { adminAccount, specificationInstance ->
             def max = params.max ? params.max : 10
@@ -354,24 +353,25 @@ class SpecificationController {
     }
 
 
-	def add_option(){
+	def add_option(Long id){
 		authenticatedAdminSpecification { adminAccount, specificationInstance ->
-			if(params.name){
-				def option = new SpecificationOption()
-				option.name = params.name
-				option.specification = specificationInstance
-                option.position = position
-				option.save(flush:true)
-
-				specificationInstance.addToSpecificationOptions(option)
-				specificationInstance.save(flush:true)
-
-				flash.message = "Successfully created option"
+        	if(params.name){
+				def existingOption = SpecificationOption.findByNameAndSpecification(params.name, specificationInstance)
+                
+                if(existingOption){
+                    flash.optionMessage = "Option with the same name already exists"
+                }else{
+                    def option = new SpecificationOption()
+				    option.name = params.name
+				    option.specification = specificationInstance
+                    option.position = 0
+                    option.save(flush:true)
+				    flash.message = "Successfully created option"
+                }
 
 			}else{
 				flash.optionMessage = "Name cannot be blank"
 			}
-
 			redirect(action:'edit', id : specificationInstance.id)
 		}
 	}
@@ -404,7 +404,15 @@ class SpecificationController {
 	def delete_option(){
 		authenticatedAdminSpecificationOption { adminAccount, specificationOptionInstance ->
 			def specificationInstance = specificationOptionInstance.specification;
-			specificationOptionInstance.delete(flush:true)
+            def productSpecifications = ProductSpecification.findAllBySpecificationAndSpecificationOption(specificationInstance, specificationOptionInstance)
+            
+            productSpecifications.each{
+                def product = it.product
+                product.removeFromProductSpecifications(it)
+                it.delete(flush:true)
+            }
+			
+            specificationOptionInstance.delete(flush:true)
 			redirect(action: "edit", id: specificationInstance.id)
 		}
 	}

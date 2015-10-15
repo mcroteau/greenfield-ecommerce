@@ -14,11 +14,9 @@ class CatalogController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
 
-
     def index() {
         redirect(action: "list", params: params)
     }
-
     
 	
 	def menu_view(){
@@ -258,7 +256,6 @@ class CatalogController {
 	
 	
 	
-
 	def getFullCatalogPath(catalog){
 		def path = new StringBuffer()
 		path.append(catalog.name)
@@ -270,7 +267,6 @@ class CatalogController {
 	
 	
 	
-
     def create() {
 		authenticatedAdmin { adminAccount -> 
 			
@@ -400,13 +396,35 @@ class CatalogController {
     def delete(Long id) {
 		authenticatedAdminCatalog { adminAccount, catalogInstance ->
     	    try {
-
-				//Delete all ProductViewLogs
 				CatalogViewLog.executeUpdate("delete CatalogViewLog c where c.catalog = :catalog", [catalog : catalogInstance])
-			
+                
+                //delete all specifications, specification options and product specifications
+			    def specifications = Specification.createCriteria().list{
+                    catalogs{
+                        idEq(catalogInstance.id)
+                    }
+                }
+                
+                specifications.each{ specification ->
+                    def specificationOptions = SpecificationOption.findAllBySpecification(specification)
+                    specificationOptions.each { specificationOption ->
+                        def productSpecifications = ProductSpecification.findAllBySpecificationAndSpecificationOption(specification, specificationOption)
+                        productSpecifications.each { productSpecification ->
+                            def product = productSpecification.product
+                            product.removeFromProductSpecifications(productSpecification)
+                            productSpecification.delete(flush:true)
+                        }
+                        
+                        specification.removeFromSpecificationOptions(specificationOption)
+                        specificationOption.delete(flush:true)
+                    }
+                    specification.delete(flush:true)
+                }
+                
     	        catalogInstance.delete(flush: true)
     	        flash.message = "Successfully deleted the catalog"
     	        redirect(action: "list")
+                
     	    }catch (DataIntegrityViolationException e) {
     	        flash.message = "Something went wrong while deleting catalog. <br/>Please make sure no products currently belong to this catalog. <br/>In addition make sure this catalog has no subcatalogs"
 				e.printStackTrace()

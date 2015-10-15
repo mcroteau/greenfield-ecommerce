@@ -12,10 +12,7 @@
 </head>
 <body>
 	
-	
-	
-	<div class="form-outer-container">
-		
+	<div class="form-outer-container">	
 		
 		<div class="form-container">
 			
@@ -25,8 +22,6 @@
 			</h1>
 			
 			<br class="clear"/>
-			
-
 			
 			<div class="messages">
 				<g:if test="${flash.message}">
@@ -175,7 +170,6 @@
             $specifications.each(function(index, specification){
                var $specification = $(specification)
                var value = $specification.val()
-               console.log(value)
             });
         }
 

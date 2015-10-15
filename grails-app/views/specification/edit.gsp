@@ -99,7 +99,7 @@
 						<g:each in="${specificationOptions}" status="i" var="option">
 							<tr id="variant_${option.id}">
 								<td>${option.name}</td>
-								<td>
+								<td style="text-align:right; width:150px;">
 									<g:link class="btn btn-default" action="edit_option" id="${option.id}">Edit</g:link>
 									<g:form action="delete_option" method="post" id="${option.id}" style="display:inline-block;">
 										<g:actionSubmit class="btn btn-default" controller="specification" action="delete_option" value="Delete" id="${option.id}" formnovalidate="" onclick="return confirm('Are you sure?');" />
@@ -120,6 +120,8 @@
 
 			<g:form controller="specification" action="add_option" method="post" >
 
+				<input type="hidden" name="id" value="${specificationInstance.id}"/>
+                    
 				<div style="width:290px; float:left; margin-left:40px; border:solid 1px #ddd; padding:15px; background:#f8f8f8">
 
 					<g:if test="${flash.optionMessage}">
@@ -127,8 +129,6 @@
 					</g:if>
 
 					<h3 style="margin:0px auto 20px; text-align:center">Add Option</h3>
-
-					<input type="hidden" name="id" value="${specificationInstance.id}"/>
 
 					<div class="form-row">
 						<span class="form-label secondary">Name</span>

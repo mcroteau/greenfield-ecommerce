@@ -1,8 +1,6 @@
 package org.greenfield
 
 class SpecificationOption {
-    //TODO:remove comparable functionality
-//implements Comparable {
 
 	String name
     int position
@@ -13,17 +11,19 @@ class SpecificationOption {
 	static belongsTo = [ specification: Specification ]
 
 	//TODO:remove or refactor
-	static hasMany = [ products: Product ]
+	//static hasMany = [ products: Product ]
 
-    //used for generic findAll call
     static mapping = {
     	sort position: "asc"
     }
-
-    //used for specification hasMany relationship
-	//int compareTo(obj) {
-    //    position.compareTo(obj.position)
-	//}
+        
+    //TODO:remove    
+    //def beforeInsert(){
+    //    def existingOption = SpecificationOption.findByNameAndSpecification(name, specification)
+    //    if(existingOption){
+    //        return false
+    //    } 
+    //}
 
 	static constraints = {
         name(nullable:false)
