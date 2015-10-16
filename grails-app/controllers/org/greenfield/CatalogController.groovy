@@ -17,40 +17,6 @@ class CatalogController {
     def index() {
         redirect(action: "list", params: params)
     }
-    
-	
-	def menu_view(){
-		def catalogMenuString = "<ul class=\"admin-catalog-menu\">"
-		def toplevelCatalogs = Catalog.findAllByToplevel(true)
-		toplevelCatalogs.each{ catalog ->
-			catalogMenuString += "<li>${catalog.name}"
-			if(catalog.subcatalogs){
-				def subcatalogMenuString = getAllSubcatalogLists(catalog)
-				catalogMenuString += subcatalogMenuString
-			}
-			catalogMenuString += "</li>"
-		}
-		catalogMenuString += "</ul>"
-		
-		[ catalogMenuString : catalogMenuString ]
-	}
-	
-	
-	def getAllSubcatalogLists(catalog){
-		def subcatalogsMenu = "<ul class=\"admin-subcatalog-menu\">"
-		catalog.subcatalogs.sort { it.id }
-		catalog.subcatalogs.each{ subcatalog ->
-			subcatalogsMenu += "<li>${subcatalog.name}"
-			if(subcatalog.subcatalogs){
-				subcatalogsMenu += getAllSubcatalogLists(subcatalog)
-			}
-			subcatalogsMenu += "</li>"
-		}
-		subcatalogsMenu += "</ul>"
-		
-		return subcatalogsMenu
-	}
-
 
 
 	def products(Long id){
@@ -406,19 +372,8 @@ class CatalogController {
                 }
                 
                 specifications.each{ specification ->
-                    def specificationOptions = SpecificationOption.findAllBySpecification(specification)
-                    specificationOptions.each { specificationOption ->
-                        def productSpecifications = ProductSpecification.findAllBySpecificationAndSpecificationOption(specification, specificationOption)
-                        productSpecifications.each { productSpecification ->
-                            def product = productSpecification.product
-                            product.removeFromProductSpecifications(productSpecification)
-                            productSpecification.delete(flush:true)
-                        }
-                        
-                        specification.removeFromSpecificationOptions(specificationOption)
-                        specificationOption.delete(flush:true)
-                    }
-                    specification.delete(flush:true)
+                    specification.removeFromCatalogs(catalogInstance)
+                    specification.save(flush:true)
                 }
                 
     	        catalogInstance.delete(flush: true)
@@ -433,8 +388,42 @@ class CatalogController {
     	}
 	}
 	
-
 	
+	def menu_view(){
+		def catalogMenuString = "<ul class=\"admin-catalog-menu\">"
+		def toplevelCatalogs = Catalog.findAllByToplevel(true)
+		toplevelCatalogs.each{ catalog ->
+			catalogMenuString += "<li>${catalog.name}"
+			if(catalog.subcatalogs){
+				def subcatalogMenuString = getAllSubcatalogLists(catalog)
+				catalogMenuString += subcatalogMenuString
+			}
+			catalogMenuString += "</li>"
+		}
+		catalogMenuString += "</ul>"
+		
+		[ catalogMenuString : catalogMenuString ]
+	}
+	
+    
+	
+	def getAllSubcatalogLists(catalog){
+		def subcatalogsMenu = "<ul class=\"admin-subcatalog-menu\">"
+		catalog.subcatalogs.sort { it.id }
+		catalog.subcatalogs.each{ subcatalog ->
+			subcatalogsMenu += "<li>${subcatalog.name}"
+			if(subcatalog.subcatalogs){
+				subcatalogsMenu += getAllSubcatalogLists(subcatalog)
+			}
+			subcatalogsMenu += "</li>"
+		}
+		subcatalogsMenu += "</ul>"
+		
+		return subcatalogsMenu
+	}
+    
+	
+    
 	def getCatalogOptionsWithCatalog(catalogInstance){
 		def catalogOptions = ""
 		def toplevelCatalogs = Catalog.findAllByToplevel(true)

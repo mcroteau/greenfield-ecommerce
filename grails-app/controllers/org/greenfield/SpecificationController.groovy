@@ -7,8 +7,26 @@ class SpecificationController {
 
     def numberSpaces = 1
 
+    //TODO:remove
+    def test(){
+        render(Specification.count())
+    }
+
+    //TODO:remove
+    def test_options(){
+        render(SpecificationOption.count())
+    }
+
     def product_specifications(Long id){
         authenticatedAdminSpecification { adminAccount, specificationInstance ->
+            
+            def specificationOptions = SpecificationOption.findAllBySpecification(specificationInstance)
+            if(!specificationOptions){
+                flash.message = "You must define options for this specification before assigning products"
+                redirect(action: 'edit', id: specificationInstance.id)
+                return
+            }
+            
             def max = params.max ? params.max : 10
             def offset = params.offset ? params.offset : 0
 

@@ -54,11 +54,14 @@
                                     </g:else>
                                 </td>
                                 <td>
-                                    <g:if test="specification.catalogs">
+                                    <g:if test="${specification.catalogs.size() > 0}">
                                         <g:each in="${specification.catalogs}" var="catalog">
                                             <span class="label label-default" style="margin:1px !important; display:inline-block">${catalog.name}</span>
                                         </g:each>
                                     </g:if>
+                                    <g:else>
+                                        <span class="information">No Catalogs Defined</span>
+                                    </g:else>
                                 </td>
                                 <td><g:link controller="specification" action="edit" name="edit" class="" id="${specification.id}">Edit</g:link></td>
                             </tr>

@@ -493,6 +493,13 @@ class ProductController {
        		try {
 				//Delete all ProductViewLogs
 				ProductViewLog.executeUpdate("delete ProductViewLog p where p.product = :product", [product : productInstance])
+                
+                def productSpecifications = ProductSpecification.findAllByProduct(productInstance)
+                productSpecifications.each { productSpecification ->
+                    product.removeFromProductSpecifications(productSpecification)
+                    productSpecification.delete(flush:true)
+                }
+                
        		    productInstance.delete(flush: true)
        		    flash.message = "Successfull deleted product"
        		    redirect(action: "list")
