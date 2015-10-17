@@ -40,12 +40,6 @@ class CatalogController {
 
 		if(isFilterRequest(params)){
 
-            //TODO:remove all console.logs
-            println "*****************"
-            println "filter"
-            println params
-            println "*****************"
-
             def combinations = []
 
             Collection<?> keys = params.keySet()
@@ -58,23 +52,14 @@ class CatalogController {
                         param != "offset" &&
                         param != "max" &&
                         optionIdsString){
-                    //println "param : " + param + " -> " + optionIdsString
                     def optionIds = optionIdsString.split("-")
                     combinations.push(optionIds)
                 }
             }
 
-            //combinations = [1, 5, 10], [2, 3]
-            //[1, 2], [5, 2], [10, 2], [3, 1], [3, 5], [3, 10]
             combinations = combinations.combinations()
-            //TODO:remove printlns
-            println "combinations : " + combinations
-
             combinations.unique()
 
-            println "unique : " + combinations
-
-            //TODO:implement pagination without getting all products
             products = []
             def countTotal = 0
             combinations.each { ids ->
@@ -96,8 +81,6 @@ class CatalogController {
                     products.addAll(ps)
                 }
             }
-
-            println products
 
             productsTotal = products?.size() ? products.size() : 0
             products = products.drop(offset.toInteger()).take(max.toInteger())
@@ -149,14 +132,10 @@ class CatalogController {
 
 
     def isFilterRequest(params){
-        println "size:" + params.size()
-        println "p : " + (params.size() >= 3) + ":" + (params.size() == 5 && paginationParams(params))
         if(params.size() == 3 ||
                 (params.size() == 5 && paginationParams(params))){
             return false
         }
-        println "*********"
-        println "return true"
         return true
     }
 

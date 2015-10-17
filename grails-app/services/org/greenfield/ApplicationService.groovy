@@ -90,7 +90,7 @@ class ApplicationService {
 		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
 		header = header.replace("[[CONTEXT_NAME]]", getContextName())
 		header = header.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance, params))
-        header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage))
+        header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage, params))
 
 		return header
 	}
@@ -129,85 +129,9 @@ class ApplicationService {
 	}
 
 
-    def getCatalogFilters(catalogInstance, productPage){
 
-        def filtersString = ''
-
-        if(!productPage){
-            filtersString = '<div id="catalog-filter-container"><h3 id="catalog-filter-header">Refine By</h3>'
-
-            def c = Specification.createCriteria()
-            def specifications = c.list {
-                catalogs {
-                    idEq(catalogInstance.id)
-                }
-                order("position", "asc")
-            }
-
-            def specificationsCount = 0
-
-            specifications?.each{ specification ->
-
-                def optionsCount = 0
-
-                if(specification.specificationOptions){
-
-                    def optionString = '<h4 class="specification-name">' + specification.name + '</h4>'
-                    optionString += '<ul class="catalog-filter-list">'
-                    def specificationName = specification.name.replaceAll(" ", "_").toLowerCase()
-                    
-                    def specificationOptions = specification.specificationOptions.sort{ it.name }
-                    specificationOptions = specificationOptions.sort{ it.position }
-                    specificationOptions.each{ specificationOption ->
-                        //TODO:remove
-                        //if(specificationOption.products.size() > 0){
-                        def binding = [ "specificationOption": specificationOption, "specificationName": specificationName ]
-                        def engine = new groovy.text.SimpleTemplateEngine()
-                        def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
-                        optionString += template.toString()
-
-                        optionsCount++
-                        //}
-                    }
-
-                    if(optionsCount > 0){
-                        optionString += '</ul>'
-                        specificationsCount++
-                    }else{
-                        optionString = ""
-                    }
-
-                    filtersString += optionString
-                }
-            }
-
-            if(specificationsCount == 0){
-                filtersString = ''
-            }else{
-                filtersString += '</div>'
-            }
-        }
-
-        return filtersString
-    }
-
-
-
-
-    def getFilterOptionTemplate(){
-        return '<li class="catalog-filter-option">' +
-            '<input type="checkbox" id="${specificationName}-${specificationOption.id}" name="filter-checkbox-${specificationOption.id}" class="catalog-filter-checkbox" data-name="${specificationName}" data-option-id="${specificationOption.id}"/>' +
-            '${specificationOption.name} : ${specificationOption.id}' +
-            //'<span class=\"filter-product-count\">(${specificationOption.products.size()})</span>' +
-         '</li>'
-    }
-
-
-    def catalogcount = 0
 	//TODO : uncomment products count in both methods
 	def getCatalogsByCatalog(catalogInstance, params){
-		println "get catalogs by catalog count " + catalogcount
-	    catalogcount++
 		if(!catalogInstance){
 			return getCatalogsMain(catalogInstance)
 		}
@@ -221,10 +145,6 @@ class ApplicationService {
 			return getCatalogsMain(catalogInstance)
 		}
 
-		println "***************"
-		println "passed get catalogs main"
-		println "***************"
-
 		def catalogsString = "<div class=\"catalogs-list-container\">"
 		catalogsString += getReturnLink(catalogInstance)
 		catalogsString += getCatalogHeader(catalogInstance)
@@ -235,9 +155,9 @@ class ApplicationService {
 			catalogsList.each { c ->
 				def productsCount = getCatalogProductsCount(c)
 				if(productsCount > 0){
-
+                        
                     def filterParams = getFilterParameters(params)
-
+                    
 					def link = "/${getContextName()}/catalog/products/${c.id}${filterParams}"
 					def activeClass = c.id == catalogInstance.id ? "active-catalog" : ""
 					def catalogData = [
@@ -256,6 +176,38 @@ class ApplicationService {
 		catalogsString += "</div>"
 		return catalogsString
 	}
+
+
+    def getOptionIds(params){
+        println "***************************"
+        println params
+        println "***************************"
+        def combinations = []
+
+        Collection<?> keys = params.keySet()
+        for (Object param : keys) {
+
+            def optionIdsString = params.get(param)
+            if(param != "action" &&
+                    param != "controller" &&
+                    param != "id" &&
+                    param != "offset" &&
+                    param != "max" &&
+                    optionIdsString){
+                def optionIds = optionIdsString.split("-")
+                combinations.push(optionIds)
+            }
+        }
+
+        combinations = combinations.combinations()
+        combinations.unique()
+
+        println "***************************"
+        println combinations
+        println "***************************"
+        
+        return combinations
+    }
 
 
 
@@ -325,6 +277,132 @@ class ApplicationService {
 	}
 	
 	
+    def getCatalogFilters(catalogInstance, productPage, params){
+
+        def filtersString = ''
+
+        if(!productPage){
+            filtersString = '<div id="catalog-filter-container"><h3 id="catalog-filter-header">Refine By</h3>'
+
+            def c = Specification.createCriteria()
+            def specifications = c.list {
+                catalogs {
+                    idEq(catalogInstance.id)
+                }
+                order("position", "asc")
+            }
+
+            def specificationsCount = 0
+            def optionIdCombinations = getOptionIds(params)
+            
+            specifications?.each{ specification ->
+
+                def optionsCount = 0
+
+                if(specification.specificationOptions){
+
+                    def optionString = '<h4 class="specification-name">' + specification.name + '</h4>'
+                    optionString += '<ul class="catalog-filter-list">'
+                    def specificationName = specification.name.replaceAll(" ", "_").toLowerCase()
+                    
+                    def specificationOptions = specification.specificationOptions.sort{ it.name }
+                    specificationOptions = specificationOptions.sort{ it.position }
+                    specificationOptions.each{ specificationOption ->
+                        
+                        def productCount = getProductFilterCount(specificationOption, catalogInstance, optionIdCombinations)
+                        
+                        println "*****************"
+                        println specificationOption.name + " : " + productCount
+                        println "*****************"
+                        
+                        //TODO:remove
+                        //if(specificationOption.products.size() > 0){
+                        def binding = [ "specificationOption": specificationOption, "specificationName": specificationName ]
+                        def engine = new groovy.text.SimpleTemplateEngine()
+                        def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
+                        optionString += template.toString()
+
+                        optionsCount++
+                        //}
+                    }
+
+                    if(optionsCount > 0){
+                        optionString += '</ul>'
+                        specificationsCount++
+                    }else{
+                        optionString = ""
+                    }
+
+                    filtersString += optionString
+                }
+            }
+
+            if(specificationsCount == 0){
+                filtersString = ''
+            }else{
+                filtersString += '</div>'
+            }
+        }
+
+        return filtersString
+    }
+
+
+
+    //TODO:consider moving this into service or utility class
+    def getProductFilterCount(specificationOption, catalogInstance, optionIdCombinations){
+        def products = []
+        def countTotal = 0            
+        def optionsSelected = true
+
+        if(optionIdCombinations.size() == 0){
+            optionsSelected = false
+            def combination = []
+            combination.push(specificationOption.id)
+            optionIdCombinations.push(combination)
+        }
+        
+        println "********** before queries ************"
+        println specificationOption.name + " : " + optionIdCombinations
+        println "********** after queries ************"
+        
+        optionIdCombinations.each { ids ->
+            if(optionsSelected){
+                ids.push(specificationOption.id)
+            }
+            
+            def ps = Product.executeQuery '''
+                select prd from Product as prd
+                    join prd.productSpecifications as sp
+                    join sp.specificationOption as opt
+                    join prd.catalogs as c
+                where c.id = :id
+                and opt.id in :ids
+                group by prd
+                having count(prd) = :count
+                and
+                disabled = false
+                and
+                quantity > 0''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong(), id: catalogInstance.id]
+
+            if(ps){
+                products.addAll(ps)
+            }
+        }
+        return products.size()
+    }
+
+
+    def getFilterOptionTemplate(){
+        return '<li class="catalog-filter-option">' +
+            '<input type="checkbox" id="${specificationName}-${specificationOption.id}" name="filter-checkbox-${specificationOption.id}" class="catalog-filter-checkbox" data-name="${specificationName}" data-option-id="${specificationOption.id}"/>' +
+            '${specificationOption.name} : ${specificationOption.id}' +
+            //'<span class=\"filter-product-count\">(${specificationOption.products.size()})</span>' +
+         '</li>'
+    }
+    
+    
+    
 	def getCatalogHeader(catalogInstance){
 		def catalogHeader = ""
 		if(catalogInstance?.subcatalogs){
@@ -338,6 +416,7 @@ class ApplicationService {
 	}	
 	
 	
+    
 	def getCatalogList(catalogInstance){
 		def catalogsList = []
 		if(catalogInstance?.subcatalogs){
@@ -357,11 +436,10 @@ class ApplicationService {
 		getCatalogsMain(null)
 	}
 
+
 	//TODO:check to make sure this function gets called and set filters
 	def getCatalogsMain(catalogInstance){	
-		println "************************"
-		println "get catalogs main"
-		println "************************"
+
 		def template = '<li class="catalog-list-element ${activeClass}"><a href="${link}" title="${name}">${name}</a></li>'
 	
 		def toplevelCatalogs = Catalog.findAllByToplevel(true)

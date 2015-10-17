@@ -496,7 +496,7 @@ class ProductController {
                 
                 def productSpecifications = ProductSpecification.findAllByProduct(productInstance)
                 productSpecifications.each { productSpecification ->
-                    product.removeFromProductSpecifications(productSpecification)
+                    productInstance.removeFromProductSpecifications(productSpecification)
                     productSpecification.delete(flush:true)
                 }
                 
