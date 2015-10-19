@@ -179,9 +179,6 @@ class ApplicationService {
 
 
     def getOptionIds(params){
-        println "***************************"
-        println params
-        println "***************************"
         def combinations = []
 
         Collection<?> keys = params.keySet()
@@ -201,10 +198,6 @@ class ApplicationService {
 
         combinations = combinations.combinations()
         combinations.unique()
-
-        println "***************************"
-        println combinations
-        println "***************************"
         
         return combinations
     }
@@ -293,7 +286,8 @@ class ApplicationService {
             }
 
             def specificationsCount = 0
-            def optionIdCombinations = getOptionIds(params)
+            def selectedSpecifications = getSelectedSpecifications(params)
+            
             
             specifications?.each{ specification ->
 
@@ -309,20 +303,23 @@ class ApplicationService {
                     specificationOptions = specificationOptions.sort{ it.position }
                     specificationOptions.each{ specificationOption ->
                         
+                        def optionIdCombinations
+                        if(selectedSpecifications[specification.name]){
+                            println "here... selected"
+                            optionIdCombinations = []
+                        }else{
+                            optionIdCombinations = getOptionIds(params)
+                        }
+                        
                         def productCount = getProductFilterCount(specificationOption, catalogInstance, optionIdCombinations)
                         
-                        println "*****************"
-                        println specificationOption.name + " : " + productCount
-                        println "*****************"
-                        
-                        //TODO:remove
-                        //if(specificationOption.products.size() > 0){
-                        def binding = [ "specificationOption": specificationOption, "specificationName": specificationName ]
-                        def engine = new groovy.text.SimpleTemplateEngine()
-                        def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
-                        optionString += template.toString()
-
-                        optionsCount++
+                        //if(productCount > 0){
+                            def binding = [ "specificationOption": specificationOption, "specificationName": specificationName, productCount: productCount ]
+                            def engine = new groovy.text.SimpleTemplateEngine()
+                            def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
+                            optionString += template.toString()
+                            
+                            optionsCount++
                         //}
                     }
 
@@ -348,13 +345,31 @@ class ApplicationService {
     }
 
 
+    def getSelectedSpecifications(params){
+        def selected = [:]
+        Collection<?> keys = params.keySet()
+        for (Object param : keys) {
+            if(param != "action" &&
+                    param != "controller" &&
+                    param != "id" &&
+                    param != "offset" &&
+                    param != "max"){
+                def specification = Specification.findByFilterName(param)
+                if(specification){
+                    selected[specification.name] = true
+                }
+            }
+        }
+        return selected
+    }
+
+
 
     //TODO:consider moving this into service or utility class
     def getProductFilterCount(specificationOption, catalogInstance, optionIdCombinations){
-        def products = []
-        def countTotal = 0            
+        def allProducts = []          
         def optionsSelected = true
-
+        
         if(optionIdCombinations.size() == 0){
             optionsSelected = false
             def combination = []
@@ -362,17 +377,14 @@ class ApplicationService {
             optionIdCombinations.push(combination)
         }
         
-        println "********** before queries ************"
-        println specificationOption.name + " : " + optionIdCombinations
-        println "********** after queries ************"
         
         optionIdCombinations.each { ids ->
             if(optionsSelected){
                 ids.push(specificationOption.id)
             }
             
-            def ps = Product.executeQuery '''
-                select prd from Product as prd
+            def products = Product.executeQuery '''
+                select count(*) from Product as prd
                     join prd.productSpecifications as sp
                     join sp.specificationOption as opt
                     join prd.catalogs as c
@@ -384,23 +396,32 @@ class ApplicationService {
                 disabled = false
                 and
                 quantity > 0''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong(), id: catalogInstance.id]
-
-            if(ps){
-                products.addAll(ps)
+            
+        
+            if(products){
+                allProducts.addAll(products)
             }
         }
-        return products.size()
+        
+        println "*****************************************"
+        println specificationOption.name + " : " + allProducts.size() + " : " + optionIdCombinations
+        
+        return allProducts.size()
     }
 
 
     def getFilterOptionTemplate(){
-        return '<li class="catalog-filter-option">' +
-            '<input type="checkbox" id="${specificationName}-${specificationOption.id}" name="filter-checkbox-${specificationOption.id}" class="catalog-filter-checkbox" data-name="${specificationName}" data-option-id="${specificationOption.id}"/>' +
-            '${specificationOption.name} : ${specificationOption.id}' +
-            //'<span class=\"filter-product-count\">(${specificationOption.products.size()})</span>' +
-         '</li>'
+        return '''
+            <li class="catalog-filter-option">
+                <input type="checkbox" id="${specificationName}-${specificationOption.id}" 
+                    name="filter-checkbox-${specificationOption.id}" 
+                    class="catalog-filter-checkbox" 
+                    data-name="${specificationName}" 
+                    data-option-id="${specificationOption.id}"/>
+                <span class="filter-name">${specificationOption.name}</span>
+                <span class="filter-product-count">(${productCount})</span>
+            </li>'''
     }
-    
     
     
 	def getCatalogHeader(catalogInstance){
