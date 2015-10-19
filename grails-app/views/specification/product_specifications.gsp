@@ -94,7 +94,11 @@
                                     <td style="text-align:left">
                                         <select class="product_specification" name="product_specification_${product.id}">
                                             <option value="${product.id}-NONE">None</option>
-                                            <g:each in="${specificationInstance.specificationOptions}" var="option">
+                                            <%
+                                                def specificationOptions = specificationInstance.specificationOptions.sort{ it.name }
+                                                specificationOptions = specificationOptions.sort{ it.position }
+                                            %>
+                                            <g:each in="${specificationOptions}" var="option">
                                                 <%
                                                     def selected = ""
                                                     product.productSpecifications.each{

@@ -180,7 +180,7 @@ class ApplicationService {
 
     def getOptionIds(params){
         def combinations = []
-
+        
         Collection<?> keys = params.keySet()
         for (Object param : keys) {
 
@@ -192,7 +192,14 @@ class ApplicationService {
                     param != "max" &&
                     optionIdsString){
                 def optionIds = optionIdsString.split("-")
-                combinations.push(optionIds)
+                def uniqueIds = []
+                optionIds.each { it ->
+                    def id = it.toLong()
+                    if(!uniqueIds.contains(id)){
+                        uniqueIds.add(id)
+                    }
+                }
+                combinations.add(uniqueIds)
             }
         }
 
@@ -302,14 +309,8 @@ class ApplicationService {
                     def specificationOptions = specification.specificationOptions.sort{ it.name }
                     specificationOptions = specificationOptions.sort{ it.position }
                     specificationOptions.each{ specificationOption ->
-                        
-                        def optionIdCombinations
-                        if(selectedSpecifications[specification.name]){
-                            println "here... selected"
-                            optionIdCombinations = []
-                        }else{
-                            optionIdCombinations = getOptionIds(params)
-                        }
+                    
+                        def optionIdCombinations = getOptionIds(params)
                         
                         def productCount = getProductFilterCount(specificationOption, catalogInstance, optionIdCombinations)
                         
@@ -368,10 +369,10 @@ class ApplicationService {
     //TODO:consider moving this into service or utility class
     def getProductFilterCount(specificationOption, catalogInstance, optionIdCombinations){
         def allProducts = []          
-        def optionsSelected = true
+        //def optionsSelected = true
         
         if(optionIdCombinations.size() == 0){
-            optionsSelected = false
+            //optionsSelected = false
             def combination = []
             combination.push(specificationOption.id)
             optionIdCombinations.push(combination)
@@ -379,9 +380,20 @@ class ApplicationService {
         
         
         optionIdCombinations.each { ids ->
-            if(optionsSelected){
-                ids.push(specificationOption.id)
-            }
+            //if(optionsSelected){
+            //}
+
+            ids.push(specificationOption.id)
+            ids.unique()
+            //def uniqueIds = []
+            //ids.each{ id ->
+            //    println "'${id}'" + id.getClass()
+            //    if(!uniqueIds.contains(id)){
+            //        uniqueIds.add(id)
+            //    }
+            //}
+            //println "**********************************"
+            //println specificationOption.name + " -> " + ids + " = " + ids.getClass()
             
             def products = Product.executeQuery '''
                 select count(*) from Product as prd

@@ -9,6 +9,9 @@ class SpecificationController {
 
     //TODO:remove
     def test(){
+        def list = [5, 5, 4, 4, 3, 3, 2, 2, 1, 1]
+        list.unique()
+        println list
         render(Specification.count())
     }
 
