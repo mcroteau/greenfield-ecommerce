@@ -304,7 +304,6 @@ class ApplicationService {
 
                     def optionString = '<h4 class="specification-name">' + specification.name + '</h4>'
                     optionString += '<ul class="catalog-filter-list">'
-                    //def specificationName = specification.name.replaceAll(" ", "_").toLowerCase()
                     
                     def specificationOptions = specification.specificationOptions.sort{ it.name }
                     specificationOptions = specificationOptions.sort{ it.position }
@@ -369,54 +368,70 @@ class ApplicationService {
     //TODO:consider moving this into service or utility class
     def getProductFilterCount(specificationOption, catalogInstance, optionIdCombinations){
         def allProducts = []          
-        //def optionsSelected = true
+        
+        def queries = [:]
         
         if(optionIdCombinations.size() == 0){
-            //optionsSelected = false
             def combination = []
             combination.push(specificationOption.id)
             optionIdCombinations.push(combination)
         }
         
+        println "combinations : " + optionIdCombinations
         
         optionIdCombinations.each { ids ->
-            //if(optionsSelected){
-            //}
-
-            ids.push(specificationOption.id)
-            ids.unique()
-            //def uniqueIds = []
-            //ids.each{ id ->
-            //    println "'${id}'" + id.getClass()
-            //    if(!uniqueIds.contains(id)){
-            //        uniqueIds.add(id)
-            //    }
-            //}
-            //println "**********************************"
-            //println specificationOption.name + " -> " + ids + " = " + ids.getClass()
-            
-            def products = Product.executeQuery '''
-                select count(*) from Product as prd
-                    join prd.productSpecifications as sp
-                    join sp.specificationOption as opt
-                    join prd.catalogs as c
-                where c.id = :id
-                and opt.id in :ids
-                group by prd
-                having count(prd) = :count
-                and
-                disabled = false
-                and
-                quantity > 0''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong(), id: catalogInstance.id]
-            
         
-            if(products){
-                allProducts.addAll(products)
+            ids.push(specificationOption.id)
+            ids.sort()
+            ids.unique()
+        
+            def indexes = []
+            ids.eachWithIndex { it, index ->
+                def option = SpecificationOption.get(it)
+                if(option){
+                    if(option.specification.id == specificationOption.specification.id &&
+                            specificationOption.id != option.id){
+                        indexes.add(index)
+                    }
+                }
             }
+            
+            println "indexes : " + indexes
+            
+            indexes.each { i ->
+                ids.remove(i)
+            }
+            
+            println "ids : " + ids + " : " + optionIdCombinations
+            
+            if(!queries[ids.join("_")]){
+                def products = Product.executeQuery '''
+                    select count(*) from Product as prd
+                        join prd.productSpecifications as sp
+                        join sp.specificationOption as opt
+                        join prd.catalogs as c
+                    where c.id = :id
+                    and opt.id in :ids
+                    group by prd
+                    having count(prd) = :count
+                    and
+                    disabled = false
+                    and
+                    quantity > 0''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong(), id: catalogInstance.id]
+                
+                
+                if(products){
+                    allProducts.addAll(products)
+                }
+            }
+
+            
+            queries[ids.join("_")] = true
         }
         
         println "*****************************************"
-        println specificationOption.name + " : " + allProducts.size() + " : " + optionIdCombinations
+        println specificationOption.name + " : " + allProducts.size() + " : " + optionIdCombinations + " : " + queries
+        println "*****************************************"
         
         return allProducts.size()
     }
