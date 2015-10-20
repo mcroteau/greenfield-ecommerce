@@ -369,8 +369,6 @@ class ApplicationService {
     def getProductFilterCount(specificationOption, catalogInstance, optionIdCombinations){
         def allProducts = []          
         
-        def queries = [:]
-        
         if(optionIdCombinations.size() == 0){
             def combination = []
             combination.push(specificationOption.id)
@@ -403,34 +401,38 @@ class ApplicationService {
             }
             
             println "ids : " + ids + " : " + optionIdCombinations
-            
-            if(!queries[ids.join("_")]){
-                def products = Product.executeQuery '''
-                    select count(*) from Product as prd
-                        join prd.productSpecifications as sp
-                        join sp.specificationOption as opt
-                        join prd.catalogs as c
-                    where c.id = :id
-                    and opt.id in :ids
-                    group by prd
-                    having count(prd) = :count
-                    and
-                    disabled = false
-                    and
-                    quantity > 0''', [ids: ids.collect { it.toLong() }, count: ids.size().toLong(), id: catalogInstance.id]
-                
-                
-                if(products){
-                    allProducts.addAll(products)
-                }
-            }
-
-            
-            queries[ids.join("_")] = true
         }
         
+        optionIdCombinations.unique()
+        println "combinations : " + optionIdCombinations
+        
+        
+        optionIdCombinations.each { optionIds ->
+        
+            def products = Product.executeQuery '''
+                select count(*) from Product as prd
+                    join prd.productSpecifications as sp
+                    join sp.specificationOption as opt
+                    join prd.catalogs as c
+                where c.id = :id
+                and opt.id in :ids
+                group by prd
+                having count(prd) = :count
+                and
+                disabled = false
+                and
+                quantity > 0''', [ids: optionIds.collect { it.toLong() }, count: optionIds.size().toLong(), id: catalogInstance.id]
+            
+            if(products){
+                allProducts.addAll(products)
+            }
+        
+        }
+        
+        
+        
         println "*****************************************"
-        println specificationOption.name + " : " + allProducts.size() + " : " + optionIdCombinations + " : " + queries
+        println specificationOption.name + " : " + allProducts.size() + " : " + optionIdCombinations
         println "*****************************************"
         
         return allProducts.size()
