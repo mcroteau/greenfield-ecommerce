@@ -304,7 +304,7 @@ class ApplicationService {
 
                     def optionString = '<h4 class="specification-name">' + specification.name + '</h4>'
                     optionString += '<ul class="catalog-filter-list">'
-                    def specificationName = specification.name.replaceAll(" ", "_").toLowerCase()
+                    //def specificationName = specification.name.replaceAll(" ", "_").toLowerCase()
                     
                     def specificationOptions = specification.specificationOptions.sort{ it.name }
                     specificationOptions = specificationOptions.sort{ it.position }
@@ -315,7 +315,7 @@ class ApplicationService {
                         def productCount = getProductFilterCount(specificationOption, catalogInstance, optionIdCombinations)
                         
                         //if(productCount > 0){
-                            def binding = [ "specificationOption": specificationOption, "specificationName": specificationName, productCount: productCount ]
+                            def binding = [ "specificationOption": specificationOption, "specificationName": specification.filterName, productCount: productCount ]
                             def engine = new groovy.text.SimpleTemplateEngine()
                             def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
                             optionString += template.toString()
