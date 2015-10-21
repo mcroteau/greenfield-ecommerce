@@ -71,12 +71,27 @@ class SpecificationController {
                                 'in'('id', ids)
                             }
                         }
+                        
+                        def rangeProducts = Product.createCriteria().list(){
+                            catalogs{
+                                'in'('id', ids)
+                            }
+                            order('price', 'asc')
+                        }
+                        
+                        println "size : " + rangeProducts.get(0)
+                        
+                        def lastProduct = rangeProducts.size() - 1 
+                        def lowestPriceProduct = rangeProducts.get(0)
+                        println "lowest: " + lowestPriceProduct
+                        def highestPriceProduct = rangeProducts.get(lastProduct)
+                        println "highest: " + highestPriceProduct
                     }
 
                 }
             }
             //println "products : " + products
-            [ specificationInstance: specificationInstance, catalogOptions: catalogOptions, products: products, productsTotal: productsTotal, catalogInstance: catalog ]
+            [ specificationInstance: specificationInstance, catalogOptions: catalogOptions,  products: products, productsTotal: productsTotal, catalogInstance: catalog ]
         }
     }
 

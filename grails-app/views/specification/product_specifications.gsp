@@ -77,6 +77,7 @@
 					</span>
 					<br class="clear"/>
 				</div>
+                
 
 
                 <g:if test="${products}">
@@ -84,14 +85,16 @@
                         <thead>
                             <tr>
                                 <th>Product</th>
-                                <th>${specificationInstance.name}</th>
+                                <th style="text-align:center">Price</th>
+                                <th style="text-align:right;width:150px">Specification: ${specificationInstance.name}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <g:each in="${products}" var="product">
                                 <tr>
                                     <td style="text-align:left">${product.name}</td>
-                                    <td style="text-align:left">
+                                    <td>$${applicationService.formatPrice(product.price)}</td>
+                                    <td style="text-align:right;">
                                         <select class="product_specification" name="product_specification_${product.id}">
                                             <option value="${product.id}-NONE">None</option>
                                             <%
