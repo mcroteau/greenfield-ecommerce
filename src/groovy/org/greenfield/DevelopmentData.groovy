@@ -38,28 +38,64 @@ public class DevelopmentData {
 		[ 
 			"name" : "Poker",
 			"subcatalogs" : [
-				[ "name" : "Poker Tables" ],
+				[ 
+                    "name" : "Poker Tables",
+                    "products" : 20 
+                ],
 				[
 					"name" : "Poker Chips",
 					"subcatalogs" : [
-						[ "name" : "Ceramic Poker Chips"],
-						[ "name" : "Clay Poker Chips"],
-						[ "name" : "Composite Poker Chips"]
+						[ 
+                            "name" : "Ceramic Poker Chips",
+                            "products" : 20
+                        ],
+						[ 
+                            "name" : "Clay Poker Chips",
+                            "products" : 20
+                        ],
+						[ 
+                            "name" : "Composite Poker Chips",
+                            "products" : 20
+                        ]
 					]
 				],
-				[ "name" : "Poker Chip Cases" ]
+				[ 
+                    "name" : "Poker Chip Cases",
+                    "products" : 20 
+                ]
 			]
 		 ],
-		 [ "name" : "Card Decks" ],
-		 [ "name" : "Gaming Systems" ],
+		 [ 
+             "name" : "Card Decks",
+             "products" : 20 
+         ],
+		 [ 
+             "name" : "Gaming Systems",
+             "products" : 20 
+         ],
 		 [ 
 		 	"name" : "Collectibles",
 		 	"subcatalogs" : [
-				[ "name" : "Coffee Mugs" ],
-				[ "name" : "Ornaments" ],
-				[ "name" : "Coasters" ],
-				[ "name" : "Keychains" ],
-				[ "name" : "Magnets" ]
+				[ 
+                    "name" : "Coffee Mugs",
+                    "products" : 20
+                ],
+				[ 
+                    "name" : "Ornaments",
+                    "products" : 20
+                ],
+				[ 
+                    "name" : "Coasters",
+                    "products" : 20 
+                ],
+				[ 
+                    "name" : "Keychains",
+                    "products" : 20 
+                ],
+				[ 
+                    "name" : "Magnets",
+                    "products" : 20 
+                ]
 			]
 		]
 	]
