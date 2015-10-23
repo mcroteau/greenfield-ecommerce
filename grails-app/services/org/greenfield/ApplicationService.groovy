@@ -46,7 +46,6 @@ class ApplicationService {
 		
 		header = split[0];
 		
-		//header = header.replace("[[CATALOGS]]", getCatalogsMain())
 		header = header.replace("[[SEARCH_BOX]]", getSearchBox())
 		header = header.replace("[[SHOPPING_CART]]", getShoppingCart())
 		header = header.replace("[[ACCOUNT]]", getAccount())
@@ -60,8 +59,6 @@ class ApplicationService {
 
 		footer = split[1];
 
-
-		//footer = footer.replace("[[CATALOGS]]", getCatalogsMain())
 		footer = footer.replace("[[SEARCH_BOX]]", getSearchBox())
 		footer = footer.replace("[[SHOPPING_CART]]", getShoppingCart())
 		footer = footer.replace("[[ACCOUNT]]", getAccount())
@@ -130,7 +127,6 @@ class ApplicationService {
 
 
 
-	//TODO : uncomment products count in both methods
 	def getCatalogsByCatalog(catalogInstance, params){
 		if(!catalogInstance){
 			return getCatalogsMain(catalogInstance)
@@ -313,14 +309,12 @@ class ApplicationService {
                         
                         def productCount = getProductFilterCount(specificationOption, catalogInstance, optionIdCombinations)
                         
-                        //if(productCount > 0){
-                            def binding = [ "specificationOption": specificationOption, "specificationName": specification.filterName, productCount: productCount ]
-                            def engine = new groovy.text.SimpleTemplateEngine()
-                            def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
-                            optionString += template.toString()
-                            
-                            optionsCount++
-                        //}
+                        def binding = [ "specificationOption": specificationOption, "specificationName": specification.filterName, productCount: productCount ]
+                        def engine = new groovy.text.SimpleTemplateEngine()
+                        def template = engine.createTemplate(getFilterOptionTemplate()).make(binding)
+                        optionString += template.toString()
+                        
+                        optionsCount++
                     }
 
                     if(optionsCount > 0){
@@ -364,8 +358,6 @@ class ApplicationService {
     }
 
 
-
-    //TODO:consider moving this into service or utility class
     def getProductFilterCount(specificationOption, catalogInstance, optionIdCombinations){
         def allProducts = []          
         
@@ -374,8 +366,6 @@ class ApplicationService {
             combination.push(specificationOption.id)
             optionIdCombinations.push(combination)
         }
-        
-        println "combinations : " + optionIdCombinations
         
         optionIdCombinations.each { ids ->
         
@@ -394,18 +384,12 @@ class ApplicationService {
                 }
             }
             
-            println "indexes : " + indexes
-            
             indexes.each { i ->
                 ids.remove(i)
             }
-            
-            println "ids : " + ids + " : " + optionIdCombinations
         }
         
         optionIdCombinations.unique()
-        println "combinations : " + optionIdCombinations
-        
         
         optionIdCombinations.each { optionIds ->
         
@@ -428,13 +412,7 @@ class ApplicationService {
             }
         
         }
-        
-        
-        
-        println "*****************************************"
-        println specificationOption.name + " : " + allProducts.size() + " : " + optionIdCombinations
-        println "*****************************************"
-        
+
         return allProducts.size()
     }
 

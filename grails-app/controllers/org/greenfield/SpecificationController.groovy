@@ -37,6 +37,8 @@ class SpecificationController {
             def products = []
             def productsTotal = 0
             def catalog = null
+            def lowestPriceProduct = null
+            def highestPriceProduct = null
 
 
             if(params.catalogId){
@@ -48,8 +50,6 @@ class SpecificationController {
                     def specificationIds = specificationInstance.catalogs.collect{ it.id }
                     setSubcatalogIds(catalog, subcatalogIds)
 
-                    println "subcatalog ids : " + subcatalogIds
-
                     if(subcatalogIds){
                         def ids = []
                         subcatalogIds.each { it ->
@@ -57,8 +57,6 @@ class SpecificationController {
                                 ids.push(it)
                             }
                         }
-
-                        println "ids : " + ids
 
                         productsTotal = Product.createCriteria().count{
                             catalogs{
@@ -79,19 +77,15 @@ class SpecificationController {
                             order('price', 'asc')
                         }
                         
-                        println "size : " + rangeProducts.get(0)
-                        
                         def lastProduct = rangeProducts.size() - 1 
-                        def lowestPriceProduct = rangeProducts.get(0)
-                        println "lowest: " + lowestPriceProduct
-                        def highestPriceProduct = rangeProducts.get(lastProduct)
-                        println "highest: " + highestPriceProduct
+                        lowestPriceProduct = rangeProducts.get(0)
+                        highestPriceProduct = rangeProducts.get(lastProduct)
                     }
 
                 }
             }
-            //println "products : " + products
-            [ specificationInstance: specificationInstance, catalogOptions: catalogOptions,  products: products, productsTotal: productsTotal, catalogInstance: catalog ]
+            
+            [ specificationInstance: specificationInstance, catalogOptions: catalogOptions,  products: products, productsTotal: productsTotal, catalogInstance: catalog, lowestPriceProduct: lowestPriceProduct, highestPriceProduct: highestPriceProduct ]
         }
     }
 

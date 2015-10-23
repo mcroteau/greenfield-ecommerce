@@ -78,8 +78,12 @@
 					<br class="clear"/>
 				</div>
                 
-
-
+                <g:if test="${lowestPriceProduct && highestPriceProduct}">
+                    <div id="price-range">
+                        <strong>Price Range : </strong>$${applicationService.formatPrice(lowestPriceProduct.price)} - $${applicationService.formatPrice(highestPriceProduct.price)}
+                    </div>
+                </g:if>
+            
                 <g:if test="${products}">
                     <table class="table">
                         <thead>
@@ -140,7 +144,6 @@
 <%
     def catalogId = "00"
     if(catalogInstance){
-        System.out.println("here...")
         if(catalogInstance?.id){
             catalogId = catalogInstance.id
         }
