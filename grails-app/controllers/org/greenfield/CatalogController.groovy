@@ -83,6 +83,7 @@ class CatalogController {
             }
 
             productsTotal = products?.size() ? products.size() : 0
+            products.sort{ it.name }
             products = products.drop(offset.toInteger()).take(max.toInteger())
 
         }else{

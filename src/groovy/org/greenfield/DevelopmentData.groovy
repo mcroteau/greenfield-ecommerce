@@ -40,28 +40,28 @@ public class DevelopmentData {
 			"subcatalogs" : [
 				[ 
                     "name" : "Poker Tables",
-                    "products" : 20 
+                    "products" : 15 
                 ],
 				[
 					"name" : "Poker Chips",
 					"subcatalogs" : [
 						[ 
                             "name" : "Ceramic Poker Chips",
-                            "products" : 20
+                            "products" : 10
                         ],
 						[ 
                             "name" : "Clay Poker Chips",
-                            "products" : 20
+                            "products" : 10
                         ],
 						[ 
                             "name" : "Composite Poker Chips",
-                            "products" : 20
+                            "products" : 10
                         ]
 					]
 				],
 				[ 
                     "name" : "Poker Chip Cases",
-                    "products" : 20 
+                    "products" : 10 
                 ]
 			]
 		 ],
@@ -71,22 +71,22 @@ public class DevelopmentData {
          ],
 		 [ 
              "name" : "Gaming Systems",
-             "products" : 20 
+             "products" : 10 
          ],
 		 [ 
 		 	"name" : "Collectibles",
 		 	"subcatalogs" : [
 				[ 
                     "name" : "Coffee Mugs",
-                    "products" : 20
+                    "products" : 25
                 ],
 				[ 
                     "name" : "Ornaments",
-                    "products" : 20
+                    "products" : 15
                 ],
 				[ 
                     "name" : "Coasters",
-                    "products" : 20 
+                    "products" : 10 
                 ],
 				[ 
                     "name" : "Keychains",
@@ -94,11 +94,38 @@ public class DevelopmentData {
                 ],
 				[ 
                     "name" : "Magnets",
-                    "products" : 20 
+                    "products" : 25 
                 ]
 			]
 		]
 	]
+    
+    
+    def specifications = [
+        [
+            "name"     : "Brand",
+            "options"  : [ "Brybelly", "Giantex", "Bicycle" ],
+            "catalogs" : [ "Poker Chips", 
+                            "Ceramic Poker Chips", "Clay Poker Chips", "Composite Poker Chips" ]
+        ],
+        [
+            "name"     : "Weight",
+            "options"  : [ "9.0", "9.5", "10.0", "10.5", "11", "11.5" ],
+            "catalogs" : [ "Poker Chips", 
+                            "Ceramic Poker Chips", "Clay Poker Chips", "Composite Poker Chips" ]
+        ],
+        [
+            "name"     : "Set Size",
+            "options"  : [ "100pc", "200pc", "300pc", "400pc", "500pc" ],
+            "catalogs" : [ "Poker Chips", 
+                            "Ceramic Poker Chips", "Clay Poker Chips", "Composite Poker Chips" ]
+        ],        
+        [
+            "name"     : "Size",
+            "options"  : [ "Small", "Medium", "Large" ],
+            "catalogs" : [ "Poker Tables" ]
+        ]   
+    ]
 
 	
 	def init(){
@@ -108,6 +135,8 @@ public class DevelopmentData {
 		
 		createCatalogs()
 		createProducts()
+        createSpecifications()
+        createProductSpecifications()
 		createCustomers()
 		createOrders()
 		createActivityLogs()
@@ -157,7 +186,7 @@ public class DevelopmentData {
 			if(!c.subcatalogs){
 				def catalogIdsArray = []
 				catalogIdsArray.add(catalog.id)
-				createCatalogProducts(catalogIdsArray)
+				createCatalogProducts(catalogIdsArray, c.products)
 			}else{
 				createSubcatalogProducts(c, catalog)
 			}
@@ -176,20 +205,17 @@ public class DevelopmentData {
 			}else{
 				def ids = getCatalogIdsArray(catalog)
 				def catalogIdsArray = ids.split(',').collect{it as int}
-				createCatalogProducts(catalogIdsArray)
+				createCatalogProducts(catalogIdsArray, c.products)
 			}
 		}
 	}
 	
 	
-	def createCatalogProducts(catalogIdsArray){
-		Random rand = new Random()
-		def numberProducts = rand.nextInt(MAX_PRODUCTS) + 1
-		
-		(1..numberProducts).each{ i ->
+	def createCatalogProducts(catalogIdsArray, numberProducts){
+        (1..numberProducts).each{ i ->
 			def product = new Product()
 			product.price = i * 10
-			product.quantity = i * 3
+			product.quantity = numberProducts
 			product.weight = 16
 			catalogIdsArray.each {
 				def cc = Catalog.get(it)
@@ -203,7 +229,81 @@ public class DevelopmentData {
 		}
 	}
 	
+    
+    def createSpecifications(){
+        specifications.eachWithIndex() { specificationObj, specificationPosition ->
+            def specification = new Specification()
+            specification.name = specificationObj.name
+            specification.filterName = specificationObj.name.replaceAll(" ", "_").toLowerCase()
+            specification.position = specificationPosition
+            specification.save(flush:true)
+        
+            specificationObj.catalogs.each { catalogName ->
+                def catalog = Catalog.findByName(catalogName)
+                specification.addToCatalogs(catalog)
+                specification.save(flush:true)
+            }
+            
+            specificationObj.options.eachWithIndex(){ optionName, optionPosition ->
+                def option = new SpecificationOption()
+                option.name = optionName
+                option.specification = specification
+                option.position = optionPosition
+                option.save(flush:true)
+                
+                specification.addToSpecificationOptions(option)
+                specification.save(flush:true)                
+            }
+        }
+		println "Specifications : ${Specification.count()}"
+		println "SpecificationOptions : ${SpecificationOption.count()}"
+    }
 	
+
+    
+    
+    def createProductSpecifications(){
+		Random rand = new Random()
+        specifications.each{ specificationObj ->
+            def specification = Specification.findByName(specificationObj.name)
+            def specificationCatalogs = specificationObj.catalogs
+            specificationCatalogs.each { catalogName ->
+                def ids = []
+                def catalog = Catalog.findByName(catalogName)
+                if(catalog){
+                    ids.add(catalog.id)
+                }
+
+                def products = Product.createCriteria().list{
+                    catalogs{
+                        'in'('id', ids)
+                    }
+                }
+                
+                if(products){
+                    products.each { product ->
+    				    int index = rand.nextInt(specificationObj.options.size())
+                        
+                        def optionName = specificationObj.options.get(index)
+                        def option = SpecificationOption.findByName(optionName)
+                        
+                        def existing = ProductSpecification.findAllByProductAndSpecificationAndSpecificationOption(product, specification, option)
+                        if(!existing){
+                            def productSpecification = new ProductSpecification()
+                            productSpecification.specificationOption = option
+                            productSpecification.product = product
+                            productSpecification.specification = specification
+                            productSpecification.save(flush:true)
+                        }
+                    }
+                }
+            }  
+        }
+		println "ProductSpecifications : ${ProductSpecification.count()}"
+    }
+    
+    
+    
 	
 	def getCatalogIdsArray(catalog){
 		def ids = new StringBuffer()

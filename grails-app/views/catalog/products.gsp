@@ -83,6 +83,12 @@ for (Object param : keys) {
 	        </g:link>
             
             
+            <g:if test="${productInstance.productSpecifications.size() > 0}">
+                <g:each in="${productInstance.productSpecifications}" var="productSpecification">
+                    <span class="label label-default">${productSpecification.specificationOption.specification.name}:&nbsp;${productSpecification.specificationOption.name}</span>
+                </g:each>
+            </g:if>
+            
 		</div>
 	</g:each>
 	<br style="clear:both"/>
