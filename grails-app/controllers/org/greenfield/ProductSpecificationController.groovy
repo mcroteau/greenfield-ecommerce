@@ -12,69 +12,6 @@ class ProductSpecificationController {
 
 
     //TODO:remove
-    def add_products(){
-
-        def c = Product.createCriteria()
-        def products = c.list{
-            catalogs{
-                idEq(3.toLong())
-            }
-        }
-
-        def rand = new Random()
-
-        products.each{ product ->
-
-            def brandSpecification = Specification.get(1)
-            def sizeSpecification = Specification.get(2)
-            def colorSpecification = Specification.get(3)
-
-            def brands = SpecificationOption.findAllBySpecification(brandSpecification)
-            def sizes = SpecificationOption.findAllBySpecification(sizeSpecification)
-            def colors = SpecificationOption.findAllBySpecification(colorSpecification)
-
-            def brandIndex = Math.abs(rand.nextInt() % brands.size()) + 0
-            def brand = brands.getAt(brandIndex)
-
-            def sizeIndex = Math.abs(rand.nextInt() % sizes.size()) + 0
-            def size = sizes.getAt(sizeIndex)
-
-            def colorIndex = Math.abs(rand.nextInt() % colors.size()) + 0
-            def color = colors.getAt(colorIndex)
-
-
-            def brandOption = new ProductSpecification()
-            brandOption.specificationOption = brand
-            brandOption.specification = brandSpecification
-            brandOption.product = product
-            brandOption.save(flush:true)
-
-            def sizeOption = new ProductSpecification()
-            sizeOption.specificationOption = size
-            sizeOption.specification = sizeSpecification
-            sizeOption.product = product
-            sizeOption.save(flush:true)
-
-            def colorOption = new ProductSpecification()
-            colorOption.specificationOption = color
-            colorOption.specification = colorSpecification
-            colorOption.product = product
-            colorOption.save(flush:true)
-
-            product.addToProductSpecifications(brandOption)
-            product.addToProductSpecifications(sizeOption)
-            product.addToProductSpecifications(colorOption)
-            product.save(flush:true)
-
-        }
-
-
-        render(ProductSpecification.list())
-
-    }
-
-
-    //TODO:remove
     def generate(){
 
         def allOptions = [
@@ -110,9 +47,9 @@ class ProductSpecificationController {
             ]
         ]
 
-
         def product1 = Product.get(6)
         def catalogs = product1.catalogs
+
 
         allOptions.each { option ->
             def specification = new Specification()
@@ -135,42 +72,10 @@ class ProductSpecificationController {
 
                 specification.addToSpecificationOptions(specficationOption)
                 specification.save(flush:true)
-                println "specification options : " + specification.specificationOptions.size()
             }
             println "new after:" + Specification.count() + " : " + SpecificationOption.count()
         }
 
-        //TODO:remove belongsTo relationship to Catalog in Specification
-
-    }
-
-
-    //TODO:remove
-    def tmp_delete(){
-        println "before : " + Specification.count()
-        def specifications = Specification.list()
-        specifications.each {
-            it.delete(flush:true)
-        }
-        println "done deleting : " + Specification.count()
-    }
-
-
-    //TODO:remove
-    def delete_all(){
-        ProductSpecification.executeUpdate('delete from ProductSpecification')
-        def specificationOptions = SpecificationOption.list()
-        specificationOptions.each { specificationOption ->
-            specificationOption.products = null
-            specificationOption.products.clear()
-            specificationOption.save(flush:true)
-        }
-    }
-
-
-    //TODO:remove
-    def count(){
-        render(ProductSpecification.count())
     }
 
 

@@ -17,7 +17,10 @@
     		<p class="information secondary">Selecting a Subcatalog will automatically select all parent Catalogs up to the top level Catalog.</p>
     		<div id="catalog-selection-container">
     			${catalogIdSelectionList}
-    		</div>
+    		</div>        
+            <div class="alert alert-danger pull-left" style="margin-top: 8px; padding:5px 10px;width:385px">
+                <strong>Warning:</strong> Changing catalogs will remove any product specifications for this product
+            </div>
     		<a href="javascript:" class="btn btn-default pull-right" style="margin-top:15px;" id="close-catalogs-select-modal">Accept &amp; Close</a>
     		<br class="clear"/>
     	</div>
@@ -149,7 +152,7 @@
 		</div>
 
 
-		<script type="text/javascript" src="${resource(dir:'js/product_catalogs.js')}"></script>
+		<script type="text/javascript" src="${resource(dir:'js/specification_catalogs.js')}"></script>
 
 		<script type="text/javascript">
 

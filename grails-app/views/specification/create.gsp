@@ -70,7 +70,7 @@
 		</div>
 
     <!-- TODO: move to generic javascript file -->
-    <script type="text/javascript" src="${resource(dir:'js/product_catalogs.js')}"></script>
+    <script type="text/javascript" src="${resource(dir:'js/specification_catalogs.js')}"></script>
 
     <script type="text/javascript">
 

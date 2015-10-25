@@ -10,20 +10,9 @@ class SpecificationOption {
 
 	static belongsTo = [ specification: Specification ]
 
-	//TODO:remove or refactor
-	//static hasMany = [ products: Product ]
-
     static mapping = {
     	sort position: "asc"
     }
-        
-    //TODO:remove    
-    //def beforeInsert(){
-    //    def existingOption = SpecificationOption.findByNameAndSpecification(name, specification)
-    //    if(existingOption){
-    //        return false
-    //    } 
-    //}
 
 	static constraints = {
         name(nullable:false)

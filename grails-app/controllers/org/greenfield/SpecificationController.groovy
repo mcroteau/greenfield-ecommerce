@@ -7,13 +7,6 @@ class SpecificationController {
 
     def numberSpaces = 1
 
-    //TODO:remove
-    def test(){
-        def list = [5, 5, 4, 4, 3, 3, 2, 2, 1, 1]
-        list.unique()
-        println list
-        render(Specification.count())
-    }
 
     //TODO:remove
     def test_options(){
@@ -165,9 +158,7 @@ class SpecificationController {
             }else{
                 flash.message = "No changes were made"
             }
-            println "*********************"
-            println "product specifications : " + ProductSpecification.count()
-            println "*********************"
+
             redirect(action: 'product_specifications', id: id, params: [catalogId: params.catalogId, max: max, offset: offset])
 
         }
