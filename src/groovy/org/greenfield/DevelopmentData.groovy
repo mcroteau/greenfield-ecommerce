@@ -22,7 +22,6 @@ public class DevelopmentData {
 
 
 	def MAX_DAYS              = 90
-	def MAX_PRODUCTS          = 30
 	def CUSTOMERS_COUNT       = 20
 	def ORDERS_COUNT          = 108
 	def PAGE_VIEWS_COUNT      = 430
@@ -40,22 +39,22 @@ public class DevelopmentData {
 			"subcatalogs" : [
 				[ 
                     "name" : "Poker Tables",
-                    "products" : 15 
+                    "products" : 0 
                 ],
 				[
 					"name" : "Poker Chips",
 					"subcatalogs" : [
 						[ 
                             "name" : "Ceramic Poker Chips",
-                            "products" : 10
+                            "products" : 0
                         ],
 						[ 
                             "name" : "Clay Poker Chips",
-                            "products" : 10
+                            "products" : 0
                         ],
 						[ 
                             "name" : "Composite Poker Chips",
-                            "products" : 10
+                            "products" : 4
                         ]
 					]
 				],
@@ -215,7 +214,7 @@ public class DevelopmentData {
         (1..numberProducts).each{ i ->
 			def product = new Product()
 			product.price = i * 10
-			product.quantity = numberProducts
+			product.quantity = i * 10
 			product.weight = 16
 			catalogIdsArray.each {
 				def cc = Catalog.get(it)
@@ -280,23 +279,32 @@ public class DevelopmentData {
                     }
                 }
                 
+                println "**************************"
+                println products
+                
                 if(products){
                     products.each { product ->
     				    int index = rand.nextInt(specificationObj.options.size())
                         
                         def optionName = specificationObj.options.get(index)
+                        println optionName
                         def option = SpecificationOption.findByName(optionName)
                         
                         def existing = ProductSpecification.findAllByProductAndSpecificationAndSpecificationOption(product, specification, option)
                         if(!existing){
+                            println "no existing"
                             def productSpecification = new ProductSpecification()
                             productSpecification.specificationOption = option
                             productSpecification.product = product
                             productSpecification.specification = specification
                             productSpecification.save(flush:true)
+                        }else{
+                            println "existing : " + existing
                         }
                     }
                 }
+
+                println "**************************"
             }  
         }
 		println "ProductSpecifications : ${ProductSpecification.count()}"
