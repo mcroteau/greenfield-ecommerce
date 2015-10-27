@@ -39,22 +39,22 @@ public class DevelopmentData {
 			"subcatalogs" : [
 				[ 
                     "name" : "Poker Tables",
-                    "products" : 0 
+                    "products" : 20 
                 ],
 				[
 					"name" : "Poker Chips",
 					"subcatalogs" : [
 						[ 
                             "name" : "Ceramic Poker Chips",
-                            "products" : 0
+                            "products" : 10
                         ],
 						[ 
                             "name" : "Clay Poker Chips",
-                            "products" : 0
+                            "products" : 15
                         ],
 						[ 
                             "name" : "Composite Poker Chips",
-                            "products" : 4
+                            "products" : 10
                         ]
 					]
 				],
@@ -211,21 +211,23 @@ public class DevelopmentData {
 	
 	
 	def createCatalogProducts(catalogIdsArray, numberProducts){
-        (1..numberProducts).each{ i ->
-			def product = new Product()
-			product.price = i * 10
-			product.quantity = i * 10
-			product.weight = 16
-			catalogIdsArray.each {
-				def cc = Catalog.get(it)
-				product.addToCatalogs(cc)
-			}
-			def lastCatalogId = catalogIdsArray[catalogIdsArray.size() - 1 ]
-			def lastCatalog = Catalog.get(lastCatalogId)
-			product.name = "${lastCatalog.name} ${i}"
+        if(numberProducts > 0){
+            (1..numberProducts).each{ i ->
+    			def product = new Product()
+    			product.price = i * 10
+    			product.quantity = i * 10
+    			product.weight = 16
+    			catalogIdsArray.each {
+    				def cc = Catalog.get(it)
+    				product.addToCatalogs(cc)
+    			}
+    			def lastCatalogId = catalogIdsArray[catalogIdsArray.size() - 1 ]
+    			def lastCatalog = Catalog.get(lastCatalogId)
+    			product.name = "${lastCatalog.name} ${i}"
 			
-			product.save(flush:true)
-		}
+    			product.save(flush:true)
+    		}
+        }
 	}
 	
     
@@ -266,47 +268,42 @@ public class DevelopmentData {
         specifications.each{ specificationObj ->
             def specification = Specification.findByName(specificationObj.name)
             def specificationCatalogs = specificationObj.catalogs
+
+            def ids = []
             specificationCatalogs.each { catalogName ->
-                def ids = []
                 def catalog = Catalog.findByName(catalogName)
                 if(catalog){
                     ids.add(catalog.id)
                 }
-
-                def products = Product.createCriteria().list{
-                    catalogs{
-                        'in'('id', ids)
+            }
+            
+            def products = Product.createCriteria().list{
+                catalogs{
+                    'in'('id', ids)
+                }
+            }
+            
+            products.unique { it.id }
+            
+            if(products){
+                products.each { product ->
+    			    int index = rand.nextInt(specificationObj.options.size())
+                    
+                    def optionName = specificationObj.options.get(index)
+                    def option = SpecificationOption.findByName(optionName)
+                    
+                    def existing = ProductSpecification.findAllByProductAndSpecificationAndSpecificationOption(product, specification, option)
+                    if(!existing){
+                        def productSpecification = new ProductSpecification()
+                        productSpecification.specificationOption = option
+                        productSpecification.product = product
+                        productSpecification.specification = specification
+                        productSpecification.save(flush:true)
                     }
                 }
-                
-                println "**************************"
-                println products
-                
-                if(products){
-                    products.each { product ->
-    				    int index = rand.nextInt(specificationObj.options.size())
-                        
-                        def optionName = specificationObj.options.get(index)
-                        println optionName
-                        def option = SpecificationOption.findByName(optionName)
-                        
-                        def existing = ProductSpecification.findAllByProductAndSpecificationAndSpecificationOption(product, specification, option)
-                        if(!existing){
-                            println "no existing"
-                            def productSpecification = new ProductSpecification()
-                            productSpecification.specificationOption = option
-                            productSpecification.product = product
-                            productSpecification.specification = specification
-                            productSpecification.save(flush:true)
-                        }else{
-                            println "existing : " + existing
-                        }
-                    }
-                }
-
-                println "**************************"
-            }  
-        }
+            }
+        }  
+            
 		println "ProductSpecifications : ${ProductSpecification.count()}"
     }
     
