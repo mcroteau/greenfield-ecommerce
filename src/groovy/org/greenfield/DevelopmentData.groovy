@@ -405,10 +405,6 @@ public class DevelopmentData {
 		
 		
 					def transaction = new Transaction()
-			
-					//println "${customer.username} : ${product.name} x ${quantity} -> ${orderDate.getDateString()}"
-			
-			
 			    	transaction.orderDate = orderDate
 		
 					transaction.total = shoppingCart.total
@@ -422,7 +418,6 @@ public class DevelopmentData {
 		
 					transaction.chargeId = "DEVELOPEMENT"
 		
-					//Shipping Info
 					transaction.shipName = customer.username
 					transaction.shipAddress1 = customer.address1
 					transaction.shipAddress2 = customer.address2
