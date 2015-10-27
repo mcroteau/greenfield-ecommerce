@@ -42,7 +42,11 @@
                             <div class="form-row">
                                 <h3>${specification.name}</h3>
                                 <table style="border:none">
-                                <g:each in="${specification.specificationOptions}" var="specificationOption">
+                                <%
+                                def specificationOptions = specification.specificationOptions?.sort{ it.name }
+                                specificationOptions = specificationOptions.sort{ it.position }
+                                %>
+                                <g:each in="${specificationOptions}" var="specificationOption">
                                     <tr>
                                         <td style="width:300px">${specificationOption.name}</td>
                                         <td>

@@ -69,9 +69,6 @@ class ProductSpecificationController {
             productInstance.addToProductSpecifications(productSpecification)
             productInstance.save(flush:true)
 
-            specificationOption.addToProducts(productInstance)
-            specificationOption.save(flush:true)
-
             flash.message = "Successfully added specification to product"
             redirect(action: 'manage', id: productInstance.id)
 
@@ -90,16 +87,19 @@ class ProductSpecificationController {
                 return
             }
 
-
+            def removable = []
             if(productInstance.productSpecifications){
                 productInstance.productSpecifications.each { productSpecification ->
                     if (productSpecification.specificationOption.id == specificationOption.id) {
-                        productInstance.removeFromProductSpecifications(productSpecification)
-                        productSpecification.delete(flush:true)
-
-                        specificationOption.removeFromProducts(productInstance)
-                        specificationOption.save(flush:true)
+                        removable.add(productSpecification)
                     }
+                }
+            }
+            
+            if(removable.size() > 0){
+                removable.each { removableProductSpecification ->
+                    productInstance.removeFromProductSpecifications(removableProductSpecification)
+                    removableProductSpecification.delete(flush:true)
                 }
             }
 

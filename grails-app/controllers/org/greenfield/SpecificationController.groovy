@@ -172,7 +172,6 @@ class SpecificationController {
 			if(specificationInstance?.catalogs){
 				catalogIdsArray = specificationInstance?.catalogs.collect { it.id }
 			}
-			//TODO: move getCatalogIdSelectionList to utility class
 			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
 
 			def name = params.name ? params.name : ""
