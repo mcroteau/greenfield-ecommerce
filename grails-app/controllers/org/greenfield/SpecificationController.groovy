@@ -8,11 +8,6 @@ class SpecificationController {
     def numberSpaces = 1
 
 
-    //TODO:remove
-    def test_options(){
-        render(SpecificationOption.count())
-    }
-
     def product_specifications(Long id){
         authenticatedAdminSpecification { adminAccount, specificationInstance ->
             
@@ -118,14 +113,10 @@ class SpecificationController {
                     def product = Product.get(productId)
 
                     if(optionId == "NONE" && product){
-                        println "\n********** equals NONE **********"
                         def existingProductSpec = ProductSpecification.findBySpecificationAndProduct(specificationInstance, product)
 
 
                         if(existingProductSpec){
-                            println "********** existingProductSpec **********"
-                            println "existing product spec : " + product.name + " : " + existingProductSpec.specificationOption.name
-                            println "\n"
                             product.removeFromProductSpecifications(existingProductSpec)
                             existingProductSpec.delete(flush:true)
                         }
@@ -168,10 +159,8 @@ class SpecificationController {
 
 	def list(){
 		authenticatedAdmin{ adminAccount ->
-			def specifications = Specification.list()    
-            //TODO:remove specificationOptions
-            def specificationOptions = SpecificationOption.list()        
-            [ specifications : specifications, specificationOptions: specificationOptions ]
+			def specifications = Specification.list()        
+            [ specifications : specifications ]
 		}
 	}
 

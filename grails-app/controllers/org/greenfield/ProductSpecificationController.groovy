@@ -5,80 +5,6 @@ import org.greenfield.BaseController
 @Mixin(BaseController)
 class ProductSpecificationController {
 
-    //TODO:remove
-    def test(){
-        render(ProductSpecification.count())
-    }
-
-
-    //TODO:remove
-    def generate(){
-
-        def allOptions = [
-            [
-                "name" : "Brand",
-                "filterName" : "brand",
-                "position" : 3,
-                "options" : [
-                    [ "name" : "Brybelly" ],
-                    [ "name" : "Rush Creek" ],
-                    [ "name" : "Giantex" ]
-                ]
-            ],
-            [
-                "name" : "Size",
-                "filterName" : "size",
-                "position" : 1,
-                "options" : [
-                    [ "name" : "Small" ],
-                    [ "name" : "Medium" ],
-                    [ "name" : "Large" ]
-                ]
-            ],
-            [
-                "name" : "Color",
-                "filterName" : "color",
-                "position" : 2,
-                "options" : [
-                    [ "name" : "Red" ],
-                    [ "name" : "Blue" ],
-                    [ "name" : "Yellow" ]
-                ]
-            ]
-        ]
-
-        def product1 = Product.get(6)
-        def catalogs = product1.catalogs
-
-
-        allOptions.each { option ->
-            def specification = new Specification()
-            specification.name = option.name
-            specification.filterName = option.filterName
-            specification.position = option.position
-            specification.save(flush:true)
-
-            catalogs.each { catalog ->
-                specification.addToCatalogs(catalog)
-                specification.save(flush:true)
-            }
-
-            option.options.each {
-                def specficationOption = new SpecificationOption()
-                specficationOption.name = it.name
-                specficationOption.position = 0
-                specficationOption.specification = specification
-                specficationOption.save(flush:true)
-
-                specification.addToSpecificationOptions(specficationOption)
-                specification.save(flush:true)
-            }
-            println "new after:" + Specification.count() + " : " + SpecificationOption.count()
-        }
-
-    }
-
-
     def manage(Long id){
         authenticatedAdminProduct { adminAccount, productInstance ->
             def availableSpecifications = []
@@ -146,10 +72,6 @@ class ProductSpecificationController {
             specificationOption.addToProducts(productInstance)
             specificationOption.save(flush:true)
 
-            println "**********************************"
-            println "add products : " + specificationOption.products.size()
-            println "**********************************"
-
             flash.message = "Successfully added specification to product"
             redirect(action: 'manage', id: productInstance.id)
 
@@ -180,11 +102,6 @@ class ProductSpecificationController {
                     }
                 }
             }
-
-
-            println "**********************************"
-            println "remove products : " + specificationOption.products.size()
-            println "**********************************"
 
 
             flash.message = "Successfully removed specification from product"

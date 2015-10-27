@@ -26,10 +26,43 @@
 
 .catalog-list-header{
 	font-weight:bold;
-	/** color:rgba(0,0,0,0.24); **/
 	margin-left:8px;
 	font-size:11px;
 	text-transform:uppercase;
+}
+
+#catalog-filter-container{
+    margin-top:20px !important;
+}
+
+#catalog-filter-header{
+	font-weight:bold;
+	margin-left:8px;
+    margin-bottom:10px !important;
+	font-size:11px !important;
+    color:rgba(0,0,0,0.54);
+	text-transform:uppercase;
+}
+
+.catalog-filter-list{
+    margin-bottom:20px !important;
+}
+
+.specification-name{
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    text-transform: uppercase;
+}
+
+.filter-name{
+    font-size:12px;
+}
+
+.filter-product-count{
+    font-size:11px !important;
+    color:rgba(0,0,0,0.54);
 }
 
 

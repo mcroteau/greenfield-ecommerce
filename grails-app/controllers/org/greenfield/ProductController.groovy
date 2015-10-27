@@ -381,11 +381,7 @@ class ProductController {
 				render(view: "edit", model: [productInstance: productInstance])
 				return
 			}    	  
-			
-            println "*******************************************"
-            println "remove product specifications from product"
-            println "*******************************************"
-            //remove product specifications from product
+            
             productInstance.catalogs.each{ catalog ->
                 def products = Product.createCriteria().list{
                     catalogs{
