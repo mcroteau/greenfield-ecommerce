@@ -1,22 +1,11 @@
-CHANGELOG.md
-.classpath
+Thumbs.db
+.DS_Store
+.gradle
+build/
+.idea
+*.iml
+*.ipr
+*.iws
 .project
 .settings
-.launch
-.tmproj
-.idea
-
-# logs
-stacktrace.log
-/test/reports
-
-/target/
-
-# project release file
-*.war
-
-# project settings
-#web-app/settings/settings.properties
-
-todo.txt
-
+.classpath
