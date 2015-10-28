@@ -82,12 +82,13 @@ for (Object param : keys) {
 				<p class="product-price">$${applicationService.formatPrice(productInstance.price)}</p>
 	        </g:link>
             
-            
+            <%--
             <g:if test="${productInstance.productSpecifications.size() > 0}">
                 <g:each in="${productInstance.productSpecifications}" var="productSpecification">
                     <span class="label label-default">${productSpecification.specificationOption.specification.name}:&nbsp;${productSpecification.specificationOption.name}</span>
                 </g:each>
             </g:if>
+            --%>
             
 		</div>
 	</g:each>
