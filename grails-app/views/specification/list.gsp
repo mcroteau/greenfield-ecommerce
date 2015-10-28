@@ -63,7 +63,7 @@
                                         <span class="information">No Catalogs Defined</span>
                                     </g:else>
                                 </td>
-                                <td><g:link controller="specification" action="edit" name="edit" class="" id="${specification.id}">Edit</g:link></td>
+                                <td><g:link controller="specification" action="edit" name="edit" class="edit-specification-${specification.id}" id="${specification.id}">Edit</g:link></td>
                             </tr>
                         </g:each>
 					</tbody>

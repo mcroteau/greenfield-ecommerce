@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:8080/" />
-<title>assign_product_brands</title>
+<title>assign_product_weights</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">assign_product_brands</td></tr>
+<tr><td rowspan="1" colspan="3">assign_product_weights</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -43,7 +43,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>css=a.edit-specification-1</td>
+	<td>css=a.edit-specification-3</td>
 	<td></td>
 </tr>
 <tr>
@@ -59,56 +59,61 @@
 <tr>
 	<td>select</td>
 	<td>name=product_specification_1</td>
-	<td>label=Brybelly</td>
+	<td>label=10.0</td>
 </tr>
 <tr>
 	<td>select</td>
 	<td>name=product_specification_2</td>
-	<td>label=Giantex</td>
+	<td>label=11.5</td>
 </tr>
 <tr>
 	<td>select</td>
 	<td>name=product_specification_3</td>
-	<td>label=Giantex</td>
+	<td>label=11.0</td>
 </tr>
 <tr>
 	<td>select</td>
 	<td>name=product_specification_4</td>
-	<td>label=Brybelly</td>
+	<td>label=10.5</td>
 </tr>
 <tr>
 	<td>select</td>
 	<td>name=product_specification_5</td>
-	<td>label=Rush Creek</td>
+	<td>label=10.5</td>
 </tr>
 <tr>
 	<td>select</td>
 	<td>name=product_specification_6</td>
-	<td>label=Rush Creek</td>
+	<td>label=11.0</td>
 </tr>
 <tr>
 	<td>select</td>
 	<td>name=product_specification_7</td>
-	<td>label=Brybelly</td>
+	<td>label=10.0</td>
 </tr>
 <tr>
 	<td>select</td>
 	<td>name=product_specification_8</td>
-	<td>label=Rush Creek</td>
+	<td>label=10.0</td>
 </tr>
 <tr>
 	<td>select</td>
 	<td>name=product_specification_9</td>
-	<td>label=Giantex</td>
+	<td>label=11.5</td>
 </tr>
 <tr>
 	<td>select</td>
 	<td>name=product_specification_10</td>
-	<td>label=Brybelly</td>
+	<td>label=11.0</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>name=_action_set_product_specifications</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Back to Specification</td>
 	<td></td>
 </tr>
 <tr>

@@ -8,9 +8,13 @@
 <body>
 <table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
 <tr><td><b>Test Suite</b></td></tr>
-<tr><td><a href="product-specifications/create_catalogs.test">create_catalogs</a></td></tr>
-<tr><td><a href="product-specifications/create_products.test">create_products</a></td></tr>
-<tr><td><a href="product-specifications/create_specifications.test">create_specifications</a></td></tr>
+<tr><td><a href="create_catalogs.test">create_catalogs</a></td></tr>
+<tr><td><a href="create_products.test">create_products</a></td></tr>
+<tr><td><a href="create_specifications.test">create_specifications</a></td></tr>
+<tr><td><a href="assign_product_brands.test">assign_product_brands</a></td></tr>
+<tr><td><a href="assign_product_sets.test">assign_product_sets</a></td></tr>
+<tr><td><a href="assign_product_weights.test">assign_product_weights</a></td></tr>
+<tr><td><a href="navigate_filters.test">navigate_filters</a></td></tr>
 </tbody></table>
 </body>
 </html>
