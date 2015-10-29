@@ -63,6 +63,12 @@ dependencies {
     compile "org.hibernate:hibernate-ehcache"
     compile "org.grails.plugins:scaffolding"
 
+	compile "com.stripe:stripe-jav"
+	compile "javax.mail:mail"
+	compile "com.google.code.gson:gson"
+
+	runtime "com.easypost:easypost-java"
+
     runtime "org.grails.plugins:asset-pipeline"
 
     testCompile "org.grails:grails-plugin-testing"
@@ -72,6 +78,8 @@ dependencies {
     testRuntime 'org.seleniumhq.selenium:selenium-htmlunit-driver:2.44.0'
 
     console "org.grails:grails-console"
+
+
 }
 
 task wrapper(type: Wrapper) {

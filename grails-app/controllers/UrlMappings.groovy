@@ -1,14 +1,22 @@
 class UrlMappings {
 
-    static mappings = {
-        "/$controller/$action?/$id?(.$format)?"{
-            constraints {
-                // apply constraints here
-            }
-        }
+	static mappings = {
+		"/$controller/$action?/$id?"{
+			constraints {
+				// apply constraints here
+			}
+		}
 
-        "/"(view:"/index")
-        "500"(view:'/error')
-        "404"(view:'/notFound')
-    }
+		"/"{
+			controller = "store"
+			action = "index"
+		}
+
+		"500"(view:'/error')
+
+
+		/**"/catalog/$name/products?"(controller:"catalog", action:"catalog_products")**/
+		/**"/catalog/$id/products?"(controller:"catalog", action:"products")**/
+		"/page/store_view/$title?"(controller:"page", action:"store_view")
+	}
 }

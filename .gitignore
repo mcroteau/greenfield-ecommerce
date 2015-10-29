@@ -1,11 +1,32 @@
-Thumbs.db
 .DS_Store
-.gradle
-build/
+CHANGELOG.md
+Thumbs.db
+.classpath
+.project
+.settings
+.launch
+.tmproj
 .idea
+.gradle
 *.iml
 *.ipr
 *.iws
-.project
-.settings
-.classpath
+build/
+
+
+# logs
+stacktrace.log
+/test/reports
+
+/target/
+
+# project release file
+*.war
+
+# project settings
+#web-app/settings/settings.properties
+
+todo.txt
+
+
+
