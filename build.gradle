@@ -40,6 +40,7 @@ assets {
 
 repositories {
     mavenLocal()
+    mavenCentral()
     maven { url "https://repo.grails.org/grails/core" }
 }
 
@@ -63,12 +64,11 @@ dependencies {
     compile "org.hibernate:hibernate-ehcache"
     compile "org.grails.plugins:scaffolding"
 
-	compile "com.stripe:stripe-jav"
-	compile "javax.mail:mail"
-	compile "com.google.code.gson:gson"
+	compile "com.stripe:stripe-java:1.32.1"
+	compile "com.google.code.gson:gson:2.3.1"
+	compile "javax.mail:mail:1.4"
 
-	runtime "com.easypost:easypost-java"
-
+	runtime "com.easypost:easypost-java:2.1.2"
     runtime "org.grails.plugins:asset-pipeline"
 
     testCompile "org.grails:grails-plugin-testing"
