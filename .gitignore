@@ -5,6 +5,8 @@ CHANGELOG.md
 .launch
 .tmproj
 .idea
+.gradle
+/build
 
 # logs
 stacktrace.log
