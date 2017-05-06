@@ -2,14 +2,16 @@ package org.greenfield
 
 class Role {
 
-    String name
+	String authority
 
-    static hasMany = [ accounts: Account, permissions: String ]
-    static belongsTo = Account
+	Role(String authority) {
+		this()
+		this.authority = authority
+	}
 
-    static constraints = {
-        name(nullable: false, blank: false, unique: true)
+	static constraints = {
+		authority blank: false, unique: true
 		id generator: 'sequence', params:[sequence:'ID_ROLE_PK_SEQ']
-    }
+	}
 
 }

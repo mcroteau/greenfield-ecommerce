@@ -18,7 +18,7 @@
 		<h3>Product Catalogs</h3>
 		<p class="information secondary">Selecting a Subcatalog will automatically select all parent Catalogs up to the top level Catalog.</p>
 		<div id="catalog-selection-container">
-			${catalogIdSelectionList}
+			${raw(catalogIdSelectionList)}
 		</div>
         <div class="alert alert-danger pull-left" style="margin-top: 8px; padding:5px 10px;width:385px">
             <strong>Warning:</strong> Changing catalogs will remove any product specifications for this product

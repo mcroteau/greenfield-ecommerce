@@ -82,12 +82,12 @@
 		<div id="content-container">
 			
 			<div id="header">
-				<span class="header-info pull-left align-left">Welcome Back <strong><shiro:principal/></strong>!</span>
+				<span class="header-info pull-left align-left">Welcome Back <strong><sec:username/></strong>!</span>
 				
 				<span class="header-info pull-right align-right">
 					<g:link uri="/">Store Front</g:link>
 					&nbsp;|&nbsp;
-					<g:link controller="auth" action="signOut">Logout</g:link>
+					<g:link controller="logout" action="index">Logout</g:link>
 				</span>
 					
 				<br class="clear"/>

@@ -42,7 +42,7 @@
 						<g:each in="${catalogsList}" var="catalogData">
 							<tr>
 								<td>${catalogData.name} <br/>
-									<span class="secondary" style="font-size:12px;color:rgba(0,0,0,0.24)">(${catalogData.path})</span>
+									<span class="secondary" style="font-size:12px;color:rgba(0,0,0,0.54)">(${raw(catalogData.path)})</span>
 								</td>
 								<td>${catalogData.productsCount}</td>
 								<td>

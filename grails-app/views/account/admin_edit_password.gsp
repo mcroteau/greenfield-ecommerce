@@ -42,7 +42,7 @@
 				<div class="form-row">
 					<span class="form-label full">New Password</span>		
 					<span class="input-container">
-						<input type="password" class="form-control"  name="passwordHash" value=""/>			
+						<input type="password" class="form-control"  name="password" value=""/>			
 					</span>
 					<br class="clear"/>
 				</div>

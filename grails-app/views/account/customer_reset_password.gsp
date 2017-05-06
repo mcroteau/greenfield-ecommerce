@@ -4,7 +4,7 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${applicationService.getHeader("Account Info")}
+${raw(applicationService.getHeader("Account Info"))}
 
 
 
@@ -15,5 +15,5 @@ ${applicationService.getHeader("Account Info")}
 
 
 
-${applicationService.getFooter()}
+${raw(applicationService.getFooter())}
 

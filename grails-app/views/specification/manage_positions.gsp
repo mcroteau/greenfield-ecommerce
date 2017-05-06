@@ -49,30 +49,34 @@
 				<g:link action="list" name="list" class="btn btn-default pull-right">Back to Specifications</g:link>
 			</h2>
 			
-			<p class="information secondary">Click, drag and drop specification to desired positions.  Click "Update Specification Positions" to save changes</p>
-			
-			<div class="clear" style="margin-top:20px;"></div>
+			<g:if test="${specifications}">
+				<p class="information secondary">Click, drag and drop specification to desired positions.  Click "Update Specification Positions" to save changes</p>
+				
+				<div class="clear" style="margin-top:20px;"></div>
 
-			<g:if test="${flash.message}">
-				<div class="alert alert-info" role="status">${flash.message}</div>
+				<g:if test="${flash.message}">
+					<div class="alert alert-info" role="status">${flash.message}</div>
+				</g:if>
+				
+				<g:form action="update_positions" method="post">
+					
+					<input type="hidden" name="positions" id="positions" value="">
+					
+					<ul id="specifications">
+						<g:each in="${specifications}" var="specification">
+					  		<li data-id="${specification.id}"><span class="order-number"></span>${specification.name}</li>
+						</g:each>
+					</ul>
+					
+					<input type="submit" value="Update Specification Positions" class="btn btn-primary" style="float:left; margin-left:30px;"/>
+					
+				</g:form>
+				
+				<div class="clear"></div>
 			</g:if>
-			
-			<g:form action="update_positions" method="post">
-				
-				<input type="hidden" name="positions" id="positions" value="">
-				
-				<ul id="specifications">
-					<g:each in="${specifications}" var="specification">
-				  		<li data-id="${specification.id}"><span class="order-number"></span>${specification.name}</li>
-					</g:each>
-				</ul>
-				
-				<input type="submit" value="Update Specification Positions" class="btn btn-primary" style="float:left; margin-left:30px;"/>
-				
-			</g:form>
-			
-			<div class="clear"></div>
-			
+			<g:else>
+				<p>No product specifications created yet...</p>
+			</g:else>
 		</div>
 
 

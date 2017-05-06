@@ -72,7 +72,7 @@
 			
 			</g:if>
 			<g:else>
-				<h3>No orders found</h3>
+				<p>No orders found...</p>
 			</g:else>
 		</div>
 	</body>

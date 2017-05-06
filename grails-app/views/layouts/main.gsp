@@ -20,9 +20,9 @@
 						<g:link controller="content" action="home" class="${home_active}" params="[activeLink: 'home']">Home</g:link>
 						<g:link controller="content" action="about" class="${about_active}" params="[activeLink: 'about']">About</g:link>
 						
-						<g:if test="${shiro.principal()}">
+						<g:if test="${shiro?.principal()}">
 							Welcome back 
-							<g:link controller="account" action="profile"><shiro:principal/></g:link>&nbsp;&nbsp;|&nbsp;&nbsp;<g:link controller="auth" action="signOut" class="navbar-brand">Logout</g:link>
+							<g:link controller="account" action="profile"><sec:username/></g:link>&nbsp;&nbsp;|&nbsp;&nbsp;<g:link controller="auth" action="signOut" class="navbar-brand">Logout</g:link>
 						</g:if>
 						
 						<g:else>

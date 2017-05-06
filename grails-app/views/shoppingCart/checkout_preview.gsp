@@ -5,10 +5,13 @@
 	
 
 	
-${applicationService.getHeader("Shopping Cart")}
+${raw(applicationService.getHeader("Shopping Cart"))}
 
-	<script src="/${applicationService.getContextName()}/js/lib/stripe/stripe.js"></script>
-	
+	<!--<script src="/${applicationService.getContextName()}/js/lib/stripe/stripe.js"></script>
+
+	<!-- -->
+	<script src="https://js.stripe.com/v2/"></script>
+
 	<style type="text/css">
 		.form-group label{
 			font-weight:normal;
@@ -263,7 +266,7 @@ ${applicationService.getHeader("Shopping Cart")}
 			
 			<div class="form-group">
 				<span class="pull-right" id="processing" style="display:none">
-					Processing payment, please wait&nbsp;
+					Processing checkout, please wait&nbsp;
 					<img src="/${applicationService.getContextName()}/images/loading.gif" >
 				</span>
 				<br/>
@@ -307,20 +310,31 @@ $(document).ready(function(){
 	</g:if>
 	
 
-
-	Stripe.setPublishableKey("${publishableKey}");
+	console.log('here.. set publishable key')
+	console.log(Stripe)
+	Stripe.setPublishableKey("${raw(publishableKey)}");
 	$submitBtn.click(checkCreditCardValues);
 
 
 
 	function checkout(){
+		console.log("checkout...")
 		$checkoutForm.submit();
 	}
 
 	function setStripeTokenInput(code, token){
+		console.log("set stripe token", code, token)
 		$tokenInput.val(token.id)
+		if(token.error){
+			alert('Something went wrong. Please notify Greenfield Administrator')
+			$processing.html('Something went wrong. Please notify website administrator immediately.')
+			$processing.css({ "font-weight" : "bold" })
+			$submitBtn.hide()
+			return false
+		}
 		checkout();
 	}
+
 
 	function getStripeToken(){
 		//TODO : catch stripe payment errors
@@ -389,4 +403,4 @@ $(document).ready(function(){
 </script>			
 
 
-${applicationService.getFooter()}	
+${raw(applicationService.getFooter())}	

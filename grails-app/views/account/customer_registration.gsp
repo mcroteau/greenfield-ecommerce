@@ -2,15 +2,12 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${applicationService.getHeader("Registration")}
+${raw(applicationService.getHeader("Registration"))}
   
-	
-	
 	
 	<div id="registration_form" style="width:350px;">
 	
 		<h1>Registration</h1>
-			
 			
 	
 		<g:if test="${flash.message}">
@@ -47,8 +44,8 @@ ${applicationService.getHeader("Registration")}
 			
 			
 			<div class="form-group">
-			  	<label for="passwordHash">Password</label>
-			  	<input type="password" name="passwordHash" class="form-control" id="passwordHash" placeholder="***">
+			  	<label for="password">Password</label>
+			  	<input type="password" name="password" class="form-control" id="password" placeholder="***">
 			</div>
 			<div class="form-group">
 			  	<label for="passwordRepeat">Re-Enter Password</label>
@@ -88,4 +85,4 @@ ${applicationService.getHeader("Registration")}
 	})
 </script>
 
-${applicationService.getFooter()}
+${raw(applicationService.getFooter())}

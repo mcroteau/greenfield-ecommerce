@@ -1,0 +1,426 @@
+<html>
+<head>
+	
+	<title>Minimum Server Setup : Apache, Tomcat &amp; Greenfield on Ubuntu 14.04 for only $7 a month</title>	
+	
+	<meta name="description" content="Minimum Server Setup : Apache, Tomcat &amp; Greenfield on Ubuntu 14.04 for only $7 a month">
+	
+	<meta name="keywords" content="apache tomcat server, tomcat server, ubuntu 14.04 server setup, web server setup $7 a month, $7 a month server">
+	
+		
+	<link rel="stylesheet" href="../bootstrap-buttons.min.css" />
+	<link rel="stylesheet" href="../bootstrap-code.min.css" />
+	<link rel="stylesheet" href="../app.css" />
+
+</head>
+<body>
+	
+	<div id="content">
+		
+		
+		<div id="header">
+			
+			<div class="github-button-container" id="watch-button-container">
+				<span class="github-button">&nbsp;</span>
+			</div>
+			
+			
+			<div id="greenfield-logo">
+				<img src="../logo.png" style="margin:0px auto 0px auto"/>
+				<span id="tagline">open source ecommerce</span>
+			</div>
+			
+			<div class="github-button-container" id="watch-button-container">
+				<iframe src="http://ghbtns.com/github-btn.html?user=opengreenfield&repo=greenfield&type=watch&count=true&size=small" id="star-repo"
+				class="github-button"
+				allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+			</div>			
+			<div class="clear"></div>
+			
+		</div>
+		
+		<div id="navigation-container">
+			
+			<ul id="navigation">
+				<li><a href="index.html">Home</a></li>
+				<li><a href="index.html#features">Features</a></li>
+				<li><a href="index.html#started">Getting Started</a></li>
+				<li><a href="index.html#screenshots">Screenshots</a></li>
+				<li><a href="index.html">Tutorials</a></li>
+				<li><a href="index.html#support">Support</a></li>
+			</ul>
+			
+		</div>	
+		
+		<div id="howto" class="section">
+			
+			<h1>Minimum Server Setup : Apache, Tomcat &amp; Greenfield on Ubuntu 14.04 for only $7 a month</h1>
+			
+			<p>This tutorial assumes that you have created a VPS instance running Ubuntu 14.04.  If you haven't done this yet, read <a href="vultr.html">Create Vultr VPS Instance Tutorial</a>.  You can be up in running with a VPS instance for as little as $5 a month.</p>
+			
+			<p>This tutorial will walk you through the steps required to run Greenfield on a production level Ubuntu Web Server running Apache, Tomcat &amp; Greenfield for around $5 to $10 a month depending on your VPS <span class="information">(virtual private server)</span> provider.  This tutorial is meant for users who have configured and built Greenfield to run using the H2 in memory database provided by grails.  If you have configured Greenfield to run against PostgreSQL, follow these instructions for the minimum server setup, then read <a href="postgres-install.html">Installing &amp; Configuring Postgres on Ubuntu 14.04</a>.</p>
+			
+			
+			<h3>Total Time <code>15 Minutes</code></h3>
+			
+			
+			<h3>Software Packages to be installed</h3>
+			
+			<ul>
+				<li>Ubuntu 14.04 LTS</li>
+				<li>Apache 2.4.7</li>
+				<li>Tomcat 7.0.59</li>
+			</ul>
+			
+			
+			
+			
+			
+			<h3 class="separation">1. Create VPS Instance running Ubuntu 14.04 LTS</h3>
+			
+			<div class="step-instructions">
+				<p>There are many VPS (Virtual Private Server) providers available.  I have narrowed down the list to 3 value options.  The 3 options include <a href="http://vultr.com" target="_blank">Vultr</a>, <a href="http://digitalocean.com" target="_blank">Digital Ocean</a> and <a href="http://linode.com" target="_blank">Linode</a>.  If you haven't already done so, you can follow the tutorial below to create a VPS instance on <a href="http://vultr.com" target="_blank">Vultr</a>.</p>
+					
+				<p><a href="vultr.html">Create Vultr VPS Instance Tutorial</a></p>
+			</div>
+				
+			
+				
+			<h3 class="separation">2. Create <code>greenfield</code> User with <code>sudo</code> access</h3>
+			
+			<div class="step-instructions">
+				
+				<p>You should now have a VPS instance that you can SSH onto.  This next step we will create a new user and give the user <code>sudo</code> access.  This user will be used to install and configure all necessary software packages.</p>	
+			
+				
+				<div class="instructions">
+					<p><strong>SSH to new VPS instance</strong></p>
+					<p>You should have a new instance that you can now work with.</p>
+					<pre>ssh root@{{server ip address}}</pre>
+				</div>
+				
+					
+				<div class="instructions">
+					<p><strong>Create User</strong></p>
+					<p>It is recommended to create a new user for all install &amp; configuration activities, so we will create a new user specifically for this Greenfield tutorial</p>
+					<pre>adduser greenfield</pre>
+				</div>
+			
+			
+				<div class="instructions">
+					<p><strong>Add greenfield user to <code>sudo</code> group</strong></p>
+					<p>We now want to give the greenfield user admin priveledges by adding the account to the <code>sudo</code> group</p>
+					<pre>gpasswd -a greenfield sudo</pre>
+				</div>
+				
+			</div>
+			
+			
+			
+			
+			<h3 class="separation">3. Add public key to greenfield user's authorized_keys file</h3>
+			
+			<div class="step-instructions">
+				<div class="instructions">
+					<p><strong>Switch to greenfield user</strong></p>
+					<pre>su - greenfield</pre>
+				</div>
+				
+		    	
+				<div class="instructions">
+					<p><strong>Make <code>.ssh</code> directory and change permissions</strong></p>
+					<p>You will need to be in <strong>greenfield's</strong> home directory</p>
+					<pre>mkdir .ssh
+chmod 700 .ssh</pre>
+				</div>
+				
+		    	
+				<div class="instructions">
+					<p><strong>Create <code>authorized_keys</code> file, paste your public key in <code>authorized_keys</code> file</strong></p>
+					<pre>vi .ssh/authorized_keys</pre>
+					<p>Save file</p>
+				</div>
+			</div>
+			
+			
+			
+			
+			
+			
+			<h3 class="separation">4. Install Latest Java</h3>
+			
+			<div class="step-instructions">
+				
+				<div class="instructions">
+					<p><strong>Update Package list</strong></p>
+					<pre>sudo apt-get update</pre>
+				</div>
+				
+				<div class="instructions">
+					<p><strong>Install Java</strong></p>
+					<pre>sudo apt-get install default-jdk</pre>
+				</div>
+
+			</div>
+			
+			
+			
+			
+			
+			<h3 class="separation">5. Install vim (optional)</h3>
+			
+			<div class="step-instructions">
+				<p>Purely a preference as I sometimes run into trouble with using <code>vi</code></p>
+				<div class="instructions">
+					<p><strong>Install vim</strong></p>
+					<pre>sudo apt-get install vim</pre>
+				</div>
+
+			</div>
+			
+			
+			
+			
+			
+			
+			<h3 class="separation">6. Install Apache</h3>
+			
+			<div class="step-instructions">
+				
+				<div class="instructions">
+					<p><strong>Install Apache</strong></p>
+					<pre>sudo apt-get install apache2</pre>
+				</div>
+
+				
+				<div class="instructions">
+					<p><strong>Verify Apache installed and running</strong></p>
+					<p>You should be able to browse to <strong>http://{{server ip address}}:80</strong></p>
+				</div>
+				
+			</div>
+			
+			
+			
+			
+			
+			<h3 class="separation">7. Install &amp; Configure Tomcat</h3>
+			
+			<div class="step-instructions">
+				
+				<p>Next we will install and configure Tomcat so we can manage our Greenfield application</p>
+				
+				<div class="instructions">
+					<p><strong>Create tomcat directory and <code>cd</code> into it</strong></p>
+					<pre>sudo mkdir /usr/local/tomcat
+cd /usr/local/tomcat</pre>
+				</div>
+				
+				
+				<div class="instructions">
+					<p><strong>Download latest package</strong></p>
+					<p>This tutorial we will download version 7.0.59</p>
+					<pre>sudo wget http://apache.arvixe.com/tomcat/tomcat-7/v7.0.59/bin/apache-tomcat-7.0.59.tar.gz</pre>
+				</div>
+				
+				
+				<div class="instructions">
+					<p><strong>Unpack downloaded tar</strong></p>
+					<pre>sudo tar -xvf apache-tomcat-7.0.59.tar.gz</pre>
+				</div>
+				
+				
+				<div class="instructions">
+					<p><strong>Create sym-link to unpacked tomcat</strong></p>
+					<pre>sudo ln -s apache-tomcat-7.0.59 tomcat-current</pre>
+				</div>
+				
+				
+				<div class="instructions">
+					<p><strong>Remove old tar package</strong></p>
+					<pre>sudo rm apache-tomcat-7.0.59.tar.gz</pre>
+				</div>
+				
+
+				
+				<div class="instructions">
+					<p><strong>Add <code>CATALINA_HOME</code> &amp; <code>JAVA_HOME</code> to greenfield user's .bashrc.</strong></p>
+					<pre>vi ~/.bashrc</pre>
+					
+					<p>Add following lines to .bashrc</p>
+					<pre>
+export PATH=/usr/local/bin:$PATH
+
+export JAVA_HOME=/usr/lib/jvm/default-java
+export PATH=$JAVA_HOME/bin:$PATH
+
+export CATALINA_HOME=/usr/local/tomcat/tomcat-current						
+					</pre>
+					
+					<p>Source/reload greenfield's .bashrc</p>
+					<pre>source ~/.bashrc</pre>
+				</div>
+				
+				
+				
+				<div class="instructions">
+					<p><strong>Configure Tomcat Manager app</strong></p>
+					<p>This step is optional, you can manually deploy Greenfield by simply copying greenfield.war into the <code>$CATALINA_HOME/webapps/</code> directory <span class="information">(/usr/local/tomcat/tomcat-current/webapps)</span>, otherwise edit the <code>tomcat-users.xml</code> file</p>
+					<pre>sudo vim $CATALINA_HOME/conf/tomcat-users.xml</pre>
+					<p>Uncomment the following section and add the manager role in the <code>conf/tomcat-users.xml</code>.</p>
+					<pre>
+&lt;tomcat-users&gt;		
+	&lt;role rolename="manager-gui"/&gt;
+	&lt;role rolename="tomcat"/&gt;
+	&lt;role rolename="role1"/&gt;
+	&lt;user username="tomcat" password="tomcat" roles="tomcat,manager-gui"/&gt;
+	&lt;user username="both" password="tomcat" roles="tomcat,role1"/&gt;
+	&lt;user username="role1" password="tomcat" roles="role1"/&gt;
+&lt;/tomcat-users&gt;						
+					</pre>
+					<p>Save file</p>
+				</div>
+				
+				
+				<div class="instructions">
+					<p><strong>Start Tomcat</strong></p>
+					<pre>sudo $CATALINA_HOME/bin/startup.sh</pre>
+				</div>	
+				
+				
+				<div class="instructions">
+					<p><strong>Verify Tomcat is running</strong></p>
+					<p>Browse to <code>http://{{server ip address}}:8080</code></p>
+				</div>		
+				
+				<div class="instructions">
+					<p><strong>Verify that you can log into Tomcat Manager application</strong></p>
+					<p>Browse to <code>http://{{server ip address}}:8080</code>. Click <strong>Manager App</strong></p>
+					<p>Login using <code>tomcat</code> for username, <code>tomcat</code> for passowrd.</p>
+					<p class="information">You will want to change the default password for tomcat, just edit the <code>tomcat-users.xml</code> file, updating the password for tomcat user.</p>
+				</div>			
+								
+			</div>
+			
+			
+			
+			
+			
+			
+			<h3 class="separation">8. Deploy Greenfield Application</h3>
+			
+			<div class="step-instructions">
+			
+				<div class="instructions">
+					<p><strong>Two ways to deploy Greenfield</strong></p>
+					<p>1. Simply scp the greenfield.war package onto your server, then copy the war file to <code>$CATALINA_HOME/webapps</code> directory.  If Tomcat is running, the application will automatically be deployed. </p>
+					<p>2. The other option is to browse to the Tomcat Manager application, <code>http://{{server ip address}}:8080/manager/html</code>.  There is an option 3/4 down the page that reads <strong>WAR file to deploy</strong>.  Select your <strong>greenfield.war</strong> application on your machine and click <strong>Deploy</strong>.  It will take a few minutes to upload &amp; deploy</p>
+				</div>
+				
+				<div class="instructions">
+					<p><strong>Start Greenfield application</strong></p>
+					<p>You may need to start the Greenfield application after the greenfield.war has been deployed.  This can be done in the Tomcat Manager application.  
+					<p>1. Browse to Tomcat Manager application <br/><code>http://{{server ip address}}:8080/manager/html</code></p>
+					<p>2. Click <strong>List Applications</strong>. </p>
+					<p>3. Click <strong>Start</strong> next to the <strong>greenfield</strong> application listing.</p>
+				</div>
+				
+				<div class="instructions">
+					<p><strong>Verify Greenfield is Deployed &amp; Running</strong></p>
+					<p>Browse to <code>http://{{server ip address}}:8080/greenfield</code></p>
+					<p>If everything is setup correctly, you should see a mock store front with no Products or Catalogs available.  To add products, add catalogs, change layout, etc., you can access the <strong>administration</strong> section. Browse to </p>
+					
+					<pre>http://{{server ip address}}:8080/greenfield/admin</pre>
+					
+					<p>Default username <code>admin</code>, password <code>admin</code>.  You can change the default password in the administration section under <strong>Account</strong> menu option</p>
+				</div>
+				
+			</div>
+			
+			
+			
+			
+			
+			<h3 class="separation">Adding Tomcat to Server restart routine (optional)</h3>
+			<p>Following the next steps will add Tomcat to the list of applications to restart during a system reboot. <span class="information secondary">(<a href="http://askubuntu.com/questions/223944/how-to-automatically-restart-tomcat7-on-system-reboots">Reference Question</a>)</span></p>
+				
+			<div class="step-instructions">
+				
+				<div class="instructions">
+					<p><strong>Create <code>tomcat</code> script in <code>/etc/init.d</code> directory</strong></p>
+					<pre>sudo vim /etc/init.d/tomcat</pre>
+				</div>
+				
+			
+				<div class="instructions">
+					<p><strong>Paste following code in script file and save</strong></p>
+					
+<pre>#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:        tomcat
+# Required-Start:  $network
+# Required-Stop:   $network
+# Default-Start:   2 3 4 5
+# Default-Stop:    0 1 6
+# Short-Description: Start/Stop Tomcat server
+### END INIT INFO
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+start() {
+ sh /usr/local/tomcat/tomcat-current/bin/startup.sh
+}
+
+stop() {
+ sh /usr/local/tomcat/tomcat-current/bin/shutdown.sh
+}
+
+case $1 in
+  start|stop) $1;;
+  restart) stop; start;;
+  *) echo "Run as $0 <start|stop|restart>"; exit 1;;
+esac</pre>
+				</div>
+				
+			
+				<div class="instructions">
+					<p><strong>Change the permissions</strong></p>
+					<pre>sudo chmod 755 /etc/init.d/tomcat</pre>
+				</div>
+			
+				<div class="instructions">
+					<p><strong>Add the symlinks automatically</strong></p>
+					<pre>sudo update-rc.d tomcat defaults</pre>
+				</div>
+				
+			</div>
+			
+			
+			
+			<h3 class="separation">Next Steps</h3>
+			
+			<p>Now that you have minimum packages installed to run Greenfield, you can decide to run Greenfield against a RDBMS like PostgreSQL.</p>  
+			
+			<p>In addition, you are now ready to point your domain at the server and configure the server to map your new website domain to the Greenfield application running in Tomcat.  Please read <a href="configure-domain.html">Configuring Domain, Apache + Tomcat + mod_jk + mod_rewrite on Ubuntu 14.04</a> for instructions on how to do this.</p>
+				
+		</div>
+		
+</div>
+
+
+
+	
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-40862316-6', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
+	  
+	  
+</body>

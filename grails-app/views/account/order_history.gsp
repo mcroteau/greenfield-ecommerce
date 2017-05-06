@@ -2,9 +2,9 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${applicationService.getHeader("Order History")}
+${raw(applicationService.getHeader("Order History"))}
 
-<h1>Order History : <shiro:principal/></h1>
+<h1>Order History : <sec:username/></h1>
 			
 <g:if test="${flash.message}">
 	<div class="alert alert-info" role="status">${flash.message}</div>
@@ -35,8 +35,8 @@ ${applicationService.getHeader("Order History")}
 	</table>
 </g:if>
 <g:else>
-	<h2>No orders found</h2>
+	<p>No orders found...</p>
 </g:else>
 	
 
-${applicationService.getFooter()}
+${raw(applicationService.getFooter())}

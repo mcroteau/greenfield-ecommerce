@@ -11,12 +11,12 @@
 	}
 %>
 	
-${applicationService.getHeader(catalogInstance, "Product Details", true, params)}
+${raw(applicationService.getHeader(catalogInstance, "Product Details", true, params))}
 
 
 <% if(catalogInstance){ %>
 	<div class="breadcrumbs">
-		${applicationService.getBreadcrumbs(catalogInstance)}
+		${raw(applicationService.getBreadcrumbs(catalogInstance))}
 	</div>
 <%}%>
 
@@ -217,4 +217,4 @@ $(document).ready(function(){
 </script>
 
 
-${applicationService.getFooter()}
+${raw(applicationService.getFooter())}

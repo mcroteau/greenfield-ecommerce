@@ -3,7 +3,7 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${applicationService.getHeader("Account Info")}
+${raw(applicationService.getHeader("Account Info"))}
 
 		
 			<h1>Reset Password</h1>
@@ -56,4 +56,4 @@ ${applicationService.getHeader("Account Info")}
 			</div>
 			
 
-${applicationService.getFooter()}
+${raw(applicationService.getFooter())}

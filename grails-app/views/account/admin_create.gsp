@@ -69,7 +69,7 @@
 				<div class="form-row">
 					<span class="form-label full">Password</span>
 					<span class="input-container">
-						<g:textField type="text" name="passwordHash" required="" value="${accountInstance?.passwordHash}" class="form-control twofifty"/>
+						<g:textField type="text" name="password" required="" value="${accountInstance?.password}" class="form-control twofifty"/>
 					</span>
 					<br class="clear"/>
 				</div>

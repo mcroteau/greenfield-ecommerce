@@ -4,7 +4,11 @@ import org.apache.shiro.SecurityUtils
 import java.math.BigDecimal;
 import groovy.text.SimpleTemplateEngine
 import org.springframework.web.context.request.RequestContextHolder
-import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+
+//TODO:moved to grails.web.servlet.mvc
+//import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import grails.web.servlet.mvc.GrailsParameterMap 
+import grails.util.Holders
 
 
 class ApplicationService {
@@ -32,7 +36,7 @@ class ApplicationService {
 	
 	def refresh(){
 		if(!grailsApplication){
-			grailsApplication = new Page().domainClass.grailsApplication
+			grailsApplication = Holders.grailsApplication
 		}
 		
 		File layoutFile = grailsApplication.mainContext.getResource("templates/storefront/layout-wrapper.html").file
@@ -542,7 +546,7 @@ class ApplicationService {
 	}
 	
 	def getShoppingCart(){
-		return "<a href=\"/${getContextName()}/shoppingCart\" id=\"shopping-cart\" >Shopping Cart</a>"
+		return "<a href=\"/${getContextName()}/shopping_cart\" id=\"shopping-cart\" >Shopping Cart</a>"
 	}
 	
 	def getGreeting(){
@@ -567,7 +571,7 @@ class ApplicationService {
 	def getLogout(){
 		def subject = SecurityUtils.getSubject();
 		if(subject.isAuthenticated()){
-			return "<a href=\"/${getContextName()}/auth/signOut\" id=\"logout\">Logout</a>"
+			return "<a href=\"/${getContextName()}/logout\" id=\"logout\">Logout</a>"
 		}else{
 			return ""
 		}
@@ -600,7 +604,11 @@ class ApplicationService {
 		properties = new Properties();
 		try{
 			if(!grailsApplication){
-				grailsApplication = new Page().domainClass.grailsApplication
+				//TODO: better way to retrieve grailsApplication
+				//grailsApplication = new Page().domainClass.grailsApplication
+				//def grailsApplication = ApplicationHolder.application
+				//All holders moved to Holders
+				grailsApplication = Holders.grailsApplication
 			}
 			
 			File propertiesFile = grailsApplication.mainContext.getResource("settings/settings.properties").file

@@ -1,0 +1,181 @@
+html,body{
+	margin:0px;
+	height:100%;
+	width:100%;
+	padding:0px;
+	line-height:1.6em !important;
+}
+
+body{
+	padding:0px;
+	margin:0px;
+	heigh:100%;
+	width:100%;
+	text-align:center;
+	font-size:15px !important;
+	color:#222;
+	font-family:Helvetica,arial;
+	background:#fff;
+}
+#content{
+	width:650px;
+	margin:40px auto 200px auto;
+}
+#header{
+	width:542px;
+	margin:0px auto;
+}
+.github-button-container{
+	width:175px;
+	float:left;
+	text-align:center;
+	display:inline-block;
+}
+#greenfield-logo{
+	width:190px;
+	float:left;
+}
+.github-button{
+	width:125px;
+	text-align:center !important;
+	margin:0px auto !important;
+	display:inline-block;
+}
+
+.action-container{
+	width:50%;
+	float:left;
+}
+
+.action-button{
+	display:inline-block;
+}
+
+#github{
+	margin-left:15px;
+}
+
+#deployable{
+	margin-right:15px;
+}
+
+#navigation{
+	width:100%;
+	text-align:center !important;
+	border:dashed 1px #e8e8e8;
+}
+#navigation li{
+	margin:20px 30px 20px 0px;
+	text-align:left;
+	display:inline-block;
+	list-style:none !important;
+}
+#navigation li a{
+	display:inline-block;
+}
+
+#greenfield-definition{
+	text-align:left;
+}
+
+.section{
+	text-align:left;
+	margin:30px auto 70px auto;
+	clear:both;
+}
+
+.features-section,
+.started-section{
+	width:290px;
+	float:left;
+	text-align:left;
+}
+
+.feature{
+	margin:5px auto 55px auto;
+}
+
+.features-section h1,
+.started-section h1{
+	text-align:left;
+}
+
+.requirements-section{
+	padding-left:15px;
+	margin-top:20px;
+}
+.requirements-section ol{
+	padding-left:15px;
+}
+.code{
+	color:#555;
+	font-size:11px; 
+	font-family:courier; 
+	padding:2px; 
+	display:inline-block; 
+	background:f8f8f8; 
+	border:solid 1px #ddd; 
+}
+
+.screenshot-container{
+	float:left;
+	margin:10px 10px 10px 0px;
+	text-align:center;
+}
+
+.screenshot-container span{
+	display:block;
+}
+
+.screenshot-container a{
+	outline:none !important;
+}
+
+img.screenshot{
+	height:150px;
+	padding:5px;
+	margin:10px auto;
+	-webkit-box-shadow: 0px 0px 10px 0px rgba(230,230,230,1);
+	-moz-box-shadow: 0px 0px 10px 0px rgba(230,230,230,1);
+	box-shadow: 0px 0px 10px 0px rgba(230,230,230,1);
+}
+ul li{
+	list-style:square;
+}
+h1{
+	font-size:26px !important;
+	font-weight:normal;
+}
+
+p{
+	margin:0px auto 10px 0px;
+	padding:0px;
+}
+.clear{
+	clear:both !important;
+}
+pre{
+	margin:5px auto 20px auto;
+}
+
+
+/** simple-server styles **/
+h3.separation{
+	margin:50px auto 5px auto;
+}
+.instructions{
+	margin:20px auto 40px auto;
+}
+.step-instructions{
+	padding-left:20px;
+	margin-bottom:70px;
+}
+.information{
+	font-size:12px;
+	color:rgba(0,0,0,0.54);
+}
+
+#tagline{
+	font-size:14px;
+	color:rgba(0,0,0,0.54);
+}

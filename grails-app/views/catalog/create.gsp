@@ -70,7 +70,7 @@
 						<span class="input-container">
 							<select name="location" class="form-control" style="width:auto">
 								<option value="">-- Top Level --</option>
-								${catalogOptions}
+								${raw(catalogOptions)}
 							</select>
 						</span>
 						<br class="clear"/>

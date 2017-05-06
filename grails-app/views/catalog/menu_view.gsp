@@ -39,7 +39,7 @@
 			</g:if>
 			
 			<div id="menu-view-container">
-				${catalogMenuString}
+				${raw(catalogMenuString)}
 			</div>
 
 		</div>	

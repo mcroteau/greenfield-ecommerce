@@ -1,0 +1,143 @@
+<html>
+<head>
+		
+	<title>Configuring Greenfield for Postgres</title>	
+	
+	<meta name="description" content="Configuring Greenfield for Postgres. Greenfield is a lightweight open source eCommerce application focused on quick and easy setup.">
+	
+	<meta name="keywords" content="greenfield postgres, configure postgres greenfield, configure greenfield postgres">
+	
+		
+	<link rel="stylesheet" href="../bootstrap-buttons.min.css" />
+	<link rel="stylesheet" href="../bootstrap-code.min.css" />
+	<link rel="stylesheet" href="../app.css" />
+
+</head>
+<body>
+	
+	<div id="content">
+		
+		
+		<div id="header">
+			
+			<div class="github-button-container" id="watch-button-container">
+				<span class="github-button">&nbsp;</span>
+			</div>
+			
+			
+			<div id="greenfield-logo">
+				<img src="../logo.png" style="margin:0px auto 0px auto"/>
+				<span id="tagline">open source ecommerce</span>
+			</div>
+			
+			<div class="github-button-container" id="watch-button-container">
+				<iframe src="http://ghbtns.com/github-btn.html?user=opengreenfield&repo=greenfield&type=watch&count=true&size=small" id="star-repo"
+				class="github-button"
+				allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+			</div>			
+			<div class="clear"></div>
+			
+		</div>
+		
+		
+		<div id="navigation-container">
+			
+			<ul id="navigation">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../index.html#features">Features</a></li>
+				<li><a href="../index.html#started">Getting Started</a></li>
+				<li><a href="../index.html#screenshots">Screenshots</a></li>
+				<li><a href="index.html">Tutorials</a></li>
+				<li><a href="../index.html#support">Support</a></li>
+			</ul>
+			
+		</div>
+		
+		
+		
+		
+		<div id="howto" class="section">
+			
+			<h1>Configuring Greenfield for Postgres</h1>
+			
+			<p>This tutorial will walk you through the steps to configure Greenfield for Postgres.  We will make a few small changes to a couple config files then will build a deployable war package.<p>
+			
+			<p>This tutorial assumes you have already created an Ubuntu 14.04 x64 VPS instance and have installed and configured Apache, Tomcat &amp; Postgres.  If you haven't done this already, follow <a href="simple-server.html">Minimum Server Setup : Apache, Tomcat &amp; Greenfield on Ubuntu 14.04</a> and <a href="postgres-install.html">Installing &amp; Configuring Postgres</a> for detailed instructions on how to install and configure Apache, Tomcat &amp; Postgres for Greenfield<p>
+				
+			<p>This tutorial also assumes you have downloaded and installed Grails and have Greenfield's source ready for modification</p>
+			
+			<h3 class="separation">1. Update <code>BuildConfig.groovy</code></h3>
+			
+			<div class="step-instructions">
+				<p><strong>Uncomment following line so it reads</strong></p>
+				<pre>compile "postgresql:postgresql:9.1-901.jdbc4"</pre>
+			</div>
+			
+			
+			
+			<h3 class="separation">2. Update <code>DataSource.groovy</code></h3>
+			
+			<div class="step-instructions">
+				<p><strong>Uncomment Postgres settings in the <code>production dataSource</code> section so it looks like</strong></p>
+				<p class="information">Substitute your <strong>postgres password</strong> for the password in this example</p> 
+				<p class="information">This example assumes that you have created a Postgres database named <strong>greenfield</strong> that is running locally on your web server.</p>
+<pre>
+production {
+    dataSource {
+		pooled = true
+		dialect = org.hibernate.dialect.PostgreSQLDialect 
+		dbCreate = "update" // one of 'create', 'create-drop','update'
+		url = "jdbc:postgresql://localhost:5432/greenfield"
+		driverClassName = "org.postgresql.Driver"
+		username = "postgres"
+		password = "postgres password"
+		
+		properties {
+			maxActive = -1
+			minEvictableIdleTimeMillis=1800000
+			timeBetweenEvictionRunsMillis=1800000
+			numTestsPerEvictionRun=3
+			testOnBorrow=true
+			testWhileIdle=true
+			testOnReturn=true
+			validationQuery="SELECT 1"
+		}
+    }
+}	
+</pre>
+			</div>
+			
+			
+			
+			
+			<h3 class="separation">3. Build new <strong>greenfield.war</strong></h3>
+			
+			<div class="step-instructions">
+				<p><strong>cd into top level greenfield directory and run</strong></p>
+				<pre>grails war</pre>
+				
+				<p>Now you have a war file that is ready to be deployed via Tomcat and run against a Postgres database running locally with a database named <strong>greenfield</strong></p>
+			</div>
+			
+			
+			
+		</div>
+		
+</div>
+
+
+
+	
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-40862316-6', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
+	  
+	  
+</body>
