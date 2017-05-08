@@ -1,4 +1,6 @@
+Thumbs.db
 CHANGELOG.md
+.gradle
 .classpath
 .project
 .settings
@@ -19,6 +21,3 @@ stacktrace.log
 
 # project settings
 #web-app/settings/settings.properties
-
-todo.txt
-

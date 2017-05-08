@@ -5,24 +5,21 @@ Greenfield is a lightweight eCommerce application focused on quick and easy setu
 
 
 ## Requirements
-
 	* Grails 3.2.8 or greater
 	* Java JDK 1.8 or greater
 	* Can easily be modified for most RDBMS
 
 
 ## Get it running
-	
 	* Install Grails
-	* Run `grails run-app` in base `greenfield` directory
-	* Browse to `http://localhost:8080/greenfield/admin`
-	* Default Administrator password `admin`
+	* Run 'grails run-app' in base 'greenfield' directory
+	* Browse to 'http://localhost:8080/greenfield/admin'
+	* Default Administrator password 'admin'
 
 
-## See it with data
-	
-	* Locate Bootstrap.groovy `grails-app/init`
-	* Uncomment the following `createDevelopmentData`
+## See it running with data
+	* Locate Bootstrap.groovy 'grails-app/init'
+	* Uncomment the following 'createDevelopmentData()'
 
 
 ## Contact
