@@ -126,6 +126,13 @@ public class DevelopmentData {
         ]   
     ]
 
+    
+
+	def springSecurityService
+
+	DevelopmentData(springSecurityService){
+		this.springSecurityService = springSecurityService
+	}
 	
 	def init(){
 		println "***************************************"
@@ -323,8 +330,9 @@ public class DevelopmentData {
 	
 	def createCustomers = {
 		
-		def customerRole = Role.findByName(RoleName.ROLE_CUSTOMER.description())
-		def password = new Sha256Hash('customer').toHex()
+		def customerRole = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
+		//def password = new Sha256Hash('customer').toHex()
+		def password = springSecurityService.encodePassword("password")
 
 		(1..CUSTOMERS_COUNT).each {
 			def customer = new Account()
@@ -338,16 +346,10 @@ public class DevelopmentData {
 			customer.city = "Anchorage"
 			customer.state = State.findByName("Alaska")
 			customer.zip = "99501"
-			customer.addToRoles(customerRole)
-			
-			customerRole.addToAccounts(customer)
-			customerRole.save(flush:true)
 			customer.save(flush:true)
-		
-			customer.addToPermissions("account:customer_profile:" + customer.id)
-			customer.addToPermissions("account:customer_update:" + customer.id)
-			customer.addToPermissions("account:customer_order_history:" + customer.id)
-			customer.save(flush:true)
+
+			customer.createAccountRoles(false)
+			customer.createAccountPermission()
 		
 		}
 		
@@ -402,8 +404,9 @@ public class DevelopmentData {
 					shoppingCart.subtotal = (product.price * quantity)
 					shoppingCart.total = shoppingCart.subtotal + taxes + shipping
 					shoppingCart.save(flush:true)
+					customer.createShoppingCartPermission(shoppingCart)
 		
-		
+
 					def transaction = new Transaction()
 			    	transaction.orderDate = orderDate
 		
@@ -426,6 +429,8 @@ public class DevelopmentData {
 					transaction.shipZip = customer.zip
 		
 					transaction.save(flush:true)
+
+					customer.createTransactionPermission(transaction)
 				}
 			}
 		}

@@ -555,9 +555,10 @@
 		
 		var $startDate = $('#start-date'),
 			$endDate = $('#end-date');
-			
-		$startDate.datepicker();
-		$endDate.datepicker();
+		
+		//TODO:fix	
+		//$startDate.datepicker();
+		//$endDate.datepicker();
 		
 		var options = {
 			axes : {
@@ -617,6 +618,9 @@
 		};
 		
 		
+		function numberWithCommas(x) {
+    		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
 		
 	});
 

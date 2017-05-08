@@ -490,7 +490,7 @@ class AccountController {
 			def hadAdmin = accountInstance.hasAdminRole
 			
 			accountInstance.properties = params
-			def adminRole = Role.findByName(RoleName.ROLE_ADMIN.description())
+			def adminRole = Role.findByAuthority(RoleName.ROLE_ADMIN.description())
 			
 			
 			if(params.admin == "true" ||

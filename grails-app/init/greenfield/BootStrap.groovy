@@ -55,25 +55,21 @@ class BootStrap {
 		//createCustomer()	
 
 		println 'Accounts : ' + Account.count()
-		println 'Permissions : ' + Permission.count()
 		//Development Data
 		//createDevelopmentData()
 	}
 	
 	def createCustomer(){
-				//TODO:quick fix for missing data
+		//TODO:quick fix for missing data
 		def customerPassword = springSecurityService.encodePassword("password")
 		def customerAccount = new Account(username : 'customer', password : customerPassword, firstName : 'Customer', lastName: 'Customer', email : 'customer@email.com')
 		customerAccount.save(flush:true)
 
 		//TODO:cleanup
-		// def customerAccountRole = new AccountRole()
-		// customerAccountRole.account = customerAccount
-		// customerAccountRole.role = customerRole
-		// customerAccountRole.save(flush:true)	
 		customerAccount.createAccountRoles(false)
 		customerAccount.createAccountPermission()
 	}
+
 	
 	def createDevelopmentData(){
 		def developmentData = new DevelopmentData(springSecurityService)
@@ -86,8 +82,8 @@ class BootStrap {
 			adminRole = new Role(authority : RoleName.ROLE_ADMIN.description()).save(flush:true)
 			customerRole = new Role(authority : RoleName.ROLE_CUSTOMER.description()).save(flush:true)
 		}else{
-			adminRole = Role.findByName(RoleName.ROLE_ADMIN.description())
-			customerRole = Role.findByName(RoleName.ROLE_CUSTOMER.description())
+			adminRole = Role.findByAuthority(RoleName.ROLE_ADMIN.description())
+			customerRole = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
 		}
 		
 		println 'Roles : ' + Role.count()
@@ -104,42 +100,12 @@ class BootStrap {
 			def adminAccount = new Account(username : 'admin', password : password, firstName : 'Admin', lastName: 'Admin', email : 'admin@email.com')
 			adminAccount.save(flush:true)
 			
-			//TODO:cleanup
-			//adminAccount.hasAdminRole = true
-			
-			// def adminAccountRole = new AccountRole()
-			// adminAccountRole.account = adminAccount
-			// adminAccountRole.role = adminRole
-			// adminAccountRole.save(flush:true)
-
-			// adminAccount.createAccountProfilePermission()
-
 			adminAccount.createAdminAccountRole()
 			adminAccount.createAccountPermission()
 
-
-			//createPermission(adminAccount, "account:customer_profile:${adminAccount.id}")
-			//createPermission(adminAccount, "account:customer_update:${adminAccount.id}")
-			//createPermission(adminAccount, "account:customer_order_history:${adminAccount.id}")
-			//admin.addToRoles(customerRole)
-			//admin.addToRoles(adminRole)
-			
-			//customerRole.addToAccounts(admin)
-			//adminRole.addToAccounts(admin)
-			
-			//customerRole.save(flush:true)
-			//adminRole.save(flush:true)
-			
-			//admin.save(flush:true)
-        	
-        	//TODO:convert to Permission object
-			//admin.addToPermissions("account:customer_profile:" + admin.id)
-			//admin.addToPermissions("account:customer_update:" + admin.id)
-			//admin.addToPermissions("account:customer_order_history:" + admin.id)
-			//admin.save(flush:true)		
-		}
-		
+		}		
 	}
+
 
 	def createPermission(account, permissionString){
 		def permission = new Permission()
@@ -158,9 +124,7 @@ class BootStrap {
 			
 			File layoutFile = grailsApplication.mainContext.getResource("templates/storefront/layout.html").file
 			String layoutContent = layoutFile.text
-			println "layout content"
-			println layoutContent
-			println "*******************"
+
 			def layout = new Layout()
 			layout.content = layoutContent
 			layout.name = "STORE_LAYOUT"
