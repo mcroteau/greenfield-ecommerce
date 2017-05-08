@@ -30,7 +30,7 @@ class TransactionController {
 	def applicationService
 	
 
-	@Secured(['ROLE_ADMIN'])
+	@Secured(['ROLE_ADMIN', 'ROLE_CUSTOMER'])
 	def details(Long id){
 		authenticatedPermittedOrderDetails { customerAccount, transactionInstance ->
 	    	[transactionInstance: transactionInstance]

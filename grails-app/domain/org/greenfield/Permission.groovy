@@ -2,7 +2,7 @@ package org.greenfield
 
 class Permission {
 
-   Account user
+   Account account
    String permission
 
    static constraints = {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Test Suite</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>Test Suite</b></td></tr>
+<tr><td><a href="save_base_settings.test">save_base_settings</a></td></tr>
+<tr><td><a href="save_email_settings.test">save_email_settings</a></td></tr>
+<tr><td><a href="save_stripe_settings.test">save_stripe_settings</a></td></tr>
+<tr><td><a href="save_shipping_settings.test">save_shipping_settings</a></td></tr>
+<tr><td><a href="create-catalogs.test">create-catalogs</a></td></tr>
+<tr><td><a href="create-products.test">create-products</a></td></tr>
+<tr><td><a href="create-product-options.test">create-product-options</a></td></tr>
+<tr><td><a href="register.test">register</a></td></tr>
+<tr><td><a href="update_account.test">update_account</a></td></tr>
+<tr><td><a href="add_cart.test">add_cart</a></td></tr>
+<tr><td><a href="remove-cart.test">remove-cart</a></td></tr>
+<tr><td><a href="search_add_cart.test">search_add_cart</a></td></tr>
+<tr><td><a href="checkout.test">checkout</a></td></tr>
+<tr><td><a href="review_order.test">review_order</a></td></tr>
+<tr><td><a href="admin_search_product.test">admin_search_product</a></td></tr>
+<tr><td><a href="add_product_weight.test">add_product_weight</a></td></tr>
+<tr><td><a href="calculate_shipping.test">calculate_shipping</a></td></tr>
+<tr><td><a href="show_shipping_label.test">show_shipping_label</a></td></tr>
+</tbody></table>
+</body>
+</html>

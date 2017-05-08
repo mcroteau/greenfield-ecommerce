@@ -11,8 +11,11 @@ ${raw(applicationService.getHeader("Home"))}
 </g:if>
 
 <table>
+<tr>
+	<th></th>
+</tr>
 <g:each in="${accounts}" var="account">
-	<tr>
+	<tr style="border:solid 1px #ccc;">
 		<td>${account.username}</td>
 		<td>
 			<g:each in="${account.permissions}" var="permission">

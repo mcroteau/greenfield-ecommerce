@@ -7,7 +7,9 @@ import org.apache.shiro.SecurityUtils
 import grails.converters.*
 import java.util.UUID
 import groovy.text.SimpleTemplateEngine
+
 import greenfield.common.BaseController
+import greenfield.common.ControllerConstants
 
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.subject.Subject
@@ -24,6 +26,8 @@ import org.greenfield.Role
 import org.greenfield.AccountRole
 import org.greenfield.Transaction
 import org.greenfield.common.RoleName
+import org.greenfield.Permission
+
 
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -37,15 +41,18 @@ class AccountController {
 	def springSecurityService
 	
 
-	@Secured(['permitAll'])
+	@Secured(['ROLE_CUSTOMER', 'ROLE_ADMIN'])
 	def customer_profile(){
-		authenticatedPermittedCustomer { accountInstance ->
+		authenticatedAccount { accountInstance ->
+		//authenticatedPermittedCustomer { accountInstance ->
 			[accountInstance : accountInstance]
 		}
 	}	
 	
-	@Secured(['permitAll'])
+	@Secured(['ROLE_CUSTOMER', 'ROLE_ADMIN'])
 	def customer_update(){
+		//authenticatedAccount { customerAccount ->
+		//TODO:consider removing authenticated permitted customer
 		authenticatedPermittedCustomer { customerAccount ->
 		
 			def accountInstance = Account.get(params.id)
@@ -256,18 +263,23 @@ class AccountController {
 					def password = springSecurityService.encodePassword(params.password)
 			   		accountInstance.password = password
 		
-
 					if(accountInstance.save(flush:true)){
 					
-						def customerRole = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
-						def customerAccountRole = new AccountRole()
-						customerAccountRole.account = accountInstance
-						customerAccountRole.role = customerRole
-						customerAccountRole.save(flush:true)
+						accountInstance.createAccountRoles(false)
+						accountInstance.createAccountPermission()
+
+						//TODO:Remove/cleanup
+						// def customerRole = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
+						// def customerAccountRole = new AccountRole()
+						// customerAccountRole.account = accountInstance
+						// customerAccountRole.role = customerRole
+						// customerAccountRole.save(flush:true)
 
 				
-						accountInstance.createAccountPermissions()
-						println "here..."
+						// //accountInstance.createAccountProfilePermission()
+						// customerAccount.addToPermissions(ControllerConstants.ACCOUNT_PERMISSION + customerAccount.id)
+						// customerAccount.save(flush:true)
+
 
 						sendAdminEmail(accountInstance)
 						sendThankYouEmail(accountInstance)
@@ -361,6 +373,7 @@ class AccountController {
 	/** ADMINISTRATION FUNCTIONS **/
 	
 		
+	@Secured(['ROLE_ADMIN'])
 	def admin_create(){
 		authenticatedAdmin{ account ->
 			if(params.admin == "true"){
@@ -371,6 +384,7 @@ class AccountController {
 	}	
 
 
+	@Secured(['ROLE_ADMIN'])
 	def admin_show(Long id){
 		authenticatedAdmin { adminAccount ->
        		def accountInstance = Account.get(id)
@@ -383,6 +397,8 @@ class AccountController {
 		}	
 	}
 	
+
+	@Secured(['ROLE_ADMIN'])
 	def admin_edit(Long id){
 		authenticatedAdmin { adminAccount ->
         	def accountInstance = Account.get(id)
@@ -400,41 +416,56 @@ class AccountController {
 	}
 	
 	
+	@Secured(['ROLE_ADMIN'])
 	def admin_save(){
 		authenticatedAdmin { adminAccount ->
-
 			def accountInstance = new Account(params)
 			
-	   		def	password = new Sha256Hash(params.password).toHex()
-	   		accountInstance.password = password
-		
-			def role = Role.findByName(RoleName.ROLE_CUSTOMER.description())
-			role.addToAccounts(accountInstance)
-			role.save(flush:true)
-		
-			accountInstance.addToRoles(role)
-		
+	   		//def	password = new Sha256Hash(params.password).toHex()
+			def password = springSecurityService.encodePassword("password")
+			accountInstance.password = password
+
+			def includeAdminRole = false
 			if(params.admin == "true" ||
 					params.admin == "on"){
-				def adminRole = Role.findByName(RoleName.ROLE_ADMIN.description())
-				adminRole.addToAccounts(accountInstance)
-				adminRole.save(flush:true)
-				accountInstance.addToRoles(adminRole)
-				accountInstance.hasAdminRole = true
-			}else{
-				accountInstance.hasAdminRole = false
+				includeAdminRole = true
 			}
-			
-	   		
-       		if (!accountInstance.save(flush: true)) {
-	   			flash.message = "Something went wrong when saving the account, please try again..."
-				render(view: "admin_create", model: [accountInstance: accountInstance])
-       		    return
-       		}
-       		
+
+			accountInstance.createAccountRoles(includeAdminRole)
+
+
+			//TODO:Remove cleanup
+			// def role = Role.findByName(RoleName.ROLE_CUSTOMER.description())
+			// role.addToAccounts(accountInstance)
+			// role.save(flush:true)
 		
-			accountInstance.addToPermissions("account:customer_profile,customer_update,customer_order_history:" + accountInstance.id)
-			accountInstance.save(flush:true)
+			// accountInstance.addToRoles(role)
+		
+			// if(params.admin == "true" ||
+			// 		params.admin == "on"){
+			// 	def adminRole = Role.findByName(RoleName.ROLE_ADMIN.description())
+			// 	adminRole.addToAccounts(accountInstance)
+			// 	adminRole.save(flush:true)
+			// 	accountInstance.addToRoles(adminRole)
+			// 	accountInstance.hasAdminRole = true
+			// }else{
+			// 	accountInstance.hasAdminRole = false
+			// }
+			
+			// if (!accountInstance.save(flush: true)) {
+	  //  			flash.message = "Something went wrong when saving the account, please try again..."
+			// 	render(view: "admin_create", model: [accountInstance: accountInstance])
+   //     		    return
+   //     		}
+       		
+			//TODO:decide which would be
+			accountInstance.createAccountPermission()
+			//accountInstance.addToPermissions(ControllerConstants.ACCOUNT_PERMISSION + customerAccount.id)
+			//accountInstance.save(flush:true)
+
+
+			//accountInstance.addToPermissions("account:customer_profile,customer_update,customer_order_history:" + accountInstance.id)
+			//accountInstance.save(flush:true)
 			
        		flash.message = "Account successfully saved"
        		redirect(action: "admin_show", id:accountInstance.id)
@@ -443,6 +474,7 @@ class AccountController {
 	
 	
 	
+	@Secured(['ROLE_ADMIN'])
 	def admin_update(Long id){
 		authenticatedAdmin { adminAccount ->
 			
@@ -489,35 +521,7 @@ class AccountController {
 		}
 	}
 	
-	
-	
-	def admin_delete(Long id){
-		authenticatedAdmin { adminAccount ->
-	        
-			def accountInstance = Account.get(id)
-        	if (!accountInstance) {
-        	    flash.message = "Account not found..."
-        	    redirect(action: "admin_list")
-        	    return
-        	}
-			
-			def transactions = Transaction.findByAccount(accountInstance)
-			if(!transactions){
-			    try {
-	        	    accountInstance.delete(flush: true)
-	        	    flash.message = "Successfully deleted the account"
-	        	    redirect(action: "admin_list")
-	        	} catch (DataIntegrityViolationException e) {
-	        	    flash.message = "Something went wrong when trying to delete. Check to see if Orders exist under this account before deleting."
-	        	    redirect(action: "admin_show", id: id)
-	        	}
-			}else{
-				flash.message = "The account has existing orders. Delete the old orders before deleting the customer"
-	        	redirect(action: "admin_show", id: id)
-			}
-		}
-	}
-	
+
 	
 	
  	@Secured(['ROLE_ADMIN'])
@@ -578,5 +582,44 @@ class AccountController {
 		}
 	}
 	
+		
+	
+	@Secured(['ROLE_ADMIN'])
+	def admin_delete(Long id){
+		authenticatedAdmin { adminAccount ->
+	        
+			def accountInstance = Account.get(id)
+        	if (!accountInstance) {
+        	    flash.message = "Account not found..."
+        	    redirect(action: "admin_list")
+        	    return
+        	}
+			
+			def transactions = Transaction.findByAccount(accountInstance)
+			if(!transactions){
+			    try {
+			    	def accountRoles = AccountRole.findAllByAccount(accountInstance)
+			    	accountRoles.each(){
+			    		it.delete(flush:true)
+			    	}
+
+			    	def permissions = Permission.findAllByUser(accountInstance)
+			    	permissions.each(){
+			    		it.delete(flush:true)
+			    	}
+
+	        	    accountInstance.delete(flush: true)
+	        	    flash.message = "Successfully deleted the account"
+	        	    redirect(action: "admin_list")
+	        	} catch (DataIntegrityViolationException e) {
+	        	    flash.message = "Something went wrong when trying to delete. Check to see if Orders exist under this account before deleting."
+	        	    redirect(action: "admin_show", id: id)
+	        	}
+			}else{
+				flash.message = "The account has existing orders. Delete the old orders before deleting the customer"
+	        	redirect(action: "admin_show", id: id)
+			}
+		}
+	}
 	
 }

@@ -1,6 +1,6 @@
 package greenfield.common
 
-import org.apache.shiro.SecurityUtils
+import greenfield.common.ControllerConstants
 
 import org.greenfield.AppConstants
 import org.greenfield.Account
@@ -16,7 +16,6 @@ import org.greenfield.common.RoleName
 import org.greenfield.Specification
 import org.greenfield.Variant
 import org.greenfield.State
-
 
 //http://mrpaulwoods.wordpress.com/2011/01/23/a-pattern-to-simplify-grails-controllers/
 
@@ -464,7 +463,7 @@ class BaseController {
 		}
 		
 		def accountRole = accountInstance.getAuthorities().find { 
-			it.authority == RoleName.ROLE_ADMIN.description() 
+			it.authority == RoleName.ROLE_CUSTOMER.description() 
 		}
 
 		if(!accountRole){
@@ -474,7 +473,9 @@ class BaseController {
 		}
 
 		def permission = accountInstance.permissions.find { 
-			it.permission == "account:customer_profile:${accountInstance.id}" 
+			//TODO:Remove cleanup
+			//it.permission == "account:customer_profile:${accountInstance.id}" 
+			it.permission == ControllerConstants.ACCOUNT_PERMISSION + accountInstance.id
 		}
 
 		if (!permission){
@@ -487,8 +488,53 @@ class BaseController {
 	}
 	
 
+private def authenticatedPermittedShoppingCart(Closure c){
+		if(!principal?.username){
+			flash.message = "You must log in to continue..."
+			forward(controller:'auth', action:'customer_login')
+			return
+		}
+
+		def accountInstance = Account.findByUsername(principal?.username)
+
+		if(!accountInstance){
+			flash.message = "You must log in to continue..."
+			forward(controller:'auth', action:'customer_login')
+			return
+		}
+
+		def shoppingCartInstance = ShoppingCart.get(params.id)
+		
+		if(!shoppingCartInstance){
+			flash.message = "Unable to find Order, please try again"
+			forward(controller:'store', action:'index')
+			return
+		}
+
+		def accountRole = accountInstance.getAuthorities().find { 
+			it.authority == RoleName.ROLE_ADMIN.description() 
+		}
+
+		def permission = accountInstance.permissions.find { 
+			//TODO:Remove cleanup
+			//it.permission == "shopping_cart:access:${shoppingCartInstance.id}"
+			println it.permission + " ${shoppingCartInstance.id}"
+			it.permission == ControllerConstants.SHOPPING_CART_PERMISSION + shoppingCartInstance.id
+		}
+
+		if(!permission && !accountRole){
+			flash.message = "You do not have permission to access this account..."
+			forward(controller:'store', action:'index')
+			return
+		}
+		
+		c.call accountInstance, shoppingCartInstance
+		
+	}
+	
 
 	
+
 	private def authenticatedPermittedOrderDetails(Closure c){
 		if(!principal?.username){
 			flash.message = "You must log in to continue..."
@@ -504,16 +550,10 @@ class BaseController {
 			return
 		}
 		
-		def accountRole = accountInstance.getAuthorities().find { 
+		def adminAccountRole = accountInstance.getAuthorities().find { 
 			it.authority == RoleName.ROLE_ADMIN.description() 
 		}
 
-		if(!accountRole){
-			flash.message = "You do not have permission to access..."
-			forward(controller:'store', action:'index')
-			return	
-		}
-		
 		def transactionInstance = Transaction.get(params.id)
 		
 		if(!transactionInstance){
@@ -523,10 +563,13 @@ class BaseController {
 		}
 		
 		def permission = accountInstance.permissions.find { 
-			it.permission == "transaction:order_details:${transactionInstance.id}" 
+			println it.permission + " ${transactionInstance.id}"
+			//TODO:Remove cleanup
+			//it.permission == "transaction:order_details:${transactionInstance.id}" 
+			it.permission == ControllerConstants.TRANSACTION_PERMISSION + transactionInstance.id
 		}
 
-		if (!permission){
+		if(!permission && !adminAccountRole){
 			flash.message = "You do not have permission to access this account..."
 			forward(controller:'store', action:'index')
 			return

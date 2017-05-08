@@ -20,6 +20,7 @@ import grails.util.Environment
 import org.greenfield.State
 import org.greenfield.Upload
 import org.greenfield.Product
+import org.greenfield.Page
 
 import grails.plugin.springsecurity.annotation.Secured
 

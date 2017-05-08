@@ -52,7 +52,7 @@ class BootStrap {
 		createRoles()
 		createAdmin()
 		//TODO: quick fix for dummy data
-		createCustomer()	
+		//createCustomer()	
 
 		println 'Accounts : ' + Account.count()
 		println 'Permissions : ' + Permission.count()
@@ -66,12 +66,13 @@ class BootStrap {
 		def customerAccount = new Account(username : 'customer', password : customerPassword, firstName : 'Customer', lastName: 'Customer', email : 'customer@email.com')
 		customerAccount.save(flush:true)
 
-		def customerAccountRole = new AccountRole()
-		customerAccountRole.account = customerAccount
-		customerAccountRole.role = customerRole
-		customerAccountRole.save(flush:true)	
-
-		customerAccount.createAccountPermissions()
+		//TODO:cleanup
+		// def customerAccountRole = new AccountRole()
+		// customerAccountRole.account = customerAccount
+		// customerAccountRole.role = customerRole
+		// customerAccountRole.save(flush:true)	
+		customerAccount.createAccountRoles(false)
+		customerAccount.createAccountPermission()
 	}
 	
 	def createDevelopmentData(){
@@ -101,15 +102,22 @@ class BootStrap {
 			//def password = new Sha256Hash('admin').toHex()
 			def password = springSecurityService.encodePassword("admin")
 			def adminAccount = new Account(username : 'admin', password : password, firstName : 'Admin', lastName: 'Admin', email : 'admin@email.com')
-			adminAccount.hasAdminRole = true
 			adminAccount.save(flush:true)
+			
+			//TODO:cleanup
+			//adminAccount.hasAdminRole = true
+			
+			// def adminAccountRole = new AccountRole()
+			// adminAccountRole.account = adminAccount
+			// adminAccountRole.role = adminRole
+			// adminAccountRole.save(flush:true)
 
-			def adminAccountRole = new AccountRole()
-			adminAccountRole.account = adminAccount
-			adminAccountRole.role = adminRole
-			adminAccountRole.save(flush:true)
+			// adminAccount.createAccountProfilePermission()
 
-			adminAccount.createAccountPermissions()
+			adminAccount.createAdminAccountRole()
+			adminAccount.createAccountPermission()
+
+
 			//createPermission(adminAccount, "account:customer_profile:${adminAccount.id}")
 			//createPermission(adminAccount, "account:customer_update:${adminAccount.id}")
 			//createPermission(adminAccount, "account:customer_order_history:${adminAccount.id}")

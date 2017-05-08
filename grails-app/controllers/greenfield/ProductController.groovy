@@ -69,6 +69,7 @@ class ProductController {
 			[products : products, offset : offset, max : max, query : params.query ]
 		}else{
 			flash.message = "Search query must be at least 4 characters"
+			[products : [], offset : 0, max : 10, query : "" ]
 		}
 	}
 	
@@ -119,6 +120,7 @@ class ProductController {
 
 
 
+    @Secured(['ROLE_ADMIN'])
     def outofstock(Integer max) {
 		authenticatedAdmin { adminAccount ->
 			params.max = Math.min(max ?: 10, 100)
@@ -129,6 +131,7 @@ class ProductController {
     }
 	
 
+    @Secured(['ROLE_ADMIN'])
 	def admin_search(){
 		authenticatedAdmin { adminAccount ->
 

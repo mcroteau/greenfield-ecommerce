@@ -1,7 +1,10 @@
 package org.greenfield
 
+import greenfield.common.ControllerConstants
+
 import org.greenfield.common.RoleName
 import org.greenfield.Permission
+import org.greenfield.Role
 
 class Account {
 	
@@ -36,28 +39,69 @@ class Account {
 	Date dateCreated
 	Date lastUpdated
 
+	//TODO:Remove cleanup
 	//static hasMany = [ authorities: AccountRole, permissions: Permission, transactions : Transaction ]
+	//static hasMany = [ permissions: Permission, transactions : Transaction ]
 	static hasMany = [ permissions: Permission, transactions : Transaction ]
 	
 	Set<Role> getAuthorities() {
 		AccountRole.findAllByAccount(this)*.role
 	}
 
-	def createAccountPermissions(){
-		createPermission("account:customer_profile:${this.id}")
-		createPermission("account:customer_update:${this.id}")
-		createPermission("account:customer_order_history:${this.id}")
+	def createAccountPermission(){
+		createPermission(ControllerConstants.ACCOUNT_PERMISSION + this.id)
+	}
+
+	def createTransactionPermission(transaction){
+		createPermission(ControllerConstants.TRANSACTION_PERMISSION + transaction.id)
+	}
+
+	def createShoppingCartPermission(shoppingCart){
+		createPermission(ControllerConstants.SHOPPING_CART_PERMISSION + shoppingCart.id)
+	}
+
+
+	def createAdminAccountRole(){
+		def adminRole = Role.findByAuthority(RoleName.ROLE_ADMIN.description())
+		createAccountRole(adminRole)
+	}
+
+	def createAccountRoles(includeAdminRole){
+		this.hasAdminRole = false
+
+		def role = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
+		createAccountRole(role)
+	
+		if(includeAdminRole){
+			def adminRole = Role.findByAuthority(RoleName.ROLE_ADMIN.description())
+			createAccountRole(adminRole)
+			this.hasAdminRole = true
+		}
+
+		this.save(flush:true)
+	}
+
+	def createAccountRole(role){
+		def accountRole = new AccountRole()
+		accountRole.account = this
+		accountRole.role = role
+		accountRole.save(flush:true)	
 	}
 
 	def createPermission(permissionString){
 		def permission = new Permission()
-		permission.user = this
+		//TODO:Remove cleanup
+		//Suggested domain field think `user` will conflict with database user table
+		//permission.user = this
+		permission.account = this
 		permission.permission = permissionString
 		permission.save(flush:true)
 
 		this.addToPermissions(permission)
 		this.save(flush:true)
 	}
+
+
 
 	static constraints = {
 		name(blank:true, nullable:true)

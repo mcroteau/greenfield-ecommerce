@@ -87,12 +87,10 @@ class ShoppingCartController {
 				
 				try {
 
-    				
-					def total = shoppingCart.total
+    				def total = shoppingCart.total
 					def token = params.stripeToken
 					
-    				
-			    	transaction.orderDate = new Date()
+    				transaction.orderDate = new Date()
 					
 					transaction.total = total
 					transaction.subtotal = shoppingCart.subtotal
@@ -116,23 +114,27 @@ class ShoppingCartController {
 						redirect(action: 'index', id : shippingCart.id)
 						return
 					}
-					transaction.save(flush:true)
 					
+					if(!transaction.save(flush:true)){
+						flash.message = "Something went wrong while checking out, please try again or contact Administrator"
+						redirect(controller: 'store', action: 'index')
+					}
+				
+					customerAccount.createTransactionPermission(transaction)
 
 					//TODO:thoroughly test for new permission logic
-					def permission = new Permission()
-					permission.user = customerAccount
-					permission.permission ="transaction:order_details:" + transaction.id
-					permission.save(flush:true)
+					//TODO:remove
+					// def permission = new Permission()
+					// permission.user = customerAccount
+					// permission.permission ="transaction:order_details:" + transaction.id
+					// permission.save(flush:true)
 
-					customerAccount.addToPermissions(permission)
-					customerAccount.save(flush:true)
+					// customerAccount.addToPermissions(permission)
+					// customerAccount.save(flush:true)
 					
 					shoppingCart.status = ShoppingCartStatus.TRANSACTION.description()
 					shoppingCart.save(flush:true)
 					
-					
-
 
     				//TODO: Stripe charge logic
     				def apiKey
@@ -159,10 +161,6 @@ class ShoppingCartController {
 					def charge = Charge.create(chargeParams)
     		    	transaction.chargeId = charge.id
 					transaction.save(flush:true)
-
-
-
-
 
 					sendNewOrderEmail(customerAccount, transaction)
 					
@@ -418,7 +416,7 @@ class ShoppingCartController {
 
 
 	def checkout_preview(){
-		authenticatedAccount { accountInstance -> 
+		authenticatedPermittedShoppingCart { accountInstance, shoppingCart -> 
 			def easypostEnabled = applicationService.getEasyPostEnabled()
 			
 			if(easypostEnabled == "true"){
@@ -427,8 +425,6 @@ class ShoppingCartController {
 					redirect(controller:'account', action:'customer_profile')
 				}
 			}
-			
-			def shoppingCart = ShoppingCart.get(Long.parseLong(params.id))
 			
 			if(shoppingCart && shoppingCart.status == ShoppingCartStatus.ACTIVE.description()){
 				println "calculate total TODO:"
@@ -484,6 +480,17 @@ class ShoppingCartController {
 				shoppingCart.account = account
 				shoppingCart.status = ShoppingCartStatus.ACTIVE.description()
 				shoppingCart.save(flush:true)
+
+				customerAccount.createShoppingCartPermission(shoppingCart)
+
+				//TODO:Remove cleanup
+				// def permission = new Permission()
+				// permission.user = customerAccount
+				// permission.permission = "shopping_cart:access:${shoppingCart.id}"
+				// permission.save(flush:true)
+
+				// customerAccount.addToPermissions(permission)
+				// customerAccount.save(flush:true)
 			}
 			
 			def existingCartItem = ShoppingCartItem.findByShoppingCartAndProduct(shoppingCart, productInstance)
