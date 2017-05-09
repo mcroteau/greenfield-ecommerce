@@ -14,7 +14,7 @@ Greenfield is a lightweight eCommerce application focused on quick and easy setu
 	* Install Grails
 	* Run 'grails run-app' in base 'greenfield' directory
 	* Browse to 'http://localhost:8080/greenfield/admin'
-	* Default Administrator password 'admin'
+	* Default Administrator username and password 'admin' & 'admin'
 
 
 ## See it running with data
