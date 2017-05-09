@@ -665,7 +665,7 @@ class ApplicationService {
 		
 		def shipping = properties.getProperty("store.shipping");
 		
-		//println "++++++++ shipping : ${shipping} +++++++++++"	
+		println "++++++++ shipping : ${shipping} +++++++++++"	
 		if(!shipping){
 			return 0
 		}else{

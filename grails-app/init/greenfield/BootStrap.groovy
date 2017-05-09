@@ -43,7 +43,7 @@ class BootStrap {
 
     def init = { servletContext ->
 		println "***************************************"
-		println "***   Bootstrap   ***"
+		println "*******        Bootstrap        *******"
 		println "***************************************"
 		createCountries()
 		createStates()

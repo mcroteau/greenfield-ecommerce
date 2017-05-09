@@ -247,6 +247,7 @@ class ShoppingCartController {
 			
 			try{
 			
+			
 				def apiKey
 				
 				if(Environment.current == Environment.DEVELOPMENT)  apiKey = applicationService.getEasyPostTestApiKey()
@@ -334,11 +335,16 @@ class ShoppingCartController {
 			}
 			
 		}else{
+			println "else... calculate shipping"
 			if(params.set != "true"){
 				shoppingCart.shipping = applicationService.getShipping()
 			}
 		}
 		
+		println "shipping calculations?"
+		println shoppingCart.shipping
+		println applicationService.getShipping()
+
 		if(shoppingCart.shipping == applicationService.getShipping()){
 			shoppingCart.shipmentId = "BASE"
 			shoppingCart.shipmentDays = ""
