@@ -2,14 +2,14 @@ package greenfield.interceptors
 
 import greenfield.common.ControllerConstants
 
-class OrdersActiveInterceptor {
+class PagesActiveInterceptor {
 
-	OrdersActiveInterceptor(){
-		match(controller:"transaction", action: ~/(list|show)/)
+	PagesActiveInterceptor(){
+		match(controller:"page", action: ~/(list|create|edit|show)/)
 	}
 
     boolean before() { 
-    	request.ordersActive = ControllerConstants.ACTIVE_CLASS_NAME
+    	request.pagesActive = ControllerConstants.ACTIVE_CLASS_NAME
     	true 
     }
 

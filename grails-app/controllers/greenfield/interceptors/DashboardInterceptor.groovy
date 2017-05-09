@@ -9,7 +9,6 @@ class DashboardActiveInterceptor {
   	}
 
     boolean before() { 
-    	println "here..."
     	request.dashboardActive = ControllerConstants.ACTIVE_CLASS_NAME
     	true 
     }

@@ -106,7 +106,7 @@ class BaseController {
 	private def authenticatedAdmin(Closure c){
 		if(!principal?.username){
 			flash.message = "You must log in to continue..."
-			forward(controller:'auth', action:'customer_login')
+			forward(controller:'auth', action:'admin_login')
 			return
 		}
 
@@ -114,7 +114,7 @@ class BaseController {
 
 		if(!accountInstance){
 			flash.message = "You must log in to continue..."
-			forward(controller:'auth', action:'customer_login')
+			forward(controller:'auth', action:'admin_login')
 			return
 		}
 		

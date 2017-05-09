@@ -9,7 +9,6 @@ class ProductsActiveInterceptor {
 	}
 
     boolean before() { 
-    	println "products here..."
     	request.productsActive = ControllerConstants.ACTIVE_CLASS_NAME
     	true 
     }

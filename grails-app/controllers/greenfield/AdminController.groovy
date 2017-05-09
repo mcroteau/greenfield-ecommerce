@@ -24,7 +24,8 @@ import grails.plugin.springsecurity.annotation.Secured
 class AdminController {
 
 
-	@Secured(['ROLE_ADMIN'])
+	//@Secured(['ROLE_ADMIN'])
+	@Secured(['permitAll'])
     def index() { 
 		authenticatedAdmin { adminAccount ->
 		
