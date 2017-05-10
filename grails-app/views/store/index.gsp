@@ -10,24 +10,6 @@ ${raw(applicationService.getHeader("Home"))}
 	<div class="message" role="status">${flash.message}</div>
 </g:if>
 
-<table>
-<tr>
-	<th></th>
-</tr>
-<g:each in="${accounts}" var="account">
-	<tr style="border:solid 1px #ccc;">
-		<td>${account.username}</td>
-		<td>
-			<g:each in="${account.permissions}" var="permission">
-				${permission.permission}<br/>
-			</g:each>
-		</td>
-	</tr>
-</g:each>
-</table>
-
-${applicationService.getHomePage()}
-
-
+${raw(applicationService.getHomePage())}
 		
 ${raw(applicationService.getFooter())}		
