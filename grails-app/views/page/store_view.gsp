@@ -7,6 +7,6 @@ ${raw(applicationService.getHeader("${pageInstance?.title}"))}
 	<div class="alert alert-info" role="status">${flash.message}</div>
 </g:if>
 
-	${raw(pageInstance?.content)}	
+${raw(pageInstance?.content)}	
 
 ${raw(applicationService.getFooter())}
