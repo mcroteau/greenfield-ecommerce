@@ -19,7 +19,7 @@ Greenfield is a lightweight eCommerce application focused on quick and easy setu
 
 
 
-## See it running with data
+## Get it running with data
 	* Locate BootStrap.groovy 'grails-app/init'
 	* Uncomment the following 'createDevelopmentData()'
 
