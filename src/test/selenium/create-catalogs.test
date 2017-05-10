@@ -32,6 +32,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>open</td>
+	<td>/greenfield/admin</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>link=Catalogs</td>
 	<td></td>
