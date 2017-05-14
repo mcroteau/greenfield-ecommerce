@@ -11,5 +11,5 @@ ${raw(applicationService.getHeader("Home"))}
 </g:if>
 
 ${raw(applicationService.getHomePage())}
-	
+
 ${raw(applicationService.getFooter())}		

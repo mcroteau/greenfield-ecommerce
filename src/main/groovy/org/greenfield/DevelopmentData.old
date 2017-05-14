@@ -20,14 +20,15 @@ import org.greenfield.log.SearchLog
 
 public class DevelopmentData {
 
-	def MAX_DAYS                      = 180
-	def MAX_CUSTOMERS_DAY_COUNT       = 10
-	def MAX_ORDERS_DAY_COUNT  	      = 10
-	def MAX_PAGE_VIEWS_DAY_COUNT      = 20
-	def MAX_PRODUCT_VIEWS_DAY_COUNT   = 20
-	def MAX_CATALOG_VIEWS_DAY_COUNT   = 30
-	def MAX_SEARCH_QUERIES_DAY_COUNT  = 10
-	def MAX_ABANDONED_CARTS_DAY_COUNT = 10
+
+	def MAX_DAYS              = 90
+	def CUSTOMERS_COUNT       = 20
+	def ORDERS_COUNT          = 108
+	def PAGE_VIEWS_COUNT      = 430
+	def PRODUCT_VIEWS_COUNT   = 350
+	def CATALOG_VIEWS_COUNT   = 450
+	def SEARCH_QUERIES_COUNT  = 70
+	def ABANDONED_CARTS_COUNT = 25
 	
 	
 	def queries = ["gaming systems", "slot machines", "rummy sets", "double decks", "porcelain dice", "dice set", "poker chips", "chip sets", "game machines", "price is right", "las vegas", "shot glasses", "poker tables", "table tops"]	
@@ -125,6 +126,7 @@ public class DevelopmentData {
         ]   
     ]
 
+    
 
 	def springSecurityService
 
@@ -141,15 +143,9 @@ public class DevelopmentData {
 		createProducts()
         createSpecifications()
         createProductSpecifications()
-
-        (1..MAX_DAYS).each(){ days ->
-        	println "day ${days}"
-        	def date = new Date() - days
-        	//println date
-			createCustomers(date)
-			createOrders(date)
-			createActivityLogs(date)
-        }
+		createCustomers()
+		createOrders()
+		createActivityLogs()
 	}
 	
 	
@@ -332,15 +328,13 @@ public class DevelopmentData {
 	
 	
 	
-	def createCustomers(date){
+	def createCustomers = {
 		
 		def customerRole = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
+		//def password = new Sha256Hash('customer').toHex()
 		def password = springSecurityService.encodePassword("password")
 
-		Random rand = new Random()
-		def numberOfCustomersDay = rand.nextInt(MAX_CUSTOMERS_DAY_COUNT)
-
-		(1..numberOfCustomersDay).each(){ it ->
+		(1..CUSTOMERS_COUNT).each {
 			def customer = new Account()
 			customer.username = "customer${it}"
 			customer.password = password
@@ -356,6 +350,7 @@ public class DevelopmentData {
 
 			customer.createAccountRoles(false)
 			customer.createAccountPermission()
+		
 		}
 		
 		println "Customers : ${Account.count()}"
@@ -364,14 +359,13 @@ public class DevelopmentData {
 	
 
 	
-	def createOrders(date){
+	def createOrders(){
 		
 		Random rand = new Random()
 		int customerMax = Account.count()
 		int productMax = Product.count()
 		
-		def numberOrdersDay = rand.nextInt(MAX_ORDERS_DAY_COUNT)
-		(1..numberOrdersDay).each(){
+		(1..ORDERS_COUNT).each(){
 		
 			int customerId = rand.nextInt(customerMax) + 1
 			def customer = Account.get(customerId)
@@ -379,7 +373,7 @@ public class DevelopmentData {
 			if(customer && 
 				customer?.username != "admin"){
 			
-				def orderDate = date
+				def orderDate = generateRandomDate()
 
 				int productId = rand.nextInt(productMax) + 1
 				def product = Product.get(productId)
@@ -447,21 +441,20 @@ public class DevelopmentData {
 	
 	
 	
-	def createActivityLogs(date){
-		generatePageViews(date)
-		generateProductViews(date)
-		generateCatalogViews(date)
-		generateSearchQueries(date)
-		generateAbandonedCarts(date)
+	def createActivityLogs(){
+		generatePageViews()
+		generateProductViews()
+		generateCatalogViews()
+		generateSearchQueries()
+		generateAbandonedCarts()
 	}
 	
 	
-	def generatePageViews(date){
+	def generatePageViews(){
 		Random rand = new Random()
 		int pageMax = Page.count()
 		
-		def numberPageViewsDay = rand.nextInt(MAX_PAGE_VIEWS_DAY_COUNT)
-		(1..numberPageViewsDay).each(){
+		(1..PAGE_VIEWS_COUNT).each(){
 			int id = rand.nextInt(pageMax) + 1
 			def page = Page.get(id)
 			if(page){
@@ -470,7 +463,7 @@ public class DevelopmentData {
 				pageViewLog.page = page
 				pageViewLog.save(flush:true)
 				
-				pageViewLog.dateCreated = date
+				pageViewLog.dateCreated = generateRandomDate()
 				pageViewLog.save(flush:true)
 			}
 		}
@@ -478,12 +471,11 @@ public class DevelopmentData {
 	}
 	
 	
-	def generateProductViews(date){
+	def generateProductViews(){
 		Random rand = new Random()
 		int productMax = Product.count()
 		
-		def numberProductViewsDay = rand.nextInt(MAX_PRODUCT_VIEWS_DAY_COUNT)
-		(1..numberProductViewsDay).each(){
+		(1..PRODUCT_VIEWS_COUNT).each(){
 			int id = rand.nextInt(productMax) + 1
 			def product = Product.get(id)
 			
@@ -493,7 +485,7 @@ public class DevelopmentData {
 				productViewLog.product = product
 				productViewLog.save(flush:true)
 
-				productViewLog.dateCreated = date
+				productViewLog.dateCreated = generateRandomDate()
 				productViewLog.save(flush:true)
 			}
 		}
@@ -501,12 +493,11 @@ public class DevelopmentData {
 	}
 	
 	
-	def generateCatalogViews(date){		
+	def generateCatalogViews(){		
 		Random rand = new Random()
 		int catalogMax = Catalog.count()
 		
-		def numberCatalogViewsDay = rand.nextInt(MAX_CATALOG_VIEWS_DAY_COUNT)
-		(1..numberCatalogViewsDay).each(){
+		(1..CATALOG_VIEWS_COUNT).each(){
 			int id = rand.nextInt(catalogMax) + 1
 			def catalog = Catalog.get(id)
 			
@@ -516,7 +507,7 @@ public class DevelopmentData {
 				catalogViewLog.catalog = catalog
 				catalogViewLog.save(flush:true)
 
-				catalogViewLog.dateCreated = date
+				catalogViewLog.dateCreated = generateRandomDate()
 				catalogViewLog.save(flush:true)
 			}
 		}
@@ -524,12 +515,12 @@ public class DevelopmentData {
 	}
 	
 	
-	def generateSearchQueries(date){
+	def generateSearchQueries(){
 		Random rand = new Random()
 		int queriesMax = queries.size()
 		
-		def numberSearchQueriesDay = rand.nextInt(MAX_SEARCH_QUERIES_DAY_COUNT)
-		(1..numberSearchQueriesDay).each(){
+		(1..SEARCH_QUERIES_COUNT).each(){
+		
 			int random = rand.nextInt(queriesMax)
 			def query = queries[random]
 			
@@ -538,7 +529,7 @@ public class DevelopmentData {
 			searchLog.query = query
 			searchLog.save(flush:true)
 
-			searchLog.dateCreated = date
+			searchLog.dateCreated = generateRandomDate()
 			searchLog.save(flush:true)
 		}
 		println "SearchQueries : ${SearchLog.count()}"
@@ -546,13 +537,12 @@ public class DevelopmentData {
 	
 	
 	
-	def generateAbandonedCarts(date){
+	def generateAbandonedCarts(){
 		Random rand = new Random()
 		int productMax = Product.count()
 		int customerMax = Account.count()
 		
-		def numberAbandonedCartsDay = rand.nextInt(MAX_ABANDONED_CARTS_DAY_COUNT)
-		(1..numberAbandonedCartsDay).each(){
+		(1..ABANDONED_CARTS_COUNT).each(){
 		
 			int productId = rand.nextInt(productMax) + 1
 			int customerId = rand.nextInt(customerMax) + 1
@@ -575,7 +565,7 @@ public class DevelopmentData {
 					shoppingCart.status = ShoppingCartStatus.ACTIVE.description()
 					shoppingCart.save(flush:true)
 
-					shoppingCart.dateCreated = date
+					shoppingCart.dateCreated = generateRandomDate()
 				
 					def shoppingCartItem = new ShoppingCartItem()
 					shoppingCartItem.quantity = quantity
@@ -595,5 +585,14 @@ public class DevelopmentData {
 		
 		println "Abandoned/Active Carts : ${ShoppingCart.countByStatus(ShoppingCartStatus.ACTIVE.description())}"
 	}
+	
+	
+	
+	def generateRandomDate(){
+		Random rand = new Random()
+		def days = rand.nextInt(MAX_DAYS) + 1
+		return new Date() - days
+	}
+
 	
 }
