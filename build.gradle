@@ -63,7 +63,6 @@ bootRun {
     addResources = true
 }
 
-//remove includes if not working
 //TODO:uncomment
 //assets {
  //   minifyJs = true
