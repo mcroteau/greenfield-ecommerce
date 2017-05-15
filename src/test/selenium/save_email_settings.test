@@ -49,17 +49,17 @@
 <tr>
 	<td>type</td>
 	<td>name=username</td>
-	<td>dev@opengreenfield.org</td>
+	<td>apikey</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>name=password</td>
-	<td>TKM5NRJ_BANba9d-8qu4vQ</td>
+	<td>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</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>name=host</td>
-	<td>smtp.mandrillapp.com</td>
+	<td>smtp.sendgrid.net</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -69,12 +69,12 @@
 <tr>
 	<td>type</td>
 	<td>name=adminEmail</td>
-	<td>dev@opengreenfield.org</td>
+	<td>croteau.mike@gmail.com</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>name=supportEmail</td>
-	<td>dev@opengreenfield.org</td>
+	<td>croteau.mike@gmail.com</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
