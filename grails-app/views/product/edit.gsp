@@ -44,12 +44,12 @@
 			<div class="messages">
 			
 				<g:if test="${flash.message}">
-					<div class="alert alert-info" role="status">${flash.message}</div>
+					<div class="alert alert-info" role="status">${raw(flash.message)}</div>
 				</g:if>
 					
 			
 				<g:if test="${flash.error}">
-					<div class="alert alert-danger" role="status">${flash.error}</div>
+					<div class="alert alert-danger" role="status">${raw(flash.error)}</div>
 				</g:if>
 					
 				<g:hasErrors bean="${productInstance}">

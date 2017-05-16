@@ -53,7 +53,7 @@ class AccountController {
 	def customer_update(){
 		//authenticatedAccount { customerAccount ->
 		//TODO:consider removing authenticated permitted customer
-		authenticatedPermittedCustomer { customerAccount ->
+		authenticatedAccount { customerAccount ->
 		
 			def accountInstance = Account.get(params.id)
 			
