@@ -78,7 +78,7 @@
 					<span class="input-container">
 						<select name="location" class="form-control" id="location" style="width:auto" disabled="disabled">
 							<option value="">-- Top Level --</option>
-							${catalogOptions}
+							${raw(catalogOptions)}
 						</select>
 					</span>
 					<br class="clear"/>

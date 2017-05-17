@@ -14,11 +14,49 @@ import grails.plugin.springsecurity.annotation.Secured
 @Mixin(BaseController)
 class SpecificationController {
 
-    def numberSpaces = 1
-
-
     @Secured(['ROLE_ADMIN'])
     def product_specifications(Long id){
+        authenticatedAdminSpecification { adminAccount, specificationInstance ->
+            def max = params.max ? params.max : 10
+            def offset = params.offset ? params.offset : 0
+
+            def catalogHtmlOptions = getCatalogHtmlOptions(specificationInstance)
+            println "catalogOptions"
+
+            def catalogInstances = specificationInstance.catalogs.sort { it.id }
+            
+            def products = []
+            def productsTotal = 0
+            def catalogInstance = [:]
+
+            if(params.catalogId){
+                catalogInstance = Catalog.get(params.catalogId)
+
+                products = Product.createCriteria().list(max: max, offset: params.offset){
+                    catalogs {
+                        idEq(catalogInstance.id)
+                    }
+                }
+
+                productsTotal = Product.createCriteria().count(){
+                    catalogs {
+                        idEq(catalogInstance.id)
+                    }
+                }
+
+            }
+
+            println "products : ${productsTotal}"
+            [ products: products, productsTotal: productsTotal, 
+            catalogHtmlOptions: catalogHtmlOptions, specificationInstance: specificationInstance, 
+            catalogInstances: catalogInstances ]
+        }
+    }
+
+    
+
+    @Secured(['ROLE_ADMIN'])
+    def product_specifications_old(Long id){
         authenticatedAdminSpecification { adminAccount, specificationInstance ->
             
             def specificationOptions = SpecificationOption.findAllBySpecification(specificationInstance)
@@ -31,7 +69,7 @@ class SpecificationController {
             def max = params.max ? params.max : 10
             def offset = params.offset ? params.offset : 0
 
-            def catalogOptions = getCatalogOptions(specificationInstance)
+            def catalogOptions = getCatalogHtmlOptions(specificationInstance)
             def products = []
             def productsTotal = 0
             def catalog = null
@@ -44,9 +82,8 @@ class SpecificationController {
 
                 if(catalog){
 
-                    def subcatalogIds = []
                     def specificationIds = specificationInstance.catalogs.collect{ it.id }
-                    setSubcatalogIds(catalog, subcatalogIds)
+                    def subcatalogIds = setSubcatalogIds(catalog, [])
 
                     if(subcatalogIds){
                         def ids = []
@@ -56,6 +93,7 @@ class SpecificationController {
                             }
                         }
 
+                        println "catalog ids : ${ids}"
                         productsTotal = Product.createCriteria().count{
                             catalogs{
                                 'in'('id', ids)
@@ -83,7 +121,9 @@ class SpecificationController {
                 }
             }
             
-            [ specificationInstance: specificationInstance, catalogOptions: catalogOptions,  products: products, productsTotal: productsTotal, catalogInstance: catalog, lowestPriceProduct: lowestPriceProduct, highestPriceProduct: highestPriceProduct ]
+            [ specificationInstance: specificationInstance, catalogOptions: catalogOptions,  
+            products: products, productsTotal: productsTotal, catalogInstance: catalog, 
+            lowestPriceProduct: lowestPriceProduct, highestPriceProduct: highestPriceProduct ]
         }
     }
 
@@ -531,7 +571,7 @@ class SpecificationController {
 	}
     
     
-    def getCatalogOptions(specificationInstance){
+    def getCatalogHtmlOptions(specificationInstance){
         def catalogOptions = ""
         def catalogs = specificationInstance.catalogs.sort{ it.name }
         catalogs.each{ catalog ->
