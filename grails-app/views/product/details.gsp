@@ -24,7 +24,7 @@ ${raw(applicationService.getHeader(catalogInstance, "Product Details", true, par
 	<div class="product_details_wrapper">
 
 		<g:if test="${flash.message}">
-			<div class="alert alert-info" role="status">${flash.message}</div>
+			<div class="alert alert-info" role="status">${raw(flash.message)}</div>
 		</g:if>
 		
 		<div class="product_photos_wrapper">
@@ -158,9 +158,9 @@ ${raw(applicationService.getHeader(catalogInstance, "Product Details", true, par
                 <h2>Product Specifications</h2>
                 <table class="table">
                     <g:each in="${productInstance.productSpecifications}" var="productSpecification">
-                        <tr>
-                            <th>${productSpecification.specification.name}</th>
-                            <td>${productSpecification.specificationOption.name}</td>
+                        <tr style="border-top:dashed 1px #ccc;border-bottom:dashed 1px #ccc">
+                            <th style="border:none">${productSpecification.specification.name}</th>
+                            <td style="border:none">${productSpecification.specificationOption.name}</td>
                         </tr>
                     </g:each>
                 </table>

@@ -122,16 +122,6 @@ class ShoppingCartController {
 				
 					customerAccount.createTransactionPermission(transaction)
 
-					//TODO:thoroughly test for new permission logic
-					//TODO:remove
-					// def permission = new Permission()
-					// permission.user = customerAccount
-					// permission.permission ="transaction:order_details:" + transaction.id
-					// permission.save(flush:true)
-
-					// customerAccount.addToPermissions(permission)
-					// customerAccount.save(flush:true)
-					
 					shoppingCart.status = ShoppingCartStatus.TRANSACTION.description()
 					shoppingCart.save(flush:true)
 					
@@ -162,6 +152,8 @@ class ShoppingCartController {
     		    	transaction.chargeId = charge.id
 					transaction.save(flush:true)
 
+					adjustInventory(shoppingCart)
+
 					sendNewOrderEmail(customerAccount, transaction)
 					
 					[ transaction : transaction ]
@@ -179,6 +171,16 @@ class ShoppingCartController {
 		}
 	}
 
+
+	def adjustInventory(shoppingCart){
+		shoppingCart.shoppingCartItems.each(){ shoppingCartItem ->
+			def product = shoppingCartItem.product
+			def quantityAdjustment = shoppingCartItem.quantity
+			product.quantity = product.quantity - quantityAdjustment
+			//TODO:catch before adding to cart if item quantity is atleast number requested
+			product.save(flush:true)
+		}
+	}
 	
 	
 	def calculateShoppingCartSubtotal(shoppingCart){
@@ -464,6 +466,12 @@ class ShoppingCartController {
 				return
 			}
 			
+			if(productInstance.quantity <= Integer.parseInt(params.quantity)){
+				flash.message = "We do not have enough of this product to cover your request.<br/>We currently have <strong>${productInstance.quantity}</strong> in stock."
+				redirect(controller : 'product', action : 'details', id : params.id )
+				return
+			}
+
 			if(!principal?.username){
 				flash.message = "Please sign in to continue ..."
 				redirect(controller:"auth", action:"customer_login")
@@ -502,8 +510,18 @@ class ShoppingCartController {
 			def existingCartItem = ShoppingCartItem.findByShoppingCartAndProduct(shoppingCart, productInstance)
 			
 			if(existingCartItem && productInstance.productOptions?.size() == 0){
-				existingCartItem.quantity += Integer.parseInt(params.quantity)
+
+				def totalQuantity = existingCartItem.quantity + Integer.parseInt(params.quantity)
+				
+				if(totalQuantity > productInstance.quantity){
+					flash.message = "We do not have enough of this product to cover your request. <br/>We currently have <strong>${productInstance.quantity}</strong> total in stock"
+					redirect(controller : 'product', action : 'details', id : params.id )
+					return
+				}
+
+				existingCartItem.quantity = totalQuantity
 				existingCartItem.save(flush:true)
+			
 			}else{
 			
 				def shoppingCartItem = new ShoppingCartItem()

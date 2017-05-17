@@ -3,6 +3,7 @@ package greenfield
 import greenfield.common.BaseController
 
 import org.greenfield.Catalog
+import org.greenfield.Product
 import org.greenfield.Specification
 import org.greenfield.SpecificationOption
 import org.greenfield.ProductSpecification
@@ -102,6 +103,7 @@ class SpecificationController {
     }
 
 
+    @Secured(['ROLE_ADMIN'])
     def set_product_specifications(Long id){
         authenticatedAdminSpecification { adminAccount, specificationInstance ->
 

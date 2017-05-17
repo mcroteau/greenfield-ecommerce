@@ -72,14 +72,14 @@
 					<span class="input-container">
 						<select name="catalog" class="form-control" id="catalog" style="width:auto">
 						    <option value="">Select Catalog</option>
-							${catalogOptions}
+							${raw(catalogOptions)}
 						</select>
 					</span>
 					<br class="clear"/>
 				</div>
                 
                 <g:if test="${lowestPriceProduct && highestPriceProduct}">
-                    <div id="price-range">
+                    <div id="price-range" style="padding-top:10px;text-align:left;">
                         <strong>Price Range : </strong>$${applicationService.formatPrice(lowestPriceProduct.price)} - $${applicationService.formatPrice(highestPriceProduct.price)}
                     </div>
                 </g:if>
@@ -90,6 +90,7 @@
                             <tr>
                                 <th>Product</th>
                                 <th style="text-align:center">Price</th>
+                                <th style="text-align:center">Quantity</th>
                                 <th style="text-align:right;width:150px">Specification: ${specificationInstance.name}</th>
                             </tr>
                         </thead>
@@ -98,6 +99,7 @@
                                 <tr>
                                     <td style="text-align:left">${product.name}</td>
                                     <td>$${applicationService.formatPrice(product.price)}</td>
+                                    <td>${product.quantity}</td>
                                     <td style="text-align:right;">
                                         <select class="product_specification" name="product_specification_${product.id}">
                                             <option value="${product.id}-NONE">None</option>

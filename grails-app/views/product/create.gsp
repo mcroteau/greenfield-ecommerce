@@ -68,7 +68,8 @@
 					</span>
 					<br class="clear"/>
 				</div>
-			
+				
+				
 			
 				
 				<div class="form-row">
@@ -181,6 +182,18 @@
 				</div>
 				
 				
+				<div class="form-row">
+					<span class="form-label full secondary">Product No. 
+						<span class="information secondary block">Optional identifier used else where</span>
+					</span>
+					<span class="input-container">
+						<input name="productNo" type="text" class="form-control threefifty" value="${productInstance?.productNo}" id="productNo" style="width:150px"/>
+					</span>
+					<br class="clear"/>
+				</div>
+			
+			
+			
 				
 				<div class="buttons-container">	
 					<g:submitButton name="create" class="btn btn-primary" value="Save Product"/>

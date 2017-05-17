@@ -216,10 +216,7 @@
 					<br class="clear"/>
 				</div>
 				
-				
-				
-				
-			
+
 				
 				<div class="form-row">
 					<span class="form-label full secondary">Additional Photos
@@ -278,6 +275,21 @@
 
 
 
+					
+				<div class="form-row">
+					<span class="form-label full secondary">Product No. 
+						<span class="information secondary block">Optional identifier used else where</span>
+					</span>
+					<span class="input-container">
+						<input name="productNo" type="text" class="form-control threefifty"
+						style="width:150px;" 
+						value="${productInstance?.productNo}"/>
+					</span>
+					<br class="clear"/>
+				</div>
+			
+				
+			
 				
 				<div class="form-row">
 					<span class="form-label full hint">Disabled</span>

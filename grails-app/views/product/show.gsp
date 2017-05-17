@@ -77,8 +77,7 @@
 					<br class="clear"/>
 				</div>
 			
-			
-				
+
 				<div class="form-row">
 					<span class="form-label full secondary">Catalogs</span>
 					<span class="input-container threefifty" id="selected-catalogs-span">
@@ -180,11 +179,24 @@
 					</span>
 					<br class="clear"/>
 				</div>
-				
-				
-				
-				
 			
+				
+
+				
+				
+				<div class="form-row">
+					<span class="form-label full secondary">Product No. 
+						<span class="information secondary block">Optional identifier used else where</span>
+					</span>
+					<span class="input-container">
+						<input name="productNo" type="text" class="form-control threefifty" value="${productInstance?.productNo}" 
+						style="width:150px;" 
+						disabled="disabled"/>
+					</span>
+					<br class="clear"/>
+				</div>
+				
+				
 				
 				<div class="form-row">
 					<span class="form-label full secondary">Additional Photos</span>
@@ -219,7 +231,22 @@
 				</div>
 				
 				
-				
+
+				<div class="form-row">
+					<span class="form-label full secondary">Product Specifications</span>
+					<span class="input-container sized">
+						<g:if test="${productInstance.productSpecifications.size() > 0}">
+							<g:each in="${productInstance.productSpecifications}" var="productSpecification">
+								<span class="label label-default">${productSpecification.specificationOption.specification.name}:&nbsp;${productSpecification.specificationOption.name}</span>
+							</g:each>
+						</g:if>
+						<g:else>
+							<span class="information secondary">No Product Specificications defined</span>
+						</g:else>
+					</span>
+					<br class="clear"/>
+				</div>
+
 				
 				<div class="form-row">
 					<span class="form-label full hint">Disabled</span>

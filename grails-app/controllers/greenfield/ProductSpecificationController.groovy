@@ -5,6 +5,7 @@ import greenfield.common.BaseController
 import org.greenfield.ProductSpecification
 import grails.plugin.springsecurity.annotation.Secured
 import org.greenfield.Specification
+import org.greenfield.SpecificationOption
 
 
 @Mixin(BaseController)
@@ -38,6 +39,7 @@ class ProductSpecificationController {
     }
 
 
+    @Secured(['ROLE_ADMIN'])
     def add(Long id){
         authenticatedAdminProduct { adminAccount, productInstance ->
             def specificationOption = SpecificationOption.get(params.optionId)
@@ -84,6 +86,7 @@ class ProductSpecificationController {
 
 
 
+    @Secured(['ROLE_ADMIN'])
     def remove(Long id){
         authenticatedAdminProduct { adminAccount, productInstance ->
             def specificationOption = SpecificationOption.get(params.optionId)
