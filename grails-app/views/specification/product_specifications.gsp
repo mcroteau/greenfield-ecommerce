@@ -30,7 +30,7 @@
 			</div>
 
 
-			<g:form method="post" action="set_product_specifications" id="${specificationInstance.id}">
+			<g:form method="post" action="set_product_specifications" id="${specificationInstance?.id}">
 
 				<g:hiddenField name="catalogId" value="${catalogInstance?.id}" />
 				<g:hiddenField name="id" value="${specificationInstance?.id}" />
@@ -58,7 +58,7 @@
                 <div class="form-row">
 					<span class="form-label twohundred secondary">Catalogs</span>
 					<span class="input-container" id="selected-catalogs-span">
-						<g:each in="${specificationInstance?.catalogs}" var="catalog">
+						<g:each in="${catalogInstances}" var="catalog">
 							<span class="label label-default">${catalog.name}</span>
 						</g:each>
 						<p class="information">Only products that are associated with the catalogs listed above will be displayed</p>
@@ -72,7 +72,7 @@
 					<span class="input-container">
 						<select name="catalog" class="form-control" id="catalog" style="width:auto">
 						    <option value="">Select Catalog</option>
-							${raw(catalogOptions)}
+							${raw(catalogHtmlOptions)}
 						</select>
 					</span>
 					<br class="clear"/>
@@ -126,8 +126,10 @@
                     </table>
                     <div class="btn-group">
                         <g:paginate
-                            total="${productsTotal}"
-                            id="${specificationInstance?.id}"
+                        total="${productsTotal}"
+                            id="${specificationInstance?.id}" 
+                            controller="specification"
+                            action="product_specifications"
                             params="[catalogId : params.catalogId]"/>
                     </div>
 
