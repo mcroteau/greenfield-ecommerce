@@ -46,15 +46,13 @@ class SpecificationController {
 
             }
 
-            println "products : ${productsTotal}"
-            [ products: products, productsTotal: productsTotal, 
-            catalogHtmlOptions: catalogHtmlOptions, specificationInstance: specificationInstance, 
-            catalogInstances: catalogInstances ]
+            [catalogInstances: catalogInstances, products: products, productsTotal: productsTotal, 
+            catalogHtmlOptions: catalogHtmlOptions, specificationInstance: specificationInstance ]
         }
     }
 
     
-
+    //TODO:remove
     @Secured(['ROLE_ADMIN'])
     def product_specifications_old(Long id){
         authenticatedAdminSpecification { adminAccount, specificationInstance ->

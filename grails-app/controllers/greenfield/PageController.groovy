@@ -43,14 +43,10 @@ class PageController {
 		def pageViewLog = new PageViewLog()
 		pageViewLog.page = pageInstance
 
-		def subject = SecurityUtils.getSubject();
-		if(subject.isAuthenticated()){
-			def account = Account.findByUsername(subject.principal)
-			if(account){
-				pageViewLog.account = account
-			}
+		if(principal?.username){
+			def accountInstance = Account.findByUsername(principal?.username)
+			pageViewLog.account = accountInstance
 		}
-		
 		pageViewLog.save(flush:true)
 		
 		[pageInstance : pageInstance]

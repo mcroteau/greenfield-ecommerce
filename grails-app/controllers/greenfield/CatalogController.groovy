@@ -145,20 +145,15 @@ class CatalogController {
 			
 		}
 		
-		println "here... products"
-
 		
 		def catalogViewLog = new CatalogViewLog()
 		catalogViewLog.catalog = catalogInstance
 		
-		def subject = SecurityUtils.getSubject();
-		if(subject.isAuthenticated()){
-			def account = Account.findByUsername(principal?.username)
-			if(account){
-				catalogViewLog.account = account
-			}
+		if(principal?.username){
+			def accountInstance = Account.findByUsername(principal?.username)
+			catalogViewLog.account = accountInstance
 		}
-		
+
 		catalogViewLog.save(flush:true)
 		
 		[products : products,  productsTotal: productsTotal, catalogInstance: catalogInstance, offset : offset, max : max ]

@@ -53,18 +53,20 @@ class ProductController {
 				}
 			}
 				
+			println "create search log, add account..."
 			
 			def searchLog = new SearchLog()
 			searchLog.query = params.query.toLowerCase()
-			def subject = SecurityUtils.getSubject();
-			if(subject.isAuthenticated()){
-				def account = Account.findByUsername(subject.principal)
-				if(account){
-					searchLog.account = account
-				}
+
+			//TODO:
+			//def subject = SecurityUtils.getSubject();
+			if(principal?.username){
+				def accountInstance = Account.findByUsername(principal?.username)
+				searchLog.account = accountInstance
 			}
+
 			searchLog.save(flush:true)
-			
+			println "saving? search: " + SearchLog.count()
 			
 			[products : products, offset : offset, max : max, query : params.query ]
 		}else{
@@ -102,6 +104,10 @@ class ProductController {
 		
 		def productViewLog = new ProductViewLog()
 		productViewLog.product = productInstance
+		if(principal?.username){
+			def accountInstance = Account.findByUsername(principal?.username)
+			productViewLog.account = accountInstance
+		}
 		productViewLog.save(flush:true)
 		
         [ productInstance: productInstance, productOptions : productOptions ]

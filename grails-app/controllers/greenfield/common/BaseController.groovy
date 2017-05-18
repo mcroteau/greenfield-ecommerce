@@ -21,38 +21,6 @@ import org.greenfield.State
 
 class BaseController {
 	
-	//TODO:remove : edit consider creating general authenticated 
-	// private def authenticated(Closure c){
-	// 	def subject = SecurityUtils.getSubject();
-	
-	// 	if(!subject.isAuthenticated()){
-	// 		flash.message = "Please sign in to continue"
-	// 		forward(controller : 'auth', action: 'login')
-	// 		return
-	// 	}
-		
-	// 	c.call subject
-	// }
-		
-	// private def authenticatedAccount(Closure c){
-	// 	def subject = SecurityUtils.getSubject();
-	
-	// 	if(!subject.isAuthenticated()){
-	// 		flash.message = "Please sign in to continue"
-	// 		forward(controller : 'auth', action: 'login')
-	// 		return
-	// 	}
-		
-	// 	def accountInstance = Account.findByUsername(subject.principal)
-		
-	// 	if(!accountInstance){
-	// 		flash.message = "Please login to continue"
-	// 		forward(controller: 'auth', action: 'login')
-	// 		return
-	// 	}else{
-	// 		c.call accountInstance
-	// 	}
-	// }
 
 	private def authenticatedAccount(Closure c){
 		if(!principal?.username){
