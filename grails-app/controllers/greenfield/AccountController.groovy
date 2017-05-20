@@ -28,6 +28,11 @@ import org.greenfield.Transaction
 import org.greenfield.common.RoleName
 import org.greenfield.Permission
 
+import org.greenfield.log.ProductViewLog
+import org.greenfield.log.PageViewLog
+import org.greenfield.log.CatalogViewLog
+import org.greenfield.log.SearchLog
+
 
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -236,15 +241,99 @@ class AccountController {
 	@Secured(['ROLE_ADMIN'])
 	def account_activity(){
 		authenticatedAdmin { accountInstance ->
-			def pageViews = PageViewLog.findAllByAccount(accountInstance)
-			def catalogViews = CatalogViewLog.findAllByAccount(accountInstance)
-			def productViews = ProductViewLog.findAllByAccount(accountInstance)
-			def searchQueries = SearchLog.findAllByAccount(accountInstance)
+			def productViewStats = getProductViewsStatistics(accountInstance)
+			def pageViewStats = getPageViewStatistics(accountInstance)
+			def catalogViewStats = getCatalogViewsStatistics(accountInstance)
+			def searchQueryStats = getSearchQueriesStatistics(accountInstance)
 
-			[pageViews: pageViews, catalogViews: catalogViews, 
-			productViews: productViews, searchQueries: searchQueries]
+			[accountInstance: accountInstance, productViewStats: productViewStats, 
+			pageViewStats: pageViewStats, catalogViewStats: catalogViewStats, 
+			searchQueryStats: searchQueryStats]
 		}
 	}
+
+
+	
+	def getProductViewsStatistics(accountInstance){
+		def stats = [:]
+		def productViewLogs = ProductViewLog.findAllByAccount(accountInstance)
+		
+		
+		productViewLogs?.each(){ productLog ->
+			if(stats[productLog.product.id]){
+				stats[productLog.product.id].count += 1
+			}else{
+				stats[productLog.product.id] = [:]
+				stats[productLog.product.id].count = 1
+				stats[productLog.product.id].product = productLog.product.name
+			}
+		}
+		
+		return stats.sort(){ -it.value.count }
+	}
+	
+	
+	
+	
+	def getPageViewStatistics(accountInstance){
+		def stats = [:]
+		def pageViewLogs = PageViewLog.findAllByAccount(accountInstance)
+		
+		pageViewLogs?.each(){ pageLog ->
+			if(stats[pageLog.page.id]){
+				stats[pageLog.page.id].count += 1
+			}else{
+				stats[pageLog.page.id] = [:]
+				stats[pageLog.page.id].count = 1
+				stats[pageLog.page.id].page = pageLog.page.title
+			}
+		}
+		
+		return stats.sort(){ -it.value.count }			
+	}
+	
+	
+	
+	
+	def getCatalogViewsStatistics(accountInstance){
+		def stats = [:]
+		def catalogViewLogs = CatalogViewLog.findAllByAccount(accountInstance)
+		
+		catalogViewLogs?.each(){ catalogLog ->
+			if(stats[catalogLog.catalog.id]){
+				stats[catalogLog.catalog.id].count += 1
+			}else{
+				stats[catalogLog.catalog.id] = [:]
+				stats[catalogLog.catalog.id].count = 1
+				stats[catalogLog.catalog.id].catalog = catalogLog.catalog.name
+			}
+		}
+		
+		return stats.sort(){ -it.value.count }
+	}
+	
+	
+	
+	
+	def getSearchQueriesStatistics(accountInstance){
+		def stats = [:]
+		def searchLogs = SearchLog.findAllByAccount(accountInstance)
+		
+
+		searchLogs?.each(){ searchLog ->
+			if(stats[searchLog.query]){
+				stats[searchLog.query].count += 1
+			}else{
+				stats[searchLog.query] = [:]
+				stats[searchLog.query].count = 1
+			}
+		}
+		
+		return stats.sort(){ -it.value.count }
+	}
+	
+	
+	
 
 		
 	@Secured(['permitAll'])

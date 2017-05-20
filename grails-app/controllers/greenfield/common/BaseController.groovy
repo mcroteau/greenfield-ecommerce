@@ -17,6 +17,10 @@ import org.greenfield.Specification
 import org.greenfield.Variant
 import org.greenfield.State
 
+import org.greenfield.log.ProductViewLog
+import org.greenfield.log.PageViewLog
+import org.greenfield.log.CatalogViewLog
+import org.greenfield.log.SearchLog
 //http://mrpaulwoods.wordpress.com/2011/01/23/a-pattern-to-simplify-grails-controllers/
 
 class BaseController {

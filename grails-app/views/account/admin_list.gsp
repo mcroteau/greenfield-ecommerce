@@ -88,7 +88,10 @@
 					
 						<td>${accountInstance?.state?.name}</td>
 				
-						<td><g:link controller="account" action="admin_edit" params="[id: accountInstance.id]" class="">Edit</g:link></td>
+						<td>
+							<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">Activity</g:link>&nbsp;&nbsp;
+							<g:link controller="account" action="admin_edit" params="[id: accountInstance.id]" class="">Edit</g:link>
+						</td>
 					
 					</tr>
 				</g:each>
