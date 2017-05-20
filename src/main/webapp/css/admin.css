@@ -697,6 +697,7 @@ float:left;
 #catalog-selection-modal{
 	padding:0px 20px 20px 20px;
 	height:600px;
+	height:520px;
 	width:600px;
 	padding:10px 30px 30px 30px;
 	z-index:-2000;
@@ -721,6 +722,7 @@ float:left;
 	border-top:solid 1px #ddd;
 	border-bottom:solid 1px #ddd;
 	height:430px;
+	height:350px;
 	width:100%;
 	overflow: auto;
 }

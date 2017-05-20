@@ -230,8 +230,22 @@ class AccountController {
 			println e
 			return false
 		}
-		
 	}	
+
+	
+	@Secured(['ROLE_ADMIN'])
+	def account_activity(){
+		authenticatedAdmin { accountInstance ->
+			def pageViews = PageViewLog.findAllByAccount(accountInstance)
+			def catalogViews = CatalogViewLog.findAllByAccount(accountInstance)
+			def productViews = ProductViewLog.findAllByAccount(accountInstance)
+			def searchQueries = SearchLog.findAllByAccount(accountInstance)
+
+			[pageViews: pageViews, catalogViews: catalogViews, 
+			productViews: productViews, searchQueries: searchQueries]
+		}
+	}
+
 		
 	@Secured(['permitAll'])
 	def order_history(){
