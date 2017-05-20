@@ -103,7 +103,7 @@ class BaseController {
 		c.call accountInstance
 	}
 	
-	
+
 
 	private def authenticatedAdminProduct(Closure c){
 		if(!principal?.username){

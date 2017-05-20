@@ -239,18 +239,93 @@ class AccountController {
 
 	
 	@Secured(['ROLE_ADMIN'])
-	def account_activity(){
-		authenticatedAdmin { accountInstance ->
+	def account_activity(Long id){
+		authenticatedAdmin { adminAccount ->
+			def accountInstance = Account.get(id)
+        	if (!accountInstance) {
+        	    flash.message = "Account not found"
+        	    redirect(action: "admin_list")
+        	    return
+        	}   
 			def productViewStats = getProductViewsStatistics(accountInstance)
 			def pageViewStats = getPageViewStatistics(accountInstance)
 			def catalogViewStats = getCatalogViewsStatistics(accountInstance)
-			def searchQueryStats = getSearchQueriesStatistics(accountInstance)
+			def searchQueryStats = getSearchQueryStatistics(accountInstance)
 
 			[accountInstance: accountInstance, productViewStats: productViewStats, 
 			pageViewStats: pageViewStats, catalogViewStats: catalogViewStats, 
 			searchQueryStats: searchQueryStats]
 		}
 	}
+
+
+	@Secured(['ROLE_ADMIN'])
+	def product_activity(Long id){
+		authenticatedAdmin{ adminAccount ->
+			def accountInstance = Account.get(id)
+        	if (!accountInstance) {
+        	    flash.message = "Account not found"
+        	    redirect(action: "admin_list")
+        	    return
+        	}   
+			def productViewLogs = ProductViewLog.findAllByAccount(accountInstance, [sort:"dateCreated", order:"desc"])
+			def productViewStats = getProductViewsStatistics(accountInstance)
+			[accountInstance: accountInstance, productViewLogs: productViewLogs, productViewStats: productViewStats]
+		}
+	}
+
+
+	@Secured(['ROLE_ADMIN'])
+	def catalog_activity(Long id){
+		authenticatedAdmin{ adminAccount ->
+			def accountInstance = Account.get(id)
+        	if (!accountInstance) {
+        	    flash.message = "Account not found"
+        	    redirect(action: "admin_list")
+        	    return
+        	}   
+			def catalogViewLogs = CatalogViewLog.findAllByAccount(accountInstance, [sort:"dateCreated", order:"desc"])
+			def catalogViewStats = getCatalogViewsStatistics(accountInstance)
+			[accountInstance: accountInstance, catalogViewLogs: catalogViewLogs, catalogViewStats: catalogViewStats]
+		}
+	}
+
+
+
+
+	@Secured(['ROLE_ADMIN'])
+	def page_activity(Long id){
+		authenticatedAdmin{ adminAccount ->
+			def accountInstance = Account.get(id)
+        	if (!accountInstance) {
+        	    flash.message = "Account not found"
+        	    redirect(action: "admin_list")
+        	    return
+        	}   
+			def pageViewLogs = PageViewLog.findAllByAccount(accountInstance, [sort:"dateCreated", order:"desc"])
+			def pageViewStats = getPageViewStatistics(accountInstance)
+			[accountInstance: accountInstance, pageViewLogs: pageViewLogs, pageViewStats: pageViewStats]
+		}
+	}
+
+
+
+
+	@Secured(['ROLE_ADMIN'])
+	def search_activity(Long id){
+		authenticatedAdmin{ adminAccount ->
+			def accountInstance = Account.get(id)
+        	if (!accountInstance) {
+        	    flash.message = "Account not found"
+        	    redirect(action: "admin_list")
+        	    return
+        	}   
+			def searchLogs = SearchLog.findAllByAccount(accountInstance, [sort:"dateCreated", order:"desc"])
+			def searchQueryStats = getSearchQueryStatistics(accountInstance)
+			[accountInstance: accountInstance, searchLogs: searchLogs, searchQueryStats: searchQueryStats]
+		}
+	}
+
 
 
 	
@@ -315,7 +390,7 @@ class AccountController {
 	
 	
 	
-	def getSearchQueriesStatistics(accountInstance){
+	def getSearchQueryStatistics(accountInstance){
 		def stats = [:]
 		def searchLogs = SearchLog.findAllByAccount(accountInstance)
 		
