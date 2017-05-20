@@ -88,7 +88,6 @@
 					
 						<td>${accountInstance?.state?.name}</td>
 				
-						
 						<td><g:link controller="account" action="admin_edit" params="[id: accountInstance.id]" class="">Edit</g:link></td>
 					
 					</tr>

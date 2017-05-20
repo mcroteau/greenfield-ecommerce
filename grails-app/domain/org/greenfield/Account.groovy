@@ -68,6 +68,7 @@ class Account {
 
 	def createAccountRoles(includeAdminRole){
 		this.hasAdminRole = false
+		this.save(flush:true)
 
 		def role = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
 		createAccountRole(role)
