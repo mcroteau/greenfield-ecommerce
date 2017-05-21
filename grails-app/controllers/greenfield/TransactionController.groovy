@@ -136,7 +136,7 @@ class TransactionController {
 					shipment = shipment.label(labelMap)
 				**/
 				
-				println "shipment : + " + shipment.toString()
+				//println "shipment : + " + shipment.toString()
 
 				shipment = shipment.buy(rate);
 				

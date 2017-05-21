@@ -243,7 +243,6 @@ class ShoppingCartController {
 		def customer = shoppingCart.account
 		def easypostEnabled = applicationService.getEasyPostEnabled()
 
-		println "calculate shipping"
 		if(easypostEnabled == "true" && 
 				params.set != "true"){
 			
@@ -259,7 +258,7 @@ class ShoppingCartController {
 				
 				def packageSize = calculatePackageSize(shoppingCart)
 				
-				println "here... calculated packageSize " + packageSize
+				//println "here... calculated packageSize " + packageSize
 				
 				Map<String, Object> toAddressMap = new HashMap<String, Object>();
 				toAddressMap.put("name", customer.name)
@@ -308,10 +307,10 @@ class ShoppingCartController {
 					shipmentMap.put("from_address", verifiedFromAddress);
 					shipmentMap.put("parcel", parcel);
 
-					println "creating shipment using api..."
+					//println "creating shipment using api..."
 					Shipment shipment = Shipment.create(shipmentMap);
 					
-					println shipment
+					//println shipment
 					if(shipment && shipment.rates.size() > 0){
 						def rate = getLowestRate(shipment)
 						shoppingCart.shipping = rate.rate
@@ -337,16 +336,12 @@ class ShoppingCartController {
 			}
 			
 		}else{
-			println "else... calculate shipping"
 			if(params.set != "true"){
 				shoppingCart.shipping = applicationService.getShipping()
 			}
 		}
 		
-		println "shipping calculations?"
-		println shoppingCart.shipping
-		println applicationService.getShipping()
-
+		
 		if(shoppingCart.shipping == applicationService.getShipping()){
 			shoppingCart.shipmentId = "BASE"
 			shoppingCart.shipmentDays = ""
@@ -435,7 +430,6 @@ class ShoppingCartController {
 			}
 			
 			if(shoppingCart && shoppingCart.status == ShoppingCartStatus.ACTIVE.description()){
-				println "calculate total TODO:"
 				calculateTotal(shoppingCart)
 				[shoppingCart : shoppingCart, accountInstance: accountInstance]
 			}else{
@@ -450,7 +444,7 @@ class ShoppingCartController {
 	@Secured(['ROLE_CUSTOMER','ROLE_ADMIN'])
 	def add(){
 		authenticatedAccount { customerAccount ->
-			println "has it been committed..."
+			
 			def productInstance = Product.findById(params.id)
 			
 			if(!productInstance){
@@ -485,9 +479,7 @@ class ShoppingCartController {
 				return
 			}
 
-			println "here.. shopping cart add"
 			def shoppingCart = ShoppingCart.findByAccountAndStatus(account, ShoppingCartStatus.ACTIVE.description())
-			
 			
 			if(!shoppingCart){
 				shoppingCart = new ShoppingCart()
@@ -496,15 +488,6 @@ class ShoppingCartController {
 				shoppingCart.save(flush:true)
 
 				customerAccount.createShoppingCartPermission(shoppingCart)
-
-				//TODO:Remove cleanup
-				// def permission = new Permission()
-				// permission.user = customerAccount
-				// permission.permission = "shopping_cart:access:${shoppingCart.id}"
-				// permission.save(flush:true)
-
-				// customerAccount.addToPermissions(permission)
-				// customerAccount.save(flush:true)
 			}
 			
 			def existingCartItem = ShoppingCartItem.findByShoppingCartAndProduct(shoppingCart, productInstance)
@@ -527,7 +510,6 @@ class ShoppingCartController {
 				def shoppingCartItem = new ShoppingCartItem()
 			
 				if(!params.quantity.isDouble()){
-				println "here.. bad number"
 					flash.message = "Please enter a valid quantity"
 					redirect(controller : 'product', action : 'details', id : params.id)
 					return
@@ -565,7 +547,6 @@ class ShoppingCartController {
 			
 			}
 				
-			println "redirect here..."
 			flash.message = "Successfully added item to cart"
 			redirect(controller: 'shoppingCart', action : 'index')
 			return

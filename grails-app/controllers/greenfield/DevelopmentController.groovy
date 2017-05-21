@@ -4,34 +4,68 @@ import org.greenfield.Product
 import org.greenfield.Catalog
 
 import grails.converters.*
+import grails.plugin.springsecurity.annotation.Secured
+
 
 class DevelopmentController {
+	/***
+		Books
+			- Computers & Technology
+				- Networking
+				- Certification
+				- Programming
+					- Web Programming
+					- Algorithms
+					- Apple Programming
+		Clothing, Shoes & Jewelry
+		Electronics & Computers
+		Sports & Outdoors
+	**/
 
-	def createTestCatalogs(){
-		/**
-			Books
-				- Computers & Technology
-					- Networking
-					- Certification
-					- Programming
-						- Web Programming
-						- Algorithms
-						- Apple Programming
-			Clothing, Shoes & Jewelry
-			Electronics & Computers
-			Sports & Outdoors
-		**/
+	@Secured(['ROLE_ADMIN'])
+	def generate_development_data(){
+		createTopLevelCatalogs()
+		createSubCatalogs()
+		createProducts()
+		def products = Product.list()
+		render products as JSON	
+	}
+
+	
+	def createTopLevelCatalogs(){
+		def books = new Catalog()
+		books.name = "Books"
+		books.toplevel = true
+		books.save(flush:true)
 		
+		def clothing = new Catalog()
+		clothing.name = "Clothing, Shoes & Jewelry"
+		clothing.toplevel = true
+		clothing.save(flush:true)
+		
+		def electronics = new Catalog()
+		electronics.name = "Electronics & Computers"
+		electronics.toplevel = true
+		electronics.save(flush:true)
+		
+		def sports = new Catalog()
+		sports.name = "Sports & Outdoors"
+		sports.toplevel = true
+		sports.save(flush:true)
+	}
+	
+
+	def createSubCatalogs(){
+
 		try{
 		
 			def books = Catalog.findByName("Books")
-			println "*********************************"
+
 			if(!books){
 				println "!Books"
 				createTopLevelCatalogs()
 				books = Catalog.findByName("Books")
 			}
-			println "*********************************"
 			
 			def computers = new Catalog()
 			computers.name = "Computers & Technology"
@@ -50,14 +84,12 @@ class DevelopmentController {
 			computers.save(flush:true)
 			
 			
-			
 			def certification = new Catalog()
 			certification.name = "Certification"
 			certification.parentCatalog = computers
 			certification.save(flush:true)
 			computers.addToSubcatalogs(certification)
 			computers.save(flush:true)
-			
 			
 			
 			def programming = new Catalog()
@@ -100,35 +132,10 @@ class DevelopmentController {
 		}
 		
 		
-		def catalogs = Catalog.list()
-		render catalogs as JSON
 	}
-	
-	
-	def createTopLevelCatalogs(){
-		def books = new Catalog()
-		books.name = "Books"
-		books.toplevel = true
-		books.save(flush:true)
-		
-		def clothing = new Catalog()
-		clothing.name = "Clothing, Shoes & Jewelry"
-		clothing.toplevel = true
-		clothing.save(flush:true)
-		
-		def electronics = new Catalog()
-		electronics.name = "Electronics & Computers"
-		electronics.toplevel = true
-		electronics.save(flush:true)
-		
-		def sports = new Catalog()
-		sports.name = "Sports & Outdoors"
-		sports.toplevel = true
-		sports.save(flush:true)
-	}
-	
-	
-	def createTestProducts(){
+
+
+	def createProducts(){
 		def books = Catalog.findByName("Books")
 		def computers = Catalog.findByName("Computers & Technology")
 		def programming = Catalog.findByName("Programming")
@@ -136,6 +143,10 @@ class DevelopmentController {
 		def web = Catalog.findByName("Web Programming")
 		def algorithms = Catalog.findByName("Algorithms")
 		def apple = Catalog.findByName("Apple Programming")
+		def clothing = Catalog.findByName("Clothing, Shoes & Jewelry")
+		def electronics = Catalog.findByName("Electronics & Computers")
+		def sports = Catalog.findByName("Sports & Outdoors")
+
 		
 		//web programming books
 		(1..30).each{ i ->
@@ -199,7 +210,41 @@ class DevelopmentController {
 			certbook.addToCatalogs(certification)
 			certbook.save(flush:true)
 		}
+
 		
+		(1..34).each{ i ->	
+			def clothingProduct = new Product()
+			clothingProduct.name = "Clothing, Shoes & Jewelry ${i}"
+			clothingProduct.price = i * 10
+			clothingProduct.quantity = i * 3
+			clothingProduct.weight = 16
+			clothingProduct.save(flush:true)
+			
+			clothingProduct.addToCatalogs(clothing)
+			clothingProduct.save(flush:true)
+		}
+		(1..13).each{ i ->	
+			def electronicProduct = new Product()
+			electronicProduct.name = "Electronics & Computers ${i}"
+			electronicProduct.price = i * 10
+			electronicProduct.quantity = i * 3
+			electronicProduct.weight = 16
+			electronicProduct.save(flush:true)
+			
+			electronicProduct.addToCatalogs(electronics)
+			electronicProduct.save(flush:true)
+		}
+		(1..24).each{ i ->	
+			def sportsProduct = new Product()
+			sportsProduct.name = "Sports & Outdoors ${i}"
+			sportsProduct.price = i * 10
+			sportsProduct.quantity = i * 3
+			sportsProduct.weight = 16
+			sportsProduct.save(flush:true)
+			
+			sportsProduct.addToCatalogs(sports)
+			sportsProduct.save(flush:true)
+		}
 	}
 	
 }

@@ -70,8 +70,6 @@ class CatalogController {
             combinations = combinations.combinations()
             combinations.unique()
 
-            //println "combinations again : " + combinations
-
             if(combinations){
 
 	            products = []

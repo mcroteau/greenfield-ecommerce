@@ -607,49 +607,12 @@ class AccountController {
 			def includeAdminRole = false
 			if(params.admin == "true" ||
 					params.admin == "on"){
-				println "************** INCLUDE ADMIN ****************"
 				includeAdminRole = true
 			}
 
-			println "************** INCLUDE FALSE ****************"
-			println "here... has admin role ${includeAdminRole}"
-			println "create account roles"
 			accountInstance.createAccountRoles(includeAdminRole)
-
-			println "created account roles"
-
-			//TODO:Remove cleanup
-			// def role = Role.findByName(RoleName.ROLE_CUSTOMER.description())
-			// role.addToAccounts(accountInstance)
-			// role.save(flush:true)
-		
-			// accountInstance.addToRoles(role)
-		
-			// if(params.admin == "true" ||
-			// 		params.admin == "on"){
-			// 	def adminRole = Role.findByName(RoleName.ROLE_ADMIN.description())
-			// 	adminRole.addToAccounts(accountInstance)
-			// 	adminRole.save(flush:true)
-			// 	accountInstance.addToRoles(adminRole)
-			// 	accountInstance.hasAdminRole = true
-			// }else{
-			// 	accountInstance.hasAdminRole = false
-			// }
-			
-			// if (!accountInstance.save(flush: true)) {
-	  //  			flash.message = "Something went wrong when saving the account, please try again..."
-			// 	render(view: "admin_create", model: [accountInstance: accountInstance])
-   //     		    return
-   //     		}
-       		
-			//TODO:decide which would be
 			accountInstance.createAccountPermission()
-			//accountInstance.addToPermissions(ControllerConstants.ACCOUNT_PERMISSION + customerAccount.id)
-			//accountInstance.save(flush:true)
 
-
-			//accountInstance.addToPermissions("account:customer_profile,customer_update,customer_order_history:" + accountInstance.id)
-			//accountInstance.save(flush:true)
 			
        		flash.message = "Account successfully saved"
        		redirect(action: "admin_show", id: accountInstance.id)
@@ -674,16 +637,13 @@ class AccountController {
 			accountInstance.properties = params
 			def adminRole = Role.findByAuthority(RoleName.ROLE_ADMIN.description())
 			
-			println "include admin ${params.admin}"
-			
+
 			if(params.admin == "true" ||
 					params.admin == "on"){
-				println "************** INCLUDE ADMIN ****************"
 				accountInstance.createAccountRole(adminRole)
 				accountInstance.hasAdminRole = true
 			}else{
 				def accountRole = AccountRole.findByRoleAndAccount(adminRole, accountInstance)
-				println "******** Did we find admin role ***********"
 				if(accountRole){
 					accountRole.delete(flush:true)
 					accountInstance.hasAdminRole = false
@@ -696,7 +656,6 @@ class AccountController {
        		    return
        		}
        		
-       		println "show ${accountInstance.hasAdminRole}"
        		flash.message = "Account successfully updated"
        		redirect(action: "admin_show", id: accountInstance.id)
 		}
@@ -750,9 +709,7 @@ class AccountController {
 	        }
 			
 			
-	   		//def	password = new Sha256Hash(params.password).toHex()
-	   		println "****** password ${params.password}"
-			def password = springSecurityService.encodePassword(params.password)
+	   		def password = springSecurityService.encodePassword(params.password)
 	   		accountInstance.password = password
 
 	   		if (!accountInstance.save(flush: true)) {

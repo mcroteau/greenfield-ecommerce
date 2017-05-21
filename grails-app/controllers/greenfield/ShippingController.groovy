@@ -54,7 +54,7 @@ class ShippingController {
 	@Secured(['ROLE_CUSTOMER','ROLE_ADMIN'])
 	def select(Long id){
 		authenticatedAccount { customerAccount ->
-			println "here... authenticatedAccount"
+			
 			def shoppingCart = ShoppingCart.get(id)
 			
 			if(shoppingCart){

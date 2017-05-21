@@ -21,8 +21,6 @@ class SpecificationController {
             def offset = params.offset ? params.offset : 0
 
             def catalogHtmlOptions = getCatalogHtmlOptions(specificationInstance)
-            println "catalogOptions"
-
             def catalogInstances = specificationInstance.catalogs.sort { it.id }
             
             def products = []
@@ -48,80 +46,6 @@ class SpecificationController {
 
             [catalogInstances: catalogInstances, products: products, productsTotal: productsTotal, 
             catalogHtmlOptions: catalogHtmlOptions, specificationInstance: specificationInstance ]
-        }
-    }
-
-    
-    //TODO:remove
-    @Secured(['ROLE_ADMIN'])
-    def product_specifications_old(Long id){
-        authenticatedAdminSpecification { adminAccount, specificationInstance ->
-            
-            def specificationOptions = SpecificationOption.findAllBySpecification(specificationInstance)
-            if(!specificationOptions){
-                flash.message = "You must define options for this specification before assigning products"
-                redirect(action: 'edit', id: specificationInstance.id)
-                return
-            }
-            
-            def max = params.max ? params.max : 10
-            def offset = params.offset ? params.offset : 0
-
-            def catalogOptions = getCatalogHtmlOptions(specificationInstance)
-            def products = []
-            def productsTotal = 0
-            def catalog = null
-            def lowestPriceProduct = null
-            def highestPriceProduct = null
-
-
-            if(params.catalogId){
-                catalog = Catalog.get(params.catalogId)
-
-                if(catalog){
-
-                    def specificationIds = specificationInstance.catalogs.collect{ it.id }
-                    def subcatalogIds = setSubcatalogIds(catalog, [])
-
-                    if(subcatalogIds){
-                        def ids = []
-                        subcatalogIds.each { it ->
-                            if(specificationIds.contains(it)){
-                                ids.push(it)
-                            }
-                        }
-
-                        println "catalog ids : ${ids}"
-                        productsTotal = Product.createCriteria().count{
-                            catalogs{
-                                'in'('id', ids)
-                            }
-                        }
-
-                        products = Product.createCriteria().list(max: max, offset: offset){
-                            catalogs{
-                                'in'('id', ids)
-                            }
-                        }
-                        
-                        def rangeProducts = Product.createCriteria().list(){
-                            catalogs{
-                                'in'('id', ids)
-                            }
-                            order('price', 'asc')
-                        }
-                        
-                        def lastProduct = rangeProducts.size() - 1 
-                        lowestPriceProduct = rangeProducts.get(0)
-                        highestPriceProduct = rangeProducts.get(lastProduct)
-                    }
-
-                }
-            }
-            
-            [ specificationInstance: specificationInstance, catalogOptions: catalogOptions,  
-            products: products, productsTotal: productsTotal, catalogInstance: catalog, 
-            lowestPriceProduct: lowestPriceProduct, highestPriceProduct: highestPriceProduct ]
         }
     }
 

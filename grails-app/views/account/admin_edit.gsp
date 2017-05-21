@@ -23,7 +23,7 @@
 				<g:link controller="account" action="admin_list" params="[admin:false]" class="btn btn-default pull-right">Back to Accounts</g:link>
 				
 				<div style="display:inline-block;width:10px;height:10px;" class="pull-right"></div>
-				<g:link controller="account" action="account_activity" id="${accountInstance?.id}" class="btn btn-warning pull-right">Activity</g:link>
+				<g:link controller="account" action="account_activity" id="${accountInstance?.id}" class="btn btn-default pull-right">Activity</g:link>
 				<br class="clear"/>
 			</h2>
 

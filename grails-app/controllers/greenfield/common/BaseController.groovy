@@ -488,9 +488,6 @@ private def authenticatedPermittedShoppingCart(Closure c){
 		}
 
 		def permission = accountInstance.permissions.find { 
-			//TODO:Remove cleanup
-			//it.permission == "shopping_cart:access:${shoppingCartInstance.id}"
-			println it.permission + " ${shoppingCartInstance.id}"
 			it.permission == ControllerConstants.SHOPPING_CART_PERMISSION + shoppingCartInstance.id
 		}
 
@@ -535,9 +532,6 @@ private def authenticatedPermittedShoppingCart(Closure c){
 		}
 		
 		def permission = accountInstance.permissions.find { 
-			println it.permission + " ${transactionInstance.id}"
-			//TODO:Remove cleanup
-			//it.permission == "transaction:order_details:${transactionInstance.id}" 
 			it.permission == ControllerConstants.TRANSACTION_PERMISSION + transactionInstance.id
 		}
 
