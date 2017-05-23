@@ -4,12 +4,6 @@ Greenfield is a lightweight eCommerce application focused on quick and easy setu
 
 ![dashboard](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/dashboard.jpg)
 
-## Screenshots
-
-![order-screen](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/mock-checkout.jpg)
-
-![product-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/product-maintenance.jpg)
-
 
 ## Requirements
 	* Grails 3.2.8 or greater
@@ -34,6 +28,21 @@ Greenfield is a lightweight eCommerce application focused on quick and easy setu
 	
 croteau.mike@gmail.com
 	
+
+
+## Screenshots
+
+![order-screen](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/mock-checkout.jpg)
+
+![product-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/product-maintenance.jpg)
+
+![layout-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/import-export/site/images/layout-maintenance.jpg)
+
+![order-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/import-export/site/images/order-maintenance.jpg)
+
+![settings](https://raw.githubusercontent.com/opengreenfield/greenfield/import-export/site/images/settings.jpg)
+
+![page-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/import-export/site/images/page-maintenance.jpg)
 
 
 ## License
