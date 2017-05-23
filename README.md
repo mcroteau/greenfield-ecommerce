@@ -1,6 +1,6 @@
 # Greenfield - opengreenfield.org
 
-Greenfield is a lightweight eCommerce application focused on quick and easy setup. Greenfield is built on Grails, a full stack web application framework for the JVM. [http://www.grails.org](Lean more about Grails)
+Greenfield is a lightweight eCommerce application focused on quick and easy setup. Greenfield is built on Grails, a full stack web application framework for the JVM. [http://www.grails.org](Learn more about Grails)
 
 ![dashboard](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/dashboard.jpg)
 
@@ -32,16 +32,27 @@ croteau.mike@gmail.com
 
 ## Screenshots
 
+### Checkout Screen
 ![order-screen](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/mock-checkout.jpg)
 
+
+### Product Maintenance
 ![product-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/product-maintenance.jpg)
 
+
+### Layout Maintenance
 ![layout-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/import-export/site/images/layout-maintenance.jpg)
 
+
+### Order Maintenance
 ![order-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/import-export/site/images/order-maintenance.jpg)
 
+
+### Main Settings Screen
 ![settings](https://raw.githubusercontent.com/opengreenfield/greenfield/import-export/site/images/settings.jpg)
 
+
+### Page Maintenance
 ![page-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/import-export/site/images/page-maintenance.jpg)
 
 
