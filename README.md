@@ -2,6 +2,13 @@
 
 Greenfield is a lightweight eCommerce application focused on quick and easy setup. Greenfield is built on Grails, a full stack web application framework for the JVM. [http://www.grails.org](Lean more about Grails)
 
+![dashboard](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/dashboard.jpg)
+
+## Screenshots
+
+![order-screen](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/mock-checkout.jpg)
+
+![product-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/product-maintenance.jpg)
 
 
 ## Requirements
@@ -16,7 +23,6 @@ Greenfield is a lightweight eCommerce application focused on quick and easy setu
 	* Browse to 'http://localhost:8080/greenfield/admin'
 	* Default username : admin
 	* Default password : admin
-
 
 
 ## Get it running with data
