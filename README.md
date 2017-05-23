@@ -36,16 +36,16 @@ croteau.mike@gmail.com
 ![order-screen](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/mock-checkout.jpg)
 
 
+### Order Maintenance
+![order-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/import-export/site/images/order-maintenance.jpg)
+
+
 ### Product Maintenance
 ![product-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/master/site/images/product-maintenance.jpg)
 
 
 ### Layout Maintenance
 ![layout-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/import-export/site/images/layout-maintenance.jpg)
-
-
-### Order Maintenance
-![order-maintenance](https://raw.githubusercontent.com/opengreenfield/greenfield/import-export/site/images/order-maintenance.jpg)
 
 
 ### Main Settings Screen
