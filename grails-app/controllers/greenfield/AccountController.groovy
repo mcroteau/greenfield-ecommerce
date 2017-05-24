@@ -746,10 +746,35 @@ class AccountController {
 			    		it.delete(flush:true)
 			    	}
 
-			    	def permissions = Permission.findAllByUser(accountInstance)
+			    	def permissions = Permission.findAllByAccount(accountInstance)
 			    	permissions.each(){
 			    		it.delete(flush:true)
 			    	}
+
+			    	def pageViews = PageViewLog.findAllByAccount(accountInstance)
+			    	pageViews.each(){
+			    		it.account = null
+			    		it.save(flush:true)
+			    	}
+
+			    	def productViews = ProductViewLog.findAllByAccount(accountInstance)
+					productViews.each(){
+			    		it.account = null
+			    		it.save(flush:true)
+			    	}
+
+			    	def catalogViews = CatalogViewLog.findAllByAccount(accountInstance)
+					catalogViews.each(){
+			    		it.account = null
+			    		it.save(flush:true)
+			    	}
+
+			    	def searches = SearchLog.findAllByAccount(accountInstance)
+					searches.each(){
+			    		it.account = null
+			    		it.save(flush:true)
+			    	}
+
 
 	        	    accountInstance.delete(flush: true)
 	        	    flash.message = "Successfully deleted the account"
