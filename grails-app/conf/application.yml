@@ -108,7 +108,10 @@ dataSource:
     driverClassName: org.h2.Driver
     username: sa
     password:
-
+#        
+#may need to use
+#dialect = org.greenfield.ImprovedH2Dialect
+#
 environments:
     development:
         dataSource:

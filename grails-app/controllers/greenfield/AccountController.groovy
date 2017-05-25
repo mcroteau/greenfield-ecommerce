@@ -775,7 +775,6 @@ class AccountController {
 			    		it.save(flush:true)
 			    	}
 
-
 	        	    accountInstance.delete(flush: true)
 	        	    flash.message = "Successfully deleted the account"
 	        	    redirect(action: "admin_list")

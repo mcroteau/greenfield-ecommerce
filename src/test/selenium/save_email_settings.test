@@ -49,17 +49,17 @@
 <tr>
 	<td>type</td>
 	<td>name=username</td>
-	<td>apikey</td>
+	<td>croteau.mike@gmail.com</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>name=password</td>
-	<td>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</td>
+	<td>nopassword</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>name=host</td>
-	<td>smtp.sendgrid.net</td>
+	<td>smtp-relay.sendinblue.com</td>
 </tr>
 <tr>
 	<td>type</td>
