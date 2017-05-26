@@ -12,6 +12,8 @@
 <tr><td><a href="save_email_settings.test">save_email_settings</a></td></tr>
 <tr><td><a href="save_stripe_settings.test">save_stripe_settings</a></td></tr>
 <tr><td><a href="save_shipping_settings.test">save_shipping_settings</a></td></tr>
+<tr><td><a href="account_maintenance.test">account_maintenance</a></td></tr>
+<tr><td><a href="account_maintenance_admin.test">account_maintenance_admin</a></td></tr>
 <tr><td><a href="create-catalogs.test">create-catalogs</a></td></tr>
 <tr><td><a href="create-products.test">create-products</a></td></tr>
 <tr><td><a href="create-product-options.test">create-product-options</a></td></tr>

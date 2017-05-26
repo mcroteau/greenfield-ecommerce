@@ -12,18 +12,8 @@
 <tr><td rowspan="1" colspan="3">calculate_shipping</td></tr>
 </thead><tbody>
 <tr>
-	<td>open</td>
-	<td>/greenfield/shoppingCart/add</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
-	<td>link=Home</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=login</td>
+	<td>id=shopping-cart</td>
 	<td></td>
 </tr>
 <tr>
@@ -39,6 +29,11 @@
 <tr>
 	<td>clickAndWait</td>
 	<td>id=customer_login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=shopping-cart</td>
 	<td></td>
 </tr>
 <tr>
