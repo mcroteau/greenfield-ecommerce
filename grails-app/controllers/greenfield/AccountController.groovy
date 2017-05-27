@@ -27,6 +27,7 @@ import org.greenfield.AccountRole
 import org.greenfield.Transaction
 import org.greenfield.common.RoleName
 import org.greenfield.Permission
+import org.greenfield.ShoppingCart
 
 import org.greenfield.log.ProductViewLog
 import org.greenfield.log.PageViewLog
@@ -748,6 +749,11 @@ class AccountController {
 
 			    	def permissions = Permission.findAllByAccount(accountInstance)
 			    	permissions.each(){
+			    		it.delete(flush:true)
+			    	}
+
+			    	def shoppingCarts = ShoppingCart.findAllByAccount(accountInstance)
+			    	shoppingCarts.each(){
 			    		it.delete(flush:true)
 			    	}
 

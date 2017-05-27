@@ -53,7 +53,7 @@ ${raw(applicationService.getHeader("Registration"))}
 			</div>
 			
 			<div class="form-group">
-				<button type="submit" class="btn btn-primary pull-right" id="register">Register</button>
+				<button type="submit" class="btn btn-primary pull-right" id="complete-registration">Register</button>
 			</div>
 			
 		</g:form>

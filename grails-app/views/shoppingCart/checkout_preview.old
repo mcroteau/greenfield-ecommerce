@@ -234,27 +234,28 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 				
 				<h3 style="margin-top:20px !important;">Credit Card Information</h3>
 
+			    <div class="form-group">
+			      	<label class="col-sm-4 control-label">Card Number</label>
+			        <input type="text" class="form-control creditcard_input" size="20" id="creditcard_number"/>
+			    </div>
+
+			    <div class="form-group">
+			      	<label class="col-sm-4 control-label">CVC <br/><em>(located on the back of credit card)</em></label>
+			        <input type="text" class="form-control creditcard_input" size="2" style="width:70px" id="creditcard_cvc"/>
+			    </div>
+
+				
+			    <div class="form-group">
+			    	<label class="col-sm-4 control-label">Expiration <em>(MM/YYYY)</em></label>
+			    	<input type="text" class="form-control creditcard_input"  style="display:inline-block;width:100px;margin-right:0px;" id="creditcard_exp_month"/>
+			      	<span>/</span>
+			      	<input type="text" class="form-control creditcard_input" style="display:inline-block;width:100px;" id="creditcard_exp_year"/>
+					<br />
+			    </div>
+				
+			</form>
 			
 			<style type="text/css">
-				.field {
-				  	background: white;
-				  	box-sizing: border-box;
-				  	font-weight: 400;
-				  	border: 1px solid #CFD7DF !important;
-				  	border-radius: 3px;
-				  	color: #32315E;
-				  	outline: none;
-				  	height: 48px;
-				  	line-height: 48px;
-				  	padding: 0 20px;
-				  	cursor: text;
-				  	width: 76%;
-				  	float: right;
-				}
-.field:focus,
-.field.StripeElement--focus {
-  border-color: #F99A52;
-}
 				#processing{
 					display:inline-block; 
 					text-align:right; 
@@ -264,20 +265,15 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 					margin:0px 10px;
 				}
 			</style>
-
-				<div class="form-group">
-					<label class="col-sm-4 control-label">Credit Card</label>
-					<div id="credit-card-information" class="form-control" style="width:300px; height:40px;"></div>
-				</div>
-			</form>
 			
-			<div class="form-group" style="position:relative; text-align:center;">
-				<button id="submit" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px">Pay $${applicationService.formatPrice(shoppingCart.total)}</button>
-				<br/>
-				<span class="pull-right" id="processing" style="">
+			<div class="form-group">
+				<span class="pull-right" id="processing" style="display:none">
 					Processing checkout, please wait&nbsp;
 					<img src="/${applicationService.getContextName()}/images/loading.gif" >
 				</span>
+				<br/>
+				<br/>
+				<button id="submit" class="btn btn-primary pull-right">Checkout</button>
 				
 			</div>
 			
@@ -293,11 +289,10 @@ $(document).ready(function(){
 
 	var $submitBtn = $('#submit'),
 		$tokenInput = $('#stripeToken'),
-		//$cardNumberInput = $('#creditcard_number'),
-		//$cardCvcInput = $('#creditcard_cvc'),
-		//$cardExpMonth = $('#creditcard_exp_month'),
-		//$cardExpYear = $('#creditcard_exp_year'),
-		//$cardZip = $('#shipZip'),
+		$cardNumberInput = $('#creditcard_number'),
+		$cardCvcInput = $('#creditcard_cvc'),
+		$cardExpMonth = $('#creditcard_exp_month'),
+		$cardExpYear = $('#creditcard_exp_year'),
 		$checkoutForm = $('#checkout_form'),
 		$processing = $('#processing');
 
@@ -319,25 +314,8 @@ $(document).ready(function(){
 
 	console.log('here.. set publishable key')
 	console.log(Stripe)
-	var stripe = Stripe("${raw(publishableKey)}");
-	var elements = stripe.elements()
-	var card = elements.create('card', {
-    	fontSize: '18px',
-    	lineHeight: '34px'
-	})
-
-	card.mount('#credit-card-information')
-card.addEventListener('change', function(event) {
-  var displayError = document.getElementById('card-errors');
-  if (event.error) {
-    displayError.textContent = event.error.message;
-  } else {
-    displayError.textContent = '';
-  }
-});
-
-	//$submitBtn.click(checkCreditCardValues);
-
+	Stripe.setPublishableKey("${raw(publishableKey)}");
+	$submitBtn.click(checkCreditCardValues);
 
 
 
@@ -346,8 +324,7 @@ card.addEventListener('change', function(event) {
 		$checkoutForm.submit();
 	}
 
-	/**
-	function setStripeTokenInput_old(code, token){
+	function setStripeTokenInput(code, token){
 		console.log("set stripe token", code, token)
 		$tokenInput.val(token.id)
 		if(token.error){
@@ -359,24 +336,9 @@ card.addEventListener('change', function(event) {
 		}
 		checkout();
 	}
-	**/
-	
 
-	function generateStripeToken(){
-		//TODO : catch stripe payment errors
-		stripe.createToken('card', {
-		    number      : $cardNumberInput.val(),
-		    cvc         : $cardCvcInput.val(),
-		    exp_month   : $cardExpMonth.val(),
-		    exp_year    : $cardExpYear.val()
-		}).then(function(result) {
-  			// handle result.error or result.token
-			console.log(result)
-		});
-	}
 
-	/**
-	function getStripeToken_old(){
+	function getStripeToken(){
 		//TODO : catch stripe payment errors
 		Stripe.card.createToken({
 		    number    : $cardNumberInput.val(),
@@ -386,37 +348,21 @@ card.addEventListener('change', function(event) {
 		}, setStripeTokenInput);
 	}
 
-	function generateStripeToken(){
-		var card_options = {
-			"cardNumber" : $cardNumberInput.val(),
-			"cardExpiry" : $cardCvcInput.val() + "/" + $cardExpYear.val(),
-			"cardCvc" : $cardCvcInput.val(),
-			"postalCode" : $cardZip.val()
-		}
-
-		var elements = stripe.elements()
-		var card = elements.create('card')
-
-		stripe.createToken(card).then(function(result) {
-  			console.log(result)
-  		});
-	}
 
 	function checkCreditCardValues(){
 		if($cardNumberInput.val() != "" &&
 				$cardCvcInput.val() != "" &&
 				$cardExpMonth.val() != "" &&
-				$cardExpYear.val() != "" &&
-				$cardZip.val() != ""){
+				$cardExpYear.val() != ""){
 			$submitBtn.attr("disabled", "disabled");	
-			generateStripeToken();
+			getStripeToken();
 			$processing.show();
 		}else{
-			alert('Please make sure all credit card information is provided including zip')
+			alert('Please make sure all credit card information is provided')
 			$submitBtn.removeAttr("disabled");	
 		}
 	}
-	**/
+	
 	
 	var $sameas = $('#sameas'),
 		$shipName = $('#shipName'),
