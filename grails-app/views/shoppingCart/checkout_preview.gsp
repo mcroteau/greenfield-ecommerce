@@ -236,25 +236,6 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 
 			
 			<style type="text/css">
-				.field {
-				  	background: white;
-				  	box-sizing: border-box;
-				  	font-weight: 400;
-				  	border: 1px solid #CFD7DF !important;
-				  	border-radius: 3px;
-				  	color: #32315E;
-				  	outline: none;
-				  	height: 48px;
-				  	line-height: 48px;
-				  	padding: 0 20px;
-				  	cursor: text;
-				  	width: 76%;
-				  	float: right;
-				}
-.field:focus,
-.field.StripeElement--focus {
-  border-color: #F99A52;
-}
 				#processing{
 					display:inline-block; 
 					text-align:right; 
@@ -266,7 +247,7 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 			</style>
 
 				<div class="form-group">
-					<label class="col-sm-4 control-label">Credit Card</label>
+					<label class="col-sm-4 control-label">Credit Card with Zip Code</label>
 					<div id="credit-card-information" class="form-control" style="width:300px; height:40px;"></div>
 				</div>
 			</form>
@@ -274,7 +255,7 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 			<div class="form-group" style="position:relative; text-align:center;">
 				<button id="submit" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px">Pay $${applicationService.formatPrice(shoppingCart.total)}</button>
 				<br/>
-				<span class="pull-right" id="processing" style="">
+				<span class="pull-right" id="processing" style="display:none">
 					Processing checkout, please wait&nbsp;
 					<img src="/${applicationService.getContextName()}/images/loading.gif" >
 				</span>
@@ -293,11 +274,6 @@ $(document).ready(function(){
 
 	var $submitBtn = $('#submit'),
 		$tokenInput = $('#stripeToken'),
-		//$cardNumberInput = $('#creditcard_number'),
-		//$cardCvcInput = $('#creditcard_cvc'),
-		//$cardExpMonth = $('#creditcard_exp_month'),
-		//$cardExpYear = $('#creditcard_exp_year'),
-		//$cardZip = $('#shipZip'),
 		$checkoutForm = $('#checkout_form'),
 		$processing = $('#processing');
 
@@ -316,108 +292,59 @@ $(document).ready(function(){
 		$submitBtn.attr("disabled", "disabled");
 	</g:if>
 	
+	var stripe = {},
+		elements = {},
+		card = {};
 
-	console.log('here.. set publishable key')
 	console.log(Stripe)
-	var stripe = Stripe("${raw(publishableKey)}");
-	var elements = stripe.elements()
-	var card = elements.create('card', {
-    	fontSize: '18px',
-    	lineHeight: '34px'
-	})
 
-	card.mount('#credit-card-information')
-card.addEventListener('change', function(event) {
-  var displayError = document.getElementById('card-errors');
-  if (event.error) {
-    displayError.textContent = event.error.message;
-  } else {
-    displayError.textContent = '';
-  }
-});
+	var processingHtml = "Processing checkout, please wait&nbsp;<img src=\"/${applicationService.getContextName()}/images/loading.gif\"/>"
 
-	//$submitBtn.click(checkCreditCardValues);
+	$submitBtn.click(process_checkout);
 
+	function initialize(){
+		stripe = Stripe("${raw(publishableKey)}");
+		elements = stripe.elements()
+		card = elements.create('card', {
+	    	fontSize: '23px',
+	    	lineHeight: '34px'
+		})
 
+		card.mount('#credit-card-information')
 
-
-	function checkout(){
-		console.log("checkout...")
-		$checkoutForm.submit();
-	}
-
-	/**
-	function setStripeTokenInput_old(code, token){
-		console.log("set stripe token", code, token)
-		$tokenInput.val(token.id)
-		if(token.error){
-			alert('Something went wrong. Please notify Greenfield Administrator')
-			$processing.html('Something went wrong. Please notify website administrator immediately.')
-			$processing.css({ "font-weight" : "bold" })
-			$submitBtn.hide()
-			return false
-		}
-		checkout();
-	}
-	**/
-	
-
-	function generateStripeToken(){
-		//TODO : catch stripe payment errors
-		stripe.createToken('card', {
-		    number      : $cardNumberInput.val(),
-		    cvc         : $cardCvcInput.val(),
-		    exp_month   : $cardExpMonth.val(),
-		    exp_year    : $cardExpYear.val()
-		}).then(function(result) {
-  			// handle result.error or result.token
-			console.log(result)
+		card.addEventListener('change', function(event) {
+	  		var displayError = document.getElementById('card-errors');
+	  		if (event.error) {
+	    		//displayError.textContent = event.error.message;
+	    		$processing.html(event.error.message)
+				$processing.css({ "font-weight" : "bold" });
+				$processing.show()
+	  		} else {
+	  			$processing.hide()
+				$processing.css({ "font-weight" : "normal" })
+				$processing.html(processingHtml)
+	  		}
 		});
 	}
 
-	/**
-	function getStripeToken_old(){
-		//TODO : catch stripe payment errors
-		Stripe.card.createToken({
-		    number    : $cardNumberInput.val(),
-		    cvc       : $cardCvcInput.val(),
-		    exp_month : $cardExpMonth.val(),
-		    exp_year  : $cardExpYear.val()
-		}, setStripeTokenInput);
-	}
 
-	function generateStripeToken(){
-		var card_options = {
-			"cardNumber" : $cardNumberInput.val(),
-			"cardExpiry" : $cardCvcInput.val() + "/" + $cardExpYear.val(),
-			"cardCvc" : $cardCvcInput.val(),
-			"postalCode" : $cardZip.val()
-		}
 
-		var elements = stripe.elements()
-		var card = elements.create('card')
-
+	function process_checkout(){
+		$processing.show()
 		stripe.createToken(card).then(function(result) {
-  			console.log(result)
-  		});
+			console.log("submit form")
+			console.log(result)
+			$tokenInput.val(result.token.id)
+			$checkoutForm.submit();
+		});
 	}
 
-	function checkCreditCardValues(){
-		if($cardNumberInput.val() != "" &&
-				$cardCvcInput.val() != "" &&
-				$cardExpMonth.val() != "" &&
-				$cardExpYear.val() != "" &&
-				$cardZip.val() != ""){
-			$submitBtn.attr("disabled", "disabled");	
-			generateStripeToken();
-			$processing.show();
-		}else{
-			alert('Please make sure all credit card information is provided including zip')
-			$submitBtn.removeAttr("disabled");	
-		}
-	}
-	**/
 	
+	initialize()
+
+
+		
+	/** TODO: consider removing
 	var $sameas = $('#sameas'),
 		$shipName = $('#shipName'),
 		$billName = $('#billName'),
@@ -454,6 +381,7 @@ card.addEventListener('change', function(event) {
 		}
 	}
 	$sameas.click()
+	**/
 
 })
 </script>			

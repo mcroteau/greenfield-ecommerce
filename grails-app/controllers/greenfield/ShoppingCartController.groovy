@@ -424,7 +424,7 @@ class ShoppingCartController {
 			println "here..."
 			if(!addressComplete(accountInstance)){
 				println "redirect..."
-				flash.message = "Please complete address information before continuing"
+				flash.message = "Please complete address to complete checkout"
 				redirect(controller:'account', action:'customer_profile')
 				return
 			}
