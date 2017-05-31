@@ -54,7 +54,7 @@
 					
 						<td>${transactionInstance.id}</td>
 					
-						<td><g:link controller="transaction" action="show" id="${transactionInstance.id}"><g:formatDate date="${transactionInstance.orderDate}" format="dd MMM yyyy hh:mm a" /></g:link></td>
+						<td><g:link controller="account" action="review_order" id="${transactionInstance.id}"><g:formatDate date="${transactionInstance.orderDate}" format="dd MMM yyyy hh:mm a" /></g:link></td>
 						
 						<td>$${applicationService.formatPrice(transactionInstance.subtotal)}</td>
 					
@@ -66,7 +66,7 @@
 				
 						<td>$${applicationService.formatPrice(transactionInstance.total)}</td>
 					
-						<td><g:link controller="transaction" action="show" params="[id: transactionInstance.id]" class="show-transaction-${transactionInstance.id}">Show </g:link></td>
+						<td><g:link controller="account" action="review_order" params="[id: transactionInstance.id]" class="show-transaction-${transactionInstance.id}">Show </g:link></td>
 					
 					</tr>
 				</g:each>

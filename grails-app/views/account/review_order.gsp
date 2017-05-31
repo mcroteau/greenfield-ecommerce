@@ -26,12 +26,13 @@
 	<g:form>
 		<g:hiddenField name="id" value="${transactionInstance?.id}" />
 
+
 		<g:actionSubmit class="btn btn-danger pull-right" action="delete" value="Delete" onclick="return confirm('Are you sure?');" />
 
 		<div style="height:20px; width:10px; display:inline-block" class="pull-right"></div>
 
-		<g:link controller="transaction" action="list" class="btn btn-default pull-right" name="Order History">Order History</g:link>
-		
+		<g:link controller="account" action="admin_order_history" id="${transactionInstance.account.id}" class="btn btn-default pull-right" name="Order History">${transactionInstance.account.username} Order History</g:link>
+
 		
 		<g:if test="${transactionInstance.shoppingCart?.shipmentId &&
 				transactionInstance.shoppingCart?.shipmentRateId &&

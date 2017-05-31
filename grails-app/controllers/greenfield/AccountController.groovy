@@ -684,6 +684,22 @@ class AccountController {
 	}
 	
 
+
+	@Secured(['ROLE_ADMIN'])
+	def review_order(Long id){
+		authenticatedAdmin { adminAccount ->
+			def transactionInstance = Transaction.get(id)
+			
+       		if (!transactionInstance) {
+       		    flash.message = "Transaction not found"
+       		    redirect(action: "admin_list")
+       		    return
+       		}
+
+       		[ transactionInstance : transactionInstance ]		
+		}
+	}
+	
 	
  	@Secured(['ROLE_ADMIN'])
 	def admin_list(){

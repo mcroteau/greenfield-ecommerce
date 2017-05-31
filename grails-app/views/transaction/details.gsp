@@ -10,6 +10,7 @@ ${raw(applicationService.getHeader("Order Details"))}
 	</h2>
 	<h5>Order Total : $${applicationService.formatPrice(transactionInstance.total)}</h5>
 	<h5>Order Date : <g:formatDate format="hh:mm z - dd MMM yyyy " date="${transactionInstance.orderDate}"/></h5>
+	<h5>Order Status : ${transactionInstance.status}</h5>
 	
 	<table class="table table-condensed table-bordered">
 		<thead>
