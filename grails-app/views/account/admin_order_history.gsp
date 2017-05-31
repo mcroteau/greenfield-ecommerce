@@ -16,7 +16,11 @@
 		<div id="list-transaction" class="content scaffold-list" role="main">
 
 		
-			<g:link controller="account" action="account_activity" id="${accountInstance.id}" class="btn btn-default pull-right" name="Back to Accounts">Back to Account Activity</g:link>
+			<g:link controller="account" action="admin_list" class="btn btn-default pull-right" name="Accounts">Account List</g:link>
+			
+			<div style="height:20px; width:10px; display:inline-block" class="pull-right"></div>
+
+			<g:link controller="account" action="account_activity" id="${accountInstance.id}" class="btn btn-default pull-right" name="Account Activity">Account Activity</g:link>
 
 			<h2>${accountInstance.username} Orders</h2>
 			
