@@ -39,6 +39,14 @@ class Account {
 	Date dateCreated
 	Date lastUpdated
 
+	def pageViews
+	def catalogViews
+	def productViews
+	def searches
+
+	//TODO:reconsider transients
+ 	//static transients = ['pageViews', 'catalogViews', 'productViews', 'searches']
+
 	//TODO:Remove cleanup
 	//static hasMany = [ authorities: AccountRole, permissions: Permission, transactions : Transaction ]
 	//static hasMany = [ permissions: Permission, transactions : Transaction ]

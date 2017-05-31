@@ -32,12 +32,19 @@
 		
 
 			<g:link controller="account" action="admin_list" class="btn btn-default pull-right" name="Back to Accounts">Back to Accounts</g:link>
+			
+			<div style="width:10px; display:inline-block; border:solid 1px #fff;" class="pull-right"></div>
+
+			<g:link controller="account" action="admin_order_history" id="${accountInstance.id}" class="btn btn-default pull-right" name="Order History">Order History</g:link>
+
 
 			<h2>
 				<g:if test="${accountInstance.name}">
 					${accountInstance?.name}: 
 				</g:if>
 				${accountInstance.username}
+				:
+				${accountInstance.transactions.size()}&nbsp;Orders
 			</h2>
 
 

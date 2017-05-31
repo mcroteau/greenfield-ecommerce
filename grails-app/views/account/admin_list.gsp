@@ -53,55 +53,101 @@
 			</ul>
 			
 			
+			<g:if test="${accountInstanceList}">
 			
 			
-			
-			<table class="table">
-				<thead>
-					<tr>
+				<table class="table">
+					<thead>
+						<tr>
+							<!-- TODO: make sortable, may require refactoring Account hasMany to include hasMany roles/authorities -->
+							<g:sortableColumn property="username" title="Username" />
+							
+							<g:sortableColumn property="name" title="Name" />
+							
+							<g:sortableColumn property="email" title="Email" />
 						
-						<g:sortableColumn property="username" title="Username" />
+							<!--<g:sortableColumn property="city" title="City" />-->
 						
-						<g:sortableColumn property="name" title="Name" />
-						
-						<g:sortableColumn property="email" title="Email" />
+							<!--<g:sortableColumn property="state" title="State" />-->
+
+							<g:sortableColumn property="pageViews" title="Searches" />
+
+							<g:sortableColumn property="pageViews" title="Page Views" />
+
+							<g:sortableColumn property="catalogViews" title="Catalog Views" />
+
+							<g:sortableColumn property="productViews" title="Product Views" />
+
+							<g:sortableColumn property="orders" title="Orders" />
+							
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+					<g:each in="${accountInstanceList}" status="i" var="accountInstance">
+						<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<g:sortableColumn property="city" title="City" />
-					
-						<g:sortableColumn property="state" title="State" />
+							<td>
+								<g:link action="admin_show" id="${accountInstance.id}">
+								${fieldValue(bean: accountInstance, field: "username")}</g:link>
+							</td>
 						
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-				<g:each in="${accountInstanceList}" status="i" var="accountInstance">
-					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+							<td>${accountInstance.name}</td>
+						
+						
+							<td>${fieldValue(bean: accountInstance, field: "email")}</td>
+						
+							<!--<td>${fieldValue(bean: accountInstance, field: "city")}</td>-->
+						
+							<!--<td>${accountInstance?.state?.name}</td>-->
+
+							<td align="center">
+								<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">
+									${fieldValue(bean: accountInstance, field: "searches")}
+								</g:link>
+							</td>
+
+							<td align="center">
+								<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">
+									${fieldValue(bean: accountInstance, field: "pageViews")}
+								</g:link>
+							</td>
+
+							<td align="center">
+								<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">
+									${fieldValue(bean: accountInstance, field: "catalogViews")}</g:link>
+							</td>
+
+							<td align="center">
+								<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">
+									${fieldValue(bean: accountInstance, field: "productViews")}
+								</g:link>
+							</td>
+								
+					
+							<td align="center">
+								<g:link controller="account" action="admin_order_history" params="[id: accountInstance.id]" class="">${accountInstance.transactions.size()}
+								</g:link>
+							</td>
+
+							<td>
+								<g:link controller="account" action="admin_edit" params="[id: accountInstance.id]" class="">Edit</g:link>&nbsp;&nbsp;
+								<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">Activity</g:link>
+							</td>
+						
+						</tr>
+					</g:each>
+					</tbody>
+				</table>
 				
-						<td>
-							<g:link action="admin_show" id="${accountInstance.id}">
-							${fieldValue(bean: accountInstance, field: "username")}</g:link>
-						</td>
-					
-						<td>${accountInstance.name}</td>
-					
-					
-						<td>${fieldValue(bean: accountInstance, field: "email")}</td>
-					
-						<td>${fieldValue(bean: accountInstance, field: "city")}</td>
-					
-						<td>${accountInstance?.state?.name}</td>
-				
-						<td>
-							<g:link controller="account" action="admin_edit" params="[id: accountInstance.id]" class="">Edit</g:link>&nbsp;&nbsp;
-							<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">Activity</g:link>
-						</td>
-					
-					</tr>
-				</g:each>
-				</tbody>
-			</table>
-			
-			
+				<div class="btn-group">
+					<g:paginate total="${accountInstanceTotal}" />
+				</div>
+			</g:if>
+			<g:else>
+				<br/>
+				<p style="color:#333;padding:0px 40px;">No Accounts created yet, you just opened up a store on undeveloped land on the internet. You will have customer accounts. Hang tight...</p>
+			</g:else>
 		</div>
 	</body>
 </html>

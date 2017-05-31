@@ -25,6 +25,11 @@
 	
 	<g:form>
 		<g:hiddenField name="id" value="${transactionInstance?.id}" />
+
+		<g:link controller="transaction" action="list" class="btn btn-default pull-right" name="Order History">All Order History</g:link>
+
+		<div style="height:20px; width:10px; display:inline-block" class="pull-right"></div>
+
 		<g:actionSubmit class="btn btn-danger pull-right" action="delete" value="Delete" onclick="return confirm('Are you sure?');" />
 		
 		

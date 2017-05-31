@@ -41,10 +41,10 @@
 					<tbody>
 						<g:each in="${catalogsList}" var="catalogData">
 							<tr>
-								<td>${catalogData.name} <br/>
+								<td>${catalogData.name} &nbsp;
 									<span class="secondary" style="font-size:12px;color:rgba(0,0,0,0.54)">(${raw(catalogData.path)})</span>
 								</td>
-								<td>${catalogData.productsCount}</td>
+								<td align="center">${catalogData.productsCount}</td>
 								<td>
 									<g:link controller="catalog" action="edit" params="[id: catalogData.id]">Edit</g:link>
 								</td>

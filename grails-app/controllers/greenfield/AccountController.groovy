@@ -663,12 +663,38 @@ class AccountController {
 	}
 	
 
+
+	@Secured(['ROLE_ADMIN'])
+	def admin_order_history(Long id){
+		authenticatedAdmin { adminAccount ->
+			def accountInstance = Account.get(id)
+			
+       		if (!accountInstance) {
+       		    flash.message = "Account not found"
+       		    redirect(action: "admin_list")
+       		    return
+       		}
+
+       		def transactions = Transaction.findAllByAccount(accountInstance, [sort: "orderDate", order: "asc"])
+       		def transactionTotal = Transaction.countByAccount(accountInstance)
+
+       		[accountInstance : accountInstance, transactionInstanceList: transactions, transactionInstanceTotal: transactionTotal]
+		
+		}
+	}
 	
+
 	
  	@Secured(['ROLE_ADMIN'])
-	def admin_list(Integer max){
+	def admin_list(){
 		authenticatedAdmin { adminAccount ->
-        	params.max = Math.min(max ?: 10, 100)
+        	//params.max = Math.min(max ?: 10, 100)
+
+        	def max = 10
+			def offset = params.offset ? params.offset : 0
+			def sort = params.sort ? params.sort : "id"
+			def order = params.order ? params.order : "asc"
+
 			def role
 			
 			if(params.admin == "true"){
@@ -677,11 +703,31 @@ class AccountController {
 			}else{
 				role = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
 			}
-			
-			def accountRoles = AccountRole.findAllByRole(role)
+
+			def accountRoles = AccountRole.findAllByRole(role, [max: max, offset: offset])
+			def accountInstanceTotal = AccountRole.countByRole(role)
 			def accountInstanceList = accountRoles.collect(){ it.account }
 
-			[ accountInstanceList: accountInstanceList, accountInstanceTotal: accountInstanceList.size() ]
+			
+			accountInstanceList.each(){ it ->
+				def pageViews = 0
+				def catalogViews = 0
+				def productViews = 0
+				def searches = 0
+
+				pageViews = PageViewLog.countByAccount(it)
+				catalogViews = CatalogViewLog.countByAccount(it)
+				productViews = ProductViewLog.countByAccount(it)
+				searches = SearchLog.countByAccount(it)
+
+				it.pageViews = pageViews 
+				it.catalogViews = catalogViews
+				it.productViews = productViews 
+				it.searches = searches
+				it.save(flush:true)
+			}
+
+			[ accountInstanceList: accountInstanceList, accountInstanceTotal: accountInstanceTotal ]
 		}
 	}
 

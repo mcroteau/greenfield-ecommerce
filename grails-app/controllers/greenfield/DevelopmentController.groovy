@@ -1,5 +1,6 @@
 package greenfield
 
+import org.greenfield.Account
 import org.greenfield.Product
 import org.greenfield.Catalog
 
@@ -8,6 +9,7 @@ import grails.plugin.springsecurity.annotation.Secured
 
 
 class DevelopmentController {
+
 	/***
 		Books
 			- Computers & Technology
@@ -22,13 +24,32 @@ class DevelopmentController {
 		Sports & Outdoors
 	**/
 
+	def springSecurityService
+
+
 	@Secured(['ROLE_ADMIN'])
 	def generate_development_data(){
+		createCustomers()
 		createTopLevelCatalogs()
 		createSubCatalogs()
 		createProducts()
 		def products = Product.list()
 		render products as JSON	
+	}
+
+
+	def createCustomers(){
+		def password = springSecurityService.encodePassword("password")
+		(1..34).each{ i ->
+			def customer = new Account()
+			customer.username = 'customer' + i 
+			customer.password = password
+			customer.name = 'First Last' + i
+			customer.email = 'customer' + i + '@email.com'
+			customer.save(flush:true)
+			customer.createAccountRoles(false)
+			customer.createAccountPermission()
+		}
 	}
 
 	
