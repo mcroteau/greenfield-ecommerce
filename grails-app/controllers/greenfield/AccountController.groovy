@@ -50,15 +50,13 @@ class AccountController {
 	@Secured(['ROLE_CUSTOMER', 'ROLE_ADMIN'])
 	def customer_profile(){
 		authenticatedAccount { accountInstance ->
-		//authenticatedPermittedCustomer { accountInstance ->
 			[accountInstance : accountInstance]
 		}
 	}	
 	
 	@Secured(['ROLE_CUSTOMER', 'ROLE_ADMIN'])
 	def customer_update(){
-		//authenticatedAccount { customerAccount ->
-		//TODO:consider removing authenticated permitted customer
+
 		authenticatedAccount { customerAccount ->
 		
 			def accountInstance = Account.get(params.id)
@@ -97,6 +95,8 @@ class AccountController {
 	@Secured(['permitAll'])	
 	def customer_forgot(){}
 	
+
+	@Secured(['permitAll'])	
 	def customer_send_reset_email(){
 	
 		if(params.email){
@@ -157,18 +157,21 @@ class AccountController {
 	}
 	
 	
+	@Secured(['permitAll'])	
 	def customer_confirm_reset(){
 		def accountInstance = Account.findByUsernameAndResetUUID(params.username, params.uuid)
-		if(accountInstance){
-			request.username = accountInstance.username
-		}else{
+		
+		if(!accountInstance){
 			flash.message = "Something went wrong, please try again."
 			redirect(action: 'customer_forgot')
-		}		
+		}	
+
+		[accountInstance: accountInstance]	
 	}
 	
 	
 	
+	@Secured(['permitAll'])	
 	def customer_reset_password(){
 		def username = params.username
 		def newPassword = params.password
@@ -180,14 +183,17 @@ class AccountController {
 			if(confirmPassword == newPassword){
 			
 				if(newPassword.length() >= 5){
-					accountInstance.password = new Sha256Hash(newPassword).toHex()
+					
+					def password = springSecurityService.encodePassword(newPassword)
+					accountInstance.password = password
+					
 					if(accountInstance.save(flush:true)){
 				
-						def authToken = new UsernamePasswordToken(username, newPassword as String)
-					
-						flash.message = "Successfully reset password..."
-						//redirect(controller : "auth", action : "customer_sign_in", params : [username : username, password : newPassword, reset : true])
-					
+						//def authToken = new UsernamePasswordToken(username, newPassword as String)					
+						flash.message = "Successfully reset password... Login with new credentials"
+						redirect(controller : "auth", action : "customer_login", params : [username : username, password : newPassword, reset : true])
+						return
+
 					}else{
 						flash.message = "We were unable to reset your password, please try again."
 						redirect(action:'confirmReset', params : [username : username, uuid : accountInstance.resetUUID ])

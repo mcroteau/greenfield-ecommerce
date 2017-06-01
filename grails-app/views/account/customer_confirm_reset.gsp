@@ -36,7 +36,7 @@ ${raw(applicationService.getHeader("Account Info"))}
 						<em>Step Three : Reset Password</em><br/>
 					</p>
 					
-					<p>Reseting password for <strong>${username}</strong></p>
+					<p>Reseting password for <strong>${accountInstance.username}</strong></p>
 		            <g:form action="customer_reset_password" method="post" >
 						<div class="form-group">
 		            		<label for="password">New Password</label>
@@ -46,7 +46,7 @@ ${raw(applicationService.getHeader("Account Info"))}
 			        		<label for="username">Confirm Password</label>
 			        		<input type="password" name="confirmPassword" id="confirmPassword" value="" class="form-control" style="width:250px;" >
 			        	</div>
-						<input type="hidden" value="${username}" name="username"/>
+						<input type="hidden" value="${accountInstance.username}" name="username"/>
 						
 						<input type="submit" value="Reset Password" class="btn btn-primary"/>
 					</g:form>
