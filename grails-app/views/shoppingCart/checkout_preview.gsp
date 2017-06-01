@@ -248,12 +248,12 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Credit Card with Zip Code</label>
-					<div id="credit-card-information" class="form-control" style="width:300px; height:40px;"></div>
+					<div id="credit-card-information" class="form-control" style="width:300px; height:43px; padding-top:12px;"></div>
 				</div>
 			</form>
 			
 			<div class="form-group" style="position:relative; text-align:center;">
-				<button id="submit" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px">Pay $${applicationService.formatPrice(shoppingCart.total)}</button>
+				<button id="submit" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px; background:#3276B1 !important">Pay $${applicationService.formatPrice(shoppingCart.total)}</button>
 				<br/>
 				<span class="pull-right" id="processing" style="display:none">
 					Processing checkout, please wait&nbsp;
@@ -306,8 +306,10 @@ $(document).ready(function(){
 		stripe = Stripe("${raw(publishableKey)}");
 		elements = stripe.elements()
 		card = elements.create('card', {
-	    	fontSize: '23px',
-	    	lineHeight: '34px'
+			base : {
+	    		fontSize: '23px',
+	    		lineHeight: '48px'
+			}
 		})
 
 		card.mount('#credit-card-information')
