@@ -38,25 +38,9 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=my-account</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Order History</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Details</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
 	<td>id=logout</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>

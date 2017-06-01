@@ -67,36 +67,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>name=cardnumber</td>
-	<td>4242 4242 4242 4242</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>name=exp-date</td>
-	<td>01 / 20</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>name=cvc</td>
-	<td>123</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>name=postal</td>
-	<td>99709</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>name=exp-date</td>
-	<td>01 / 2</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=submit</td>
-	<td></td>
-</tr>
-<tr>
 	<td>pause</td>
 	<td>17000</td>
 	<td></td>
