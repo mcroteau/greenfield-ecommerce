@@ -7,17 +7,19 @@
     
 	<title><g:layoutTitle default="Greenfield : Administration" /></title>
 
-	<link rel="stylesheet" href="${resource(dir:'bootstrap/3.1.1/css', file:'bootstrap.min.css')}" />
+
+		<link rel="stylesheet" href="${resource(dir:'bootstrap/3.1.1/css', file:'bootstrap.min.css')}" />
 	<script type="text/javascript" src="${resource(dir:'js/lib/jquery/1.11.0/jquery.js')}"></script>
 	<script type="text/javascript" src="${resource(dir:'bootstrap/3.1.1/js/bootstrap.js')}"></script>
-	<script type="text/javascript" src="${resource(dir:'bootstrap/datepicker/datepicker.js')}"></script>
+	<script type="text/javascript" src="${resource(dir:'js/lib/datepicker/datepicker.js')}"></script>
 	
-	<script type="text/javascript" src="${resource(dir:'bootstrap/datepicker/bootstrap-datepicker.js')}"></script>
-	<link rel="stylesheet" href="${resource(dir:'bootstrap/datepicker', file:'datepicker.css')}" />
+	<script type="text/javascript" src="${resource(dir:'js/lib/datepicker/bootstrap-datepicker.js')}"></script>
+	<link rel="stylesheet" href="${resource(dir:'js/lib/datepicker', file:'datepicker.css')}" />
 	
 	<script type="text/javascript" src="${resource(dir:'js/lib/dygraphs/1.1.0/dygraph-combined.min.js')}"></script>
 	
 	<link rel="stylesheet" href="${resource(dir:'css', file:'admin.css')}" />
+
 	
 	<g:layoutHead/>
 	

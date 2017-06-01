@@ -557,8 +557,8 @@
 			$endDate = $('#end-date');
 		
 		//TODO:fix	
-		//$startDate.datepicker();
-		//$endDate.datepicker();
+		$startDate.datepicker();
+		$endDate.datepicker();
 		
 		var options = {
 			axes : {

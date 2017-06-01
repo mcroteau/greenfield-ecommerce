@@ -12,11 +12,6 @@
 <tr><td rowspan="1" colspan="3">checkout</td></tr>
 </thead><tbody>
 <tr>
-	<td>open</td>
-	<td>/greenfield/shoppingCart/add</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>link=Home</td>
 	<td></td>
@@ -53,23 +48,23 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=creditcard_number</td>
-	<td>4242424242424242</td>
+	<td>name=cardnumber</td>
+	<td>4242 4242 4242 4242</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=creditcard_cvc</td>
+	<td>name=exp-date</td>
+	<td>01 / 20</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=cvc</td>
 	<td>123</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=creditcard_exp_month</td>
-	<td>10</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=creditcard_exp_year</td>
-	<td>2020</td>
+	<td>name=postal</td>
+	<td>99709</td>
 </tr>
 <tr>
 	<td>click</td>
