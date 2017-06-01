@@ -77,7 +77,7 @@ ${applicationService.getStoreName()} : Admin Login</title>
 			
 			<!-- original g:<form controller="auth" action="signIn" class="form">-->
 			<!-- first attempt g:form controller="login" action="authenticate">-->
-			<form action="/greenfield/login/authenticate" method="POST" id="loginForm" autocomplete="off">
+			<form action="/${applicationService.getContextName()}/login/authenticate" method="POST" id="loginForm" autocomplete="off">
 			
 				<div class="form-group">
 				  	<label for="username">Username</label>
