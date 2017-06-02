@@ -669,6 +669,4 @@ class ProductController {
 		}
 	}
 	
-	
-	
 }

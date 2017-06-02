@@ -31,7 +31,7 @@
 			<div class="messages">
 			
 				<g:if test="${flash.message}">
-					<div class="alert alert-info" role="status">${flash.message}</div>
+					<div class="alert alert-info" role="status">${raw(flash.message)}</div>
 				</g:if>
 					
 				<g:hasErrors bean="${catalogInstance}">
@@ -87,7 +87,7 @@
 					<span class="input-container">
 						<select name="location" class="form-control" id="location" style="width:auto">
 							<option value="">-- Top Level --</option>
-							${catalogOptions}
+							${raw(catalogOptions)}
 						</select>
 					</span>
 					<br class="clear"/>

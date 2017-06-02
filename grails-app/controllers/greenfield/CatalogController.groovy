@@ -22,6 +22,7 @@ class CatalogController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
 
+    @Secured(['ROLE_ADMIN'])
     def index() {
         redirect(action: "list", params: params)
     }
@@ -274,6 +275,7 @@ class CatalogController {
 			
 			numberSpaces = 1
 			def catalogOptions = getCatalogOptionsWithCatalog(catalogInstance)
+			
             def c = Specification.createCriteria()
             def specifications = c.list {
                 catalogs {
@@ -327,6 +329,7 @@ class CatalogController {
 	
 	
 
+	@Secured(['ROLE_ADMIN'])
     def update(Long id, Long version) {
 		authenticatedAdminCatalog { adminAccount, catalogInstance ->	
     	
@@ -369,6 +372,7 @@ class CatalogController {
 
 
 
+	@Secured(['ROLE_ADMIN'])
     def delete(Long id) {
 		authenticatedAdminCatalog { adminAccount, catalogInstance ->
     	    try {
