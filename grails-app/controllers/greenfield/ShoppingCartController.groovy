@@ -421,15 +421,11 @@ class ShoppingCartController {
 	def checkout_preview(){
 		authenticatedPermittedShoppingCart { accountInstance, shoppingCart -> 
 
-			println "here..."
 			if(!addressComplete(accountInstance)){
-				println "redirect..."
 				flash.message = "Please complete address to complete checkout"
 				redirect(controller:'account', action:'customer_profile')
 				return
 			}
-
-			println "didnt make it this far"
 
 			def easypostEnabled = applicationService.getEasyPostEnabled()
 			if(easypostEnabled == "true"){
