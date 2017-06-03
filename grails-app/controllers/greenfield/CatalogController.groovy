@@ -48,6 +48,28 @@ class CatalogController {
 		def products
 		def productsTotal
 
+		def populateProductsAndTotal = {
+			productsTotal = Product.createCriteria().count{
+				and{
+					eq("disabled", false)
+					gt("quantity", 0)
+					catalogs {
+			    		idEq(id)
+			 		}
+				}
+			}
+		
+			products = Product.createCriteria().list(max: max, offset: offset){
+				and{
+					eq("disabled", false)
+					gt("quantity", 0)
+					catalogs {
+			    		idEq(id)
+			 		}
+				}
+			}
+		}
+
 		if(isFilterRequest(params)){
 
 			println "*** filter request ***"
@@ -72,7 +94,7 @@ class CatalogController {
             combinations.unique()
 
             if(combinations){
-            	println "combinations : " + combinations
+            	//println "combinations : " + combinations
 	            products = []
 	            def countTotal = 0
 	            combinations.each { ids ->
@@ -99,56 +121,26 @@ class CatalogController {
 	        	products = products.drop(offset.toInteger()).take(max.toInteger())
 	        
 	        }else{
-	        	println "no combinations " + id
-		        productsTotal = Product.createCriteria().count{
-					and{
-						eq("disabled", false)
-						gt("quantity", 0)
-						catalogs {
-				    		idEq(id)
-				 		}
-					}
-				}
-			
-				products = Product.createCriteria().list(max: max, offset: offset){
-					and{
-						eq("disabled", false)
-						gt("quantity", 0)
-						catalogs {
-				    		idEq(id)
-				 		}
-					}
-				}
-				println "products" + products
+	        	//println "*** no combinations " + id + " ***"
+		        populateProductsAndTotal()
 	        }
 
-            println "products now : " + products
         }else{
-        	println "*** not filter request ***"
-			productsTotal = Product.createCriteria().count{
-				and{
-					eq("disabled", false)
-					gt("quantity", 0)
-					catalogs {
-			    		idEq(id)
-			 		}
-				}
-			}
-		
-			products = Product.createCriteria().list(max: max, offset: params.offset){
-				and{
-					eq("disabled", false)
-					gt("quantity", 0)
-					catalogs {
-			    		idEq(catalogInstance.id)
-			 		}
-				}
-			}
+        	//println "*** not filter request ***"
+			populateProductsAndTotal()
 			
 		}
 		
+        logCatalogView(catalogInstance)
         products.sort{ it.name }
+		
+		[products : products,  productsTotal: productsTotal, catalogInstance: catalogInstance, offset : offset, max : max ]
+	}
 
+
+
+
+	def logCatalogView(catalogInstance){
 		def catalogViewLog = new CatalogViewLog()
 		catalogViewLog.catalog = catalogInstance
 		
@@ -158,18 +150,19 @@ class CatalogController {
 		}
 
 		catalogViewLog.save(flush:true)
-
-		println "products total " + productsTotal
-		
-		[products : products,  productsTotal: productsTotal, catalogInstance: catalogInstance, offset : offset, max : max ]
 	}
 
 
-
-
     def isFilterRequest(params){
-        if(params.size() == 3 ||
-                (params.size() == 5 && paginationParams(params))){
+    	//TODO: resolved issue, everything was going to "isFilterRequest" 
+    	//format must have been a new parameter that was added
+    	//println "*******************************"
+    	//println "params size = " + params.size()
+    	//println params
+    	//println "*******************************"
+        if(!params || 
+        		params.size() == 4 ||
+                (params.size() == 6 && paginationParams(params))){
             return false
         }
         return true
