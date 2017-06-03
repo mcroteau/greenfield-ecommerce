@@ -46,7 +46,7 @@
 								</td>
 								<td align="center">${catalogData.productsCount}</td>
 								<td>
-									<g:link controller="catalog" action="edit" params="[id: catalogData.id]">Edit</g:link>
+									<g:link controller="catalog" action="edit" params="[id: catalogData.id]" class="${catalogData.name}-edit">Edit</g:link>
 								</td>
 							</tr>
 						</g:each>
