@@ -34,7 +34,8 @@ ${raw(applicationService.getHeader(catalogInstance, "Product Details", true, par
 					<img 
 						src="/${applicationService.getContextName()}/${productInstance?.detailsImageUrl}" 
 						id="main_preview" 
-						style="width:300px;border:solid 1px #ddd"/>
+						style="width:300px;border:solid 1px #ddd"/><br/>
+					<span style="font-size:10px; color:#888">Click to see full sized image</span>
 				</a>
 			</g:if>
 			<g:else>

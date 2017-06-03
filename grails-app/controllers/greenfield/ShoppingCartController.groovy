@@ -410,7 +410,7 @@ class ShoppingCartController {
 				
 				redirect(action:'index', id:id)
 			}else{
-				flash = "Item not found in cart"
+				flash.message = "Item not found in cart"
 				redirect(action:'index', id:id)
 			}				
 		}	
@@ -487,8 +487,14 @@ class ShoppingCartController {
 				return
 			}
 			
-			if(productInstance.quantity <= Integer.parseInt(params.quantity)){
+			if(productInstance.quantity < Integer.parseInt(params.quantity)){
 				flash.message = "We do not have enough of this product to cover your request.<br/>We currently have <strong>${productInstance.quantity}</strong> in stock."
+				redirect(controller : 'product', action : 'details', id : params.id )
+				return
+			}
+
+			if(Integer.parseInt(params.quantity) < 0){
+				flash.message = "Quantity must be a valid number"
 				redirect(controller : 'product', action : 'details', id : params.id )
 				return
 			}
@@ -583,7 +589,7 @@ class ShoppingCartController {
 		
 	
 	
-
+	@Secured(['ROLE_ADMIN'])
     def list(Integer max) {
 		authenticatedAdmin{ adminAccount ->
         	params.max = Math.min(max ?: 10, 100)
@@ -592,10 +598,11 @@ class ShoppingCartController {
 	}
 
 	
-	
-
-    def show(Long id) {
-		authenticatedAdminShoppingCart{ adminAccount, shoppingCartInstance ->        			[shoppingCartInstance: shoppingCartInstance]
+	//TODO:
+	@Secured(['ROLE_ADMIN'])    
+	def show(Long id) {
+		authenticatedAdminShoppingCart{ adminAccount, shoppingCartInstance ->        			
+			[shoppingCartInstance: shoppingCartInstance]
 		}
     }
 	

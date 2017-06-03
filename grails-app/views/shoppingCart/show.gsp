@@ -49,11 +49,11 @@
 				</g:if>
 			
 			
-				<g:if test="${shoppingCartInstance?.shippingCharge}">
+				<g:if test="${shoppingCartInstance?.shipping}">
 				<li class="fieldcontain">
 					<span id="shippingCharge-label" class="property-label"><g:message code="shoppingCart.shippingCharge.label" default="Shipping Charge" /></span>
 					
-						<span class="property-value" aria-labelledby="shippingCharge-label"><g:fieldValue bean="${shoppingCartInstance}" field="shippingCharge"/></span>
+						<span class="property-value" aria-labelledby="shippingCharge-label"><g:fieldValue bean="${shoppingCartInstance}" field="shipping"/></span>
 					
 				</li>
 				</g:if>
