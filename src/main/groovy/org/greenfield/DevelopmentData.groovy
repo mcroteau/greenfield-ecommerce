@@ -20,6 +20,7 @@ import org.greenfield.log.SearchLog
 
 public class DevelopmentData {
 
+    def NUMBER_CUSTOMERS      = 0
 
 	def MAX_DAYS              = 90
 	def CUSTOMERS_COUNT       = 20
@@ -126,7 +127,6 @@ public class DevelopmentData {
         ]   
     ]
 
-    
 
 	def springSecurityService
 
@@ -353,7 +353,8 @@ public class DevelopmentData {
 		
 		}
 		
-		println "Customers : ${Account.count()}"
+		NUMBER_CUSTOMERS = Account.count()
+		println "Customers : ${NUMBER_CUSTOMERS}"
 	}
 	
 	
@@ -362,12 +363,11 @@ public class DevelopmentData {
 	def createOrders(){
 		
 		Random rand = new Random()
-		int customerMax = Account.count()
 		int productMax = Product.count()
 		
 		(1..ORDERS_COUNT).each(){
 		
-			int customerId = rand.nextInt(customerMax) + 1
+			int customerId = rand.nextInt(NUMBER_CUSTOMERS) + 1
 			def customer = Account.get(customerId)
 			
 			if(customer && 
@@ -454,13 +454,21 @@ public class DevelopmentData {
 		Random rand = new Random()
 		int pageMax = Page.count()
 		
-		(1..PAGE_VIEWS_COUNT).each(){
+		(1..PAGE_VIEWS_COUNT).each(){ n ->
 			int id = rand.nextInt(pageMax) + 1
 			def page = Page.get(id)
+
 			if(page){
+
 				def pageViewLog = new PageViewLog()
-				
 				pageViewLog.page = page
+
+				if(n % 3 == 0){
+					int accountId = rand.nextInt(NUMBER_CUSTOMERS) + 1
+					def account = Account.get(accountId)
+					pageViewLog.account = account
+				}
+
 				pageViewLog.save(flush:true)
 				
 				pageViewLog.dateCreated = generateRandomDate()
@@ -475,14 +483,20 @@ public class DevelopmentData {
 		Random rand = new Random()
 		int productMax = Product.count()
 		
-		(1..PRODUCT_VIEWS_COUNT).each(){
+		(1..PRODUCT_VIEWS_COUNT).each(){ n ->
 			int id = rand.nextInt(productMax) + 1
 			def product = Product.get(id)
 			
 			if(product){
 				def productViewLog = new ProductViewLog()
-			
 				productViewLog.product = product
+
+				if(n % 3 == 0){
+					int accountId = rand.nextInt(NUMBER_CUSTOMERS) + 1
+					def account = Account.get(accountId)
+					productViewLog.account = account
+				}
+
 				productViewLog.save(flush:true)
 
 				productViewLog.dateCreated = generateRandomDate()
@@ -497,14 +511,20 @@ public class DevelopmentData {
 		Random rand = new Random()
 		int catalogMax = Catalog.count()
 		
-		(1..CATALOG_VIEWS_COUNT).each(){
+		(1..CATALOG_VIEWS_COUNT).each(){ n ->
 			int id = rand.nextInt(catalogMax) + 1
 			def catalog = Catalog.get(id)
 			
 			if(catalog){	
 				def catalogViewLog = new CatalogViewLog()
-			
 				catalogViewLog.catalog = catalog
+
+				if(n % 3 == 0){
+					int accountId = rand.nextInt(NUMBER_CUSTOMERS) + 1
+					def account = Account.get(accountId)
+					catalogViewLog.account = account
+				}
+
 				catalogViewLog.save(flush:true)
 
 				catalogViewLog.dateCreated = generateRandomDate()
@@ -519,14 +539,20 @@ public class DevelopmentData {
 		Random rand = new Random()
 		int queriesMax = queries.size()
 		
-		(1..SEARCH_QUERIES_COUNT).each(){
+		(1..SEARCH_QUERIES_COUNT).each(){ n ->
 		
 			int random = rand.nextInt(queriesMax)
 			def query = queries[random]
 			
 			def searchLog = new SearchLog()
-			
 			searchLog.query = query
+
+			if(n % 3 == 0){
+				int accountId = rand.nextInt(NUMBER_CUSTOMERS) + 1
+				def account = Account.get(accountId)
+				searchLog.account = account
+			}
+
 			searchLog.save(flush:true)
 
 			searchLog.dateCreated = generateRandomDate()
@@ -540,12 +566,11 @@ public class DevelopmentData {
 	def generateAbandonedCarts(){
 		Random rand = new Random()
 		int productMax = Product.count()
-		int customerMax = Account.count()
 		
 		(1..ABANDONED_CARTS_COUNT).each(){
 		
 			int productId = rand.nextInt(productMax) + 1
-			int customerId = rand.nextInt(customerMax) + 1
+			int customerId = rand.nextInt(NUMBER_CUSTOMERS) + 1
 			
 			def customer = Account.get(customerId)
 			

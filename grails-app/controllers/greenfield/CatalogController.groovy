@@ -28,7 +28,6 @@ class CatalogController {
     }
 
 
-
     @Secured(['permitAll'])
 	def products(Long id){
 		def catalogInstance = Catalog.findById(id)
@@ -51,6 +50,7 @@ class CatalogController {
 
 		if(isFilterRequest(params)){
 
+			println "*** filter request ***"
             def combinations = []
 
             Collection<?> keys = params.keySet()
@@ -72,7 +72,7 @@ class CatalogController {
             combinations.unique()
 
             if(combinations){
-
+            	println "combinations : " + combinations
 	            products = []
 	            def countTotal = 0
 	            combinations.each { ids ->
@@ -94,8 +94,12 @@ class CatalogController {
 	                    products.addAll(ps)
 	                }
 	            }
+            	
+	        	productsTotal = products.size() ? products.size() : 0
+	        	products = products.drop(offset.toInteger()).take(max.toInteger())
+	        
 	        }else{
-	        	println "in first else id " + id
+	        	println "no combinations " + id
 		        productsTotal = Product.createCriteria().count{
 					and{
 						eq("disabled", false)
@@ -106,22 +110,21 @@ class CatalogController {
 					}
 				}
 			
-				products = Product.createCriteria().list(max: max, offset: params.offset){
+				products = Product.createCriteria().list(max: max, offset: offset){
 					and{
 						eq("disabled", false)
 						gt("quantity", 0)
 						catalogs {
-				    		idEq(catalogInstance.id)
+				    		idEq(id)
 				 		}
 					}
 				}
+				println "products" + products
 	        }
 
-            products.sort{ it.name }
-            products = products.drop(offset.toInteger()).take(max.toInteger())
-
+            println "products now : " + products
         }else{
-
+        	println "*** not filter request ***"
 			productsTotal = Product.createCriteria().count{
 				and{
 					eq("disabled", false)
@@ -144,7 +147,8 @@ class CatalogController {
 			
 		}
 		
-		
+        products.sort{ it.name }
+
 		def catalogViewLog = new CatalogViewLog()
 		catalogViewLog.catalog = catalogInstance
 		
