@@ -25,6 +25,7 @@ class SpecificationController {
             
             def products = []
             def productsTotal = 0
+            def catalogId = 0
             def catalogInstance = [:]
 
             if(params.catalogId){
@@ -44,8 +45,13 @@ class SpecificationController {
 
             }
 
-            [catalogInstances: catalogInstances, products: products, productsTotal: productsTotal, 
-            catalogHtmlOptions: catalogHtmlOptions, specificationInstance: specificationInstance ]
+            if(catalogInstance){
+            	catalogId = catalogInstance.id
+            }
+
+            [catalogInstance: catalogInstance, catalogInstances: catalogInstances, 
+            products: products, productsTotal: productsTotal, catalogId: catalogId,
+            catalogHtmlOptions: catalogHtmlOptions, specificationInstance: specificationInstance]
         }
     }
 

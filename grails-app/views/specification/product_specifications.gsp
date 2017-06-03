@@ -168,7 +168,7 @@
 
         var pre = protocol + '//' + host + path;
         var $catalog = $('#catalog');
-		var catalogId = ${catalogId};
+		var catalogId = ${catalogId}
 
         $catalog.change(changeCatalogs)
         $specifications.change(updateSpecification)

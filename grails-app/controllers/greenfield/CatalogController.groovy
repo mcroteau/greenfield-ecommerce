@@ -95,6 +95,7 @@ class CatalogController {
 	                }
 	            }
 	        }else{
+	        	println "in first else id " + id
 		        productsTotal = Product.createCriteria().count{
 					and{
 						eq("disabled", false)
@@ -116,7 +117,6 @@ class CatalogController {
 				}
 	        }
 
-            productsTotal = products?.size() ? products.size() : 0
             products.sort{ it.name }
             products = products.drop(offset.toInteger()).take(max.toInteger())
 
@@ -154,6 +154,8 @@ class CatalogController {
 		}
 
 		catalogViewLog.save(flush:true)
+
+		println "products total " + productsTotal
 		
 		[products : products,  productsTotal: productsTotal, catalogInstance: catalogInstance, offset : offset, max : max ]
 	}

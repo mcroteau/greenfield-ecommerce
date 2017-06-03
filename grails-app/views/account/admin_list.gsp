@@ -62,14 +62,8 @@
 							<!-- TODO: make sortable, may require refactoring Account hasMany to include hasMany roles/authorities -->
 							<g:sortableColumn property="username" title="Username" />
 							
-							<g:sortableColumn property="name" title="Name" />
-							
 							<g:sortableColumn property="email" title="Email" />
 						
-							<!--<g:sortableColumn property="city" title="City" />-->
-						
-							<!--<g:sortableColumn property="state" title="State" />-->
-
 							<g:sortableColumn property="pageViews" title="Searches" />
 
 							<g:sortableColumn property="pageViews" title="Page Views" />
@@ -92,15 +86,8 @@
 								${fieldValue(bean: accountInstance, field: "username")}</g:link>
 							</td>
 						
-							<td>${accountInstance.name}</td>
-						
-						
 							<td>${fieldValue(bean: accountInstance, field: "email")}</td>
 						
-							<!--<td>${fieldValue(bean: accountInstance, field: "city")}</td>-->
-						
-							<!--<td>${accountInstance?.state?.name}</td>-->
-
 							<td align="center">
 								<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">
 									${fieldValue(bean: accountInstance, field: "searches")}
