@@ -20,6 +20,33 @@ ${raw(applicationService.getHeader(catalogInstance, "Product Details", true, par
 	</div>
 <%}%>
 
+<style type="text/css">
+#social-media-container{
+	position:relative;
+}
+.social-media-button{
+	position:absolute;
+	margin-top:0px !important;
+	padding-top:0px !important;
+}
+.social-media-button iframe{
+	position:absolute;
+}
+#fb-share-button{
+	position:absolute;
+	left:20px;
+	top:0px;
+}
+#twitter-share-button,
+#b{
+	position:absolute;
+	left:30px;
+}
+#g-plus{
+	position:absolute;
+}
+</style>
+
 
 	<div class="product_details_wrapper">
 
@@ -141,6 +168,30 @@ ${raw(applicationService.getHeader(catalogInstance, "Product Details", true, par
 
 				<g:submitButton name="submit" class="btn btn-primary" id="submit" value="Add To Cart"/>
 				
+				<div id="social-media-container">
+
+					<div id="fb-share-button" 
+						class="fb-share-button social-media-button" 
+					    data-href="replaced-below" 
+					    data-layout="button_count"
+					    style="margin-bottom:30px;">
+					 </div>
+					 
+					<a id="twitter-share-button" 
+						  class="twitter-share-button social-media-button"
+					  href="https://twitter.com/intent/tweet"
+					  data-url="replaced-below"
+					  data-size="small">
+					Tweet</a>
+
+			
+					<div id="g-plus" 
+						class="g-plus social-media-button" 
+						data-action="share" 
+						data-height="24" 
+						data-href="replaced-below">
+					</div>
+
 				
 			</g:form>
 
@@ -171,9 +222,15 @@ ${raw(applicationService.getHeader(catalogInstance, "Product Details", true, par
 		<br style="clear:both"/>
 	</div>
 
+<!-- Place this tag in your head or just before your close body tag. -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+
+<div id="fb-root"></div>
+
 <script type="text/javascript">
 $(document).ready(function(){
-	
+
 	var $main = $('#main_preview'),
 		$mainLink = $('#main_preview_link'),
 		$options = $('.product_option');
@@ -191,7 +248,69 @@ $(document).ready(function(){
 	$options.change(displayImage);
 	$('.preview_image').click(preview);
 	
+
+
+
+
+
+
+
+
+	/** Beginning social network code **/
+
+	//Facebook
+	(function(d, s, id) {
+	    var js, fjs = d.getElementsByTagName(s)[0];
+	    if (d.getElementById(id)) return;
+	    js = d.createElement(s); js.id = id;
+	    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+	    fjs.parentNode.insertBefore(js, fjs);
+	  }(document, 'script', 'facebook-jssdk'));
+	//End Facebook
+
+
+	//Twitter
+	window.twttr = (function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0],
+	    t = window.twttr || {};
+	  if (d.getElementById(id)) return t;
+	  js = d.createElement(s);
+	  js.id = id;
+	  js.src = "https://platform.twitter.com/widgets.js";
+	  fjs.parentNode.insertBefore(js, fjs);
+
+	  t._e = [];
+	  t.ready = function(f) {
+	    t._e.push(f);
+	  };
+
+	  return t;
+	}(document, "script", "twitter-wjs"));
+	//End Twitter
+
+
+	//Social Media
+	var shareUrl = pre + 'details/${productInstance.id}';
 	
+	var $googlePlus = $("#g-plus"),
+		$facebookShare = $("#fb-share-button"),
+		$twitterTweet = $('#twitter-share-button')
+	
+	$facebookShare.attr('data-href', shareUrl)
+	$twitterTweet.attr('data-url', shareUrl)
+	$googlePlus.attr('data-href', shareUrl)
+
+
+	/** End social network code **/
+
+
+
+
+
+
+
+
+
 	function displayImage(event){
        	var $selected = $(this).find('option:selected');
 		var image = $selected.data('image');
@@ -214,8 +333,10 @@ $(document).ready(function(){
 		$mainLink.attr('href', link)
 	}	
 
+
 });
 </script>
 
+<br class="clear"/>
 
 ${raw(applicationService.getFooter())}
