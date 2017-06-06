@@ -11,7 +11,7 @@
 	}
 %>
 	
-${raw(applicationService.getHeader(catalogInstance, "Product Details", true, params))}
+${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Product Details", true, params))}
 
 
 <% if(catalogInstance){ %>
@@ -19,33 +19,6 @@ ${raw(applicationService.getHeader(catalogInstance, "Product Details", true, par
 		${raw(applicationService.getBreadcrumbs(catalogInstance))}
 	</div>
 <%}%>
-
-<style type="text/css">
-#social-media-container{
-	position:relative;
-}
-.social-media-button{
-	position:absolute;
-	margin-top:0px !important;
-	padding-top:0px !important;
-}
-.social-media-button iframe{
-	position:absolute;
-}
-#fb-share-button{
-	position:absolute;
-	left:20px;
-	top:0px;
-}
-#twitter-share-button,
-#b{
-	position:absolute;
-	left:30px;
-}
-#g-plus{
-	position:absolute;
-}
-</style>
 
 
 	<div class="product_details_wrapper">
@@ -128,7 +101,6 @@ ${raw(applicationService.getHeader(catalogInstance, "Product Details", true, par
 		
 		
 		
-		
 		<div class="product_details">
 			<g:form controller="shoppingCart" action="add" class="form-inline">
 				<h1 class="product_name">${productInstance.name}</h1>
@@ -168,29 +140,40 @@ ${raw(applicationService.getHeader(catalogInstance, "Product Details", true, par
 
 				<g:submitButton name="submit" class="btn btn-primary" id="submit" value="Add To Cart"/>
 				
-				<div id="social-media-container">
 
-					<div id="fb-share-button" 
-						class="fb-share-button social-media-button" 
-					    data-href="replaced-below" 
-					    data-layout="button_count"
-					    style="margin-bottom:30px;">
-					 </div>
-					 
-					<a id="twitter-share-button" 
-						  class="twitter-share-button social-media-button"
-					  href="https://twitter.com/intent/tweet"
-					  data-url="replaced-below"
-					  data-size="small">
-					Tweet</a>
 
-			
-					<div id="g-plus" 
-						class="g-plus social-media-button" 
-						data-action="share" 
-						data-height="24" 
-						data-href="replaced-below">
+				<g:if env="production">
+					<div id="social-media-container">
+
+		
+						 <div id="fb-share-button"
+						 	class="fb-share-button" 
+						 	data-href="https://developers.facebook.com/docs/plugins/" 
+						 	data-layout="button" 
+						 	data-size="small" 
+						 	data-mobile-iframe="false"
+						 	style="top:-5px">
+						 	<a class="fb-xfbml-parse-ignore" target="_blank" 
+						 		href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a>
+						 </div>
+
+						 
+						<a id="twitter-share-button" 
+							  class="twitter-share-button social-media-button"
+						  href="https://twitter.com/intent/tweet"
+						  data-url="replaced-below"
+						  data-size="small">
+						Tweet</a>
+
+				
+						<div id="g-plus" 
+							class="g-plus social-media-button" 
+							data-action="share" 
+							data-height="24" 
+							data-href="replaced-below">
+						</div>
 					</div>
+				</g:if>
 
 				
 			</g:form>
@@ -222,11 +205,14 @@ ${raw(applicationService.getHeader(catalogInstance, "Product Details", true, par
 		<br style="clear:both"/>
 	</div>
 
-<!-- Place this tag in your head or just before your close body tag. -->
-<script src="https://apis.google.com/js/platform.js" async defer></script>
 
 
-<div id="fb-root"></div>
+<g:if env="production">
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<div id="fb-root"></div>
+</g:if>
+
+
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -256,53 +242,54 @@ $(document).ready(function(){
 
 
 
+	<g:if env="production">
 	/** Beginning social network code **/
 
-	//Facebook
-	(function(d, s, id) {
-	    var js, fjs = d.getElementsByTagName(s)[0];
-	    if (d.getElementById(id)) return;
-	    js = d.createElement(s); js.id = id;
-	    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
-	    fjs.parentNode.insertBefore(js, fjs);
-	  }(document, 'script', 'facebook-jssdk'));
-	//End Facebook
+		//Facebook
+		(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+		//End Facebook
 
 
-	//Twitter
-	window.twttr = (function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0],
-	    t = window.twttr || {};
-	  if (d.getElementById(id)) return t;
-	  js = d.createElement(s);
-	  js.id = id;
-	  js.src = "https://platform.twitter.com/widgets.js";
-	  fjs.parentNode.insertBefore(js, fjs);
+		//Twitter
+		window.twttr = (function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0],
+		    t = window.twttr || {};
+		  if (d.getElementById(id)) return t;
+		  js = d.createElement(s);
+		  js.id = id;
+		  js.src = "https://platform.twitter.com/widgets.js";
+		  fjs.parentNode.insertBefore(js, fjs);
 
-	  t._e = [];
-	  t.ready = function(f) {
-	    t._e.push(f);
-	  };
+		  t._e = [];
+		  t.ready = function(f) {
+		    t._e.push(f);
+		  };
 
-	  return t;
-	}(document, "script", "twitter-wjs"));
-	//End Twitter
+		  return t;
+		}(document, "script", "twitter-wjs"));
+		//End Twitter
 
 
-	//Social Media
-	var shareUrl = pre + 'details/${productInstance.id}';
-	
-	var $googlePlus = $("#g-plus"),
-		$facebookShare = $("#fb-share-button"),
-		$twitterTweet = $('#twitter-share-button')
-	
-	$facebookShare.attr('data-href', shareUrl)
-	$twitterTweet.attr('data-url', shareUrl)
-	$googlePlus.attr('data-href', shareUrl)
+		//Social Media
+		var shareUrl = pre + 'product/details/${productInstance.id}';
+		
+		var $googlePlus = $("#g-plus"),
+			$facebookShare = $("#fb-share-button"),
+			$twitterTweet = $('#twitter-share-button')
+		
+		$facebookShare.attr('data-href', shareUrl)
+		$twitterTweet.attr('data-url', shareUrl)
+		$googlePlus.attr('data-href', shareUrl)
 
 
 	/** End social network code **/
-
+	</g:if>
 
 
 
@@ -337,6 +324,8 @@ $(document).ready(function(){
 });
 </script>
 
+
 <br class="clear"/>
+
 
 ${raw(applicationService.getFooter())}

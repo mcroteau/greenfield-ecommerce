@@ -731,3 +731,10 @@ float:left;
 	list-style:none;
 	padding:3px 0px;
 }
+
+.datepicker-months{
+	width:175px !important;
+}
+.datepicker-months table{
+	width:100% !important;
+}

@@ -55,7 +55,7 @@
 				<table class="table" >
 					<thead>
 						<tr>
-							<th></th>
+							<th style="width:65px;"></th>
 					
 							<g:sortableColumn property="id" title="Id" />
 						

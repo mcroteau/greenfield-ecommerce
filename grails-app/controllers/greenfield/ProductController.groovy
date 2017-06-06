@@ -115,6 +115,8 @@ class ProductController {
     def list(Integer max) {
 		authenticatedAdmin { adminAccount ->
 			params.max = Math.min(max ?: 10, 100)
+			params.sort = "id"
+			params.order = "asc"
     		[productInstanceList: Product.list(params), productInstanceTotal: Product.count()]
 		}
     }
