@@ -31,10 +31,9 @@ class ProductController {
 
     static allowedMethods = [ save: "POST", update: "POST", delete: "POST", save_option: 'POST' ]
 	
-	//Grails 2 explicitly set
-    //def grailsApplication
-
+    def applicationService
 	
+
 	def index() {
     	redirect(controller: 'store', action: "index")
     }
@@ -105,7 +104,22 @@ class ProductController {
 		}
 		productViewLog.save(flush:true)
 		
-        [ productInstance: productInstance, productOptions : productOptions ]
+
+
+		def url = request.getRequestURL()
+		
+		def split = url.toString().split("/${applicationService.getContextName()}/")
+		def httpSection = split[0]
+		def urlPre = "${httpSection}/${applicationService.getContextName()}/"
+		
+		def shareUrl = urlPre + "product/details/${productInstance.id}"
+		def shareImageUrl = productInstance.imageUrl ? (urlPre + productInstance?.imageUrl) : urlPre + "images/app/no-image.jpg"
+		def title = productInstance?.name
+		def description = productInstance?.description ? productInstance.description : productInstance?.name + " Product Details"
+
+
+		[ productInstance: productInstance, productOptions: productOptions, title: title, 
+			shareUrl: shareUrl, shareImageUrl: shareImageUrl, description: description]
 	}
 	
 	

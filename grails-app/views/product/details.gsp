@@ -142,10 +142,10 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 				
 
 
-				<g:if env="production">
+				<g:if env="development">
+
 					<div id="social-media-container">
 
-		
 						 <div id="fb-share-button"
 						 	class="fb-share-button" 
 						 	data-href="https://developers.facebook.com/docs/plugins/" 
@@ -175,7 +175,7 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 					</div>
 				</g:if>
 
-				
+
 			</g:form>
 
 		</div>
@@ -183,11 +183,7 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 
 		<div class="description" style="clear:both;"><p>${productInstance.description}</p></div>
 
-        <style type="text/css">
-            .product-specifications{
 
-            }
-        </style>
         <g:if test="${productInstance.productSpecifications}">
 		    <div class="product-specifications">
                 <h2>Product Specifications</h2>
@@ -207,7 +203,7 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 
 
 
-<g:if env="production">
+<g:if env="development">
 	<script src="https://apis.google.com/js/platform.js" async defer></script>
 	<div id="fb-root"></div>
 </g:if>
@@ -235,15 +231,31 @@ $(document).ready(function(){
 	$('.preview_image').click(preview);
 	
 
+	function displayImage(event){
+       	var $selected = $(this).find('option:selected');
+		var image = $selected.data('image');
+		if(image != ""){
+			var src = pre + image;
+			$main.attr('src', src);
+		}
+	}
+
+	
+	function preview(event){
+		var $target = $(event.target);
+		var source = $main.attr('src');
+		var preSource = $target.attr('src');
+		
+		var link = $target.attr('data-link');
+		
+		$main.attr('src', preSource)
+		$(this).attr('src', preSource)
+		$mainLink.attr('href', link)
+	}	
 
 
-
-
-
-
-
-	<g:if env="production">
 	/** Beginning social network code **/
+	<g:if env="development">
 
 		//Facebook
 		(function(d, s, id) {
@@ -277,48 +289,37 @@ $(document).ready(function(){
 
 
 		//Social Media
+		var title = '"${productInstance?.name} Details"'
+		var description = '\"${productInstance?.description}\"'
 		var shareUrl = pre + 'product/details/${productInstance.id}';
+		var shareImageUrl = pre + '/${productInstance?.imageUrl}';
 		
-		var $googlePlus = $("#g-plus"),
+		var $head = $('head'),
+			$googlePlus = $("#g-plus"),
 			$facebookShare = $("#fb-share-button"),
 			$twitterTweet = $('#twitter-share-button')
-		
+
 		$facebookShare.attr('data-href', shareUrl)
 		$twitterTweet.attr('data-url', shareUrl)
 		$googlePlus.attr('data-href', shareUrl)
 
+  		alert(shareUrl)
 
-	/** End social network code **/
+
+		var ogUrl   = '<meta property="og:url" content="${shareUrl}"/>'
+  		var ogType  = '<meta property="og:type" content="website" />';
+  		var ogTitle = '<meta property="og:title" content="${title}" />';
+  		var ogDesc  = '<meta property="og:description" content="${description}" />';
+  		var ogImage = '<meta property="og:image" content="${shareImageUrl}" />';
+
+  		$head.append(ogUrl)
+  		$head.append(ogType)
+  		$head.append(ogTitle)
+  		$head.append(ogDesc)
+  		$head.append(ogImage)
+
 	</g:if>
-
-
-
-
-
-
-
-
-	function displayImage(event){
-       	var $selected = $(this).find('option:selected');
-		var image = $selected.data('image');
-		if(image != ""){
-			var src = pre + image;
-			$main.attr('src', src);
-		}
-	}
-
-	
-	function preview(event){
-		var $target = $(event.target);
-		var source = $main.attr('src');
-		var preSource = $target.attr('src');
-		
-		var link = $target.attr('data-link');
-		
-		$main.attr('src', preSource)
-		$(this).attr('src', preSource)
-		$mainLink.attr('href', link)
-	}	
+	/** End social network code **/
 
 
 });
