@@ -118,13 +118,12 @@ class ProductController {
 		def description = productInstance?.description ? productInstance.description : productInstance?.name + " Product Details"
 
 
-		[ productInstance: productInstance, productOptions: productOptions, title: title, 
-			shareUrl: shareUrl, shareImageUrl: shareImageUrl, description: description]
+		[ productInstance: productInstance, productOptions: productOptions, 
+		title: title, description: description, shareUrl: shareUrl, shareImageUrl: shareImageUrl ]
 	}
 	
 	
-	//TODO:using permit all and the closure to
-	//perform admin check because of the redirect
+	
  	@Secured(['ROLE_ADMIN'])
     def list(Integer max) {
 		authenticatedAdmin { adminAccount ->

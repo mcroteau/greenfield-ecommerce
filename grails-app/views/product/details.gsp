@@ -142,11 +142,11 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 				
 
 
-				<g:if env="development">
+				<g:if env="production">
 
 					<div id="social-media-container">
 
-						 <div id="fb-share-button"
+						<div id="fb-share-button"
 						 	class="fb-share-button" 
 						 	data-href="https://developers.facebook.com/docs/plugins/" 
 						 	data-layout="button" 
@@ -155,7 +155,7 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 						 	style="top:-5px">
 						 	<a class="fb-xfbml-parse-ignore" target="_blank" 
 						 		href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a>
-						 </div>
+						</div>
 
 						 
 						<a id="twitter-share-button" 
@@ -172,7 +172,9 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 							data-height="24" 
 							data-href="replaced-below">
 						</div>
+						
 					</div>
+
 				</g:if>
 
 
@@ -203,7 +205,7 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 
 
 
-<g:if env="development">
+<g:if env="production">
 	<script src="https://apis.google.com/js/platform.js" async defer></script>
 	<div id="fb-root"></div>
 </g:if>
@@ -254,8 +256,42 @@ $(document).ready(function(){
 	}	
 
 
+
+
 	/** Beginning social network code **/
-	<g:if env="development">
+	<g:if env="production">
+
+
+		//Social Media
+		var title = '"${productInstance?.name} Details"'
+		var description = '\"${productInstance?.description}\"'
+		var shareUrl = pre + 'product/details/${productInstance.id}';
+		var shareImageUrl = pre + '/${productInstance?.imageUrl}';
+		
+		var $head = $('head'),
+			$googlePlus = $("#g-plus"),
+			$facebookShare = $("#fb-share-button"),
+			$twitterTweet = $('#twitter-share-button')
+
+		$facebookShare.attr('data-href', shareUrl)
+		$twitterTweet.attr('data-url', shareUrl)
+		$googlePlus.attr('data-href', shareUrl)
+
+		var ogUrl   = '<meta property="og:url" content="${shareUrl}"/>'
+  		var ogType  = '<meta property="og:type" content="website" />';
+  		var ogTitle = '<meta property="og:title" content="${title}" />';
+  		var ogDesc  = '<meta property="og:description" content="${description}" />';
+  		var ogImage = '<meta property="og:image" content="${shareImageUrl}" />';
+
+  		$head.append(ogUrl)
+  		$head.append(ogType)
+  		$head.append(ogTitle)
+  		$head.append(ogDesc)
+  		$head.append(ogImage)
+
+
+
+
 
 		//Facebook
 		(function(d, s, id) {
@@ -286,37 +322,6 @@ $(document).ready(function(){
 		  return t;
 		}(document, "script", "twitter-wjs"));
 		//End Twitter
-
-
-		//Social Media
-		var title = '"${productInstance?.name} Details"'
-		var description = '\"${productInstance?.description}\"'
-		var shareUrl = pre + 'product/details/${productInstance.id}';
-		var shareImageUrl = pre + '/${productInstance?.imageUrl}';
-		
-		var $head = $('head'),
-			$googlePlus = $("#g-plus"),
-			$facebookShare = $("#fb-share-button"),
-			$twitterTweet = $('#twitter-share-button')
-
-		$facebookShare.attr('data-href', shareUrl)
-		$twitterTweet.attr('data-url', shareUrl)
-		$googlePlus.attr('data-href', shareUrl)
-
-  		alert(shareUrl)
-
-
-		var ogUrl   = '<meta property="og:url" content="${shareUrl}"/>'
-  		var ogType  = '<meta property="og:type" content="website" />';
-  		var ogTitle = '<meta property="og:title" content="${title}" />';
-  		var ogDesc  = '<meta property="og:description" content="${description}" />';
-  		var ogImage = '<meta property="og:image" content="${shareImageUrl}" />';
-
-  		$head.append(ogUrl)
-  		$head.append(ogType)
-  		$head.append(ogTitle)
-  		$head.append(ogDesc)
-  		$head.append(ogImage)
 
 	</g:if>
 	/** End social network code **/
