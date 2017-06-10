@@ -144,7 +144,7 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 
 				<g:if test="${applicationService.getSocialMediaEnabled() == "true"}">
 					
-					<g:if env="production">
+					<g:if env="development">
 
 						<div id="social-media-container">
 
@@ -208,7 +208,7 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 
 
 <g:if test="${applicationService.getSocialMediaEnabled() == "true"}">
-	<g:if env="production">
+	<g:if env="development">
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 		<div id="fb-root"></div>
 	</g:if>
@@ -264,13 +264,13 @@ $(document).ready(function(){
 	/** Beginning social network code **/
 	<g:if test="${applicationService.getSocialMediaEnabled() == "true"}">
 		
-		<g:if env="production">
+		<g:if env="development">
 
 			//Social Media
-			var title = '"${productInstance?.name} Details"'
-			var description = '\"${productInstance?.description}\"'
-			var shareUrl = pre + 'product/details/${productInstance.id}';
-			var shareImageUrl = pre + '/${productInstance?.imageUrl}';
+			var title = "${productInstance?.name} Details"
+			var description = "${productInstance?.description}"
+			var shareUrl = pre + "product/details/${productInstance.id}";
+			var shareImageUrl = pre + "/${productInstance?.imageUrl}";
 			
 			var $head = $('head'),
 				$googlePlus = $("#g-plus"),
@@ -297,15 +297,6 @@ $(document).ready(function(){
 
 
 
-			//Facebook
-			(function(d, s, id) {
-			  var js, fjs = d.getElementsByTagName(s)[0];
-			  if (d.getElementById(id)) return;
-			  js = d.createElement(s); js.id = id;
-			  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
-			  fjs.parentNode.insertBefore(js, fjs);
-			}(document, 'script', 'facebook-jssdk'));
-			//End Facebook
 
 
 			//Twitter
@@ -327,6 +318,17 @@ $(document).ready(function(){
 			}(document, "script", "twitter-wjs"));
 			//End Twitter
 
+
+			//Facebook
+			(function(d, s, id) {
+			  var js, fjs = d.getElementsByTagName(s)[0];
+			  if (d.getElementById(id)) return;
+			  js = d.createElement(s); js.id = id;
+			  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+			  fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+			//End Facebook
+			
 		</g:if>
 	</g:if>
 	/** End social network code **/
