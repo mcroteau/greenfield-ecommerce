@@ -144,7 +144,7 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 
 				<g:if test="${applicationService.getSocialMediaEnabled() == "true"}">
 					
-					<g:if env="development">
+					<g:if env="production">
 
 						<div id="social-media-container">
 
@@ -208,7 +208,7 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 
 
 <g:if test="${applicationService.getSocialMediaEnabled() == "true"}">
-	<g:if env="development">
+	<g:if env="production">
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 		<div id="fb-root"></div>
 	</g:if>
@@ -264,7 +264,7 @@ $(document).ready(function(){
 	/** Beginning social network code **/
 	<g:if test="${applicationService.getSocialMediaEnabled() == "true"}">
 		
-		<g:if env="development">
+		<g:if env="production">
 
 			//Social Media
 			var title = "${productInstance?.name} Details"
@@ -328,7 +328,7 @@ $(document).ready(function(){
 			  fjs.parentNode.insertBefore(js, fjs);
 			}(document, 'script', 'facebook-jssdk'));
 			//End Facebook
-			
+
 		</g:if>
 	</g:if>
 	/** End social network code **/
