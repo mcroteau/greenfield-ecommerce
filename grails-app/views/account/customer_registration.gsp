@@ -26,16 +26,17 @@ ${raw(applicationService.getHeader("Registration"))}
 		</g:hasErrors>
 		
 			
-		<p>Create an account on ${applicationService.getStoreName()} and start shopping.</p>
+		<p>Create an account and start shopping.</p>
 		
 		<g:form action="customer_register" class="form">
 		
 			<div class="alert alert-warning" id="match-alert" style="display:none">Passwords Don't Match</div>
 			<div class="alert alert-warning" id="length-alert" style="display:none">Passwords Must be at least 5 characters long</div>
 		
+	
 			<div class="form-group">
 			  	<label for="username">Username</label>
-			  	<input type="text" name="username" class="form-control" id="username" placeholder="" value="${accountInstance?.username}">
+			  	<input type="text" name="username" class="form-control" id="username" placeholder="" value="${accountInstance?.username}" style="width:225px;">
 			</div>
 			<div class="form-group">
 			  	<label for="email">Email Address</label>
@@ -45,13 +46,19 @@ ${raw(applicationService.getHeader("Registration"))}
 			
 			<div class="form-group">
 			  	<label for="password">Password</label>
-			  	<input type="password" name="password" class="form-control" id="password" placeholder="***">
+			  	<input type="password" name="password" class="form-control" id="password" placeholder="***" style="width:225px;">
 			</div>
 			<div class="form-group">
 			  	<label for="passwordRepeat">Re-Enter Password</label>
-			  	<input type="password" name="passwordRepeat" class="form-control" id="passwordRepeat" placeholder="***">
+			  	<input type="password" name="passwordRepeat" class="form-control" id="passwordRepeat" placeholder="***" style="width:225px;">
 			</div>
-			
+					
+			<div class="form-group">
+				<img src="${createLink(controller: 'account', action: 'captcha')}"/>
+				<label for="captcha">Type the letters above in the box below:</label>
+				<input type="text" name="captcha" class="form-control" style="width:150px;"/>
+			</div>
+
 			<div class="form-group">
 				<button type="submit" class="btn btn-primary pull-right" id="complete-registration">Register</button>
 			</div>

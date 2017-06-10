@@ -105,6 +105,16 @@
 			<br class="clear"/>
 		</div>
 		
+		<div class="form-row">
+			<span class="form-label twohundred">Share Social Media Buttons Enabled
+				<br/>
+				<span class="information secondary">Facebook, Twitter &amp; Google+ on product page. (Only visible in production)</span>
+			</span>
+			<span class="input-container">
+				<input type="checkbox" ${settings?.socialMediaEnabled} name="socialMediaEnabled" id="socialMediaEnabled"/>
+			</span>
+			<br class="clear"/>
+		</div>
 		
 		
 		<div class="buttons-container">

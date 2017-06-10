@@ -45,6 +45,7 @@ class ConfigurationController {
 	private final String META_KEYWORDS = "meta.keywords"
 	private final String META_DESCRIPTION = "meta.description"
 	private final String GOOGLE_ANALYTICS = "google.analytics"
+	private final String SOCIAL_MEDIA_ENABLED = "social.media.enabled"
 	
 	private final String MAIL_ADMIN_EMAIL_ADDRESS = "mail.smtp.adminEmail"
 	private final String MAIL_SUPPORT_EMAIL_ADDRESS = "mail.smtp.supportEmail"
@@ -98,6 +99,9 @@ class ConfigurationController {
 				settings["shipping"] = prop.getProperty(STORE_SHIPPING);
 				settings["taxRate"] = prop.getProperty(STORE_TAX_RATE);
 				settings["googleAnalytics"] = prop.getProperty(GOOGLE_ANALYTICS);
+
+				String socialMediaEnabled = prop.getProperty(SOCIAL_MEDIA_ENABLED);
+				if(socialMediaEnabled == "true")settings["socialMediaEnabled"] = "checked"
 				
 				[ settings : settings ]
 				
@@ -120,7 +124,12 @@ class ConfigurationController {
 			String taxRate = params.taxRate
 			String shipping = params.shipping
 			String googleAnalytics = params.googleAnalytics
+			String socialMediaEnabled = params.socialMediaEnabled
 			
+			
+			if(socialMediaEnabled == "on")socialMediaEnabled = true
+			if(!socialMediaEnabled)socialMediaEnabled = false
+
 			Properties prop = new Properties();
 		
 			File propertiesFile = grailsApplication.mainContext.getResource("settings/${SETTINGS_FILE}").file
@@ -135,6 +144,7 @@ class ConfigurationController {
 				prop.setProperty(STORE_TAX_RATE, taxRate);
 				prop.setProperty(STORE_SHIPPING, shipping);
 				prop.setProperty(GOOGLE_ANALYTICS, googleAnalytics);
+				prop.setProperty(SOCIAL_MEDIA_ENABLED, socialMediaEnabled);
 				
 				def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('settings')
 				absolutePath = absolutePath.endsWith("/") ? absolutePath : absolutePath + "/"

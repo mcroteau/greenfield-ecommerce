@@ -852,6 +852,13 @@ class ApplicationService {
 	}
 	
 	
+	def getSocialMediaEnabled(){
+		if(!properties)setProperties()
+		String socialMediaEnabled = properties.getProperty("social.media.enabled");
+		//println "++++++++ socialMediaEnabled : ${socialMediaEnabled} +++++++++++"	
+		return socialMediaEnabled
+	}
+	
 	
 	
 	def formatPrice(price){

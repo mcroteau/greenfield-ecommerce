@@ -142,41 +142,43 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 				
 
 
-				<g:if env="production">
+				<g:if test="${applicationService.getSocialMediaEnabled() == "true"}">
+					
+					<g:if env="production">
 
-					<div id="social-media-container">
+						<div id="social-media-container">
 
-						<div id="fb-share-button"
-						 	class="fb-share-button" 
-						 	data-href="https://developers.facebook.com/docs/plugins/" 
-						 	data-layout="button" 
-						 	data-size="small" 
-						 	data-mobile-iframe="false"
-						 	style="top:-5px">
-						 	<a class="fb-xfbml-parse-ignore" target="_blank" 
-						 		href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a>
+							<div id="fb-share-button"
+							 	class="fb-share-button" 
+							 	data-href="https://developers.facebook.com/docs/plugins/" 
+							 	data-layout="button" 
+							 	data-size="small" 
+							 	data-mobile-iframe="false"
+							 	style="top:-5px">
+							 	<a class="fb-xfbml-parse-ignore" target="_blank" 
+							 		href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a>
+							</div>
+
+							 
+							<a id="twitter-share-button" 
+								  class="twitter-share-button social-media-button"
+							  href="https://twitter.com/intent/tweet"
+							  data-url="replaced-below"
+							  data-size="small">
+							Tweet</a>
+
+					
+							<div id="g-plus" 
+								class="g-plus social-media-button" 
+								data-action="share" 
+								data-height="24" 
+								data-href="replaced-below">
+							</div>
+							
 						</div>
 
-						 
-						<a id="twitter-share-button" 
-							  class="twitter-share-button social-media-button"
-						  href="https://twitter.com/intent/tweet"
-						  data-url="replaced-below"
-						  data-size="small">
-						Tweet</a>
-
-				
-						<div id="g-plus" 
-							class="g-plus social-media-button" 
-							data-action="share" 
-							data-height="24" 
-							data-href="replaced-below">
-						</div>
-						
-					</div>
-
+					</g:if>
 				</g:if>
-
 
 			</g:form>
 
@@ -205,11 +207,12 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 
 
 
-<g:if env="production">
-	<script src="https://apis.google.com/js/platform.js" async defer></script>
-	<div id="fb-root"></div>
+<g:if test="${applicationService.getSocialMediaEnabled() == "true"}">
+	<g:if env="production">
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<div id="fb-root"></div>
+	</g:if>
 </g:if>
-
 
 
 <script type="text/javascript">
@@ -259,70 +262,72 @@ $(document).ready(function(){
 
 
 	/** Beginning social network code **/
-	<g:if env="production">
-
-
-		//Social Media
-		var title = '"${productInstance?.name} Details"'
-		var description = '\"${productInstance?.description}\"'
-		var shareUrl = pre + 'product/details/${productInstance.id}';
-		var shareImageUrl = pre + '/${productInstance?.imageUrl}';
+	<g:if test="${applicationService.getSocialMediaEnabled() == "true"}">
 		
-		var $head = $('head'),
-			$googlePlus = $("#g-plus"),
-			$facebookShare = $("#fb-share-button"),
-			$twitterTweet = $('#twitter-share-button')
+		<g:if env="production">
 
-		$facebookShare.attr('data-href', shareUrl)
-		$twitterTweet.attr('data-url', shareUrl)
-		$googlePlus.attr('data-href', shareUrl)
+			//Social Media
+			var title = '"${productInstance?.name} Details"'
+			var description = '\"${productInstance?.description}\"'
+			var shareUrl = pre + 'product/details/${productInstance.id}';
+			var shareImageUrl = pre + '/${productInstance?.imageUrl}';
+			
+			var $head = $('head'),
+				$googlePlus = $("#g-plus"),
+				$facebookShare = $("#fb-share-button"),
+				$twitterTweet = $('#twitter-share-button')
 
-		var ogUrl   = '<meta property="og:url" content="${shareUrl}"/>'
-  		var ogType  = '<meta property="og:type" content="website" />';
-  		var ogTitle = '<meta property="og:title" content="${title}" />';
-  		var ogDesc  = '<meta property="og:description" content="${description}" />';
-  		var ogImage = '<meta property="og:image" content="${shareImageUrl}" />';
+			$facebookShare.attr('data-href', shareUrl)
+			$twitterTweet.attr('data-url', shareUrl)
+			$googlePlus.attr('data-href', shareUrl)
 
-  		$head.append(ogUrl)
-  		$head.append(ogType)
-  		$head.append(ogTitle)
-  		$head.append(ogDesc)
-  		$head.append(ogImage)
+			var ogUrl   = '<meta property="og:url" content="${shareUrl}"/>'
+	  		var ogType  = '<meta property="og:type" content="website" />';
+	  		var ogTitle = '<meta property="og:title" content="${title}" />';
+	  		var ogDesc  = '<meta property="og:description" content="${description}" />';
+	  		var ogImage = '<meta property="og:image" content="${shareImageUrl}" />';
 
-
-
-
-
-		//Facebook
-		(function(d, s, id) {
-		  var js, fjs = d.getElementsByTagName(s)[0];
-		  if (d.getElementById(id)) return;
-		  js = d.createElement(s); js.id = id;
-		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
-		  fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-		//End Facebook
+	  		$head.append(ogUrl)
+	  		$head.append(ogType)
+	  		$head.append(ogTitle)
+	  		$head.append(ogDesc)
+	  		$head.append(ogImage)
 
 
-		//Twitter
-		window.twttr = (function(d, s, id) {
-		  var js, fjs = d.getElementsByTagName(s)[0],
-		    t = window.twttr || {};
-		  if (d.getElementById(id)) return t;
-		  js = d.createElement(s);
-		  js.id = id;
-		  js.src = "https://platform.twitter.com/widgets.js";
-		  fjs.parentNode.insertBefore(js, fjs);
 
-		  t._e = [];
-		  t.ready = function(f) {
-		    t._e.push(f);
-		  };
 
-		  return t;
-		}(document, "script", "twitter-wjs"));
-		//End Twitter
 
+			//Facebook
+			(function(d, s, id) {
+			  var js, fjs = d.getElementsByTagName(s)[0];
+			  if (d.getElementById(id)) return;
+			  js = d.createElement(s); js.id = id;
+			  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+			  fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+			//End Facebook
+
+
+			//Twitter
+			window.twttr = (function(d, s, id) {
+			  var js, fjs = d.getElementsByTagName(s)[0],
+			    t = window.twttr || {};
+			  if (d.getElementById(id)) return t;
+			  js = d.createElement(s);
+			  js.id = id;
+			  js.src = "https://platform.twitter.com/widgets.js";
+			  fjs.parentNode.insertBefore(js, fjs);
+
+			  t._e = [];
+			  t.ready = function(f) {
+			    t._e.push(f);
+			  };
+
+			  return t;
+			}(document, "script", "twitter-wjs"));
+			//End Twitter
+
+		</g:if>
 	</g:if>
 	/** End social network code **/
 

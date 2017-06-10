@@ -34,8 +34,10 @@ import org.greenfield.log.PageViewLog
 import org.greenfield.log.CatalogViewLog
 import org.greenfield.log.SearchLog
 
-
+import javax.imageio.ImageIO
 import grails.plugin.springsecurity.annotation.Secured
+
+import org.greenfield.SimpleCaptchaService
 
 @Mixin(BaseController)
 class AccountController {
@@ -45,7 +47,8 @@ class AccountController {
 	def emailService
 	def applicationService
 	def springSecurityService
-	
+	def simpleCaptchaService
+
 
 	@Secured(['ROLE_CUSTOMER', 'ROLE_ADMIN'])
 	def customer_profile(){
@@ -433,8 +436,16 @@ class AccountController {
 
 	@Secured(['permitAll'])
 	def customer_register(){
-	
+		
 		def accountInstance = new Account(params)
+
+		boolean captchaValid = simpleCaptchaService.validateCaptcha(params.captcha)
+		if(!captchaValid){
+			flash.message = "Your entry did not match the image. Please try again."
+			render(view: "customer_registration", model: [accountInstance: accountInstance])
+			return
+		}
+		
 		
 		if(params.password && params.passwordRepeat){
 			
@@ -454,24 +465,10 @@ class AccountController {
 						accountInstance.createAccountRoles(false)
 						accountInstance.createAccountPermission()
 
-						//TODO:Remove/cleanup
-						// def customerRole = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
-						// def customerAccountRole = new AccountRole()
-						// customerAccountRole.account = accountInstance
-						// customerAccountRole.role = customerRole
-						// customerAccountRole.save(flush:true)
-
-				
-						// //accountInstance.createAccountProfilePermission()
-						// customerAccount.addToPermissions(ControllerConstants.ACCOUNT_PERMISSION + customerAccount.id)
-						// customerAccount.save(flush:true)
-
-
 						sendAdminEmail(accountInstance)
 						sendThankYouEmail(accountInstance)
 			
 						flash.message = "You have successfully registered... sign into your new account to continue"
-			
 						redirect(controller : 'auth', action: 'customer_login', params : [ accountInstance: accountInstance, username : params.username, password : params.password, new_account : true])
 			
 					}else{
@@ -864,4 +861,10 @@ class AccountController {
 		}
 	}
 	
+	@Secured(['permitAll']) 
+    def captcha() {
+        def captcha = session[SimpleCaptchaService.CAPTCHA_IMAGE_ATTR] ?: simpleCaptchaService.newCaptcha()
+        ImageIO.write(captcha, "PNG", response.outputStream)
+    }
+
 }
