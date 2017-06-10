@@ -208,10 +208,44 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
+	<td>link=Accounts</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=Create New Account</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>mikec</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email</td>
+	<td>croteau.mike@gmail.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>mikec</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=name</td>
+	<td>Mike</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
 	<td>link=Logout</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>

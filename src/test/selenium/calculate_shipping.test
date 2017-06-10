@@ -67,11 +67,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>pause</td>
-	<td>17000</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>id=logout</td>
 	<td></td>

@@ -17,7 +17,6 @@
 <tr><td><a href="create-catalogs.test">create-catalogs</a></td></tr>
 <tr><td><a href="create-products.test">create-products</a></td></tr>
 <tr><td><a href="create-product-options.test">create-product-options</a></td></tr>
-<tr><td><a href="register.test">register</a></td></tr>
 <tr><td><a href="update_account.test">update_account</a></td></tr>
 <tr><td><a href="add_cart.test">add_cart</a></td></tr>
 <tr><td><a href="remove-cart.test">remove-cart</a></td></tr>
