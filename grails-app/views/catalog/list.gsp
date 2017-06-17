@@ -36,6 +36,7 @@
 							<th>Name</th>
 							<th># Products</th>
 							<th></th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -45,6 +46,9 @@
 									<span class="secondary" style="font-size:12px;color:rgba(0,0,0,0.54)">(${raw(catalogData.path)})</span>
 								</td>
 								<td align="center">${catalogData.productsCount}</td>
+								<td>
+									<a href="">Change Position</a>
+								</td>
 								<td>
 									<g:link controller="catalog" action="edit" params="[id: catalogData.id]" class="${catalogData.name}-edit">Edit</g:link>
 								</td>
