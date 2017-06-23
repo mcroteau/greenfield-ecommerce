@@ -4,6 +4,7 @@ import greenfield.common.BaseController
 import grails.converters.*
 import java.util.GregorianCalendar
 import java.text.NumberFormat
+import java.text.DecimalFormat
 
 import org.greenfield.common.ShoppingCartStatus
 
@@ -270,13 +271,14 @@ class AdminController {
 		
 		orderCount = orders?.size()
 		
+
+		DecimalFormat df = new DecimalFormat("###,###.##"); 
+		df.setMinimumFractionDigits(2)
+
 		if(sales && orderCount){
 			def unformattedAverage = Math.round(sales/orderCount * 100)/100
-			unformattedAverage = 12334123
-			averageOrder = NumberFormat.getIntegerInstance().format(unformattedAverage)
-			println "directly after"
+			averageOrder = df.format(unformattedAverage)
 		}
-		
 		
 		stats.orders = orders
 		stats.chartData = chartData
@@ -284,12 +286,10 @@ class AdminController {
 		stats.shoppingCarts = shoppingCarts
 		stats.checkoutRate = checkoutRate
 		
-		stats.sales = sales
-		stats.orderCount = orderCount
-		println "before setting ${averageOrder}"
-		stats.averageOrder = ""
+
+		stats.sales = df.format(sales)
+		stats.orderCount = df.format(orderCount)
 		stats.averageOrder = averageOrder
-		println "after setting"
 		
 		return stats
 	}

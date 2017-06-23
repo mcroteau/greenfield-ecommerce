@@ -24,7 +24,7 @@ public class DevelopmentData {
 
 	def MAX_DAYS              = 90
 	def CUSTOMERS_COUNT       = 20
-	def ORDERS_COUNT          = 1080
+	def ORDERS_COUNT          = 108
 	def PAGE_VIEWS_COUNT      = 430
 	def PRODUCT_VIEWS_COUNT   = 350
 	def CATALOG_VIEWS_COUNT   = 450
