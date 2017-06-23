@@ -29,6 +29,7 @@
 				<g:link controller="catalog" action="create" class="btn btn-primary pull-right" >New Catalog</g:link>
 				<g:link controller="catalog" action="list" class="btn btn-default pull-right" style="display:inline-block;margin-right:5px">Back to List View</g:link>
 			</h2>
+			<p class="instructions">How the menu will display on store front</p>
 			
 			<g:if test="${flash.error}">
 				<div class="alert alert-danger" role="status">${flash.error}</div>

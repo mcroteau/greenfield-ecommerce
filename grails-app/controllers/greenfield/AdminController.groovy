@@ -3,6 +3,7 @@ package greenfield
 import greenfield.common.BaseController
 import grails.converters.*
 import java.util.GregorianCalendar
+import java.text.NumberFormat
 
 import org.greenfield.common.ShoppingCartStatus
 
@@ -221,7 +222,7 @@ class AdminController {
 
 		def sales = 0
 		def orderCount = 0
-		def averageOrder = 0
+		String averageOrder = "0"
 		def checkoutCarts = 0
 		def shoppingCarts = 0
 		def checkoutRate = 0
@@ -270,7 +271,10 @@ class AdminController {
 		orderCount = orders?.size()
 		
 		if(sales && orderCount){
-			averageOrder = Math.round(sales/orderCount * 100)/100
+			def unformattedAverage = Math.round(sales/orderCount * 100)/100
+			unformattedAverage = 12334123
+			averageOrder = NumberFormat.getIntegerInstance().format(unformattedAverage)
+			println "directly after"
 		}
 		
 		
@@ -282,8 +286,10 @@ class AdminController {
 		
 		stats.sales = sales
 		stats.orderCount = orderCount
+		println "before setting ${averageOrder}"
+		stats.averageOrder = ""
 		stats.averageOrder = averageOrder
-		
+		println "after setting"
 		
 		return stats
 	}

@@ -487,8 +487,8 @@ class ApplicationService {
 					def catalogData = [
 						 	"link" : link, 
 							"name" : c.name, 
-							productsCount : productsCount, 
-							activeClass : activeClass 
+							"productsCount" : productsCount, 
+							"activeClass" : activeClass 
 					]
 
 					def engine = new SimpleTemplateEngine()

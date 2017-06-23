@@ -186,7 +186,7 @@
 				<div class="sales-stat">
 					<span class="stat">
 						<span class="sales-stat-dollar secondary">$</span>
-						<g:if test="${storeStatistics.salesStats.sales > 0}">
+						<g:if test="${storeStatistics.salesStats.sales != "0"}">
 							<span class="sales-stat-value">${storeStatistics.salesStats.sales}</span>
 						</g:if>
 						<g:else>
@@ -198,7 +198,7 @@
 				
 				<div class="sales-stat">
 					<span class="stat">
-						<g:if test="${storeStatistics.salesStats.orderCount > 0}">
+						<g:if test="${storeStatistics.salesStats.orderCount != "0"}">
 							<span class="sales-stat-value">${storeStatistics.salesStats.orderCount}</span>
 						</g:if>
 						<g:else>
@@ -212,7 +212,7 @@
 				<div class="sales-stat">
 					<span class="stat">
 						<span class="sales-stat-dollar secondary">$</span>
-						<g:if test="${storeStatistics.salesStats.averageOrder > 0}">
+						<g:if test="${storeStatistics.salesStats.averageOrder != "0"}">
 							<span class="sales-stat-value">${storeStatistics.salesStats.averageOrder}</span>
 						</g:if>
 						<g:else>

@@ -18,7 +18,8 @@ import grails.plugin.springsecurity.annotation.Secured
 class CatalogController {
 
 	def numberSpaces = 1
-	
+	def applicationService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
 
@@ -72,7 +73,7 @@ class CatalogController {
 
 		if(isFilterRequest(params)){
 
-			println "*** filter request ***"
+			//println "*** filter request ***"
             def combinations = []
 
             Collection<?> keys = params.keySet()
@@ -192,7 +193,7 @@ class CatalogController {
     def list(Integer max) {
 		authenticatedAdmin { adminAccount -> 
 			
-			def catalogInstanceList = Catalog.list()
+			def catalogInstanceList = Catalog.list([sort: "position", order: "asc"])
 			def catalogsList = []
 			
 			catalogInstanceList.each { catalog ->
@@ -207,6 +208,7 @@ class CatalogController {
 				catalogData.id = catalog.id
 				catalogData.path = catalogPath
 				catalogData.name = catalog.name
+				catalogData.position = catalog.position
 				catalogData.productsCount = getCatalogProductsCount(catalog)
 				catalogsList.add(catalogData)
 			}
@@ -403,11 +405,64 @@ class CatalogController {
 	
 	
     @Secured(['ROLE_ADMIN'])
+    def manage_positions(Long id){
+		authenticatedAdminCatalog { adminAccount, catalogInstance ->
+			def catalogs = []
+			if(catalogInstance.toplevel){
+				catalogs = Catalog.findAllByToplevel(true)
+			}else{
+				def parentCatalog = catalogInstance.parentCatalog
+				catalogs = parentCatalog.subcatalogs
+				catalogs.sort{ it.position }
+			}
+			[ catalogInstance: catalogInstance, catalogs: catalogs ]
+		}
+    }
+
+
+    
+    @Secured(['ROLE_ADMIN'])
+    def update_positions(){    
+        authenticatedAdmin { adminAccount ->
+			if(!params.positions){
+				flash.message = "Something went wrong while saving positions ..."
+				redirect(action:'manage_positions')
+				return
+			}
+			
+			def positions = params.positions.split(',').collect{it as int}
+			
+			if(!positions){
+				flash.message = "Something went wrong while saving positions ..."
+				redirect(action:'manage_positions')
+				return
+			}
+			
+			positions.eachWithIndex(){ catalogId, position ->
+				def catalog = Catalog.get(catalogId)
+				catalog.position = position
+				catalog.save(flush:true)
+			}
+			
+			flash.message = "Successfully updated positions"
+			redirect(action : 'manage_positions', id : params.catalogId)
+        }
+    }
+
+
+
+    @Secured(['ROLE_ADMIN'])
 	def menu_view(){
 		def catalogMenuString = "<ul class=\"admin-catalog-menu\">"
 		def toplevelCatalogs = Catalog.findAllByToplevel(true)
 		toplevelCatalogs.each{ catalog ->
+			def count = getCatalogProductsCount(catalog)
 			catalogMenuString += "<li>${catalog.name}"
+			catalogMenuString += "<span class=\"catalog-admin-links\">"
+			catalogMenuString += "(<a href=\"/${applicationService.getContextName()}/catalog/manage_positions/${catalog.id}\">Update Position</a>"
+			catalogMenuString += "&nbsp;|&nbsp;"
+			catalogMenuString += "<a href=\"/${applicationService.getContextName()}/catalog/edit/${catalog.id}\">Edit</a>)"
+			catalogMenuString += "&nbsp;&nbsp;&nbsp;&nbsp;${count} products</span>"
 			if(catalog.subcatalogs){
 				def subcatalogMenuString = getAllSubcatalogLists(catalog)
 				catalogMenuString += subcatalogMenuString
@@ -425,7 +480,13 @@ class CatalogController {
 		def subcatalogsMenu = "<ul class=\"admin-subcatalog-menu\">"
 		catalog.subcatalogs.sort { it.id }
 		catalog.subcatalogs.each{ subcatalog ->
+			def count = getCatalogProductsCount(subcatalog)
 			subcatalogsMenu += "<li>${subcatalog.name}"
+			subcatalogsMenu += "<span class=\"catalog-admin-links\">"
+			subcatalogsMenu += "(<a href=\"/${applicationService.getContextName()}/catalog/manage_positions/${subcatalog.id}\">Update Position</a>"
+			subcatalogsMenu += "&nbsp;|&nbsp;"
+			subcatalogsMenu += "<a href=\"/${applicationService.getContextName()}/catalog/edit/${subcatalog.id}\">Edit</a>)"
+			subcatalogsMenu += "&nbsp;&nbsp;&nbsp;&nbsp;${count} products</span>"
 			if(subcatalog.subcatalogs){
 				subcatalogsMenu += getAllSubcatalogLists(subcatalog)
 			}

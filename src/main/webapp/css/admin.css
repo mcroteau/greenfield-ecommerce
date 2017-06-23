@@ -738,3 +738,35 @@ float:left;
 .datepicker-months table{
 	width:100% !important;
 }
+
+
+.admin-catalog-menu{}
+.catalog-admin-links{
+	opacity:.35;
+	font-size:12px;
+	margin-left:10px;
+	display:inline-block;
+}
+.catalog-admin-links a{
+	font-size:12px;
+	margin:0px 2px;
+	display:inline-block;
+}
+
+.catalog-admin-links:hover{
+	opacity:1 !important;
+}
+.catalog-admin-links a:hover{
+	opacity:1 !important;
+}
+
+
+
+
+
+
+
+
+
+
+

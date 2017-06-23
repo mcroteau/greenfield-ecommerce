@@ -24,7 +24,7 @@ public class DevelopmentData {
 
 	def MAX_DAYS              = 90
 	def CUSTOMERS_COUNT       = 20
-	def ORDERS_COUNT          = 108
+	def ORDERS_COUNT          = 1080
 	def PAGE_VIEWS_COUNT      = 430
 	def PRODUCT_VIEWS_COUNT   = 350
 	def CATALOG_VIEWS_COUNT   = 450
@@ -221,7 +221,7 @@ public class DevelopmentData {
         if(numberProducts > 0){
             (1..numberProducts).each{ i ->
     			def product = new Product()
-    			product.price = i * 10
+    			product.price = i * 1000
     			product.quantity = i * 10
     			product.weight = 16
     			catalogIdsArray.each {

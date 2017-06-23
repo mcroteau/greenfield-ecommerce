@@ -20,6 +20,9 @@
             	<g:link controller="specification" action="list" class="btn btn-default pull-right" style="margin-right:5px">Specifications</g:link>
             </h2>
 			
+			<p class="instructions" style="margin-bottom:0px;">Click <strong>"Menu View"</strong> to see how catalogs will display on store front</p>
+
+
 			<g:if test="${flash.error}">
 				<div class="alert alert-danger" role="status">${flash.error}</div>
 			</g:if>
@@ -30,7 +33,7 @@
 			
 			
 			<g:if test="${catalogsList?.size() > 0}">
-				<table class="table">
+				<table class="table" style="margin-top:0px !important; padding-top:0px">
 					<thead>
 						<tr>
 							<th>Name</th>
@@ -47,7 +50,7 @@
 								</td>
 								<td align="center">${catalogData.productsCount}</td>
 								<td>
-									<a href="">Change Position</a>
+									<g:link controller="catalog" action="manage_positions" id="${catalogData.id}">Update Position</g:link>
 								</td>
 								<td>
 									<g:link controller="catalog" action="edit" params="[id: catalogData.id]" class="${catalogData.name}-edit">Edit</g:link>
