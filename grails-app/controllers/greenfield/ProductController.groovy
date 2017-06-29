@@ -417,22 +417,6 @@ class ProductController {
 				return
 			}    	  
             
-            productInstance.catalogs.each{ catalog ->
-                def products = Product.createCriteria().list{
-                    catalogs{
-                        idEq(catalog.id)
-                    }
-                }
-                products.each { product ->
-                    def productSpecifications = ProductSpecification.findAllByProduct(product)
-                    productSpecifications.each { productSpecification ->
-                        product.removeFromProductSpecifications(productSpecification)
-                        productSpecification.delete(flush:true)
-                    }
-                }
-            }
-            
-            
             
 			productInstance.catalogs = null
 			catalogIdsArray.each{ catalogId ->
@@ -440,7 +424,6 @@ class ProductController {
 				if(catalog){
 					productInstance.addToCatalogs(catalog)
 					productInstance.save(flush:true)
-					//TODO: 
 				}
 			}
 
