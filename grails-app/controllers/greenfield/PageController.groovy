@@ -80,6 +80,7 @@ class PageController {
 	
 	
 	
+ 	@Secured(['ROLE_ADMIN'])
     def show(Long id) {
 		authenticatedAdminPage { adminAccount, pageInstance ->
         	[pageInstance: pageInstance]
@@ -88,6 +89,7 @@ class PageController {
 	
 	
 
+ 	@Secured(['ROLE_ADMIN'])
     def edit(Long id) {
 		authenticatedAdminPage { adminAccount, pageInstance ->
         	[pageInstance: pageInstance]
@@ -96,6 +98,7 @@ class PageController {
 
 
 
+ 	@Secured(['ROLE_ADMIN'])
     def save() {	
 		authenticatedAdmin { adminAccount ->
         	def pageInstance = new Page(params)
@@ -113,6 +116,7 @@ class PageController {
 	
 	
 
+ 	@Secured(['ROLE_ADMIN'])
     def update(Long id, Long version) {
 		authenticatedAdminPage { adminAccount, pageInstance ->
         
@@ -131,7 +135,7 @@ class PageController {
 	
 	
 	
-
+ 	@Secured(['ROLE_ADMIN'])
     def delete(Long id) {
 		authenticatedAdminPage { adminAccount, pageInstance ->
         	try {
