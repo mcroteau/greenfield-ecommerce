@@ -39,9 +39,23 @@
 			</g:link>
 			<br/>
 			
+			<!--
 			<g:link uri="/configuration/import_products_view" class="btn btn-default">
 				<span class="glyphicon glyphicon-import"></span>
 				Import Products
+			</g:link>
+			<br/>
+			-->
+			
+			<g:link uri="/importExportData/export_data_view" class="btn btn-default">
+				<span class="glyphicon glyphicon-import"></span>
+				Export All Data
+			</g:link>
+			<br/>
+			
+			<g:link uri="/importExportData/import_data_view" class="btn btn-default">
+				<span class="glyphicon glyphicon-import"></span>
+				Import Data
 			</g:link>
 			<br/>
 			
