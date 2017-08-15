@@ -24,7 +24,7 @@ class Account {
 	boolean hasAdminRole
 	
 	//TODO: Replace with Address
-	//TODO: Scheme for international 
+	//TODO: Develop scheme for international 
 	String address1
 	String address2
 	
@@ -39,6 +39,7 @@ class Account {
 	Date dateCreated
 	Date lastUpdated
 
+	//TODO:investigate
 	def pageViews
 	def catalogViews
 	def productViews

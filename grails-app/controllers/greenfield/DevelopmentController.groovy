@@ -4,9 +4,12 @@ import org.greenfield.Account
 import org.greenfield.Product
 import org.greenfield.Catalog
 
+import org.greenfield.DevelopmentData
+
 import grails.converters.*
 import grails.plugin.springsecurity.annotation.Secured
 
+import grails.util.Environment
 
 class DevelopmentController {
 
@@ -29,12 +32,21 @@ class DevelopmentController {
 
 	@Secured(['ROLE_ADMIN'])
 	def generate_development_data(){
-		createCustomers()
-		createTopLevelCatalogs()
-		createSubCatalogs()
-		createProducts()
-		def products = Product.list()
-		render products as JSON	
+		def developmentData = new DevelopmentData(springSecurityService)
+		developmentData.init()
+	}
+	
+	
+	@Secured(['ROLE_ADMIN'])
+	def generate_development_data_old(){
+        if (Environment.current == Environment.DEVELOPMENT) {
+			createCustomers()
+			createTopLevelCatalogs()
+			createSubCatalogs()
+			createProducts()
+			def products = Product.list()
+			render products as JSON	
+		}
 	}
 
 
@@ -170,7 +182,7 @@ class DevelopmentController {
 
 		
 		//web programming books
-		(1..30).each{ i ->
+		(1..7).each{ i ->
 			def webbook = new Product()
 			webbook.name = "Web Programming ${i}"
 			webbook.price = i * 10
@@ -186,7 +198,7 @@ class DevelopmentController {
 		}
 		
 		
-		(1..45).each{ i ->	
+		(1..7).each{ i ->	
 			def algobook = new Product()
 			algobook.name = "Algorithms ${i}"
 			algobook.price = i * 10
@@ -202,7 +214,7 @@ class DevelopmentController {
 		}
 		
 		
-		(1..30).each{ i ->	
+		(1..7).each{ i ->	
 			def applebook = new Product()
 			applebook.name = "Apple Programming ${i}"
 			applebook.price = i * 10
@@ -218,7 +230,7 @@ class DevelopmentController {
 		}
 		
 		
-		(1..30).each{ i ->	
+		(1..7).each{ i ->	
 			def certbook = new Product()
 			certbook.name = "Certification ${i}"
 			certbook.price = i * 10
@@ -233,7 +245,7 @@ class DevelopmentController {
 		}
 
 		
-		(1..34).each{ i ->	
+		(1..7).each{ i ->	
 			def clothingProduct = new Product()
 			clothingProduct.name = "Clothing, Shoes & Jewelry ${i}"
 			clothingProduct.price = i * 10
@@ -244,7 +256,8 @@ class DevelopmentController {
 			clothingProduct.addToCatalogs(clothing)
 			clothingProduct.save(flush:true)
 		}
-		(1..13).each{ i ->	
+		
+		(1..7).each{ i ->	
 			def electronicProduct = new Product()
 			electronicProduct.name = "Electronics & Computers ${i}"
 			electronicProduct.price = i * 10
@@ -255,7 +268,8 @@ class DevelopmentController {
 			electronicProduct.addToCatalogs(electronics)
 			electronicProduct.save(flush:true)
 		}
-		(1..24).each{ i ->	
+		
+		(1..7).each{ i ->	
 			def sportsProduct = new Product()
 			sportsProduct.name = "Sports & Outdoors ${i}"
 			sportsProduct.price = i * 10

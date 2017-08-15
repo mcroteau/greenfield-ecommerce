@@ -1,4 +1,4 @@
-<%@ page import="org.greenfield.Catalog" %>
+<%@ page import="grails.util.Environment" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -15,7 +15,7 @@
 			}
 		</style>
 		
-		<div id="create-catalog" class="content scaffold-create" role="main">
+		<div id="configuration" class="content scaffold-create" role="main">
 		
 			<h2>Configuration</h2>
 		
@@ -47,8 +47,8 @@
 			<br/>
 			-->
 			
-			<g:link uri="/importExportData/export_data_view" class="btn btn-default">
-				<span class="glyphicon glyphicon-import"></span>
+			<g:link uri="/export/view" class="btn btn-default">
+				<span class="glyphicon glyphicon-export"></span>
 				Export All Data
 			</g:link>
 			<br/>
@@ -58,7 +58,16 @@
 				Import Data
 			</g:link>
 			<br/>
+
 			
+	
+			<g:if env="development">
+				<g:link uri="/development/generate_development_data" class="btn btn-default">
+					<span class="glyphicon glyphicon-retweet"></span>
+					Generate Data
+				</g:link>
+				<br/>
+			</g:if>
 		</div>
 	</body>
 </html>
