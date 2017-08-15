@@ -17,10 +17,11 @@ import java.io.InputStream
 import java.io.ByteArrayInputStream
 
 @Mixin(BaseController)
-class ExportDataController {
+class ExportController {
 	
  	@Secured(['ROLE_ADMIN'])
-	def view(){
+	def view_export(){
+		//TODO:add numbers of data to be exported
 	}
 
 	

@@ -4,7 +4,7 @@
 	<head>
 		<meta name="layout" content="admin">
 		<g:set var="entityName" value="${message(code: 'catalog.label', default: 'Catalog')}" />
-		<title>Greenfield : Import/Upload</title>
+		<title>Greenfield : Import/Export</title>
 	</head>
 	<body>
 		
@@ -17,7 +17,7 @@
 		
 		<div id="configuration" class="content scaffold-create" role="main">
 		
-			<h2>Configuration</h2>
+			<h2>Import/Export</h2>
 		
 			<g:if test="${flash.message}">
 				<div class="alert alert-info" role="status">${flash.message}</div>
@@ -33,12 +33,6 @@
 	
 			<br/>
 			
-			<g:link uri="/configuration/uploads" class="btn btn-default">
-				<span class="glyphicon glyphicon-upload"></span>
-				Uploads
-			</g:link>
-			<br/>
-			
 			<!--
 			<g:link uri="/configuration/import_products_view" class="btn btn-default">
 				<span class="glyphicon glyphicon-import"></span>
@@ -47,19 +41,26 @@
 			<br/>
 			-->
 			
-			<g:link uri="/export/view" class="btn btn-default">
+			<g:link uri="/export/view_export" class="btn btn-default">
 				<span class="glyphicon glyphicon-export"></span>
-				Export All Data
+				Export Data
 			</g:link>
 			<br/>
 			
-			<g:link uri="/importExportData/import_data_view" class="btn btn-default">
+			<g:link uri="/import/view_import" class="btn btn-default">
 				<span class="glyphicon glyphicon-import"></span>
 				Import Data
 			</g:link>
 			<br/>
 
-			
+	
+			<g:link uri="/configuration/uploads" class="btn btn-default">
+				<span class="glyphicon glyphicon-upload"></span>
+				Uploads
+			</g:link>
+			<br/>
+	
+	
 	
 			<g:if env="development">
 				<g:link uri="/development/generate_development_data" class="btn btn-default">

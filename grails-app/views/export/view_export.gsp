@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta name="layout" content="admin">
-		<title>Greenfield : Export Data View</title>
+		<title>Greenfield : View Export</title>
 	</head>
 	<body>
 		
