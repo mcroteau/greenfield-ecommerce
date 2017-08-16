@@ -44,80 +44,44 @@ class ExportController {
 			}
 		**/
 		
-		def accounts = Account.list()
-		println new JSON(accounts)
-		accounts = formatAccounts(accounts)
-		def accountsJson = new JSON(accounts)
+		def data = [:]
+		
+		if(params.exportAccounts == "on"){
+			def accounts = Account.list()
+			accounts = formatAccounts(accounts)
+			data['accounts'] = accounts
+		}
+		
+		if(params.exportPermissions == "on"){
+			def permissions = Permission.list()
+			permissions = formatPermissions(permissions)
+			data['permissions'] = permissions
+		}
+		
+		if(params.exportCatalogs == "on"){
+			def catalogs = Catalog.findAllByToplevel(true)
+			println "here..."
+			//println new JSON(catalogs)
+			catalogs = formatCatalogs(catalogs)
+			data['catalogs'] = catalogs
+		}
 		
 		
-		def permissions = Permission.list()
-		//def catalogs = Catalog.findAllByToplevel(true)
-		def catalogs = Catalog.list()
-		def products = Product.list()
-		
-		println catalogs.size()
-		//println new JsonBuilder(catalogs).toPrettyString()
 
-		//println JsonOutput.toJson(accounts)
-		println new JSON(accounts)
-		/**
-		def productOptions = ProductOption.list()
-		def variants = Variant.list()
-		def specifications = Specification.list()
-		def specificationOptions = SpecificationOption.list()
-		**/
-	
-		def json = formatJson(accounts)
+		def json = formatJson(data)
 		InputStream is = new ByteArrayInputStream(json.getBytes());
-		
-		//render accounts as JSON
 
-		render(file: is, fileName: "greenfield-data.json")
-		
-		
+		render(file: is, fileName: "greenfield-data.json")	
 	}
 	
-	
-	def formatJson(data){
-		def jsonData = new JSON(data)
-		def jsonString = jsonData.toString()
-		def jsonOutput = new JsonOutput()
-		return jsonOutput.prettyPrint(jsonString)
-	}
 	
 	
 	def formatAccounts(unformattedAccounts){
-		/**
-			Fields
-			
-			id
-			email
-		    username
-		    password
-			name	
-			address1
-			address2
-			city
-			state
-			zip
-			phone
-			ipAddress
-			enabled
-			accountExpired
-			accountLocked
-			passwordExpired
-			hasAdminRole
-			addressVerified	
-			dateCreated
-			lastUpdated		
-		**/
-		
 		def accounts = []
 		
 		unformattedAccounts.each(){ it ->
-			
 			def account = [:]
-			account['id'] = it.id
+			//account['id'] = it.id
 			account['email'] = it.email
 		    account['username'] = it.username
 		    account['password'] = it.password
@@ -146,6 +110,68 @@ class ExportController {
 		}
 		
 		return accounts
+	}
+	
+	
+	
+	def formatPermissions(unformattedPermissions){
+		def permissions = []
+	
+		unformattedPermissions.each(){ it ->
+			def permission = [:]
+			def account = it.account
+			permission['account'] = account.username
+			permission['permission'] = it.permission
+			permissions.add(permission)		
+		}
+		
+		return permissions
+	}
+	
+	
+	def formatCatalogs(unformattedCatalogs){
+		def catalogs = []
+		
+		unformattedCatalogs.each(){ catalog ->
+			def data = populateCatalogData(catalog)
+			catalogs.add(data)
+		}
+		
+		return catalogs
+	}
+	
+	
+	def getSubcatalogs(subcatalogs, catalog){
+		catalog.subcatalogs.each(){ itx ->
+			def data = populateCatalogData(itx)
+			subcatalogs.add(data)
+		}
+		return subcatalogs
+	}
+	
+	
+	def populateCatalogData(catalog){
+		def data = [:]
+		data['name'] = catalog.name
+		data['description'] = catalog?.description ? catalog.description : ""
+		data['toplevel'] = catalog.toplevel
+		data['position'] = catalog.position
+		data['parentCatalog'] = catalog.parentCatalog ? catalog.parentCatalog.name : null
+		data['subcatalogs'] = []
+		
+		if(catalog.subcatalogs){
+			data['subcatalogs'] = getSubcatalogs([], catalog)
+		}
+		
+		return data		
+	}
+	
+	
+	def formatJson(data){
+		def jsonData = new JSON(data)
+		def jsonString = jsonData.toString()
+		def jsonOutput = new JsonOutput()
+		return jsonOutput.prettyPrint(jsonString)
 	}
 	
 }

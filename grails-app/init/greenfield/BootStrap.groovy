@@ -97,7 +97,7 @@ class BootStrap {
 		if(Account.count() == 0){
 			//def password = new Sha256Hash('admin').toHex()
 			def password = springSecurityService.encodePassword("admin")
-			def adminAccount = new Account(username : 'admin', password : password, firstName : 'Admin', lastName: 'Admin', email : 'admin@email.com')
+			def adminAccount = new Account(username : 'admin', password : password, name : 'Admin', email : 'admin@email.com')
 			adminAccount.save(flush:true)
 			
 			adminAccount.createAdminAccountRole()
