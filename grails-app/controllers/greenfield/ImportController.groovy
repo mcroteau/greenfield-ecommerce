@@ -50,7 +50,7 @@ class ImportController {
 		}
 		
 		if(json['permissions']){
-			//savePermissionData(json['permissions'])
+			savePermissionData(json['permissions'])
 		}
 		
 		if(json['catalogs']){
@@ -60,6 +60,69 @@ class ImportController {
 		render(view : 'view_import')
 	}
 	
+	
+	def saveAccountData(accounts){
+		accounts.each(){ data ->
+			if(data.username != 'admin'){
+			
+				def existingAccount = Account.findByUsername(data.username)
+	
+				if(!existingAccount){
+					println data.username
+					def account = new Account()
+					//account.id = data.id
+					account.username = data.username
+					account.password = data.password
+					account.name = data.name
+					account.email = data.email
+					
+		            account.address1 = data.address1
+		            account.address2 = data.address2
+		            account.city = data.city
+		            account.state = State.get(data.state) ? State.get(data.state) : null
+		            account.zip = data.zip
+		            account.phone = data.phone
+		            account.ipAddress = data.ipAddress
+		            account.enabled = data.enabled
+		            account.accountExpired = data.accountExpired
+		            account.accountLocked = data.accountLocked
+		            account.passwordExpired = data.passwordExpired
+		            account.hasAdminRole = data.hasAdminRole
+		            account.addressVerified = data.addressVerified
+		            account.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.dateCreated)
+		            account.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.lastUpdated)
+					
+					account.save(flush:true)
+					
+					account.createAccountRoles(false)
+					account.createAccountPermission()
+				}
+			}
+		}
+	}
+	
+
+	
+	
+	def savePermissionData(permissions){
+		permissions.each(){ data ->
+			if(data['account'] && data['permission']){
+				def account = Account.findByUsername(data['account'])
+				
+				if(account){
+					
+					def existingPermission = Permission.findByAccountAndPermission(account, data['permission'])
+					
+					if(!existingPermission){
+						def permission = new Permission()
+						permission.account = account
+						permission.permission = data['permission']
+						permission.save(flush:true)
+					}
+				}
+			}
+		}
+	}
 	
 	
 	def saveCatalogData(catalogs){
@@ -115,68 +178,7 @@ class ImportController {
 	}
 	
 	
-	def savePermissionData(permissions){
-		permissions.each(){ data ->
-			if(data['account'] && data['permission']){
-				def account = Account.findByUsername(data['account'])
-				
-				if(account){
-					
-					def existingPermission = Permission.findByAccountAndPermission(account, data['permission'])
-					
-					if(!existingPermission){
-						def permission = new Permission()
-						permission.account = account
-						permission.permission = data['permission']
-						permission.save(flush:true)
-					}
-				}
-			}
-		}
-	}
 	
-	
-	def saveAccountData(accounts){
-		accounts.each(){ data ->
-			if(data.username != 'admin'){
-			
-				def existingAccount = Account.findByUsername(data.username)
-	
-				if(!existingAccount){
-					println data.username
-					def account = new Account()
-					//account.id = data.id
-					account.username = data.username
-					account.password = data.password
-					account.name = data.name
-					account.email = data.email
-					
-		            account.address1 = data.address1
-		            account.address2 = data.address2
-		            account.city = data.city
-		            account.state = State.get(data.state) ? State.get(data.state) : null
-		            account.zip = data.zip
-		            account.phone = data.phone
-		            account.ipAddress = data.ipAddress
-		            account.enabled = data.enabled
-		            account.accountExpired = data.accountExpired
-		            account.accountLocked = data.accountLocked
-		            account.passwordExpired = data.passwordExpired
-		            account.hasAdminRole = data.hasAdminRole
-		            account.addressVerified = data.addressVerified
-		            account.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.dateCreated)
-		            account.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.lastUpdated)
-					
-					account.save(flush:true)
-					
-					account.createAccountRoles(false)
-					account.createAccountPermission()
-				}
-			}
-		}
-	}
-	
-
 	def convert(jsonFile){    
 	    File convertedFile = new File(jsonFile.getOriginalFilename());
 	    convertedFile.createNewFile(); 
