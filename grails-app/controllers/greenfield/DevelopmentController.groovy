@@ -14,6 +14,7 @@ import grails.util.Environment
 class DevelopmentController {
 
 	/***
+		OLD DATA
 		Books
 			- Computers & Technology
 				- Networking
@@ -34,6 +35,7 @@ class DevelopmentController {
 	def generate_development_data(){
 		def developmentData = new DevelopmentData(springSecurityService)
 		developmentData.init()
+		redirect(controller:'configuration', action:'index')
 	}
 	
 	

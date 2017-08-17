@@ -4,6 +4,8 @@ import greenfield.common.BaseController
 import grails.plugin.springsecurity.annotation.Secured
 
 import org.greenfield.Account
+import org.greenfield.Permission
+import org.greenfield.Catalog
 import org.greenfield.State
 
 import java.io.File
@@ -18,17 +20,15 @@ class ImportController {
 	@Secured(['ROLE_ADMIN'])
 	def parse(){
 		def p = [:]
+		
 		def dateString = "2017-08-16T07:46:25Z"
-		//dateString = "2017-08-16T01:01:01Z"
-		//def date = Date.parse("yyyy-MM-dd'T'HH:mm:ssz", dateString)
 		def date = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", dateString)
-		
-		
 		
 		p['date'] = date
 		
 		render p as JSON
 	}
+	
 	
  	@Secured(['ROLE_ADMIN'])
 	def view_import(){
@@ -49,9 +49,93 @@ class ImportController {
 			saveAccountData(json['accounts'])
 		}
 		
+		if(json['permissions']){
+			//savePermissionData(json['permissions'])
+		}
+		
+		if(json['catalogs']){
+			saveCatalogData(json['catalogs'])
+		}
+		
 		render(view : 'view_import')
 	}
+	
+	
+	
+	def saveCatalogData(catalogs){
+		catalogs.each(){ data ->
+			def existingCatalog = Catalog.findByName(data['name'])
+			
+			if(!existingCatalog){
+				def catalog =  populateCatalogData(data)
+				catalog.toplevel = true
+				catalog.save(flush:true)
 
+				existingCatalog = catalog
+			}
+			if(data['subcatalogs']){
+				saveSubcatalogs(existingCatalog, data['subcatalogs'])
+			}
+		}
+	}
+	
+	
+	def saveSubcatalogs(parentCatalog, subcatalogs){
+		subcatalogs.each(){ data ->
+			def existingCatalog = Catalog.findByName(data['name'])
+			
+			if(!existingCatalog){
+				def catalog = populateCatalogData(data)
+				catalog.toplevel = false
+				catalog.save(flush:true)
+				
+				parentCatalog.addToSubcatalogs(catalog)
+				parentCatalog.save(flush:true)
+				
+				existingCatalog = catalog
+			}
+			println "data = " + data
+			if(data['subcatalogs']){
+				saveSubcatalogs(existingCatalog, data['subcatalogs'])
+			}
+		}
+	}
+	
+	
+	def populateCatalogData(data){
+		def catalog = new Catalog()
+		catalog.name = data['name']
+		catalog.description = data['description'] 
+		catalog.position = data['position']
+		def parentCatalog = Catalog.findByName(data['parentCatalog'])
+		if(parentCatalog){
+			catalog.parentCatalog = parentCatalog
+		}
+		return catalog
+	}
+	
+	
+	def savePermissionData(permissions){
+		permissions.each(){ data ->
+			if(data['account'] && data['permission']){
+				def account = Account.findByUsername(data['account'])
+				
+				if(account){
+					
+					def existingPermission = Permission.findByAccountAndPermission(account, data['permission'])
+					
+					if(!existingPermission){
+						def permission = new Permission()
+						permission.account = account
+						permission.permission = data['permission']
+						permission.save(flush:true)
+					}
+				}
+			}
+		}
+	}
+	
+	
 	def saveAccountData(accounts){
 		accounts.each(){ data ->
 			if(data.username != 'admin'){
@@ -88,7 +172,6 @@ class ImportController {
 					account.createAccountRoles(false)
 					account.createAccountPermission()
 				}
-
 			}
 		}
 	}
