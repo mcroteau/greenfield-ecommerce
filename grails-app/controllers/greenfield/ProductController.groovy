@@ -73,7 +73,7 @@ class ProductController {
 	
 	
 	@Secured(['permitAll'])
-	def details(Long id){        
+	def details(Long id){    
 		def productInstance = Product.get(id)
         if (!productInstance) {
             flash.message = "Product not found..."

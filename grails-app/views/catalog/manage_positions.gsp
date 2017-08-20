@@ -45,7 +45,7 @@
 		
 		<div class="content">
 		
-			<h2>Order Specifications
+			<h2>Order Catalogs
 				<g:link controller="catalog" action="list" class="btn btn-default pull-right" >Back to List View</g:link>
 				<g:link controller="catalog" action="menu_view" class="btn btn-default pull-right" style="display:inline-block;margin-right:5px">Menu View</g:link>
 			</h2>

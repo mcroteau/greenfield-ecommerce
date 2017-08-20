@@ -127,6 +127,47 @@ public class DevelopmentData {
         ]   
     ]
 
+	
+	def productOptions = [
+		[
+			"name" : "Color",
+			"catalog" : "Coffee Mugs",
+			"variants" : [ 
+				[
+					"name" : "Ivory",
+					"price" : 0
+				],
+				[
+					"name" : "Black",
+					"price" : 0
+				],
+				[
+					"name" : "Graphite",
+					"price" : 3
+				]
+			]
+		],
+		[
+			"name" : "Size",
+			"catalog" : "Coffee Mugs",
+			"variants" : [ 
+				[
+					"name" : "8oz",
+					"price" : 0
+				],
+				[
+					"name" : "12oz",
+					"price" : 3
+				],
+				[
+					"name" : "16oz",
+					"price" : 7
+				]
+			]
+		]	
+	]
+
+
 
 	def springSecurityService
 
@@ -141,6 +182,7 @@ public class DevelopmentData {
 		
 		createCatalogs()
 		createProducts()
+		createProductOptions()
         createSpecifications()
         createProductSpecifications()
 		createCustomers()
@@ -237,7 +279,43 @@ public class DevelopmentData {
         }
 	}
 	
-    
+    def createProductOptions(){
+		
+		productOptions.each() { po ->
+
+			def catalog = Catalog.findByName(po.catalog)
+			if(catalog){
+				def products = Product.createCriteria().list(){
+					catalogs {
+				    	idEq(catalog.id)
+				 	}
+				}
+				products.each(){ p ->
+					def productOption = new ProductOption()
+					productOption.name = po.name
+					productOption.product = p
+					productOption.save(flush:true)
+					
+					po.variants.each() { v -> 
+						def variant = new Variant()
+						variant.name = v.name
+						variant.price = v.price
+						variant.productOption = productOption
+						variant.save(flush:true)
+						
+						productOption.addToVariants(variant)
+						productOption.save(flush:true)
+					}
+				}
+			}
+		}
+		
+		println "Product Options : ${ProductOption.count()}"
+		println "Option Variants : ${Variant.count()}"
+	}
+	
+	
+	
     def createSpecifications(){
         specifications.eachWithIndex() { specificationObj, specificationPosition ->
             def specification = new Specification()

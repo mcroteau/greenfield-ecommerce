@@ -7,6 +7,8 @@ import org.greenfield.Account
 import org.greenfield.Permission
 import org.greenfield.Catalog
 import org.greenfield.Product
+import org.greenfield.ProductOption
+import org.greenfield.Variant
 
 import groovy.json.*
 import groovy.json.JsonOutput
@@ -34,7 +36,7 @@ class ExportController {
 				catalogs : []
 				products : []
 				productOptions : []
-				variants : []
+				optionVariants : []
 				specifications : []
 				specificationOptions : []
 				productSpecifications : []
@@ -52,28 +54,123 @@ class ExportController {
 			data['accounts'] = accounts
 		}
 		
+		/** TODO:might be unecessary, create permissions on account creation and transaction creation
 		if(params.exportPermissions == "on"){
 			def permissions = Permission.list()
 			permissions = formatPermissions(permissions)
 			data['permissions'] = permissions
 		}
+		**/
 		
 		if(params.exportCatalogs == "on"){
 			def catalogs = Catalog.findAllByToplevel(true)
-			println "here..."
-			//println new JSON(catalogs)
 			catalogs = formatCatalogs(catalogs)
 			data['catalogs'] = catalogs
 		}
 		
+		if(params.exportProducts == "on"){
+			def products = Product.list()
+			products = formatProducts(products)
+			data['products'] = products
+		}
 		
-
+		if(params.exportProductOptions == "on"){
+			def productOptions = ProductOption.list()
+			productOptions = formatProductOptions(productOptions)
+			data['productOptions'] = productOptions
+		}
+		
+		if(params.exportOptionVariants == "on"){
+			def variants = Variant.list()
+			println new JSON(variants)
+			variants = formatVariants(variants)
+			data['optionVariants'] = variants
+		}
+		
 		def json = formatJson(data)
 		InputStream is = new ByteArrayInputStream(json.getBytes());
 
 		render(file: is, fileName: "greenfield-data.json")	
 	}
 	
+	
+	def formatVariants(unformattedVariants){
+		def variants = []
+		unformattedVariants.each() { it ->
+			def variant = [:]
+			variant['name'] = it.name
+			variant['price'] = it.price
+			variant['position'] = it.position
+			variant['imageUrl'] = it.imageUrl
+			variant['productOption'] = it.productOption.name
+			variant['product'] = it.productOption.product.name
+			variants.add(variant)
+		}
+		return variants
+	}
+	
+	
+	def formatProductOptions(unformattedProductOptions){
+		def productOptions = []
+		unformattedProductOptions.each(){ it ->
+			def productOption = [:]
+			productOption['name'] = it.name
+			productOption['product'] = it.product.name
+			productOptions.add(productOption)
+		}
+		return productOptions
+	}
+	
+	
+	def formatProducts(unformattedProducts){
+		def products = []
+		unformattedProducts.each(){ it ->
+			def product = [:]
+			/** fields
+			name
+			description
+			quantity
+			price
+			imageUrl
+			detailsImageUrl
+			disabled
+			length
+			width
+			height
+			weight
+			productNo
+			dateCreated
+			lastUpdated
+			catalogs
+			**/
+			product['name'] = it.name
+			product['description'] = it.description
+			product['quantity'] = it.quantity
+			product['price'] = it.price
+			product['imageUrl'] = it.imageUrl
+			product['detailsImageUrl'] = it.detailsImageUrl
+			product['disabled'] = it.disabled
+			product['length'] = it.length
+			product['width'] = it.width
+			product['height'] = it.height
+			product['weight'] = it.weight
+			product['productNo'] = it.productNo
+			
+			product['dateCreated'] = it.dateCreated
+			product['lastUpdated'] = it.lastUpdated
+			
+			product['catalogs'] = []
+			
+			it.catalogs.each(){ itx ->
+				println itx
+				product['catalogs'].add(itx.name)
+			}
+			
+			products.add(product)
+		}
+		
+		return products
+	}
 	
 	
 	def formatAccounts(unformattedAccounts){

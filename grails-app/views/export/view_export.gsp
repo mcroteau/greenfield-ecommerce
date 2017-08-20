@@ -29,13 +29,26 @@
 				<table class="table borderless">
 					<tr>
 						<td>
-							<input type="checkbox" class="export-options" name="exportAccounts">&nbsp;Accounts
-						</td>
-						<td>
-							<input type="checkbox" class="export-options" name="exportPermissions">&nbsp;Permissions
+							<input type="checkbox" class="export-options" name="exportProducts">&nbsp;Products
 						</td>
 						<td>
 							<input type="checkbox" class="export-options" name="exportCatalogs">&nbsp;Catalogs
+						</td>
+						<td>
+							<input type="checkbox" class="export-options" name="exportAccounts">&nbsp;Accounts
+						</td>
+						<!-- TODO: might be unnecessary
+						<td>
+							<input type="checkbox" class="export-options" name="exportPermissions">&nbsp;Permissions
+						</td>
+						-->
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" class="export-options" name="exportProductOptions">&nbsp;Product Options
+						</td>
+						<td>
+							<input type="checkbox" class="export-options" name="exportOptionVariants">&nbsp;Option Variants
 						</td>
 					</tr>
 				</table>

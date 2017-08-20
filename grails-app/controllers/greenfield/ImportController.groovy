@@ -6,6 +6,7 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.greenfield.Account
 import org.greenfield.Permission
 import org.greenfield.Catalog
+import org.greenfield.Product
 import org.greenfield.State
 
 import java.io.File
@@ -57,7 +58,53 @@ class ImportController {
 			saveCatalogData(json['catalogs'])
 		}
 		
+		if(json['products']){
+			saveProductData(json['products'])
+		}
+		
 		render(view : 'view_import')
+	}
+	
+	
+	def saveProductData(products){
+		products.each(){ data ->
+			
+			def existingProduct = Product.findByName(data.name)
+			
+			if(!existingProduct){
+				def product = new Product()
+				product.name = data.name
+				product.description = data.description
+				product.quantity = data.quantity
+				product.price = data.price
+				product.imageUrl = data.imageUrl
+				product.detailsImageUrl = data.detailsImageUrl
+				product.disabled = data.disabled
+				product.length = data.length
+				product.width = data.width
+				product.height = data.height
+				product.weight = data.weight
+				product.productNo = data.productNo
+				
+				product.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.dateCreated)
+		    	product.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.lastUpdated)
+						
+				product.save(flush:true)
+					
+				existingProduct = product
+			}
+			
+			if(data.catalogs){
+				data.catalogs.each(){ datax ->
+					def catalog = Catalog.findByName(datax)
+					if(catalog){
+						existingProduct.addToCatalogs(catalog)
+						existingProduct.save(flush:true)
+					}
+
+				}
+			}
+		}
 	}
 	
 	
@@ -110,7 +157,6 @@ class ImportController {
 				def account = Account.findByUsername(data['account'])
 				
 				if(account){
-					
 					def existingPermission = Permission.findByAccountAndPermission(account, data['permission'])
 					
 					if(!existingPermission){
