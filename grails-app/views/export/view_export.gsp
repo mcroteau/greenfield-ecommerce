@@ -29,13 +29,13 @@
 				<table class="table borderless">
 					<tr>
 						<td>
-							<input type="checkbox" class="export-options" name="exportProducts">&nbsp;Products
+							<input type="checkbox" class="export-options" name="exportAccounts">&nbsp;Accounts
 						</td>
 						<td>
 							<input type="checkbox" class="export-options" name="exportCatalogs">&nbsp;Catalogs
 						</td>
 						<td>
-							<input type="checkbox" class="export-options" name="exportAccounts">&nbsp;Accounts
+							<input type="checkbox" class="export-options" name="exportProducts">&nbsp;Products
 						</td>
 						<!-- TODO: might be unnecessary
 						<td>
@@ -48,12 +48,40 @@
 							<input type="checkbox" class="export-options" name="exportProductOptions">&nbsp;Product Options
 						</td>
 						<td>
-							<input type="checkbox" class="export-options" name="exportOptionVariants">&nbsp;Option Variants
+							<input type="checkbox" class="export-options" name="exportSpecifications">&nbsp;Product Specifications
+						</td>
+						<td>
+							<input type="checkbox" class="export-options" name="exportAdditionalPhotos">&nbsp;Additional Photos
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" class="export-options" name="exportShoppingCarts">&nbsp;Shopping Carts
+						</td>
+						<td>
+							<input type="checkbox" class="export-options" name="exportOrders">&nbsp;Orders
+						</td>
+						<td>
+							<input type="checkbox" class="export-options" name="exportPages">&nbsp;Pages
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" class="export-options" name="exportUploads">&nbsp;Uploads
+						</td>
+						<td>
+							<input type="checkbox" class="export-options" name="exportLayout">&nbsp;Layout
+						</td>
+						<td>
+							<input type="checkbox" class="export-options" name="exportLogs">&nbsp;Logs
 						</td>
 					</tr>
 				</table>
 			
-				<g:submitButton name="export-data" class="btn btn-primary" value="Export Data"/>
+				<br/>
+				<div style="text-align:center">
+					<g:submitButton name="export-data" class="btn btn-primary" value="Export Data" style="margin:auto"/>
+				</div>
 			</g:form>
 		
 		</div>

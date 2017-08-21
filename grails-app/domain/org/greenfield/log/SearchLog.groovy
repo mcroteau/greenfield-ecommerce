@@ -11,7 +11,6 @@ class SearchLog {
 	Date dateCreated
 	Date lastUpdated
 	
-	
     static constraints = {
 		query(nullable:false)
 		account(nullable:true)

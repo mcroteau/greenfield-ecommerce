@@ -94,11 +94,11 @@ class SpecificationController {
                     if(optionId == "NONE" && product){
                         def existingProductSpec = ProductSpecification.findBySpecificationAndProduct(specificationInstance, product)
 
-
                         if(existingProductSpec){
                             product.removeFromProductSpecifications(existingProductSpec)
                             existingProductSpec.delete(flush:true)
                         }
+						
                     }else{
                         option = SpecificationOption.get(optionId)
                     }

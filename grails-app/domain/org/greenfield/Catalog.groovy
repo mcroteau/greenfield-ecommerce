@@ -1,6 +1,12 @@
 package org.greenfield
 
 class Catalog {
+	
+	Catalog(){
+		this.uuid = UUID.randomUUID().toString()
+	}
+	
+	String uuid
 
 	String name
 	String description
@@ -22,6 +28,7 @@ class Catalog {
 	}
 	
 	static constraints = {
+		uuid(nullable:true)
 		name(unique:true)
 		description(nullable:true,size:0..65535)			
 		parentCatalog(nullable:true)

@@ -1,6 +1,12 @@
 package org.greenfield
 
 class ShoppingCart {
+	
+	ShoppingCart(){
+		this.uuid = UUID.randomUUID().toString()
+	}
+	
+	String uuid
 
 	String status
 	BigDecimal taxes
@@ -22,6 +28,7 @@ class ShoppingCart {
 	static hasMany = [ shoppingCartItems : ShoppingCartItem ]
 	
     static constraints = {	
+		uuid(nullable:true)
 		status(nullable:false)
 		taxes(nullable:true)
 		shipping(nullable:true)

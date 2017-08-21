@@ -1,7 +1,13 @@
 package org.greenfield
 
 class SpecificationOption {
-
+	
+	SpecificationOption(){
+		this.uuid = UUID.randomUUID().toString()
+	}
+	
+	String uuid
+	
 	String name
     int position
 
@@ -15,6 +21,7 @@ class SpecificationOption {
     }
 
 	static constraints = {
+		uuid(nullable:true)
         name(nullable:false)
         position(nullable:false)
 		id generator: 'sequence', params:[sequence:'ID_SPECIFICATION_OPTION_PK_SEQ']

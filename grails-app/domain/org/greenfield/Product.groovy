@@ -1,8 +1,12 @@
 package org.greenfield
 
 class Product {
-
-	String productNo
+	
+	Product(){
+		this.uuid = UUID.randomUUID().toString()
+	}
+	
+	String uuid
 	
 	String name
 	String description
@@ -22,7 +26,8 @@ class Product {
 	double width
 	double height
 	double weight
-	
+
+	String productNo
 	
 	static hasMany = [ catalogs: Catalog, additionalPhotos: AdditionalPhoto, productOptions: ProductOption, productSpecifications: ProductSpecification ]
 	
@@ -35,11 +40,7 @@ class Product {
 	}
 	
     static constraints = {
-		length(nullable:true)
-		width(nullable:true)
-		height(nullable:true)
-		weight(nullable:false)
-		productNo(nullable:true)
+		uuid(nullable:true)
 		name(nullable:false, unique:true)
 		description(nullable:true,size:0..65535)
 		quantity(nullable:false)
@@ -47,6 +48,11 @@ class Product {
 		imageUrl(nullable:true)
 		disabled(nullable:true)
 		detailsImageUrl(nullable:true)
+		length(nullable:true)
+		width(nullable:true)
+		height(nullable:true)
+		weight(nullable:false)
+		productNo(nullable:true)
 		id generator: 'sequence', params:[sequence:'ID_PRODUCT_PK_SEQ']
     }
 }

@@ -12,7 +12,6 @@ class ProductViewLog {
 	Date dateCreated
 	Date lastUpdated
 	
-	
 	static constraints = {
 		product(nullable:false)
 		account(nullable:true)

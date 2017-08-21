@@ -12,7 +12,6 @@ class PageViewLog {
 	Date dateCreated
 	Date lastUpdated
 	
-	
 	static constraints = {
 		page(nullable:false)
 		account(nullable:true)

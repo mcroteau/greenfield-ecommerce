@@ -1,6 +1,12 @@
 package org.greenfield
 
 class Variant {
+	
+	Variant(){
+		this.uuid = UUID.randomUUID().toString()
+	}
+	
+	String uuid
 
 	String name
 	double price
@@ -15,6 +21,7 @@ class Variant {
 	}
 	
     static constraints = {
+		uuid(nullable:true)
         name(nullable: false, blank: false)
 		price(nullable: false)
 		imageUrl(nullable:true)

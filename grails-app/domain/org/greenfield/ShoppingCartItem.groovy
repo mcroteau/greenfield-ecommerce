@@ -1,6 +1,12 @@
 package org.greenfield
 
 class ShoppingCartItem {
+	
+	ShoppingCartItem(){
+		this.uuid = UUID.randomUUID().toString()
+	}
+	
+	String uuid
 
 	int quantity
 	
@@ -15,6 +21,7 @@ class ShoppingCartItem {
 	}
 		
     static constraints = {
+		uuid(nullable:true)
 		quantity(nullable:true)
 		id generator: 'sequence', params:[sequence:'ID_SHOPPING_CART_ITEM_PK_SEQ']
     }

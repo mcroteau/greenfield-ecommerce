@@ -26,7 +26,7 @@
 				<g:uploadForm action="upload" method="post" >
 				
 					<div class="form-group">
-						<label>Select File to Upload</label>
+						<label>Select file to upload</label>
 						<input type="file" name="file" id="file" />	
 					</div>
 					
@@ -35,7 +35,7 @@
 						<g:link action="index" name="cancel" class="btn btn-default">Cancel</g:link>
 						<g:submitButton name="add" class="btn btn-primary" value="Upload File" />
 					</div>
-					<p>File names may change during uploaded.</p>
+					<p class="secondary">File names may change during upload</p>
 				</g:uploadForm>
 				
 				<g:if test="${uploadInstanceList.size() > 0}">

@@ -27,7 +27,10 @@ class ImportController {
 		
 		p['date'] = date
 		
-		render p as JSON
+		def accounts = Account.list()
+		
+		
+		render accounts as JSON
 	}
 	
 	
@@ -50,9 +53,11 @@ class ImportController {
 			saveAccountData(json['accounts'])
 		}
 		
+		/** TODO:unnecessary?
 		if(json['permissions']){
 			savePermissionData(json['permissions'])
 		}
+		**/
 		
 		if(json['catalogs']){
 			saveCatalogData(json['catalogs'])
@@ -86,8 +91,8 @@ class ImportController {
 				product.weight = data.weight
 				product.productNo = data.productNo
 				
-				product.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.dateCreated)
-		    	product.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.lastUpdated)
+				product.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", data.dateCreated)
+		    	product.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", data.lastUpdated)
 						
 				product.save(flush:true)
 					
@@ -141,7 +146,11 @@ class ImportController {
 					
 					account.save(flush:true)
 					
-					account.createAccountRoles(false)
+					if(account.hasAdminRole){
+						account.createAccountRoles(true)
+					}else{
+						account.createAccountRoles(false)
+					}
 					account.createAccountPermission()
 				}
 			}

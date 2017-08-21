@@ -8,6 +8,12 @@ import org.greenfield.Role
 
 class Account {
 	
+	Account(){
+		this.uuid = UUID.randomUUID().toString()
+	}
+	
+	String uuid
+	
     String username
 	String email
     String password
@@ -114,6 +120,7 @@ class Account {
 
 
 	static constraints = {
+		uuid(nullable:true)
 		name(blank:true, nullable:true)
 		address1(nullable:true)
 		address2(nullable:true)
