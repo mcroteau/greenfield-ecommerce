@@ -117,6 +117,7 @@ class ImportController {
 					if(params.performImport == "true"){		
 						def productOption = new ProductOption()
 						productOption.uuid = data.uuid
+						productOption.name = data.name
 						productOption.product = product
 						productOption.save(flush:true)
 						
@@ -295,7 +296,7 @@ class ImportController {
 					
 				}
 				if(data.subcatalogs){
-					saveSubcatalogs(existingCatalog, data.subcatalogs)
+					saveSubcatalogs(catalog, data.subcatalogs)
 				}
 				catalogCount++
 			}
