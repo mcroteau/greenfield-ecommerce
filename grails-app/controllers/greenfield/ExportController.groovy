@@ -479,6 +479,8 @@ class ExportController {
 			
 			specificationOptions.add(specificationOption)
 		}
+		
+		return specificationOptions
 	}
 	
 	

@@ -1,0 +1,151 @@
+{
+    "catalogs": [
+        {
+            "uuid": "dbf573c5-cb1e-4db6-8859-c8fc40305f46",
+            "name": "Poker",
+            "description": "",
+            "position": 0,
+            "parentCatalog": null,
+            "subcatalogs": [
+                {
+                    "uuid": "0e203241-69b5-4edd-b8b0-d720bc821ff1",
+                    "name": "Poker Tables",
+                    "description": "",
+                    "position": 0,
+                    "parentCatalog": "Poker",
+                    "subcatalogs": [
+                        
+                    ]
+                },
+                {
+                    "uuid": "35e79f18-a833-4e35-a002-0f26ab47d746",
+                    "name": "Poker Chips",
+                    "description": "",
+                    "position": 0,
+                    "parentCatalog": "Poker",
+                    "subcatalogs": [
+                        {
+                            "uuid": "86357f9c-cf51-4c7f-8238-2559c685f66c",
+                            "name": "Ceramic Poker Chips",
+                            "description": "",
+                            "position": 0,
+                            "parentCatalog": "Poker Chips",
+                            "subcatalogs": [
+                                
+                            ]
+                        },
+                        {
+                            "uuid": "8aa5c7d5-d0f1-4329-8b6b-3c9d69b39014",
+                            "name": "Clay Poker Chips",
+                            "description": "",
+                            "position": 0,
+                            "parentCatalog": "Poker Chips",
+                            "subcatalogs": [
+                                
+                            ]
+                        },
+                        {
+                            "uuid": "2fda6e1f-9021-47c6-bee7-920fa3410979",
+                            "name": "Composite Poker Chips",
+                            "description": "",
+                            "position": 0,
+                            "parentCatalog": "Poker Chips",
+                            "subcatalogs": [
+                                
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "uuid": "0f48be25-a394-4459-b961-b29f5f20039c",
+                    "name": "Poker Chip Cases",
+                    "description": "",
+                    "position": 0,
+                    "parentCatalog": "Poker",
+                    "subcatalogs": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+            "uuid": "ae8a516c-c8ae-4da3-bbee-508122224308",
+            "name": "Card Decks",
+            "description": "",
+            "position": 0,
+            "parentCatalog": null,
+            "subcatalogs": [
+                
+            ]
+        },
+        {
+            "uuid": "ef5ce12f-0edd-44db-bdaf-8006bdd142fb",
+            "name": "Gaming Systems",
+            "description": "",
+            "position": 0,
+            "parentCatalog": null,
+            "subcatalogs": [
+                
+            ]
+        },
+        {
+            "uuid": "3f29f605-6cd2-464a-aca3-b8d3f822997e",
+            "name": "Collectibles",
+            "description": "",
+            "position": 0,
+            "parentCatalog": null,
+            "subcatalogs": [
+                {
+                    "uuid": "d9fc34d8-dad5-4fbc-ab9c-d784015ab801",
+                    "name": "Coffee Mugs",
+                    "description": "",
+                    "position": 0,
+                    "parentCatalog": "Collectibles",
+                    "subcatalogs": [
+                        
+                    ]
+                },
+                {
+                    "uuid": "7f2cf099-5054-49e1-9d9d-b9fe4bc87f04",
+                    "name": "Ornaments",
+                    "description": "",
+                    "position": 0,
+                    "parentCatalog": "Collectibles",
+                    "subcatalogs": [
+                        
+                    ]
+                },
+                {
+                    "uuid": "9f1fec39-178c-439b-a1ab-4540f156b8fb",
+                    "name": "Coasters",
+                    "description": "",
+                    "position": 0,
+                    "parentCatalog": "Collectibles",
+                    "subcatalogs": [
+                        
+                    ]
+                },
+                {
+                    "uuid": "e02312d0-7406-47a4-8731-751bf069539f",
+                    "name": "Keychains",
+                    "description": "",
+                    "position": 0,
+                    "parentCatalog": "Collectibles",
+                    "subcatalogs": [
+                        
+                    ]
+                },
+                {
+                    "uuid": "8140d6e6-f84c-46d7-91cf-ccf1fa4c5da2",
+                    "name": "Magnets",
+                    "description": "",
+                    "position": 0,
+                    "parentCatalog": "Collectibles",
+                    "subcatalogs": [
+                        
+                    ]
+                }
+            ]
+        }
+    ]
+}

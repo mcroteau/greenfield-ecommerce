@@ -71,28 +71,54 @@ class ImportController {
 		
 		try{
 			def jsonMultipartFile = request.getFile('json-data')
-		
-		
 			def jsonFile = convert(jsonMultipartFile)
 			
 			def jsonSlurper = new JsonSlurper()
 			def json = jsonSlurper.parseText(jsonFile.text)
 			
 			if(json['accounts']){
+				def accountsCount = Account.count()
 				saveAccountData(json['accounts'])
+				request.accountsImported = Account.count() - accountsCount
 			}
+			
 			
 			if(json['catalogs']){
-				saveCatalogData(json['catalogs'])
+				def catalogsCount = Catalog.count()
+				saveCatalogData(json['catalogs'])			
+				request.catalogsImported = Catalog.count() - catalogsCount
 			}
 			
-			if(json['productOptionData']){
-				saveProductOptionData(json['productOptionData'])
-			}
 			
 			if(json['products']){
+				def productCount = Product.count()
 				saveProductData(json['products'])
+				request.productsImported = Product.count() - productCount
 			}
+			
+			
+			if(json['productOptionData']){
+				def productOptionCount = ProductOption.count()
+				saveProductOptionData(json['productOptionData'])
+				request.productOptionsImported = ProductOption.count() - productOptionCount
+			}
+			
+			
+			if(json['specificationData']){
+				println "here..."
+				def specificationCount = Specification.count()
+				saveSpecificationData(json['specificationData'])
+				request.specificationsImported = Specification.count() - specificationCount
+			}
+			
+			
+			
+			if(params.performImport == "true"){
+				request.importResults = true
+			}else{
+				request.checkResults = true		
+			}
+			
 			
 			render(view: 'view_import')
 			
@@ -106,10 +132,103 @@ class ImportController {
 	}
 	
 	
+	def saveSpecificationData(specificationData){
+		/**
+        "specifications": [],
+        "specificationOptions": [],
+        "productSpecifications": []
+		**/
+		def count = 0
+		if(specificationData.specifications){
+			specificationData.specifications.each(){ sp ->
+									
+				def existingSpecification = Specification.findByUuid(sp.uuid)
+				if(!existingSpecification){
+					
+					if(params.performImport == "true"){	
+										
+						def specification = new Specification()
+						specification.uuid = sp.uuid
+	    	    		
+						specification.name = sp.name
+						specification.filterName = sp.filterName
+			    		specification.position = sp.position
+	    	    		
+						specification.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sp.dateCreated)
+						specification.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sp.lastUpdated)
+						
+						specification.save(flush:true)
+						
+						sp.catalogs.each(){ c ->
+							def catalog = Catalog.findByUuid(c)
+							if(catalog){
+								specification.addToCatalogs(catalog)
+								specification.save(flush:true)
+							}
+						}
+					}
+				}
+				
+				count++
+			}
+
+			if(params.performImport == "true"){	
+				if(Specification.count() > 0){
+					if(specificationData.specificationOptions){
+						println "specification options..."
+						specificationData.specificationOptions.each(){ spo ->
+							def specification = Specification.findByUuid(spo.specification)
+							if(specification){
+
+								def specificationOption = new SpecificationOption()
+								specificationOption.uuid
+								specificationOption.name
+						    	specificationOption.position
+                            	
+								specificationOption.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sp.dateCreated)
+								specificationOption.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sp.lastUpdated)
+								
+								specificationOption.specification = specification
+								specificationOption.save(flush:true)
+								
+								specification.addToSpecificationOptions(specificationOption)
+								specification.save(flush:true)
+							}
+						}
+					}
+				
+					if(specificationData.productSpecifications){
+						println "product specifications options..."
+						specificationData.productSpecifications.each(){ ps ->
+							def specification = Specification.findByUuid(ps.specification)
+							def specificationOption = SpecificationOption.findByUuid(ps.specificationOption)
+							def product = Product.findByUuid(ps.product)
+							
+							if(product && specification && specificationOption){
+								def productSpecification = new ProductSpecification()
+								//TODO: add uuid
+								productSpecification.product = product
+								productSpecification.specification = specification
+								productSpecification.specificationOption = specificationOption
+								productSpecification.save(flush:true)
+								
+								product.addToProductSpecifications(productSpecification)
+								product.save(flush:true)
+							}
+						}
+				
+					}
+				}
+			}
+		}
+		
+		request.productSpecificationsCount = count
+	}
+	
+	
 	def saveProductOptionData(productOptionData){
 		def count = 0
 		if(productOptionData.productOptions){
-			println "here..."
 			productOptionData.productOptions.each(){ data ->
 				def product = Product.findByUuid(data.product)
 				if(product){
@@ -122,8 +241,7 @@ class ImportController {
 						productOption.save(flush:true)
 						
 						product.addToProductOptions(productOption)
-						product.save(flush:true)
-					}
+						product.save(flush:true)					}
 					count++
 				}
 			}
@@ -162,7 +280,11 @@ class ImportController {
 		products.each(){ data ->
 			def existingProduct = Product.findByUuid(data.uuid)
 			
-			if(!existingProduct && data.catalogs){
+			if(!existingProduct && 
+					catalogsExist(data.catalogs)){
+				/**
+					TODO: requires all catalogs to be created. reconsider for updates
+				**/
 				def product = new Product()
 				product.uuid = data.uuid
 				product.name = data.name
@@ -198,6 +320,18 @@ class ImportController {
 			}
 			request.productsCount = count			
 		}
+	}
+	
+	
+	def catalogsExist(catalogs){
+		def allExist = true
+		catalogs.each(){ catalog ->
+			def existingCatalog = Catalog.findByUuid(catalog)
+			if(!existingCatalog){
+				allExist = false
+			}
+		}
+		return allExist
 	}
 	
 	
@@ -243,10 +377,6 @@ class ImportController {
 							account.createAccountRoles(false)
 						}
 						account.createAccountPermission()
-						
-						request.importResults = "show"
-					}else{
-						request.checkResults = "show"
 					}
 					
 					count++
