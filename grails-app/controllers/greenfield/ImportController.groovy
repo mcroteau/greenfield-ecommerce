@@ -111,9 +111,9 @@ class ImportController {
 			}
 			
 			
-			if(json['shoppingCarts']){
+			if(json['shoppingCartData']){
 				def shoppingCartCount = ShoppingCart.count()
-				saveShoppingCartData(json['shoppingCarts'])
+				saveShoppingCartData(json['shoppingCartData'])
 				request.shoppingCartsImported = ShoppingCart.count() - shoppingCartCount
 			}
 			
@@ -139,31 +139,84 @@ class ImportController {
 	}
 	
 	
-	def saveShoppingCartData(shoppingCarts){
+	def saveShoppingCartData(shoppingCartData){
 		def count = 0
-		shoppingCarts.each(){ sc ->
-			def account = Account.findByUuid(sc.account)
-			
-			def shoppingCart = new ShoppingCart()
-			shoppingCart.uuid = sc.uuid
-			shoppingCart.status = sc.status "TRANSACTION",
-            shoppingCart.taxes = sc.taxes
-            shoppingCart.shipping = sc.shipping
-            shoppingCart.subtotal = sc.subtotal
-            shoppingCart.total = sc.total
-            shoppingCart.account = account
-            shoppingCart.shipmentId = sc.shipmentId
-            shoppingCart.shipmentDays = sc.shipmentDays
-            shoppingCart.shipmentCarrier = sc.shipmentCarrier
-            shoppingCart.shipmentService = sc.shipmentService
-            shoppingCart.shipmentRateId = sc.shipmentRateId
-            shoppingCart.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.dateCreated)
-            shoppingCart.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.lastUpdated)
-			
-			if(params.performImport == "true"){	
+		if(shoppingCartData.shoppingCarts){
+		
+			shoppingCartData.shoppingCarts.each(){ sc ->
+				def account = Account.findByUuid(sc.account)
 				
+				def shoppingCart = new ShoppingCart()
+				shoppingCart.uuid = sc.uuid
+				shoppingCart.status = sc.status
+	        	shoppingCart.taxes = sc.taxes
+	        	shoppingCart.shipping = sc.shipping
+	        	shoppingCart.subtotal = sc.subtotal
+	        	shoppingCart.total = sc.total
+	        	shoppingCart.account = account
+	        	shoppingCart.shipmentId = sc.shipmentId
+	        	shoppingCart.shipmentDays = sc.shipmentDays
+	        	shoppingCart.shipmentCarrier = sc.shipmentCarrier
+	        	shoppingCart.shipmentService = sc.shipmentService
+	        	shoppingCart.shipmentRateId = sc.shipmentRateId
+	        	shoppingCart.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.dateCreated)
+	        	shoppingCart.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.lastUpdated)
+				
+				if(params.performImport == "true"){	
+					shoppingCart.save(flush:true)
+				}
+				count++
 			}
 		}
+		
+		if(params.performImport == "true"){	
+			if(shoppingCartData.shoppingCartItems){
+				shoppingCartData.shoppingCartItems.each(){ sci ->
+					
+					def existingShoppingCartItem = ShoppingCartItem.findByUuid(sci.uui)
+					
+					if(!existingShoppingCartItem){
+						
+						def product = Product.findByUuid(sci.product)
+						def shoppingCart = ShoppingCart.findByUuid(sci.shoppingCart)
+						
+						if(product && shoppingCart){
+							def shoppingCartItem = new ShoppingCartItem()
+							shoppingCartItem.uuid = sci.uuid
+							shoppingCartItem.quantity = sci.quantity
+							shoppingCartItem.product = product
+							shoppingCartItem.shoppingCart = shoppingCart
+							shoppingCartItem.save(flush:true)
+							
+							shoppingCart.addToShoppingCartItems(shoppingCartItem)
+							shoppingCart.save(flush:true)
+						}
+					}
+				}
+			
+				if(shoppingCartData.shoppingCartItemOptions){
+					shoppingCartData.shoppingCartItemOptions.each(){ scio ->
+						def variant = Variant.findByUuid(sci.variant)
+						def shoppingCartItem = ShoppingCartItem.findByUuid(sci.shoppingCartItem)
+						
+						if(variant && shoppingCartItem){
+							def shoppingCartItemOption = new ShoppingCartItemOption()
+							//TODO: add uuid
+							shoppingCartItemOption.variant = variant
+							shoppingCartItemOption.shoppingCartItem = shoppingCartItem
+							
+							shoppingCartItemOption.save(flush:true)
+							
+							shoppingCartItemOption.addToShoppingCartItemOptions(shoppingCartItemOption)
+							shoppingCartItemOption.save(flush:true)
+						}
+					}
+				}
+			}
+				
+		}
+		
+		request.shoppingCartsCount = count
 	}
 	
 	
