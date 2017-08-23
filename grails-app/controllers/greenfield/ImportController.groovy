@@ -105,10 +105,16 @@ class ImportController {
 			
 			
 			if(json['specificationData']){
-				println "here..."
 				def specificationCount = Specification.count()
 				saveSpecificationData(json['specificationData'])
 				request.specificationsImported = Specification.count() - specificationCount
+			}
+			
+			
+			if(json['shoppingCarts']){
+				def shoppingCartCount = ShoppingCart.count()
+				saveShoppingCartData(json['shoppingCarts'])
+				request.shoppingCartsImported = ShoppingCart.count() - shoppingCartCount
 			}
 			
 			
@@ -128,8 +134,38 @@ class ImportController {
 		}catch(Exception e){
 			flash.message = "Something went wrong, please try again"
 			redirect(action: 'view_import')
+			e.printStackTrace()
 		}
 	}
+	
+	
+	def saveShoppingCartData(shoppingCarts){
+		def count = 0
+		shoppingCarts.each(){ sc ->
+			def account = Account.findByUuid(sc.account)
+			
+			def shoppingCart = new ShoppingCart()
+			shoppingCart.uuid = sc.uuid
+			shoppingCart.status = sc.status "TRANSACTION",
+            shoppingCart.taxes = sc.taxes
+            shoppingCart.shipping = sc.shipping
+            shoppingCart.subtotal = sc.subtotal
+            shoppingCart.total = sc.total
+            shoppingCart.account = account
+            shoppingCart.shipmentId = sc.shipmentId
+            shoppingCart.shipmentDays = sc.shipmentDays
+            shoppingCart.shipmentCarrier = sc.shipmentCarrier
+            shoppingCart.shipmentService = sc.shipmentService
+            shoppingCart.shipmentRateId = sc.shipmentRateId
+            shoppingCart.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.dateCreated)
+            shoppingCart.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.lastUpdated)
+			
+			if(params.performImport == "true"){	
+				
+			}
+		}
+	}
+	
 	
 	
 	def saveSpecificationData(specificationData){
@@ -181,12 +217,12 @@ class ImportController {
 							if(specification){
 
 								def specificationOption = new SpecificationOption()
-								specificationOption.uuid
-								specificationOption.name
-						    	specificationOption.position
+								specificationOption.uuid = spo.uuid
+								specificationOption.name = spo.name
+						    	specificationOption.position = spo.position
                             	
-								specificationOption.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sp.dateCreated)
-								specificationOption.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sp.lastUpdated)
+								specificationOption.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", spo.dateCreated)
+								specificationOption.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", spo.lastUpdated)
 								
 								specificationOption.specification = specification
 								specificationOption.save(flush:true)

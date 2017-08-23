@@ -31,7 +31,7 @@
 			
 					<g:if test="${checkResults}">
 			
-						<h4 class="pull-left">Results Data Check </h4>
+						<h4 class="pull-left">Data Check Results</h4>
 			
 						<p class="secondary pull-left" style="margin:10px 10px">- Data to be imported on "Import Data"</p>
 						

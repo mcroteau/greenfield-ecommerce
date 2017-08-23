@@ -411,15 +411,16 @@ class ExportController {
 			shoppingCart['total'] = sc.total
 		
 			shoppingCart['account'] = sc.account.uuid
-		
-		  	shoppingCart['dateCreated'] = sc.dateCreated
-			shoppingCart['lastUpdated'] = sc.lastUpdated
-	
+			
 			shoppingCart['shipmentId'] = sc.shipmentId
 			shoppingCart['shipmentDays'] = sc.shipmentDays
 			shoppingCart['shipmentCarrier'] = sc.shipmentCarrier
 			shoppingCart['shipmentService'] = sc.shipmentService
 			shoppingCart['shipmentRateId'] = sc.shipmentRateId
+		
+		  	shoppingCart['dateCreated'] = sc.dateCreated
+			shoppingCart['lastUpdated'] = sc.lastUpdated
+	
 		
 			shoppingCarts.add(shoppingCart)
 		}
