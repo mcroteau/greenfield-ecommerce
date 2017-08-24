@@ -4,8 +4,9 @@ import org.apache.shiro.crypto.hash.Sha256Hash
 import org.greenfield.common.ShoppingCartStatus
 import org.greenfield.common.OrderStatus
 import org.greenfield.common.RoleName
-import org.greenfield.ShoppingCartItem
 import org.greenfield.ShoppingCart
+import org.greenfield.ShoppingCartItem
+import org.greenfield.ShoppingCartItemOption
 import org.greenfield.Transaction
 import org.greenfield.Account
 import org.greenfield.Product
@@ -22,14 +23,14 @@ public class DevelopmentData {
 
     def NUMBER_CUSTOMERS      = 0
 
-	def MAX_DAYS              = 90
+	def MAX_DAYS              = 30
 	def CUSTOMERS_COUNT       = 20
-	def ORDERS_COUNT          = 108
-	def PAGE_VIEWS_COUNT      = 130
-	def PRODUCT_VIEWS_COUNT   = 150
-	def CATALOG_VIEWS_COUNT   = 145
-	def SEARCH_QUERIES_COUNT  = 70
-	def ABANDONED_CARTS_COUNT = 25
+	def ORDERS_COUNT          = 23
+	def PAGE_VIEWS_COUNT      = 24
+	def PRODUCT_VIEWS_COUNT   = 27
+	def CATALOG_VIEWS_COUNT   = 30
+	def SEARCH_QUERIES_COUNT  = 20
+	def ABANDONED_CARTS_COUNT = 10
 	
 	
 	def queries = ["gaming systems", "slot machines", "rummy sets", "double decks", "porcelain dice", "dice set", "poker chips", "chip sets", "game machines", "price is right", "las vegas", "shot glasses", "poker tables", "table tops"]	
@@ -130,6 +131,70 @@ public class DevelopmentData {
 	
 	def productOptions = [
 		[
+			"name" : "Type",
+			"catalog" : "Coasters",
+			"variants" : [ 
+				[
+					"name" : "Cork",
+					"price" : 0
+				],
+				[
+					"name" : "Stone",
+					"price" : 13
+				]
+			]
+		],
+		[
+			"name" : "Type",
+			"catalog" : "Poker Chip Cases",
+			"variants" : [ 
+				[
+					"name" : "Oak",
+					"price" : 100
+				],
+				[
+					"name" : "Cherrywood",
+					"price" : 300
+				],
+				[
+					"name" : "Metal",
+					"price" : 0
+				]
+			]
+		],	
+		[
+			"name" : "Display",
+			"catalog" : "Gaming Systems",
+			"variants" : [ 
+				[
+					"name" : "Basic",
+					"price" : 0
+				],
+				[
+					"name" : "Full Color Digital",
+					"price" : 143
+				]
+			]
+		],		
+		[
+			"name" : "Size",
+			"catalog" : "Magnets",
+			"variants" : [ 
+				[
+					"name" : "Small",
+					"price" : 0
+				],
+				[
+					"name" : "Medium",
+					"price" : 10
+				],
+				[
+					"name" : "Large",
+					"price" : 20
+				]
+			]
+		],
+		[
 			"name" : "Color",
 			"catalog" : "Coffee Mugs",
 			"variants" : [ 
@@ -188,6 +253,7 @@ public class DevelopmentData {
 		createCustomers()
 		createOrders()
 		createActivityLogs()
+		createAbandonedCarts()
 	}
 	
 	
@@ -306,6 +372,9 @@ public class DevelopmentData {
 						productOption.addToVariants(variant)
 						productOption.save(flush:true)
 					}
+					
+					p.addToProductOptions(productOption)
+					p.save(flush:true)
 				}
 			}
 		}
@@ -473,13 +542,35 @@ public class DevelopmentData {
 					def shoppingCartItem = new ShoppingCartItem()
 					shoppingCartItem.quantity = quantity
 					shoppingCartItem.product = product
+					shoppingCartItem.save(flush:true)
+					
+					println "product ${product.name} product options ${product.productOptions}"
+					
+					def optionsTotal = 0
+					if(product.productOptions){
+						def productOption = product.productOptions[0]
+						
+						if(productOption.variants){
+							def variant = productOption?.variants[1]
+							
+							def shoppingCartItemOption = new ShoppingCartItemOption()
+							shoppingCartItemOption.variant = variant
+							shoppingCartItemOption.shoppingCartItem = shoppingCartItem
+							shoppingCartItemOption.save(flush:true)
+							
+							shoppingCartItem.addToShoppingCartItemOptions(shoppingCartItemOption)
+							shoppingCartItem.save(flush:true)
+							
+							optionsTotal = variant.price * quantity
+						}
+					}
+		
 					shoppingCart.addToShoppingCartItems(shoppingCartItem)
 					shoppingCart.save(flush:true)
-		
-
+					
 					shoppingCart.taxes = taxes
 					shoppingCart.shipping = shipping
-					shoppingCart.subtotal = (product.price * quantity)
+					shoppingCart.subtotal = (product.price * quantity) + optionsTotal
 					shoppingCart.total = shoppingCart.subtotal + taxes + shipping
 					shoppingCart.save(flush:true)
 					customer.createShoppingCartPermission(shoppingCart)
@@ -524,7 +615,6 @@ public class DevelopmentData {
 		generateProductViews()
 		generateCatalogViews()
 		generateSearchQueries()
-		generateAbandonedCarts()
 	}
 	
 	
@@ -641,7 +731,7 @@ public class DevelopmentData {
 	
 	
 	
-	def generateAbandonedCarts(){
+	def createAbandonedCarts(){
 		Random rand = new Random()
 		int productMax = Product.count()
 		
@@ -673,19 +763,41 @@ public class DevelopmentData {
 					def shoppingCartItem = new ShoppingCartItem()
 					shoppingCartItem.quantity = quantity
 					shoppingCartItem.product = product
-
+					shoppingCartItem.save(flush:true)
+					
+					println "product ${product.name} product options ${product.productOptions}"
+					def optionsTotal = 0
+					if(product.productOptions){
+						def productOption = product.productOptions[0]
+						
+						if(productOption.variants){
+							def variant = productOption?.variants[1]
+							
+							def shoppingCartItemOption = new ShoppingCartItemOption()
+							shoppingCartItemOption.variant = variant
+							shoppingCartItemOption.shoppingCartItem = shoppingCartItem
+							shoppingCartItemOption.save(flush:true)
+							
+							shoppingCartItem.addToShoppingCartItemOptions(shoppingCartItemOption)
+							shoppingCartItem.save(flush:true)
+							
+							optionsTotal = variant.price * quantity
+						}
+					}
+					
 					shoppingCart.addToShoppingCartItems(shoppingCartItem)
 					shoppingCart.save(flush:true)
 		
 					shoppingCart.taxes = taxes
 					shoppingCart.shipping = shipping
-					shoppingCart.subtotal = (product.price * quantity)
+					shoppingCart.subtotal = (product.price * quantity) + optionsTotal
 					shoppingCart.total = shoppingCart.subtotal + taxes + shipping
 					shoppingCart.save(flush:true)
 				}
 			}
 		}
 		
+		println "ShoppingCartItemOptions : ${ShoppingCartItemOption.count()}"
 		println "Abandoned/Active Carts : ${ShoppingCart.countByStatus(ShoppingCartStatus.ACTIVE.description())}"
 	}
 	

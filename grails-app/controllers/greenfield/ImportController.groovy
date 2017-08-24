@@ -111,9 +111,9 @@ class ImportController {
 			}
 			
 			
-			if(json['shoppingCartData']){
+			if(json['shoppingCarts']){
 				def shoppingCartCount = ShoppingCart.count()
-				saveShoppingCartData(json['shoppingCartData'])
+				saveShoppingCartData(json['shoppingCarts'])
 				request.shoppingCartsImported = ShoppingCart.count() - shoppingCartCount
 			}
 			
@@ -139,82 +139,82 @@ class ImportController {
 	}
 	
 	
-	def saveShoppingCartData(shoppingCartData){
+	
+	def saveShoppingCartData(shoppingCarts){
 		def count = 0
-		if(shoppingCartData.shoppingCarts){
+		if(shoppingCarts){
 		
-			shoppingCartData.shoppingCarts.each(){ sc ->
-				def account = Account.findByUuid(sc.account)
+			shoppingCarts.each(){ sc ->
 				
-				def shoppingCart = new ShoppingCart()
-				shoppingCart.uuid = sc.uuid
-				shoppingCart.status = sc.status
-	        	shoppingCart.taxes = sc.taxes
-	        	shoppingCart.shipping = sc.shipping
-	        	shoppingCart.subtotal = sc.subtotal
-	        	shoppingCart.total = sc.total
-	        	shoppingCart.account = account
-	        	shoppingCart.shipmentId = sc.shipmentId
-	        	shoppingCart.shipmentDays = sc.shipmentDays
-	        	shoppingCart.shipmentCarrier = sc.shipmentCarrier
-	        	shoppingCart.shipmentService = sc.shipmentService
-	        	shoppingCart.shipmentRateId = sc.shipmentRateId
-	        	shoppingCart.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.dateCreated)
-	        	shoppingCart.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.lastUpdated)
+				def existingShoppingCart = ShoppingCart.findByUuid(sc.uuid)
 				
-				if(params.performImport == "true"){	
-					shoppingCart.save(flush:true)
+				if(!existingShoppingCart){
+					def account = Account.findByUuid(sc.account)
+				
+					def shoppingCart = new ShoppingCart()
+					shoppingCart.uuid = sc.uuid
+					shoppingCart.status = sc.status
+	        		shoppingCart.taxes = sc.taxes
+	        		shoppingCart.shipping = sc.shipping
+	        		shoppingCart.subtotal = sc.subtotal
+	        		shoppingCart.total = sc.total
+	        		shoppingCart.account = account
+	        		shoppingCart.shipmentId = sc.shipmentId
+	        		shoppingCart.shipmentDays = sc.shipmentDays
+	        		shoppingCart.shipmentCarrier = sc.shipmentCarrier
+	        		shoppingCart.shipmentService = sc.shipmentService
+	        		shoppingCart.shipmentRateId = sc.shipmentRateId
+	        		shoppingCart.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.dateCreated)
+	        		shoppingCart.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.lastUpdated)
+					
+					if(sc.shoppingCartItems && 
+							params.performImport == "true"){	
+						
+						shoppingCart.save(flush:true)
+								
+						shoppingCart.shoppingCartItems.each(){ sci ->
+							def product = Product.findByUuid(sci.product)
+							
+							if(product){
+								
+								def shoppingCartItem = new ShoppingCartItem()
+								shoppingCartItem.uuid = sci.uuid
+								shoppingCartItem.quantity = sci.quantity
+								shoppingCartItem.product = product
+								shoppingCartItem.shoppingCart = shoppingCart
+								shoppingCartItem.save(flush:true)
+								
+								shoppingCart.addToShoppingCartItems(shoppingCartItem)
+								shoppingCart.save(flush:true)
+								
+								if(sci.shoppingCartItemOptions){
+									sci.shoppingCartItemOptions.each(){ scio ->
+										
+										def variant = Variant.findByUuid(scio.variant)
+										if(variant){
+											def shoppingCartItemOption = new ShoppingCartItemOption()
+											shoppingCartItemOption.uuid = scio.uuid
+											shoppingCartItemOption.variant = variant
+											shoppingCartItemOption.shoppingCartItem = shoppingCartItem
+											shoppingCartItemOption.save(flush:true)
+											
+											shoppingCartItem.addToShoppingCartItemOptions(shoppingCartItemOption)
+											shoppingCartItem.save(flush:true)
+										}
+										
+									}
+								}
+							}
+						}
+						
+						shoppingCart.save(flush:true)
+						
+					}
+					count++
 				}
-				count++
 			}
 		}
 		
-		if(params.performImport == "true"){	
-			if(shoppingCartData.shoppingCartItems){
-				shoppingCartData.shoppingCartItems.each(){ sci ->
-					
-					def existingShoppingCartItem = ShoppingCartItem.findByUuid(sci.uui)
-					
-					if(!existingShoppingCartItem){
-						
-						def product = Product.findByUuid(sci.product)
-						def shoppingCart = ShoppingCart.findByUuid(sci.shoppingCart)
-						
-						if(product && shoppingCart){
-							def shoppingCartItem = new ShoppingCartItem()
-							shoppingCartItem.uuid = sci.uuid
-							shoppingCartItem.quantity = sci.quantity
-							shoppingCartItem.product = product
-							shoppingCartItem.shoppingCart = shoppingCart
-							shoppingCartItem.save(flush:true)
-							
-							shoppingCart.addToShoppingCartItems(shoppingCartItem)
-							shoppingCart.save(flush:true)
-						}
-					}
-				}
-			
-				if(shoppingCartData.shoppingCartItemOptions){
-					shoppingCartData.shoppingCartItemOptions.each(){ scio ->
-						def variant = Variant.findByUuid(sci.variant)
-						def shoppingCartItem = ShoppingCartItem.findByUuid(sci.shoppingCartItem)
-						
-						if(variant && shoppingCartItem){
-							def shoppingCartItemOption = new ShoppingCartItemOption()
-							//TODO: add uuid
-							shoppingCartItemOption.variant = variant
-							shoppingCartItemOption.shoppingCartItem = shoppingCartItem
-							
-							shoppingCartItemOption.save(flush:true)
-							
-							shoppingCartItemOption.addToShoppingCartItemOptions(shoppingCartItemOption)
-							shoppingCartItemOption.save(flush:true)
-						}
-					}
-				}
-			}
-				
-		}
 		
 		request.shoppingCartsCount = count
 	}
@@ -256,9 +256,12 @@ class ImportController {
 							}
 						}
 					}
+				
+					count++
+				}else{
+					flash.message = "Not all data will import as some data already exists with the same identifier"
 				}
 				
-				count++
 			}
 
 			if(params.performImport == "true"){	
@@ -318,40 +321,55 @@ class ImportController {
 	def saveProductOptionData(productOptionData){
 		def count = 0
 		if(productOptionData.productOptions){
-			productOptionData.productOptions.each(){ data ->
-				def product = Product.findByUuid(data.product)
-				if(product){
-					println "product = " + product
-					if(params.performImport == "true"){		
-						def productOption = new ProductOption()
-						productOption.uuid = data.uuid
-						productOption.name = data.name
-						productOption.product = product
-						productOption.save(flush:true)
-						
-						product.addToProductOptions(productOption)
-						product.save(flush:true)					}
-					count++
+			productOptionData.productOptions.each(){ po ->
+				
+				def existingProductOption = ProductOption.findByUuid(po.uuid)
+				if(!existingProductOption){
+				
+					def product = Product.findByUuid(po.product)
+					
+					if(product){
+						println "product = " + product
+						if(params.performImport == "true"){		
+							def productOption = new ProductOption()
+							productOption.uuid = po.uuid
+							productOption.name = po.name
+							productOption.product = product
+							productOption.save(flush:true)
+							
+							product.addToProductOptions(productOption)
+							product.save(flush:true)					
+						}
+						count++
+					}
+				}else{
+					flash.message = "Not all data will import as some data already exists with the same identifier"
 				}
 			}
 			
 			if(productOptionData.optionVariants){
-				productOptionData.optionVariants.each(){ datac ->
-					def productOption = ProductOption.findByUuid(datac.productOption)
+				productOptionData.optionVariants.each(){ v ->
+					def productOption = ProductOption.findByUuid(v.productOption)
 					
 					if(productOption){	
-						def variant = new Variant()
-						variant.uuid = datac.uuid
-						variant.name = datac.name
-						variant.price = datac.price
-						variant.imageUrl = datac.imageUrl
-						variant.position = datac.position
-						variant.productOption = productOption
-
-						if(params.performImport == "true"){	
-							variant.save(flush:true)
-							productOption.addToVariants(variant)
-							productOption.save(flush:true)
+						
+						def existingVariant = Variant.findByUuid(v.uuid)
+						
+						if(!existingVariant){
+							def variant = new Variant()
+						
+							variant.uuid = v.uuid
+							variant.name = v.name
+							variant.price = v.price
+							variant.imageUrl = v.imageUrl
+							variant.position = v.position
+							variant.productOption = productOption
+                        	
+							if(params.performImport == "true"){	
+								variant.save(flush:true)
+								productOption.addToVariants(variant)
+								productOption.save(flush:true)
+							}
 						}
 					}
 				}
@@ -369,43 +387,47 @@ class ImportController {
 		products.each(){ data ->
 			def existingProduct = Product.findByUuid(data.uuid)
 			
-			if(!existingProduct && 
-					catalogsExist(data.catalogs)){
+			if(!existingProduct){
 				/**
 					TODO: requires all catalogs to be created. reconsider for updates
 				**/
-				def product = new Product()
-				product.uuid = data.uuid
-				product.name = data.name
-				product.description = data.description
-				product.quantity = data.quantity
-				product.price = data.price
-				product.imageUrl = data.imageUrl
-				product.detailsImageUrl = data.detailsImageUrl
-				product.disabled = data.disabled
-				product.length = data.length
-				product.width = data.width
-				product.height = data.height
-				product.weight = data.weight
-				product.productNo = data.productNo
+				if(catalogsExist(data.catalogs)){
 				
-				product.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", data.dateCreated)
-		    	product.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", data.lastUpdated)
-						
-				if(params.performImport == "true"){		
-					product.save(flush:true)
-			    	
-					data.catalogs.each(){ c ->
-						def catalog = Catalog.findByUuid(c)
-						if(catalog){
-							product.addToCatalogs(catalog)
-							product.save(flush:true)
+					def product = new Product()
+					product.uuid = data.uuid
+					product.name = data.name
+					product.description = data.description
+					product.quantity = data.quantity
+					product.price = data.price
+					product.imageUrl = data.imageUrl
+					product.detailsImageUrl = data.detailsImageUrl
+					product.disabled = data.disabled
+					product.length = data.length
+					product.width = data.width
+					product.height = data.height
+					product.weight = data.weight
+					product.productNo = data.productNo
+					
+					product.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", data.dateCreated)
+		    		product.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", data.lastUpdated)
+							
+					if(params.performImport == "true"){		
+						product.save(flush:true)
+			    		
+						data.catalogs.each(){ c ->
+							def catalog = Catalog.findByUuid(c)
+							if(catalog){
+								product.addToCatalogs(catalog)
+								product.save(flush:true)
+							}
 						}
 					}
-				}
-				count++			
+					count++		
+				}else{
+					flash.message = "Make sure catalogs have been imported before products otherwise products will not be imported."
+				}	
 			}else{
-				flash.message = "Make sure catalogs have been imported before products otherwise products will not be imported."
+				flash.message = "Not all data will import as some data already exists with the same identifier"
 			}
 			request.productsCount = count			
 		}

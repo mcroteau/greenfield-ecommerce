@@ -45,10 +45,10 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="checkbox" class="export-options" name="exportProductOptions">&nbsp;Product Options
+							<input type="checkbox" class="export-options" name="exportProductOptions">&nbsp;Product Options &amp; Variants
 						</td>
 						<td>
-							<input type="checkbox" class="export-options" name="exportSpecifications">&nbsp;Product Specifications
+							<input type="checkbox" class="export-options" name="exportSpecifications">&nbsp;Product Specification Data
 						</td>
 						<td>
 							<input type="checkbox" class="export-options" name="exportAdditionalPhotos">&nbsp;Additional Photos

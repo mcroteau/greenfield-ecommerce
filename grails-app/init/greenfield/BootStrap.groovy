@@ -52,11 +52,11 @@ class BootStrap {
 		createRoles()
 		createAdmin()
 		//TODO: quick fix for dummy data
-		createCustomer()	
+		//createCustomer()	
 
 		println 'Accounts : ' + Account.count()
 		//Development Data
-		//createDevelopmentData()
+		createDevelopmentData()
 	}
 	
 	def createCustomer(){

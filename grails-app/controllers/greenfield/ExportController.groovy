@@ -135,17 +135,18 @@ class ExportController {
 		if(params.exportShoppingCarts == "on"){
 			def shoppingCarts = ShoppingCart.list()
 			shoppingCarts = formatShoppingCarts(shoppingCarts)
+			data['shoppingCarts'] = shoppingCarts
 			
-			def shoppingCartItems = ShoppingCartItem.list()
-			shoppingCartItems = formatShoppingCartItems(shoppingCartItems)
+			//def shoppingCartItems = ShoppingCartItem.list()
+			//shoppingCartItems = formatShoppingCartItems(shoppingCartItems)
 			
-			def shoppingCartItemOptions = ShoppingCartItemOption.list()
-			shoppingCartItemOptions = formatShoppingCartItemOptions(shoppingCartItemOptions)
+			//def shoppingCartItemOptions = ShoppingCartItemOption.list()
+			//shoppingCartItemOptions = formatShoppingCartItemOptions(shoppingCartItemOptions)
 			
-			data['shoppingCartData'] = [:]
-			data['shoppingCartData']['shoppingCarts'] = shoppingCarts
-			data['shoppingCartData']['shoppingCartItems'] = shoppingCartItems
-			data['shoppingCartData']['shoppingCartItemOptions'] = shoppingCartItemOptions
+			//data['shoppingCartData'] = [:]
+			//data['shoppingCartData']['shoppingCarts'] = shoppingCarts
+			//data['shoppingCartData']['shoppingCartItems'] = shoppingCartItems
+			//data['shoppingCartData']['shoppingCartItemOptions'] = shoppingCartItemOptions
 		
 		}
 		
@@ -364,7 +365,7 @@ class ExportController {
 		return transactions
 	}
 	
-	
+	/** TODO: cleanup if not used
 	def formatShoppingCartItemOptions(unformattedShoppingCartItemOptions){
 		def shoppingCartItemOptions = []
 		
@@ -395,34 +396,63 @@ class ExportController {
 		
 		return shoppingCartItems
 	}
-	
+	**/
 	
 	
 	def formatShoppingCarts(unformattedShoppingCarts){
 		def shoppingCarts = []
 
 		unformattedShoppingCarts.each(){ sc ->
-			def shoppingCart = [:]
-			shoppingCart['uuid'] = sc.uuid
-			shoppingCart['status'] = sc.status
-			shoppingCart['taxes'] = sc.taxes
-			shoppingCart['shipping'] = sc.shipping
-			shoppingCart['subtotal'] = sc.subtotal
-			shoppingCart['total'] = sc.total
-		
-			shoppingCart['account'] = sc.account.uuid
+			if(sc.shoppingCartItems){
+				def shoppingCart = [:]
+				shoppingCart['uuid'] = sc.uuid
+				shoppingCart['status'] = sc.status
+				shoppingCart['taxes'] = sc.taxes
+				shoppingCart['shipping'] = sc.shipping
+				shoppingCart['subtotal'] = sc.subtotal
+				shoppingCart['total'] = sc.total
+		    	
+				shoppingCart['account'] = sc.account.uuid
+				
+				shoppingCart['shipmentId'] = sc.shipmentId
+				shoppingCart['shipmentDays'] = sc.shipmentDays
+				shoppingCart['shipmentCarrier'] = sc.shipmentCarrier
+				shoppingCart['shipmentService'] = sc.shipmentService
+				shoppingCart['shipmentRateId'] = sc.shipmentRateId
+		    	
+		  		shoppingCart['dateCreated'] = sc.dateCreated
+				shoppingCart['lastUpdated'] = sc.lastUpdated
+	        		
+				shoppingCart['shoppingCartItems'] = []	
+				
+				sc.shoppingCartItems.each(){ sci ->
+					
+					def shoppingCartItem = [:]
+					shoppingCartItem['uuid'] = sci.uuid
+					shoppingCartItem['quantity'] = sci.quantity
+					shoppingCartItem['product'] = sci.product.uuid
+					shoppingCartItem['shoppingCart'] = sci.shoppingCart.uuid
+					
+					shoppingCartItem['shoppingCartItemOptions'] = []
+					
+					if(sci.shoppingCartItemOptions){
+						sci.shoppingCartItemOptions.each(){ scio ->
+							def shoppingCartItemOption = [:]
+							shoppingCartItemOption['uuid'] = scio.uuid
+							shoppingCartItemOption['variant'] = scio.variant.uuid
+							shoppingCartItemOption['shoppingCartItem'] = scio.shoppingCartItem.uuid
 			
-			shoppingCart['shipmentId'] = sc.shipmentId
-			shoppingCart['shipmentDays'] = sc.shipmentDays
-			shoppingCart['shipmentCarrier'] = sc.shipmentCarrier
-			shoppingCart['shipmentService'] = sc.shipmentService
-			shoppingCart['shipmentRateId'] = sc.shipmentRateId
-		
-		  	shoppingCart['dateCreated'] = sc.dateCreated
-			shoppingCart['lastUpdated'] = sc.lastUpdated
+							shoppingCartItem['shoppingCartItemOptions'].add(shoppingCartItemOption)
+						}
+					}
+			
+					shoppingCart['shoppingCartItems'].add(shoppingCartItem)
+				
+				}
+				
+				shoppingCarts.add(shoppingCart)
 	
-		
-			shoppingCarts.add(shoppingCart)
+			}
 		}
 		
 		return shoppingCarts
