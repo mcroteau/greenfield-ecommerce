@@ -51,25 +51,12 @@ class BootStrap {
 		createPages()
 		createRoles()
 		createAdmin()
-		//TODO: quick fix for dummy data
-		//createCustomer()	
 
 		println 'Accounts : ' + Account.count()
 		//Development Data
-		createDevelopmentData()
+		//createDevelopmentData()
 	}
 	
-	def createCustomer(){
-		//TODO:quick fix for missing data
-		def customerPassword = springSecurityService.encodePassword("password")
-		def customerAccount = new Account(username : 'customer', password : customerPassword, firstName : 'Customer', lastName: 'Customer', email : 'customer@email.com')
-		customerAccount.save(flush:true)
-
-		//TODO:cleanup
-		customerAccount.createAccountRoles(false)
-		customerAccount.createAccountPermission()
-	}
-
 	
 	def createDevelopmentData(){
 		def developmentData = new DevelopmentData(springSecurityService)

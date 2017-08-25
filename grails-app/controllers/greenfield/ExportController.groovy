@@ -187,11 +187,15 @@ class ExportController {
 			def searchLogs = SearchLog.list()
 			searchLogs = formatSearchLogs(searchLogs)
 			
+			def loginLogs = LoginLog.list()
+			loginLogs = formatLoginLogs(loginLogs)
+			
 			data['logs'] = [:]
 			data['logs']['catalogViewLogs'] = catalogViewLogs
 			data['logs']['productViewLogs'] = productViewLogs
 			data['logs']['pageViewLogs'] = pageViewLogs
 			data['logs']['searchLogs'] = searchLogs
+			data['logs']['loginLogs'] = loginLogs
 		}
 		
 		
@@ -202,12 +206,32 @@ class ExportController {
 	}
 	
 	
+	def formatLoginLogs(unformattedLoginLog){
+		def loginLogs = []
+		unformattedLoginLog.each(){ l ->
+			def loginLog = [:]
+			
+			loginLog['uuid'] = l.uuid
+			loginLog['ipAddress'] = l.ipAddress
+			loginLog['date'] = l.date
+			loginLog['account'] = l?.account ? sl.account.uuid : null
+			loginLog['dateCreated'] = l.dateCreated
+			loginLog['lastUpdated'] = l.lastUpdated
+			
+			loginLogs.add(loginLog)
+		}
+		
+		return loginLogs
+	}
+	
+	
 	def formatSearchLogs(unformattedSearchLogs){
 		def searchLogs = []
 		
 		unformattedSearchLogs.each(){ sl ->
 			def searchLog = [:]
 			
+			searchLog['uuid'] = sl.uuid
 			searchLog['query'] = sl.query
 			searchLog['account'] = sl?.account ? sl.account.uuid : null
 			searchLog['dateCreated'] = sl.dateCreated
@@ -226,6 +250,7 @@ class ExportController {
 		unformattedPageViewLogs.each(){ pvl ->
 			def pageViewLog = [:]
 			
+			pageViewLog['uuid'] = pvl.uuid
 			pageViewLog['page'] = pvl.page.uuid
 			pageViewLog['account'] = pvl?.account ? pvl.account.uuid : null
 			pageViewLog['dateCreated'] = pvl.dateCreated
@@ -244,6 +269,7 @@ class ExportController {
 		unformattedProductViewLogs.each(){ pvl ->
 			def productViewLog = [:]
 			
+			productViewLog['uuid'] = pvl.uuid
 			productViewLog['product'] = pvl.product.uuid
 			productViewLog['account'] = pvl?.account ? pvl.account.uuid : null
 			productViewLog['dateCreated'] = pvl.dateCreated
@@ -262,6 +288,7 @@ class ExportController {
 		unformattedCatalogViewLogs.each(){ cvl ->
 			def catalogViewLog = [:]
 			
+			catalogViewLog['uuid'] = cvl.uuid
 			catalogViewLog['catalog'] = cvl.catalog.uuid
 			catalogViewLog['account'] = cvl?.account ? cvl.account.uuid : null
 			catalogViewLog['dateCreated'] = cvl.dateCreated
@@ -276,7 +303,7 @@ class ExportController {
 	
 	def formatLayout(l){
 		def layout = [:]
-		layout['name'] = l.name
+		layout['uuid'] = l.uuid
 		layout['content'] = l.content
 		layout['dateCreated'] = l.dateCreated
 		layout['lastUpdated'] = l.lastUpdated
@@ -290,6 +317,7 @@ class ExportController {
 		
 		unformattedUploads.each(){ u ->
 			def upload = [:]
+			upload['uuid'] = u.uuid
 			upload['url'] = u.url
 			upload['dateCreated'] = u.dateCreated
 			upload['lastUpdated'] = u.lastUpdated
@@ -464,6 +492,7 @@ class ExportController {
 		
 		unformattedAdditionalPhotos.each(){ ap ->
 			def additionalPhoto = [:]
+			additionalPhoto['uuid'] = ap.uuid
 			additionalPhoto['name'] = ap.name
 			additionalPhoto['imageUrl'] = ap.imageUrl
 			additionalPhoto['detailsImageUrl'] = ap.detailsImageUrl

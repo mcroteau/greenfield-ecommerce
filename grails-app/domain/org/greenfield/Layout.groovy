@@ -1,7 +1,13 @@
 package org.greenfield
 
 class Layout {
-
+	
+	Layout(){
+		this.uuid = UUID.randomUUID().toString()
+	}
+	
+	String uuid
+	
 	String name
 	String content
 	
@@ -13,6 +19,7 @@ class Layout {
 	}
 	
 	static constraints = {
+		uuid(nullable:true)
 		name(unique:true)
 		content(size:0..65535)
 		id generator: 'sequence', params:[sequence:'ID_LAYOUT_PK_SEQ']

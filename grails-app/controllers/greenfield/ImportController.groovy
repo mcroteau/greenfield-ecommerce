@@ -40,9 +40,11 @@ import grails.converters.JSON
 
 @Mixin(BaseController)
 class ImportController {
-	
+
+	def logsImported = 0
 	def catalogCount = 0
-	
+	def pagesUpdated = 0
+
 	@Secured(['ROLE_ADMIN'])
 	def parse(){
 		def p = [:]
@@ -52,10 +54,10 @@ class ImportController {
 		
 		p['date'] = date
 		
-		def accounts = Account.list()
+		def shoppingCarts = ShoppingCart.list()
 		
 		
-		render accounts as JSON
+		render shoppingCarts as JSON
 	}
 	
 	
@@ -70,6 +72,7 @@ class ImportController {
 			
 		
 		try{
+			
 			def jsonMultipartFile = request.getFile('json-data')
 			def jsonFile = convert(jsonMultipartFile)
 			
@@ -111,12 +114,63 @@ class ImportController {
 			}
 			
 			
+			if(json['additionalPhotos']){
+				def additionalPhotosCount = AdditionalPhoto.count()
+				saveAdditionalPhotos(json['additionalPhotos'])
+				request.additionalPhotosImported = AdditionalPhoto.count() - additionalPhotosCount
+			
+			}
+			
+			
 			if(json['shoppingCarts']){
 				def shoppingCartCount = ShoppingCart.count()
 				saveShoppingCartData(json['shoppingCarts'])
 				request.shoppingCartsImported = ShoppingCart.count() - shoppingCartCount
 			}
 			
+			
+			if(json['orders']){
+				def ordersCount = Transaction.count()
+				saveTransactionData(json['orders'])
+				request.ordersImported = Transaction.count() - ordersCount
+			}
+			
+			
+			if(json['pages']){
+				def pagesCount = Page.count()
+				savePageData(json['pages'])
+				request.pagesImported = (Page.count() - pagesCount) + pagesUpdated
+			}
+		
+		
+			if(json['uploads']){
+				def uploadsCount = Upload.count()
+				saveUploadsData(json['uploads'])
+				request.uploadsImported = Upload.count() - uploadsCount
+			}
+			
+			
+			if(json['layout']){
+				saveLayoutData(json['layout'])
+				request.layoutImported = 1
+			}
+			
+			
+			if(json['logs']){
+				def catalogViewLogsCount = CatalogViewLog.count()
+				def productViewLogsCount = ProductViewLog.count()
+				def pageViewLogsCount = PageViewLog.count()
+				def searchQueriesCount = SearchLog.count()
+				
+				saveLogData(json['logs'])
+				
+				def queriesTotal = SearchLog.count() - searchQueriesCount
+				def pageViewsTotal = PageView.count() - pageViewLogCountCount
+				def productViewLogsTotal = ProductViewLog.count() - productViewLogsCount
+				def catalogViewLogsTotal = CatalogViewLog.count() - catalogViewLogsCount
+				
+				request.logsImported = queriesTotal + pageViewsTotal + productViewLogsTotal + catalogViewLogsTotal
+			}
 			
 			
 			if(params.performImport == "true"){
@@ -140,6 +194,278 @@ class ImportController {
 	
 	
 	
+	def saveLogData(logData){
+		def count = 0
+
+		if(logData.catalogViewLogs){
+			logData.catalogViewLogs.each(){ cvl ->
+				def existingCatalogViewLog = CatalogViewLog.findByUuid(cvl.uuid)
+				if(!existingCatalogViewLog){
+					def catalog = Catalog.findByUuid(cvl.uuid)
+					
+					if(catalog){
+						if(params.performImport == "true"){
+							def account = Account.findByUuid(cvl?.account)
+							def catalogViewLog = new CatalogViewLog()
+							catalogViewLog.uuid = cvl.uuid
+							catalogViewLog.catalog = catalog
+							catalogViewLog.account = account
+
+							catalogViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", cvl.dateCreated)
+							catalogViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", cvl.lastUpdated)
+							
+							//catalogViewLog.save(flush:true)
+						}
+						count++
+					}
+					
+				}
+			}
+		}
+
+
+		if(logData.productViewLogs){
+			logData.productViewLogs.each(){ pvl ->
+				
+				def existingProductViewLog = ProductViewLog.findByUuid(pvl.uuid)
+				if(!existingProductViewLog){
+					
+					def product = Product.findByUuid(pvl.uuid)
+					
+					if(product){
+						if(params.performImport == "true"){
+							
+							def account = Account.findByUuid(pvl?.account)
+							def productViewLog = new ProductViewLog()
+							productViewLog.uuid = pvl.uuid
+							productViewLog.product = product
+							productViewLog.account = account
+
+							productViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.dateCreated)
+							productViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.lastUpdated)
+							
+							//productViewLog.save(flush:true)
+						}
+						count++
+					}
+					
+				}
+			}
+		}	
+		
+
+
+		if(logData.pageViewLogs){
+			logData.pageViewLogs.each(){ pvl ->
+				
+				def existingPageViewLog = PageViewLog.findByUuid(pvl.uuid)
+				if(!existingPageViewLog){
+					
+					def page = Page.findByUuid(pvl.uuid)
+					
+					if(page){
+						if(params.performImport == "true"){
+							
+							def account = Account.findByUuid(pvl?.account)
+							def pageViewLog = new PageViewLog()
+							pageViewLog.uuid = pvl.uuid
+							pageViewLog.page = page
+							pageViewLog.account = account
+
+							pageViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.dateCreated)
+							pageViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.lastUpdated)
+							
+							//pageViewLog.save(flush:true)
+						}
+						count++
+					}
+					
+				}
+			}
+		}	
+		
+
+
+		if(logData.searchLogs){
+			logData.searchLogs.each(){ sl ->
+				
+				def existingSearchLog = SearchLog.findByUuid(sl.uuid)
+				if(!existingSearchLog){
+					
+					if(params.performImport == "true"){
+						
+						def account = Account.findByUuid(sl?.account)
+						def searchLog = new SearchLog()
+						searchLog.uuid = sl.uuid
+						searchLog.query = sl.query
+						searchLog.account = account
+
+						searchLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sl.dateCreated)
+						searchLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sl.lastUpdated)
+						
+						//searchLog.save(flush:true)
+					}
+					count++
+					
+				}
+			}
+		}		
+		
+		
+		request.logsCount = count
+	}
+	
+	
+	def saveLayoutData(layoutData){
+		if(params.performImport == "true"){
+			def layout = Layout.findByName("STORE_LAYOUT")
+			layout.uuid = layoutData.uuid
+			layout.content = layoutData.content
+			layout.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", layoutData.dateCreated)
+			layout.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", layoutData.lastUpdated)
+			layout.save(flush:true)
+		}
+		request.layoutCount = 1
+	}
+	
+	
+	def saveUploadsData(uploads){
+		def count = 0
+		uploads.each(){ u ->	
+			if(params.performImport == "true"){
+				
+				def existingUpload = Upload.findByUuid(u.uuid)
+				if(!existingUpload){
+					
+					def upload = new Upload()
+					upload.uuid = u.uuid
+					upload.url = u.url
+
+					upload.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", u.dateCreated)
+					upload.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", u.lastUpdated)
+				
+					upload.save(flush:true)
+				}
+			}
+			count++
+		}
+		request.uploadsCount = count
+	}
+	
+	
+	
+	def savePageData(pages){
+		def count = 0
+		pagesUpdated = 0
+		
+		pages.each(){ p ->
+			
+			if(params.performImport == "true"){
+				
+				def existingPage = Page.findByTitle(p.title)
+				if(existingPage){
+					existingPage.uuid = p.uuid
+					existingPage.title = p.title
+					existingPage.content = p.content
+					existingPage.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.dateCreated)
+					existingPage.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.lastUpdated)
+					
+					existingPage.save(flush:true)
+					
+					pagesUpdated++
+					
+				}else{
+					
+					def existingByUuid = Page.findByUuid(p.uuid)
+					
+					if(!existingByUuid){
+						println "not existing : ${existingByUuid} - ${p}"
+						def page = new Page()
+						page.uuid = p.uuid
+						page.title = p.title
+						page.content = p.content
+						page.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.dateCreated)
+						page.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.lastUpdated)
+					
+						page.save(flush:true)
+					}else{
+						existingByUuid.title = p.title
+						existingByUuid.title = p.title
+						existingByUuid.content = p.content
+						existingByUuid.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.dateCreated)
+						existingByUuid.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.lastUpdated)
+						existingByUuid.save(flush:true)
+						
+						pagesUpdated++
+					}
+				}
+			}
+			count++
+		}
+		request.pagesCount = count
+	}
+	
+	
+	def saveTransactionData(transactions){
+		def count = 0
+		
+		if(transactions){
+			transactions.each(){ t ->
+				def existingTransaction = Transaction.findByUuid(t.uuid)
+				if(!existingTransaction){
+					def transaction = new Transaction()
+					
+					def account = Account.findByUuid(t.account)
+					def shoppingCart = ShoppingCart.findByUuid(t.shoppingCart)
+					
+					if(account && shoppingCart){
+						
+						transaction.account = account
+						transaction.shoppingCart = shoppingCart
+						
+						transaction.total = t.total
+						transaction.subtotal = t.subtotal
+						transaction.shipping = t.shipping
+						transaction.taxes = t.taxes
+						
+						transaction.status = t.status
+						transaction.orderDate = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", t.orderDate)
+						
+						transaction.chargeId = t.chargeId
+						transaction.postageId = t.postageId
+						transaction.postageUrl = t.postageUrl
+	                	
+                    	transaction.shipName = t.shipName
+						transaction.shipAddress1 = t.shipAddress1
+						transaction.shipAddress2 = t.shipAddress2
+						transaction.shipCity = t.shipCity
+						transaction.shipState = State.get(t.shipState)
+						transaction.shipZip = t.shipZip
+	                	
+						transaction.billName = t.billName
+						transaction.billAddress1 = t.billAddress1
+						transaction.billAddress2 = t.billAddress2
+						transaction.billCity = t.billCity
+						transaction.billState = State.get(t.billState)
+						transaction.billZip = t.billZip
+	                	
+						transaction.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", t.dateCreated)
+						transaction.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", t.lastUpdated)
+						
+						transaction.save(flush:true)
+						
+						account.addToTransactions(transaction)
+						account.save(flush:true)
+						
+					}
+				}
+				count++
+			}		
+		}
+		request.ordersCount = count
+	}
+	
+	
 	def saveShoppingCartData(shoppingCarts){
 		def count = 0
 		if(shoppingCarts){
@@ -149,6 +475,8 @@ class ImportController {
 				def existingShoppingCart = ShoppingCart.findByUuid(sc.uuid)
 				
 				if(!existingShoppingCart){
+					println "no existing shopping cart"
+					
 					def account = Account.findByUuid(sc.account)
 				
 					def shoppingCart = new ShoppingCart()
@@ -169,10 +497,10 @@ class ImportController {
 					
 					if(sc.shoppingCartItems && 
 							params.performImport == "true"){	
-						
+							
 						shoppingCart.save(flush:true)
-								
-						shoppingCart.shoppingCartItems.each(){ sci ->
+										
+						sc.shoppingCartItems.each(){ sci ->
 							def product = Product.findByUuid(sci.product)
 							
 							if(product){
@@ -207,16 +535,52 @@ class ImportController {
 							}
 						}
 						
-						shoppingCart.save(flush:true)
-						
 					}
-					count++
+				}else{
+					message = message + "<br/>Some shopping carts already exist with the same identifier"
 				}
+				count++
 			}
 		}
 		
-		
 		request.shoppingCartsCount = count
+	}
+	
+	
+	
+	def saveAdditionalPhotos(additionalPhotos){
+		def count = 0
+		additionalPhotos.each(){ ap ->
+			
+			def product = Product.findByUuid(ap.product)
+			if(product){	
+				def existingAdditionalPhoto = AdditionalPhoto.findByUuid(ap.uuid)
+				
+				println "existing additional photo ${existingAdditionalPhoto}"
+				
+				if(!existingAdditionalPhoto && 
+					params.performImport == "true"){
+					
+					println "here..."
+					def additionalPhoto = new AdditionalPhoto()
+					additionalPhoto.uuid = ap.uuid
+					additionalPhoto.name = ap.name
+					additionalPhoto.imageUrl = ap.imageUrl
+					additionalPhoto.detailsImageUrl = ap.detailsImageUrl
+					
+					additionalPhoto.product = product
+					
+	        		additionalPhoto.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", ap.dateCreated)
+	        		additionalPhoto.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", ap.lastUpdated)
+					
+					additionalPhoto.save(flush:true)
+				}
+				count++
+			}else{
+				flash.message = "Not all data will be imported. Please make sure you have catalogs and products created"
+			}
+		}	
+		request.additionalPhotosCount = count
 	}
 	
 	
@@ -340,8 +704,10 @@ class ImportController {
 							product.addToProductOptions(productOption)
 							product.save(flush:true)					
 						}
-						count++
+					}else{
+						flash.message = "Not all product options will be imported"
 					}
+					count++
 				}else{
 					flash.message = "Not all data will import as some data already exists with the same identifier"
 				}
@@ -356,16 +722,16 @@ class ImportController {
 						def existingVariant = Variant.findByUuid(v.uuid)
 						
 						if(!existingVariant){
-							def variant = new Variant()
-						
-							variant.uuid = v.uuid
-							variant.name = v.name
-							variant.price = v.price
-							variant.imageUrl = v.imageUrl
-							variant.position = v.position
-							variant.productOption = productOption
-                        	
 							if(params.performImport == "true"){	
+						
+								def variant = new Variant()
+								variant.uuid = v.uuid
+								variant.name = v.name
+								variant.price = v.price
+								variant.imageUrl = v.imageUrl
+								variant.position = v.position
+								variant.productOption = productOption
+                        	
 								variant.save(flush:true)
 								productOption.addToVariants(variant)
 								productOption.save(flush:true)
@@ -412,20 +778,22 @@ class ImportController {
 		    		product.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", data.lastUpdated)
 							
 					if(params.performImport == "true"){		
-						product.save(flush:true)
+						
+						product.save(flush:true)//TODO:uncomment
 			    		
 						data.catalogs.each(){ c ->
 							def catalog = Catalog.findByUuid(c)
 							if(catalog){
 								product.addToCatalogs(catalog)
-								product.save(flush:true)
+								product.save(flush:true)//TODO:uncomment
 							}
 						}
-					}
-					count++		
+					}	
 				}else{
 					flash.message = "Make sure catalogs have been imported before products otherwise products will not be imported."
 				}	
+
+				count++	
 			}else{
 				flash.message = "Not all data will import as some data already exists with the same identifier"
 			}
@@ -492,6 +860,9 @@ class ImportController {
 					
 					count++
 					request.accountsCount = count
+					
+				}else{
+					//account already exists
 				}
 			}
 		}
@@ -499,6 +870,7 @@ class ImportController {
 	
 	
 	def saveCatalogData(catalogs){
+		println "save catalogs : ${catalogCount}" //TODO:singleton per life of application... fun
 		catalogCount = 0
 		catalogs.each(){ data ->
 			def existingCatalog = Catalog.findByUuid(data.uuid)
@@ -515,6 +887,8 @@ class ImportController {
 					saveSubcatalogs(catalog, data.subcatalogs)
 				}
 				catalogCount++
+			}else{
+				//TODO:catalog already exists
 			}
 		}
 		request.catalogsCount = catalogCount
@@ -559,7 +933,7 @@ class ImportController {
 	}
 	
 	
-	
+
 	def convert(jsonFile){    
 	    File convertedFile = new File(jsonFile.getOriginalFilename());
 	    convertedFile.createNewFile(); 

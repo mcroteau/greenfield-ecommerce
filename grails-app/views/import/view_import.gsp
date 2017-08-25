@@ -1,3 +1,4 @@
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -24,7 +25,7 @@
 					<g:uploadForm action="import_data" class="form-horizontal" >
 						<input type="file" name="json-data" id="json-data" />
 						<br/>
-						<g:submitButton name="import" class="btn btn-primary" value="Perform Import Data Check"/>		
+						<g:submitButton name="importCheck" class="btn btn-primary" value="Perform Import Data Check"/>		
 					</g:uploadForm>
 			
 			
@@ -54,7 +55,7 @@
 							</tr> 
 							<tr>
 								<td><strong>${uploadsCount ? uploadsCount : 0}</strong>&nbsp;:&nbsp;Uploads</td>
-								<td><strong>${layoutsCount ? layoutsCount : 0}</strong>&nbsp;:&nbsp;Layout</td>
+								<td><strong>${layoutCount ? layoutCount : 0}</strong>&nbsp;:&nbsp;Layout</td>
 								<td><strong>${logsCount ? logsCount : 0}</strong>&nbsp;:&nbsp;Logs</td>
 							</tr>
 						</table>
@@ -79,7 +80,12 @@
 						<input type="file" name="json-data" id="json-data" />
 						
 						<br/>
-						<g:submitButton name="import" class="btn btn-primary" value="Perform Import Data"/>
+						<g:submitButton name="import" class="btn btn-primary import-button-unique" value="Perform Import Data"/>					<br/>
+						<span id="processing" style="display:none; margin-top:20px;">
+							<img src="/${applicationService.getContextName()}/images/loading.gif" >
+							&nbsp;&nbsp;Processing import, please wait&nbsp;
+						</span>
+						<br/>
 					</g:uploadForm>
 					
 					
@@ -106,7 +112,7 @@
 							</tr> 
 							<tr>
 								<td><strong>${uploadsImported ? uploadsImported : 0}</strong>&nbsp;:&nbsp;Uploads</td>
-								<td><strong>${layoutsImported ? layoutsImported : 0}</strong>&nbsp;:&nbsp;Layout</td>
+								<td><strong>${layoutImported ? layoutImported : 0}</strong>&nbsp;:&nbsp;Layout</td>
 								<td><strong>${logsImported ? logsImported : 0}</strong>&nbsp;:&nbsp;Logs</td>
 							</tr>
 						</table>
@@ -115,5 +121,15 @@
 			</div>
 		</div>
 		
+		<script type="text/javascript">
+			var $processing = $('#processing')
+			var $importButton = $('.import-button-unique')
+			
+			$importButton.click(function(){
+				$processing.css({
+					"display" : "block"
+				})
+			})
+		</script>
 	</body>
 </html>	

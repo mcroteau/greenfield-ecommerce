@@ -1,6 +1,12 @@
 package org.greenfield
 
 class AdditionalPhoto {
+	
+	AdditionalPhoto(){
+		this.uuid = UUID.randomUUID().toString()
+	}
+	
+	String uuid
 
 	String name
 	String imageUrl
@@ -13,6 +19,7 @@ class AdditionalPhoto {
 	static belongsTo = [ product : Product ]
 	
     static constraints = {
+		uuid(nullable:true)
 		imageUrl(nullable:false)
     }
 }

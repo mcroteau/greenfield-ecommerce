@@ -1,6 +1,12 @@
 package org.greenfield
 
 class Transaction {
+	
+	Transaction(){
+		this.uuid = UUID.randomUUID().toString()
+	}
+	
+	String uuid
 
 	BigDecimal total
 	BigDecimal subtotal
@@ -45,13 +51,14 @@ class Transaction {
 	}
 	
     static constraints = {
-		chargeId(nullable:true)
+		uuid(nullable:true)
+		status(nullable:false)
 		total(nullable:false)
 		subtotal(nullable:false)
 		shipping(nullable:false)
 		taxes(nullable:false)
-		status(nullable:false)
 		orderDate(nullable:false)
+		chargeId(nullable:true)
 		postageId(nullable:true)
 		postageUrl(nullable:true)
 		shipName(nullable:false)
