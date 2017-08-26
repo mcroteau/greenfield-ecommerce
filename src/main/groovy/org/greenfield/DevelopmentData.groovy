@@ -41,7 +41,7 @@ public class DevelopmentData {
 			"subcatalogs" : [
 				[ 
                     "name" : "Poker Tables",
-                    "products" : 20 
+                    "products" : 17 
                 ],
 				[
 					"name" : "Poker Chips",
@@ -68,7 +68,7 @@ public class DevelopmentData {
 		 ],
 		 [ 
              "name" : "Card Decks",
-             "products" : 20 
+             "products" : 14 
          ],
 		 [ 
              "name" : "Gaming Systems",
@@ -79,23 +79,23 @@ public class DevelopmentData {
 		 	"subcatalogs" : [
 				[ 
                     "name" : "Coffee Mugs",
-                    "products" : 25
+                    "products" : 14
                 ],
 				[ 
                     "name" : "Ornaments",
-                    "products" : 15
+                    "products" : 7
                 ],
 				[ 
                     "name" : "Coasters",
-                    "products" : 10 
+                    "products" : 10
                 ],
 				[ 
                     "name" : "Keychains",
-                    "products" : 20 
+                    "products" : 10 
                 ],
 				[ 
                     "name" : "Magnets",
-                    "products" : 25 
+                    "products" : 13 
                 ]
 			]
 		]

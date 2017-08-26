@@ -29,6 +29,7 @@ import org.greenfield.log.CatalogViewLog
 import org.greenfield.log.PageViewLog
 import org.greenfield.log.ProductViewLog
 import org.greenfield.log.SearchLog
+
 import org.greenfield.State
 
 
@@ -165,11 +166,11 @@ class ImportController {
 				saveLogData(json['logs'])
 				
 				def queriesTotal = SearchLog.count() - searchQueriesCount
-				def pageViewsTotal = PageView.count() - pageViewLogCountCount
-				def productViewLogsTotal = ProductViewLog.count() - productViewLogsCount
-				def catalogViewLogsTotal = CatalogViewLog.count() - catalogViewLogsCount
+				def pageViewsTotal = PageViewLog.count() - pageViewLogsCount
+				def productViewsTotal = ProductViewLog.count() - productViewLogsCount
+				def catalogViewsTotal = CatalogViewLog.count() - catalogViewLogsCount
 				
-				request.logsImported = queriesTotal + pageViewsTotal + productViewLogsTotal + catalogViewLogsTotal
+				request.logsImported = queriesTotal + pageViewsTotal + productViewsTotal + catalogViewsTotal
 			}
 			
 			
@@ -199,9 +200,10 @@ class ImportController {
 
 		if(logData.catalogViewLogs){
 			logData.catalogViewLogs.each(){ cvl ->
+				
 				def existingCatalogViewLog = CatalogViewLog.findByUuid(cvl.uuid)
 				if(!existingCatalogViewLog){
-					def catalog = Catalog.findByUuid(cvl.uuid)
+					def catalog = Catalog.findByUuid(cvl.catalog)
 					
 					if(catalog){
 						if(params.performImport == "true"){
@@ -214,7 +216,7 @@ class ImportController {
 							catalogViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", cvl.dateCreated)
 							catalogViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", cvl.lastUpdated)
 							
-							//catalogViewLog.save(flush:true)
+							catalogViewLog.save(flush:true)
 						}
 						count++
 					}
@@ -222,6 +224,7 @@ class ImportController {
 				}
 			}
 		}
+		println "catalog views logs ${count}"
 
 
 		if(logData.productViewLogs){
@@ -230,8 +233,8 @@ class ImportController {
 				def existingProductViewLog = ProductViewLog.findByUuid(pvl.uuid)
 				if(!existingProductViewLog){
 					
-					def product = Product.findByUuid(pvl.uuid)
-					
+					def product = Product.findByUuid(pvl.product)
+					println "product ${product}"
 					if(product){
 						if(params.performImport == "true"){
 							
@@ -244,14 +247,14 @@ class ImportController {
 							productViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.dateCreated)
 							productViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.lastUpdated)
 							
-							//productViewLog.save(flush:true)
+							productViewLog.save(flush:true)
 						}
 						count++
 					}
-					
 				}
 			}
 		}	
+		println "product views logs ${count}"
 		
 
 
@@ -261,7 +264,7 @@ class ImportController {
 				def existingPageViewLog = PageViewLog.findByUuid(pvl.uuid)
 				if(!existingPageViewLog){
 					
-					def page = Page.findByUuid(pvl.uuid)
+					def page = Page.findByUuid(pvl.page)
 					
 					if(page){
 						if(params.performImport == "true"){
@@ -275,7 +278,7 @@ class ImportController {
 							pageViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.dateCreated)
 							pageViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.lastUpdated)
 							
-							//pageViewLog.save(flush:true)
+							pageViewLog.save(flush:true)
 						}
 						count++
 					}
@@ -283,12 +286,11 @@ class ImportController {
 				}
 			}
 		}	
-		
+		println "page views logs ${count}"
 
 
 		if(logData.searchLogs){
 			logData.searchLogs.each(){ sl ->
-				
 				def existingSearchLog = SearchLog.findByUuid(sl.uuid)
 				if(!existingSearchLog){
 					
@@ -303,14 +305,16 @@ class ImportController {
 						searchLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sl.dateCreated)
 						searchLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sl.lastUpdated)
 						
-						//searchLog.save(flush:true)
+						searchLog.save(flush:true)
 					}
 					count++
-					
 				}
 			}
 		}		
-		
+		println "search logs ${count}"
+
+
+		//TODO: LoginLogs
 		
 		request.logsCount = count
 	}
@@ -457,6 +461,8 @@ class ImportController {
 						account.addToTransactions(transaction)
 						account.save(flush:true)
 						
+						account.createTransactionPermission(account)
+						
 					}
 				}
 				count++
@@ -495,11 +501,16 @@ class ImportController {
 	        		shoppingCart.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.dateCreated)
 	        		shoppingCart.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.lastUpdated)
 					
+					
 					if(sc.shoppingCartItems && 
 							params.performImport == "true"){	
 							
 						shoppingCart.save(flush:true)
 										
+						if(account){
+							account.createShoppingCartPermission(shoppingCart)
+						}				
+						
 						sc.shoppingCartItems.each(){ sci ->
 							def product = Product.findByUuid(sci.product)
 							
@@ -586,11 +597,6 @@ class ImportController {
 	
 	
 	def saveSpecificationData(specificationData){
-		/**
-        "specifications": [],
-        "specificationOptions": [],
-        "productSpecifications": []
-		**/
 		def count = 0
 		if(specificationData.specifications){
 			specificationData.specifications.each(){ sp ->
@@ -612,30 +618,8 @@ class ImportController {
 						
 						specification.save(flush:true)
 						
-						sp.catalogs.each(){ c ->
-							def catalog = Catalog.findByUuid(c)
-							if(catalog){
-								specification.addToCatalogs(catalog)
-								specification.save(flush:true)
-							}
-						}
-					}
-				
-					count++
-				}else{
-					flash.message = "Not all data will import as some data already exists with the same identifier"
-				}
-				
-			}
-
-			if(params.performImport == "true"){	
-				if(Specification.count() > 0){
-					if(specificationData.specificationOptions){
-						println "specification options..."
-						specificationData.specificationOptions.each(){ spo ->
-							def specification = Specification.findByUuid(spo.specification)
-							if(specification){
-
+						if(sp.specificationOptions){
+							sp.specificationOptions.each(){ spo ->
 								def specificationOption = new SpecificationOption()
 								specificationOption.uuid = spo.uuid
 								specificationOption.name = spo.name
@@ -651,33 +635,52 @@ class ImportController {
 								specification.save(flush:true)
 							}
 						}
-					}
-				
-					if(specificationData.productSpecifications){
-						println "product specifications options..."
-						specificationData.productSpecifications.each(){ ps ->
-							def specification = Specification.findByUuid(ps.specification)
-							def specificationOption = SpecificationOption.findByUuid(ps.specificationOption)
-							def product = Product.findByUuid(ps.product)
-							
-							if(product && specification && specificationOption){
-								def productSpecification = new ProductSpecification()
-								//TODO: add uuid
-								productSpecification.product = product
-								productSpecification.specification = specification
-								productSpecification.specificationOption = specificationOption
-								productSpecification.save(flush:true)
-								
-								product.addToProductSpecifications(productSpecification)
-								product.save(flush:true)
+						
+						sp.catalogs.each(){ c ->
+							def catalog = Catalog.findByUuid(c)
+							if(catalog){
+								specification.addToCatalogs(catalog)
+								specification.save(flush:true)
 							}
 						}
+						
+					}
 				
+					count++
+				}else{
+					//TODO:existing specification
+				}
+				
+			}
+
+			if(params.performImport == "true"){	
+				if(specificationData.productSpecifications){
+					println "product specifications options..."
+					specificationData.productSpecifications.each(){ ps ->
+						
+						def specification = Specification.findByUuid(ps.specification)
+						def specificationOption = SpecificationOption.findByUuid(ps.specificationOption)
+						def product = Product.findByUuid(ps.product)
+						
+						if(product && 
+								specification && 
+									specificationOption){
+										
+							def productSpecification = new ProductSpecification()
+							
+							productSpecification.uuid = ps.uuid
+							productSpecification.product = product
+							productSpecification.specification = specification
+							productSpecification.specificationOption = specificationOption
+							productSpecification.save(flush:true)
+							
+							product.addToProductSpecifications(productSpecification)
+							product.save(flush:true)
+						}
 					}
 				}
 			}
 		}
-		
 		request.productSpecificationsCount = count
 	}
 	
@@ -693,7 +696,6 @@ class ImportController {
 					def product = Product.findByUuid(po.product)
 					
 					if(product){
-						println "product = " + product
 						if(params.performImport == "true"){		
 							def productOption = new ProductOption()
 							productOption.uuid = po.uuid
@@ -702,42 +704,30 @@ class ImportController {
 							productOption.save(flush:true)
 							
 							product.addToProductOptions(productOption)
-							product.save(flush:true)					
+							product.save(flush:true)	
+							
+							if(po.variants){
+								po.variants.each(){ v ->
+									def variant = new Variant()
+									variant.uuid = v.uuid
+									variant.name = v.name
+									variant.price = v.price
+									variant.imageUrl = v.imageUrl
+									variant.position = v.position
+									variant.productOption = productOption
+                        	
+									variant.save(flush:true)
+									productOption.addToVariants(variant)
+									productOption.save(flush:true)
+								}
+							}				
 						}
 					}else{
-						flash.message = "Not all product options will be imported"
+						//TODO: product doesn't exist
 					}
 					count++
 				}else{
-					flash.message = "Not all data will import as some data already exists with the same identifier"
-				}
-			}
-			
-			if(productOptionData.optionVariants){
-				productOptionData.optionVariants.each(){ v ->
-					def productOption = ProductOption.findByUuid(v.productOption)
-					
-					if(productOption){	
-						
-						def existingVariant = Variant.findByUuid(v.uuid)
-						
-						if(!existingVariant){
-							if(params.performImport == "true"){	
-						
-								def variant = new Variant()
-								variant.uuid = v.uuid
-								variant.name = v.name
-								variant.price = v.price
-								variant.imageUrl = v.imageUrl
-								variant.position = v.position
-								variant.productOption = productOption
-                        	
-								variant.save(flush:true)
-								productOption.addToVariants(variant)
-								productOption.save(flush:true)
-							}
-						}
-					}
+					//TODO:existing product option
 				}
 			}
 		}
@@ -822,7 +812,7 @@ class ImportController {
 				def existingAccount = Account.findByUsername(data.username)
 	
 				if(!existingAccount){
-					println data.username
+					
 					def account = new Account()
 					
 					account.uuid = data.uuid

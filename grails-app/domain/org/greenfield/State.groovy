@@ -2,6 +2,12 @@ package org.greenfield
 
 class State {
 	
+	State(){
+		this.uuid = UUID.randomUUID().toString()
+	}
+	
+	String uuid
+	
 	String name
 	
 	Country country
@@ -12,6 +18,7 @@ class State {
 	}
 		
     static constraints = {
+		uuid(nullable:true)
 		name(unique:true)
 		id generator: 'sequence', params:[sequence:'ID_STATE_PK_SEQ']
     }

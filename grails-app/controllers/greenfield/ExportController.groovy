@@ -29,6 +29,7 @@ import org.greenfield.log.CatalogViewLog
 import org.greenfield.log.PageViewLog
 import org.greenfield.log.ProductViewLog
 import org.greenfield.log.SearchLog
+import org.greenfield.log.LoginLog
 
 import groovy.json.*
 import groovy.json.JsonOutput
@@ -98,13 +99,15 @@ class ExportController {
 			
 			def productOptions = ProductOption.list()
 			productOptions = formatProductOptions(productOptions)
+
+			//TODO:nest variants within product options
+			//def variants = Variant.list()
+			//variants = formatVariants(variants)
 			
-			def variants = Variant.list()
-			variants = formatVariants(variants)
-			
-			data['productOptionData'] = [:]
-			data['productOptionData']['productOptions'] = productOptions
-			data['productOptionData']['optionVariants'] = variants
+			//data['productOptionData'] = [:]
+			data['productOptions'] = productOptions
+			//TODO:nest variants within product options
+			//data['productOptionData']['optionVariants'] = variants
 		}
 		
 		
@@ -112,15 +115,15 @@ class ExportController {
 			def specifications = Specification.list()
 			specifications = formatSpecifications(specifications)
 			
-			def specificationOptions = SpecificationOption.list()
-			specificationOptions = formatSpecificationOptions(specificationOptions)
+			//TODO:nesting specificationOptions within specification, remove
+			//def specificationOptions = SpecificationOption.list()
+			//specificationOptions = formatSpecificationOptions(specificationOptions)
 			
 			def productSpecifications = ProductSpecification.list()
 			productSpecifications = formatProductSpecifications(productSpecifications)
 			
 			data['specificationData'] = [:]
 			data['specificationData']['specifications'] = specifications
-			data['specificationData']['specificationOptions'] = specificationOptions
 			data['specificationData']['productSpecifications'] = productSpecifications
 			
 		}
@@ -136,18 +139,6 @@ class ExportController {
 			def shoppingCarts = ShoppingCart.list()
 			shoppingCarts = formatShoppingCarts(shoppingCarts)
 			data['shoppingCarts'] = shoppingCarts
-			
-			//def shoppingCartItems = ShoppingCartItem.list()
-			//shoppingCartItems = formatShoppingCartItems(shoppingCartItems)
-			
-			//def shoppingCartItemOptions = ShoppingCartItemOption.list()
-			//shoppingCartItemOptions = formatShoppingCartItemOptions(shoppingCartItemOptions)
-			
-			//data['shoppingCartData'] = [:]
-			//data['shoppingCartData']['shoppingCarts'] = shoppingCarts
-			//data['shoppingCartData']['shoppingCartItems'] = shoppingCartItems
-			//data['shoppingCartData']['shoppingCartItemOptions'] = shoppingCartItemOptions
-		
 		}
 		
 		if(params.exportOrders == "on"){
@@ -187,15 +178,15 @@ class ExportController {
 			def searchLogs = SearchLog.list()
 			searchLogs = formatSearchLogs(searchLogs)
 			
-			def loginLogs = LoginLog.list()
-			loginLogs = formatLoginLogs(loginLogs)
+			//TODO: add LoginLogs
+			//def loginLogs = LoginLog.list()
+			//loginLogs = formatLoginLogs(loginLogs)
 			
 			data['logs'] = [:]
 			data['logs']['catalogViewLogs'] = catalogViewLogs
 			data['logs']['productViewLogs'] = productViewLogs
 			data['logs']['pageViewLogs'] = pageViewLogs
 			data['logs']['searchLogs'] = searchLogs
-			data['logs']['loginLogs'] = loginLogs
 		}
 		
 		
@@ -205,24 +196,6 @@ class ExportController {
 		render(file: is, fileName: "greenfield-data.json")	
 	}
 	
-	
-	def formatLoginLogs(unformattedLoginLog){
-		def loginLogs = []
-		unformattedLoginLog.each(){ l ->
-			def loginLog = [:]
-			
-			loginLog['uuid'] = l.uuid
-			loginLog['ipAddress'] = l.ipAddress
-			loginLog['date'] = l.date
-			loginLog['account'] = l?.account ? sl.account.uuid : null
-			loginLog['dateCreated'] = l.dateCreated
-			loginLog['lastUpdated'] = l.lastUpdated
-			
-			loginLogs.add(loginLog)
-		}
-		
-		return loginLogs
-	}
 	
 	
 	def formatSearchLogs(unformattedSearchLogs){
@@ -393,38 +366,6 @@ class ExportController {
 		return transactions
 	}
 	
-	/** TODO: cleanup if not used
-	def formatShoppingCartItemOptions(unformattedShoppingCartItemOptions){
-		def shoppingCartItemOptions = []
-		
-		unformattedShoppingCartItemOptions.each(){ scio ->
-			def shoppingCartItemOption = [:]
-			shoppingCartItemOption['variant'] = scio.variant.uuid
-			shoppingCartItemOption['shoppingCartItem'] = scio.shoppingCartItem.uuid
-			
-			shoppingCartItemOptions.add(shoppingCartItemOption)
-		}
-		
-		return shoppingCartItemOptions
-	}
-	
-	
-	def formatShoppingCartItems(unformattedShoppingCartItems){
-		def shoppingCartItems = []
-		
-		unformattedShoppingCartItems.each(){ sci ->
-			def shoppingCartItem = [:]
-			shoppingCartItem['uuid'] = sci.uuid
-			shoppingCartItem['quantity'] = sci.quantity
-			shoppingCartItem['product'] = sci.product.uuid
-			shoppingCartItem['shoppingCart'] = sci.shoppingCart.uuid
-			
-			shoppingCartItems.add(shoppingCartItem)
-		}
-		
-		return shoppingCartItems
-	}
-	**/
 	
 	
 	def formatShoppingCarts(unformattedShoppingCarts){
@@ -524,37 +465,39 @@ class ExportController {
 		
 		return productSpecifications
 	}
-	
-	
-	def formatSpecificationOptions(unformattedSpecificationOptions){
-		def specificationOptions = []
-		unformattedSpecificationOptions.each(){ so ->
-			def specificationOption = [:]
-			specificationOption['uuid'] = so.uuid
-			specificationOption['name'] = so.name
-		    specificationOption['position'] = so.position
-			specificationOption['dateCreated'] = so.dateCreated
-			specificationOption['lastUpdated'] = so.lastUpdated
-			specificationOption['specification'] = so.specification.uuid
-			
-			specificationOptions.add(specificationOption)
-		}
-		
-		return specificationOptions
-	}
-	
-	
+
+
+
 	def formatSpecifications(unformattedSpecifications){
 		def specifications = []
 		unformattedSpecifications.each(){ sp ->
+			
 			def specification = [:]
 			if(sp.catalogs){
+				
 				specification['uuid'] = sp.uuid
 				specification['name'] = sp.name
 				specification['filterName'] = sp.filterName
 		    	specification['position'] = sp.position
 				specification['dateCreated'] = sp.dateCreated
 				specification['lastUpdated'] = sp.lastUpdated
+				
+				specification['specificationOptions'] = []
+				
+				if(sp.specificationOptions){
+					sp.specificationOptions.each(){ spo ->
+						
+						def specificationOption = [:]
+						specificationOption['uuid'] = spo.uuid
+						specificationOption['name'] = spo.name
+				    	specificationOption['position'] = spo.position
+						specificationOption['dateCreated'] = spo.dateCreated
+						specificationOption['lastUpdated'] = spo.lastUpdated
+						specificationOption['specification'] = sp.uuid
+			        	
+						specification['specificationOptions'].add(specificationOption)
+					}
+				}
 				
 				specification['catalogs'] = []
 				
@@ -569,24 +512,7 @@ class ExportController {
 		return specifications
 	}
 	
-	
-	
-	def formatVariants(unformattedVariants){
-		def variants = []
-		unformattedVariants.each() { v ->
-			def variant = [:]
-			variant['uuid'] = v.uuid
-			variant['name'] = v.name
-			variant['price'] = v.price
-			variant['position'] = v.position
-			variant['imageUrl'] = v.imageUrl
-			variant['productOption'] = v.productOption.uuid
-			variants.add(variant)
-		}
-		return variants
-	}
-	
-	
+
 	def formatProductOptions(unformattedProductOptions){
 		def productOptions = []
 		unformattedProductOptions.each(){ po ->
@@ -596,6 +522,21 @@ class ExportController {
 			productOption['name'] = po.name
 			productOption['product'] = po.product.uuid
 			
+			productOption['variants'] = []
+			
+			if(po.variants){
+				po.variants.each(){ v ->
+					def variant = [:]
+					variant['uuid'] = v.uuid
+					variant['name'] = v.name
+					variant['price'] = v.price
+					variant['position'] = v.position
+					variant['imageUrl'] = v.imageUrl
+					variant['productOption'] = po.uuid
+					
+					productOption['variants'].add(variant)
+				}
+			}	
 			productOptions.add(productOption)
 		}
 		return productOptions
