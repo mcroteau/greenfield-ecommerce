@@ -77,7 +77,6 @@ class ExportController {
 			data['productOptions'] = productOptions
 		}
 		
-		
 		if(params.exportSpecifications == "on"){
 			def specifications = Specification.list()
 			specifications = formatSpecifications(specifications)
@@ -155,6 +154,11 @@ class ExportController {
 		def json = formatJson(data)
 		InputStream is = new ByteArrayInputStream(json.getBytes());
 
+		def backupFile = grailsApplication.mainContext.getResource("backup/greenfield-data.json").file
+        //def backupFile = new File(filePath)
+		//backupFile.write(new JsonBuilder(content).toPrettyString())
+		backupFile.write(json)
+		
 		render(file: is, fileName: "greenfield-data.json")	
 	}
 	

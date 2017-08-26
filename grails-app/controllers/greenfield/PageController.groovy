@@ -55,12 +55,14 @@ class PageController {
 	
 
 	/** ADMINISTRATION METHODS **/
-
+	
+ 	@Secured(['ROLE_ADMIN'])
     def create() {
         [pageInstance: new Page(params)]
     }
 	
 	
+ 	@Secured(['ROLE_ADMIN'])
 	def index() {
 		authenticatedAdmin{ adminAccount ->
         	redirect(action: "list", params: params)
@@ -101,6 +103,7 @@ class PageController {
  	@Secured(['ROLE_ADMIN'])
     def save() {	
 		authenticatedAdmin { adminAccount ->
+			
         	def pageInstance = new Page(params)
         	if (!pageInstance.save(flush: true)) {
 				flash.message = "Something went wrong. Please try again"
@@ -108,7 +111,7 @@ class PageController {
         	    return
         	}
         	
-        	flash.message = message(code: 'default.created.message', args: [message(code: 'page.label', default: 'Page'), pageInstance.id])
+        	flash.message = "Successfully saved page"
         	redirect(action: "show", id: pageInstance.id)
     	}
 	}

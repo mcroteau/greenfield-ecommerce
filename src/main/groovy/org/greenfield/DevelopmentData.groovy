@@ -132,6 +132,20 @@ public class DevelopmentData {
 	def productOptions = [
 		[
 			"name" : "Type",
+			"catalog" : "Poker Tables",
+			"variants" : [
+				[
+					"name" : "Basic",
+					"price" : 0
+				],
+				[
+					"name" : "Heated",
+					"price" : 300
+				]
+			]
+		],
+		[
+			"name" : "Type",
 			"catalog" : "Coasters",
 			"variants" : [ 
 				[
@@ -250,6 +264,8 @@ public class DevelopmentData {
 		createProductOptions()
         createSpecifications()
         createProductSpecifications()
+		createAdditionalPhotos()
+		createUploads()
 		createCustomers()
 		createOrders()
 		createActivityLogs()
@@ -461,8 +477,6 @@ public class DevelopmentData {
 		println "ProductSpecifications : ${ProductSpecification.count()}"
     }
     
-    
-    
 	
 	def getCatalogIdsArray(catalog){
 		def ids = new StringBuffer()
@@ -474,8 +488,53 @@ public class DevelopmentData {
 	}
 	
 	
+	def createAdditionalPhotos(){
+		(["Ceramic Poker Chips", "Clay Poker Chips", "Composite Poker Chips", 
+			"Poker Tables", "Coffee Mugs", "Key Chains", "Magnets"]).each(){ catalogName ->
+				
+			def catalog = Catalog.findByName(catalogName)
+			
+			if(catalog){
+				
+				def products = Product.createCriteria().list(){
+					catalogs {
+				    	idEq(catalog.id)
+				 	}
+				}
+				products.eachWithIndex(){ product, k ->
+					if(k % 3 == 0){
+						def additionalPhoto = new AdditionalPhoto()
+						additionalPhoto.product = product
+						additionalPhoto.name = catalogName + " Photo " + k
+						additionalPhoto.imageUrl = "images/additional-photo" + k + ".png"
+						additionalPhoto.detailsImageUrl = "images/details-additional-photo" + k + ".png"
+					
+						additionalPhoto.save(flush:true)
+						product.addToAdditionalPhotos(additionalPhoto)
+						product.save(flush:true)
+					}
+				}
+			}
+		}
+		
+		println "AdditionalPhotos : ${AdditionalPhoto.count()}"
+	}
+    
 	
-	def createCustomers = {
+	def createUploads(){
+		(0..3).each() { n ->
+			def upload = new Upload()
+			upload.url = "uploads/upload" + n + ".png"
+			upload.save(flush:true)
+		}
+		
+		println "Uploads : ${Upload.count()}"
+	}
+	
+	
+	
+	
+	def createCustomers(){
 		
 		def customerRole = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
 		//def password = new Sha256Hash('customer').toHex()
@@ -543,8 +602,6 @@ public class DevelopmentData {
 					shoppingCartItem.quantity = quantity
 					shoppingCartItem.product = product
 					shoppingCartItem.save(flush:true)
-					
-					println "product ${product.name} product options ${product.productOptions}"
 					
 					def optionsTotal = 0
 					if(product.productOptions){
@@ -765,7 +822,6 @@ public class DevelopmentData {
 					shoppingCartItem.product = product
 					shoppingCartItem.save(flush:true)
 					
-					println "product ${product.name} product options ${product.productOptions}"
 					def optionsTotal = 0
 					if(product.productOptions){
 						def productOption = product.productOptions[0]

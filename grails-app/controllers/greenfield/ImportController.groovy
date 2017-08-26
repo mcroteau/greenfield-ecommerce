@@ -55,10 +55,9 @@ class ImportController {
 		
 		p['date'] = date
 		
-		def shoppingCarts = ShoppingCart.list()
+		def productOptions = ProductOption.list()
 		
-		
-		render shoppingCarts as JSON
+		render productOptions as JSON
 	}
 	
 	
@@ -101,9 +100,9 @@ class ImportController {
 			}
 			
 			
-			if(json['productOptionData']){
+			if(json['productOptions']){
 				def productOptionCount = ProductOption.count()
-				saveProductOptionData(json['productOptionData'])
+				saveProductOptionData(json['productOptions'])
 				request.productOptionsImported = ProductOption.count() - productOptionCount
 			}
 			
@@ -428,7 +427,7 @@ class ImportController {
 					
 					if(account && shoppingCart){
 						
-						transcation.uuid = t.uuid
+						transaction.uuid = t.uuid
 						transaction.account = account
 						transaction.shoppingCart = shoppingCart
 						
@@ -486,7 +485,6 @@ class ImportController {
 				def existingShoppingCart = ShoppingCart.findByUuid(sc.uuid)
 				
 				if(!existingShoppingCart){
-					println "no existing shopping cart"
 					
 					def account = Account.findByUuid(sc.account)
 				
@@ -572,12 +570,9 @@ class ImportController {
 			if(product){	
 				def existingAdditionalPhoto = AdditionalPhoto.findByUuid(ap.uuid)
 				
-				println "existing additional photo ${existingAdditionalPhoto}"
-				
 				if(!existingAdditionalPhoto && 
 					params.performImport == "true"){
 					
-					println "here..."
 					def additionalPhoto = new AdditionalPhoto()
 					additionalPhoto.uuid = ap.uuid
 					additionalPhoto.name = ap.name
@@ -660,7 +655,7 @@ class ImportController {
 
 			if(params.performImport == "true"){	
 				if(specificationData.productSpecifications){
-					println "product specifications options..."
+					
 					specificationData.productSpecifications.each(){ ps ->
 						
 						def specification = Specification.findByUuid(ps.specification)
@@ -690,50 +685,49 @@ class ImportController {
 	}
 	
 	
-	def saveProductOptionData(productOptionData){
+	def saveProductOptionData(productOptions){
 		def count = 0
-		if(productOptionData.productOptions){
-			productOptionData.productOptions.each(){ po ->
+		productOptions.each(){ po ->
+			
+			def existingProductOption = ProductOption.findByUuid(po.uuid)
+			if(!existingProductOption){
+			
+				def product = Product.findByUuid(po.product)
 				
-				def existingProductOption = ProductOption.findByUuid(po.uuid)
-				if(!existingProductOption){
-				
-					def product = Product.findByUuid(po.product)
-					
-					if(product){
-						if(params.performImport == "true"){		
-							def productOption = new ProductOption()
-							productOption.uuid = po.uuid
-							productOption.name = po.name
-							productOption.product = product
-							productOption.save(flush:true)
-							
-							product.addToProductOptions(productOption)
-							product.save(flush:true)	
-							
-							if(po.variants){
-								po.variants.each(){ v ->
-									def variant = new Variant()
-									variant.uuid = v.uuid
-									variant.name = v.name
-									variant.price = v.price
-									variant.imageUrl = v.imageUrl
-									variant.position = v.position
-									variant.productOption = productOption
-                        	
-									variant.save(flush:true)
-									productOption.addToVariants(variant)
-									productOption.save(flush:true)
-								}
-							}				
-						}
-					}else{
-						//TODO: product doesn't exist
+				if(product){
+					if(params.performImport == "true"){		
+						def productOption = new ProductOption()
+						productOption.uuid = po.uuid
+						productOption.name = po.name
+						productOption.product = product
+						productOption.save(flush:true)
+						
+						product.addToProductOptions(productOption)
+						product.save(flush:true)	
+						
+						if(po.variants){
+							po.variants.each(){ v ->
+								def variant = new Variant()
+								variant.uuid = v.uuid
+								variant.name = v.name
+								variant.price = v.price
+								variant.imageUrl = v.imageUrl
+								variant.position = v.position
+								variant.productOption = productOption
+                    	
+								variant.save(flush:true)
+								productOption.addToVariants(variant)
+								productOption.save(flush:true)
+							}
+						}				
 					}
-					count++
 				}else{
-					//TODO:existing product option
+					//TODO: product doesn't exist
 				}
+				
+				count++
+			}else{
+				//TODO:existing product option
 			}
 		}
 		
@@ -865,7 +859,6 @@ class ImportController {
 	
 	
 	def saveCatalogData(catalogs){
-		println "save catalogs : ${catalogCount}" //TODO:singleton per life of application... fun
 		catalogCount = 0
 		catalogs.each(){ data ->
 			def existingCatalog = Catalog.findByUuid(data.uuid)
