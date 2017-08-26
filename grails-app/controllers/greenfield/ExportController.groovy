@@ -50,23 +50,7 @@ class ExportController {
 	
  	@Secured(['ROLE_ADMIN'])
 	def export_data(){
-		/**
-			data : {
-				accounts : []
-				catalogs : []
-				products : []
-				productOptions : []
-				optionVariants : []
-				specifications : []
-				specificationOptions : []
-				productSpecifications : []
-				orders : []
-				shoppingCarts : []
-				layout : []
-				pages : []
-			}
-		**/
-		
+
 		def data = [:]
 		
 		if(params.exportAccounts == "on"){
@@ -74,14 +58,6 @@ class ExportController {
 			accounts = formatAccounts(accounts)
 			data['accounts'] = accounts
 		}
-		
-		/** TODO:might be unecessary, create permissions on account creation and transaction creation
-		if(params.exportPermissions == "on"){
-			def permissions = Permission.list()
-			permissions = formatPermissions(permissions)
-			data['permissions'] = permissions
-		}
-		**/
 		
 		if(params.exportCatalogs == "on"){
 			def catalogs = Catalog.findAllByToplevel(true)
@@ -96,28 +72,15 @@ class ExportController {
 		}
 		
 		if(params.exportProductOptions == "on"){
-			
 			def productOptions = ProductOption.list()
 			productOptions = formatProductOptions(productOptions)
-
-			//TODO:nest variants within product options
-			//def variants = Variant.list()
-			//variants = formatVariants(variants)
-			
-			//data['productOptionData'] = [:]
 			data['productOptions'] = productOptions
-			//TODO:nest variants within product options
-			//data['productOptionData']['optionVariants'] = variants
 		}
 		
 		
 		if(params.exportSpecifications == "on"){
 			def specifications = Specification.list()
 			specifications = formatSpecifications(specifications)
-			
-			//TODO:nesting specificationOptions within specification, remove
-			//def specificationOptions = SpecificationOption.list()
-			//specificationOptions = formatSpecificationOptions(specificationOptions)
 			
 			def productSpecifications = ProductSpecification.list()
 			productSpecifications = formatProductSpecifications(productSpecifications)
@@ -133,7 +96,6 @@ class ExportController {
 			additionalPhotos = formatAdditionalPhotos(additionalPhotos)
 			data['additionalPhotos'] = additionalPhotos
 		}
-		
 		
 		if(params.exportShoppingCarts == "on"){
 			def shoppingCarts = ShoppingCart.list()
@@ -327,7 +289,7 @@ class ExportController {
 		
 		unformattedTransactions.each(){ t ->
 			def transaction = [:]
-			
+			transaction['uuid'] = t.uuid
 			transaction['total'] = t.total
 			transaction['subtotal'] = t.subtotal
 			transaction['shipping'] = t.shipping
@@ -454,6 +416,7 @@ class ExportController {
 		def productSpecifications = []
 		unformattedProductSpecifications.each(){ ps ->
 			def productSpecification = [:]
+			productSpecification['uuid'] = ps.uuid
 			productSpecification['product'] = ps.product.uuid
 			productSpecification['specificationOption'] = ps.specificationOption.uuid
 			productSpecification['specification'] = ps.specification.uuid
@@ -568,10 +531,6 @@ class ExportController {
 			product['catalogs'] = []
 			
 			p.catalogs.each(){ c ->
-				//def catalog = [:]
-				//catalog['uuid'] = c.uuid
-				//catalog['name'] = c.name
-				//product['catalogs'].add(catalog)
 				product['catalogs'].add(c.uuid)
 			}
 			
@@ -587,7 +546,6 @@ class ExportController {
 		
 		unformattedAccounts.each(){ ac ->
 			def account = [:]
-			//account['id'] = it.id
 			account['uuid'] = ac.uuid
 			account['email'] = ac.email
 		    account['username'] = ac.username

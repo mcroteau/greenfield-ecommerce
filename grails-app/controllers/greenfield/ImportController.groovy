@@ -209,6 +209,7 @@ class ImportController {
 						if(params.performImport == "true"){
 							def account = Account.findByUuid(cvl?.account)
 							def catalogViewLog = new CatalogViewLog()
+							
 							catalogViewLog.uuid = cvl.uuid
 							catalogViewLog.catalog = catalog
 							catalogViewLog.account = account
@@ -240,6 +241,7 @@ class ImportController {
 							
 							def account = Account.findByUuid(pvl?.account)
 							def productViewLog = new ProductViewLog()
+							
 							productViewLog.uuid = pvl.uuid
 							productViewLog.product = product
 							productViewLog.account = account
@@ -271,6 +273,7 @@ class ImportController {
 							
 							def account = Account.findByUuid(pvl?.account)
 							def pageViewLog = new PageViewLog()
+							
 							pageViewLog.uuid = pvl.uuid
 							pageViewLog.page = page
 							pageViewLog.account = account
@@ -298,6 +301,7 @@ class ImportController {
 						
 						def account = Account.findByUuid(sl?.account)
 						def searchLog = new SearchLog()
+						
 						searchLog.uuid = sl.uuid
 						searchLog.query = sl.query
 						searchLog.account = account
@@ -339,12 +343,12 @@ class ImportController {
 			if(params.performImport == "true"){
 				
 				def existingUpload = Upload.findByUuid(u.uuid)
+				
 				if(!existingUpload){
-					
 					def upload = new Upload()
+					
 					upload.uuid = u.uuid
 					upload.url = u.url
-
 					upload.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", u.dateCreated)
 					upload.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", u.lastUpdated)
 				
@@ -424,6 +428,7 @@ class ImportController {
 					
 					if(account && shoppingCart){
 						
+						transcation.uuid = t.uuid
 						transaction.account = account
 						transaction.shoppingCart = shoppingCart
 						
