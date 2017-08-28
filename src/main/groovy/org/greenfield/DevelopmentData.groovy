@@ -25,11 +25,11 @@ public class DevelopmentData {
 
 	def MAX_DAYS              = 30
 	def CUSTOMERS_COUNT       = 20
-	def ORDERS_COUNT          = 23
-	def PAGE_VIEWS_COUNT      = 24
-	def PRODUCT_VIEWS_COUNT   = 27
-	def CATALOG_VIEWS_COUNT   = 30
-	def SEARCH_QUERIES_COUNT  = 20
+	def ORDERS_COUNT          = 20
+	def PAGE_VIEWS_COUNT      = 10
+	def PRODUCT_VIEWS_COUNT   = 20
+	def CATALOG_VIEWS_COUNT   = 40
+	def SEARCH_QUERIES_COUNT  = 30
 	def ABANDONED_CARTS_COUNT = 10
 	
 	
@@ -41,7 +41,7 @@ public class DevelopmentData {
 			"subcatalogs" : [
 				[ 
                     "name" : "Poker Tables",
-                    "products" : 17 
+                    "products" : 10 
                 ],
 				[
 					"name" : "Poker Chips",
@@ -52,7 +52,7 @@ public class DevelopmentData {
                         ],
 						[ 
                             "name" : "Clay Poker Chips",
-                            "products" : 15
+                            "products" : 20
                         ],
 						[ 
                             "name" : "Composite Poker Chips",
@@ -66,36 +66,28 @@ public class DevelopmentData {
                 ]
 			]
 		 ],
-		 [ 
-             "name" : "Card Decks",
-             "products" : 14 
-         ],
+		 [
+		 	"name" : "Card Decks",
+			"products" : 10
+		 ],
 		 [ 
              "name" : "Gaming Systems",
-             "products" : 10 
+             "products" : 20 
          ],
 		 [ 
 		 	"name" : "Collectibles",
 		 	"subcatalogs" : [
 				[ 
                     "name" : "Coffee Mugs",
-                    "products" : 14
-                ],
-				[ 
-                    "name" : "Ornaments",
-                    "products" : 7
-                ],
-				[ 
-                    "name" : "Coasters",
                     "products" : 10
                 ],
 				[ 
-                    "name" : "Keychains",
-                    "products" : 10 
+                    "name" : "Coasters",
+                    "products" : 20
                 ],
 				[ 
                     "name" : "Magnets",
-                    "products" : 13 
+                    "products" : 10 
                 ]
 			]
 		]
@@ -132,15 +124,23 @@ public class DevelopmentData {
 	def productOptions = [
 		[
 			"name" : "Type",
-			"catalog" : "Poker Tables",
+			"catalog" : "Poker Chip Cases",
 			"variants" : [
 				[
-					"name" : "Basic",
+					"name" : "Aluminum",
 					"price" : 0
 				],
 				[
-					"name" : "Heated",
+					"name" : "Oak",
+					"price" : 100
+				],
+				[
+					"name" : "Cherrywood",
 					"price" : 300
+				],
+				[
+					"name" : "Mahogany",
+					"price" : 500
 				]
 			]
 		],
@@ -159,24 +159,6 @@ public class DevelopmentData {
 			]
 		],
 		[
-			"name" : "Type",
-			"catalog" : "Poker Chip Cases",
-			"variants" : [ 
-				[
-					"name" : "Oak",
-					"price" : 100
-				],
-				[
-					"name" : "Cherrywood",
-					"price" : 300
-				],
-				[
-					"name" : "Metal",
-					"price" : 0
-				]
-			]
-		],	
-		[
 			"name" : "Display",
 			"catalog" : "Gaming Systems",
 			"variants" : [ 
@@ -186,38 +168,16 @@ public class DevelopmentData {
 				],
 				[
 					"name" : "Full Color Digital",
-					"price" : 143
+					"price" : 100
 				]
 			]
 		],		
-		[
-			"name" : "Size",
-			"catalog" : "Magnets",
-			"variants" : [ 
-				[
-					"name" : "Small",
-					"price" : 0
-				],
-				[
-					"name" : "Medium",
-					"price" : 10
-				],
-				[
-					"name" : "Large",
-					"price" : 20
-				]
-			]
-		],
 		[
 			"name" : "Color",
 			"catalog" : "Coffee Mugs",
 			"variants" : [ 
 				[
 					"name" : "Ivory",
-					"price" : 0
-				],
-				[
-					"name" : "Black",
 					"price" : 0
 				],
 				[
@@ -345,7 +305,7 @@ public class DevelopmentData {
         if(numberProducts > 0){
             (1..numberProducts).each{ i ->
     			def product = new Product()
-    			product.price = i * 1000
+    			product.price = i * 10
     			product.quantity = i * 10
     			product.weight = 16
     			catalogIdsArray.each {
@@ -489,8 +449,8 @@ public class DevelopmentData {
 	
 	
 	def createAdditionalPhotos(){
-		(["Ceramic Poker Chips", "Clay Poker Chips", "Composite Poker Chips", 
-			"Poker Tables", "Coffee Mugs", "Key Chains", "Magnets"]).each(){ catalogName ->
+		(["Poker Tables", "Ceramic Poker Chips", "Clay Poker Chips", 
+			"Composite Poker Chips", "Coffee Mugs", "Coasters", "Magnets"]).each(){ catalogName ->
 				
 			def catalog = Catalog.findByName(catalogName)
 			
@@ -502,7 +462,7 @@ public class DevelopmentData {
 				 	}
 				}
 				products.eachWithIndex(){ product, k ->
-					if(k % 3 == 0){
+					if(k % 5 == 0){
 						def additionalPhoto = new AdditionalPhoto()
 						additionalPhoto.product = product
 						additionalPhoto.name = catalogName + " Photo " + k
@@ -574,6 +534,8 @@ public class DevelopmentData {
 		(1..ORDERS_COUNT).each(){
 		
 			int customerId = rand.nextInt(NUMBER_CUSTOMERS) + 1
+			if(customerId == 1)customerId = customerId + 1
+			
 			def customer = Account.get(customerId)
 			
 			if(customer && 
@@ -795,7 +757,9 @@ public class DevelopmentData {
 		(1..ABANDONED_CARTS_COUNT).each(){
 		
 			int productId = rand.nextInt(productMax) + 1
+			
 			int customerId = rand.nextInt(NUMBER_CUSTOMERS) + 1
+			if(customerId == 1)customerId = customerId + 1
 			
 			def customer = Account.get(customerId)
 			

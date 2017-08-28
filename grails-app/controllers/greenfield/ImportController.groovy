@@ -19,6 +19,7 @@ import org.greenfield.AdditionalPhoto
 import org.greenfield.ShoppingCart
 import org.greenfield.ShoppingCartItem
 import org.greenfield.ShoppingCartItemOption
+import org.greenfield.common.ShoppingCartStatus
 
 import org.greenfield.Transaction
 import org.greenfield.Page
@@ -55,9 +56,34 @@ class ImportController {
 		
 		p['date'] = date
 		
-		def productOptions = ProductOption.list()
+		def shoppingCarts = ShoppingCart.list()
 		
-		render productOptions as JSON
+		render shoppingCarts as JSON
+	}
+	
+	@Secured('ROLE_ADMIN')
+	def validate(){
+		println "Catalogs : ${Catalog.count()}"
+		println "Products : ${Product.count()}"
+		println "Product Options : ${ProductOption.count()}"
+		println "Option Variants : ${Variant.count()}"
+		println "Specifications : ${Specification.count()}"
+		println "SpecificationOptions : ${SpecificationOption.count()}"
+		println "ProductSpecifications : ${ProductSpecification.count()}"
+		println "AdditionalPhotos : ${AdditionalPhoto.count()}"
+		println "Uploads : ${Upload.count()}"
+		println "Customers : ${Account.count()}"
+		println "Orders : ${Transaction.count()}"
+		println "PageViews : ${PageViewLog.count()}"
+		println "ProductViews : ${ProductViewLog.count()}"
+		println "CatalogViews : ${CatalogViewLog.count()}"
+		println "SearchQueries : ${SearchLog.count()}"
+		println "ShoppingCartItemOptions : ${ShoppingCartItemOption.count()}"
+		println "Abandoned/Active Carts : ${ShoppingCart.countByStatus(ShoppingCartStatus.ACTIVE.description())}"
+		
+		def accounts = ShoppingCart.list()
+		
+		render accounts as JSON
 	}
 	
 	
@@ -80,6 +106,7 @@ class ImportController {
 			def json = jsonSlurper.parseText(jsonFile.text)
 			
 			if(json['accounts']){
+				println "importing accounts..."
 				def accountsCount = Account.count()
 				saveAccountData(json['accounts'])
 				request.accountsImported = Account.count() - accountsCount
@@ -87,6 +114,7 @@ class ImportController {
 			
 			
 			if(json['catalogs']){
+				println "importing catalogs..."
 				def catalogsCount = Catalog.count()
 				saveCatalogData(json['catalogs'])			
 				request.catalogsImported = Catalog.count() - catalogsCount
@@ -94,6 +122,7 @@ class ImportController {
 			
 			
 			if(json['products']){
+				println "importing products..."
 				def productCount = Product.count()
 				saveProductData(json['products'])
 				request.productsImported = Product.count() - productCount
@@ -101,6 +130,7 @@ class ImportController {
 			
 			
 			if(json['productOptions']){
+				println "importing product options..."
 				def productOptionCount = ProductOption.count()
 				saveProductOptionData(json['productOptions'])
 				request.productOptionsImported = ProductOption.count() - productOptionCount
@@ -108,6 +138,7 @@ class ImportController {
 			
 			
 			if(json['specificationData']){
+				println "importing product specifications..."
 				def specificationCount = Specification.count()
 				saveSpecificationData(json['specificationData'])
 				request.specificationsImported = Specification.count() - specificationCount
@@ -115,6 +146,7 @@ class ImportController {
 			
 			
 			if(json['additionalPhotos']){
+				println "importing additional photos..."
 				def additionalPhotosCount = AdditionalPhoto.count()
 				saveAdditionalPhotos(json['additionalPhotos'])
 				request.additionalPhotosImported = AdditionalPhoto.count() - additionalPhotosCount
@@ -123,6 +155,7 @@ class ImportController {
 			
 			
 			if(json['shoppingCarts']){
+				println "importing shopping carts..."
 				def shoppingCartCount = ShoppingCart.count()
 				saveShoppingCartData(json['shoppingCarts'])
 				request.shoppingCartsImported = ShoppingCart.count() - shoppingCartCount
@@ -130,6 +163,7 @@ class ImportController {
 			
 			
 			if(json['orders']){
+				println "importing orders..."
 				def ordersCount = Transaction.count()
 				saveTransactionData(json['orders'])
 				request.ordersImported = Transaction.count() - ordersCount
@@ -137,6 +171,7 @@ class ImportController {
 			
 			
 			if(json['pages']){
+				println "importing pages..."
 				def pagesCount = Page.count()
 				savePageData(json['pages'])
 				request.pagesImported = (Page.count() - pagesCount) + pagesUpdated
@@ -144,6 +179,7 @@ class ImportController {
 		
 		
 			if(json['uploads']){
+				println "importing uploads..."
 				def uploadsCount = Upload.count()
 				saveUploadsData(json['uploads'])
 				request.uploadsImported = Upload.count() - uploadsCount
@@ -151,12 +187,14 @@ class ImportController {
 			
 			
 			if(json['layout']){
+				println "importing layout..."
 				saveLayoutData(json['layout'])
 				request.layoutImported = 1
 			}
 			
 			
 			if(json['logs']){
+				println "importing logs..."
 				def catalogViewLogsCount = CatalogViewLog.count()
 				def productViewLogsCount = ProductViewLog.count()
 				def pageViewLogsCount = PageViewLog.count()
@@ -234,7 +272,7 @@ class ImportController {
 				if(!existingProductViewLog){
 					
 					def product = Product.findByUuid(pvl.product)
-					println "product ${product}"
+					
 					if(product){
 						if(params.performImport == "true"){
 							
@@ -465,7 +503,7 @@ class ImportController {
 						account.addToTransactions(transaction)
 						account.save(flush:true)
 						
-						account.createTransactionPermission(account)
+						account.createTransactionPermission(transaction)
 						
 					}
 				}

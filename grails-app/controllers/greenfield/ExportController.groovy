@@ -54,30 +54,35 @@ class ExportController {
 		def data = [:]
 		
 		if(params.exportAccounts == "on"){
+			println "exporting accounts..."
 			def accounts = Account.list()
 			accounts = formatAccounts(accounts)
 			data['accounts'] = accounts
 		}
 		
 		if(params.exportCatalogs == "on"){
+			println "exporting catalogs..."
 			def catalogs = Catalog.findAllByToplevel(true)
 			catalogs = formatCatalogs(catalogs)
 			data['catalogs'] = catalogs
 		}
 		
 		if(params.exportProducts == "on"){
+			println "exporting products..."
 			def products = Product.list()
 			products = formatProducts(products)
 			data['products'] = products
 		}
 		
 		if(params.exportProductOptions == "on"){
+			println "exporting product options..."
 			def productOptions = ProductOption.list()
 			productOptions = formatProductOptions(productOptions)
 			data['productOptions'] = productOptions
 		}
 		
 		if(params.exportSpecifications == "on"){
+			println "exporting specifications..."
 			def specifications = Specification.list()
 			specifications = formatSpecifications(specifications)
 			
@@ -91,42 +96,49 @@ class ExportController {
 		}
 		
 		if(params.exportAdditionalPhotos == "on"){
+			println "exporting additional photos..."
 			def additionalPhotos = AdditionalPhoto.list()
 			additionalPhotos = formatAdditionalPhotos(additionalPhotos)
 			data['additionalPhotos'] = additionalPhotos
 		}
 		
 		if(params.exportShoppingCarts == "on"){
+			println "exporting shopping carts..."
 			def shoppingCarts = ShoppingCart.list()
 			shoppingCarts = formatShoppingCarts(shoppingCarts)
 			data['shoppingCarts'] = shoppingCarts
 		}
 		
 		if(params.exportOrders == "on"){
+			println "exporting order..."
 			def transactions = Transaction.list()
 			transactions = formatTransactions(transactions)
 			data['orders'] = transactions
 		}
 		
 		if(params.exportPages == "on"){
+			println "exporting pages..."
 			def pages = Page.list()
 			pages = formatPages(pages)
 			data['pages'] = pages
 		}
 		
 		if(params.exportUploads == "on"){
+			println "exporting uploads..."
 			def uploads = Upload.list()
 			uploads = formatUploads(uploads)
 			data['uploads'] = uploads
 		}
 		
 		if(params.exportLayout == "on"){
+			println "exporting layout..."
 			def layout = Layout.findByName("STORE_LAYOUT")
 			layout = formatLayout(layout)
 			data['layout'] = layout
 		}
 		
 		if(params.exportLogs == "on"){
+			println "exporting logs..."
 			def catalogViewLogs = CatalogViewLog.list()
 			catalogViewLogs = formatCatalogViewLogs(catalogViewLogs)
 			
