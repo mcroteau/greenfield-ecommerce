@@ -262,7 +262,7 @@ class ImportController {
 				}
 			}
 		}
-		println "catalog views logs ${count}"
+		println "catalog views added total logs: ${count}"
 
 
 		if(logData.productViewLogs){
@@ -293,7 +293,7 @@ class ImportController {
 				}
 			}
 		}	
-		println "product views logs ${count}"
+		println "product views added total logs: ${count}"
 		
 
 
@@ -326,7 +326,7 @@ class ImportController {
 				}
 			}
 		}	
-		println "page views logs ${count}"
+		println "page views added total logs: ${count}"
 
 
 		if(logData.searchLogs){
@@ -352,7 +352,7 @@ class ImportController {
 				}
 			}
 		}		
-		println "search logs ${count}"
+		println "search logs added total logs: ${count}"
 
 
 		//TODO: LoginLogs
@@ -624,10 +624,10 @@ class ImportController {
 					
 					additionalPhoto.save(flush:true)
 				}
-				count++
 			}else{
 				flash.message = "Not all data will be imported. Please make sure you have catalogs and products created"
 			}
+			count++
 		}	
 		request.additionalPhotosCount = count
 	}
