@@ -218,7 +218,8 @@ public class DevelopmentData {
 		println "***************************************"
 		println "***   Generating Development Data   ***"
 		println "***************************************"
-		
+
+		createAccounts()
 		createCatalogs()
 		createProducts()
 		createProductOptions()
@@ -226,7 +227,6 @@ public class DevelopmentData {
         createProductSpecifications()
 		createAdditionalPhotos()
 		createUploads()
-		createCustomers()
 		createOrders()
 		createActivityLogs()
 		createAbandonedCarts()
@@ -494,7 +494,7 @@ public class DevelopmentData {
 	
 	
 	
-	def createCustomers(){
+	def createAccounts(){
 		
 		def customerRole = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
 		//def password = new Sha256Hash('customer').toHex()
@@ -520,7 +520,7 @@ public class DevelopmentData {
 		}
 		
 		NUMBER_CUSTOMERS = Account.count()
-		println "Customers : ${NUMBER_CUSTOMERS}"
+		println "Accounts : ${NUMBER_CUSTOMERS}"
 	}
 	
 	
@@ -745,7 +745,7 @@ public class DevelopmentData {
 			searchLog.dateCreated = generateRandomDate()
 			searchLog.save(flush:true)
 		}
-		println "SearchQueries : ${SearchLog.count()}"
+		println "SearchLogs : ${SearchLog.count()}"
 	}
 	
 	
@@ -817,6 +817,8 @@ public class DevelopmentData {
 			}
 		}
 		
+		println "ShoppingCarts : ${ShoppingCartItem.count()}"
+		println "ShoppingCartItems : ${ShoppingCartItem.count()}"
 		println "ShoppingCartItemOptions : ${ShoppingCartItemOption.count()}"
 		println "Abandoned/Active Carts : ${ShoppingCart.countByStatus(ShoppingCartStatus.ACTIVE.description())}"
 	}

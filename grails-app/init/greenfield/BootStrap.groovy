@@ -40,6 +40,8 @@ class BootStrap {
 	def productLookup
 	
 	def springSecurityService
+	def missingUuidHelperService
+	
 
     def init = { servletContext ->
 		println "***************************************"
@@ -53,8 +55,11 @@ class BootStrap {
 		createAdmin()
 
 		println 'Accounts : ' + Account.count()
+
 		//Development Data
 		//createDevelopmentData()
+		
+		missingUuidHelperService.correctMissingUuids()
 	}
 	
 	
@@ -464,7 +469,6 @@ class BootStrap {
 		println "States : ${State.count()}"
 		
 	}
-	
 	
 	
 	
