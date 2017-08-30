@@ -28,6 +28,7 @@ import org.greenfield.log.PageViewLog
 import org.greenfield.log.ProductViewLog
 import org.greenfield.log.SearchLog
 
+import java.util.UUID
 
 @Transactional
 class MissingUuidHelperService {
