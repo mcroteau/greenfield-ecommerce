@@ -100,7 +100,7 @@ class ExportDataService {
 		}
 		
 		if(params.exportOrders == "on"){
-			println "exporting order..."
+			println "exporting orders..."
 			def transactions = Transaction.list()
 			transactions = formatTransactions(transactions)
 			data['orders'] = transactions

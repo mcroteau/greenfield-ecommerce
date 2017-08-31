@@ -10,11 +10,14 @@ class DataBackupJob {
 	def exportDataService
 	
     static triggers = {
-      	simple startDelay: 60000 * 15, repeatInterval: 60000 * 60 * 3
+      	simple startDelay: 60000 * 3, repeatInterval: 60000 * 15
     }
 
     void execute() {
-		println "execute data backup..."
+		println "***********************************************"
+		println "***          Executing Data Backup          ***"
+		println "***********************************************"
+		
 		def params = createParametersMap()
 		def json = exportDataService.export(params)
 
@@ -22,6 +25,10 @@ class DataBackupJob {
 		def backupFile = grailsApplication.mainContext.getResource(BACKUP_FILE).file
 
 		backupFile.write(json)
+		
+		println "***********************************************"
+		println "***             Backup Complete             ***"
+		println "***********************************************"
     }
 	
 	

@@ -36,10 +36,10 @@ class MissingUuidHelperService {
 
     def correctMissingUuids() { 
 
-		println "***************************************"
-		println "***     Resolving Missing UUIDs     ***"
-		println "***************************************"
-		
+		println "***********************************************"
+		println "***         Resolving Missing UUIDs         ***"
+		println "***********************************************"
+
 		
 		def accounts = Account.findAllByUuidIsNull()
 		if(accounts){
@@ -263,9 +263,9 @@ class MissingUuidHelperService {
 		//TODO: add LoginLog
 		
 
-		println "***************************************"
-		println "***       UUID Check Complete       ***"
-		println "***************************************"
+		println "***********************************************"
+		println "***           UUID Check Complete           ***"
+		println "***********************************************"
 		
 		
 	}

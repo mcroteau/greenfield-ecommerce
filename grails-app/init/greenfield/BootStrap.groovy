@@ -44,9 +44,9 @@ class BootStrap {
 	
 
     def init = { servletContext ->
-		println "***************************************"
-		println "*******        Bootstrap        *******"
-		println "***************************************"
+		println "***********************************************"
+		println "*******            Bootstrap            *******"
+		println "***********************************************"
 		createCountries()
 		createStates()
 		createLayout()

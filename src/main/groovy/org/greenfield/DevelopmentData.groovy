@@ -215,9 +215,9 @@ public class DevelopmentData {
 	}
 	
 	def init(){
-		println "***************************************"
-		println "***   Generating Development Data   ***"
-		println "***************************************"
+		println "***********************************************"
+		println "***       Generating Development Data       ***"
+		println "***********************************************"
 
 		createAccounts()
 		createCatalogs()

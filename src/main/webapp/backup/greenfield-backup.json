@@ -1,10 +1,10 @@
 {
     "accounts": [
         {
-            "uuid": "32354a4d-a44a-41c5-a0f9-aa74b8227700",
+            "uuid": "1e70d641-79b8-4929-9c8b-6f0996b2dde2",
             "email": "admin@email.com",
             "username": "admin",
-            "password": "$2a$10$RiPFmwUfP0mnA.R98KNVgOVwAEqxE7lqQwK1G8n/NX3T6tAdjHFKy",
+            "password": "$2a$10$FLlZOyFOmyl7ULMnx9UyUeGEOrWI6BjIPcDSuO4LrA02i5KVX17mu",
             "name": "Admin",
             "address1": "",
             "address2": "",
@@ -19,8 +19,8 @@
             "passwordExpired": false,
             "hasAdminRole": false,
             "addressVerified": false,
-            "dateCreated": "2017-08-30T06:47:13Z",
-            "lastUpdated": "2017-08-30T06:47:13Z"
+            "dateCreated": "2017-08-31T03:01:20Z",
+            "lastUpdated": "2017-08-31T03:01:20Z"
         }
     ],
     "catalogs": [
@@ -51,42 +51,42 @@
     ],
     "pages": [
         {
-            "uuid": "a2891ed9-b437-4e4e-8133-d44d1e6d4603",
+            "uuid": "4551d0c0-199b-41ad-a6b1-1c157e90742b",
             "title": "Home",
             "content": "Put your home page content here...",
-            "dateCreated": "2017-08-30T06:47:12Z",
-            "lastUpdated": "2017-08-30T06:47:12Z"
+            "dateCreated": "2017-08-31T03:01:20Z",
+            "lastUpdated": "2017-08-31T03:01:20Z"
         },
         {
-            "uuid": "7049ee1e-43e6-4528-a01c-15231b99b1ce",
+            "uuid": "6fbd356a-a0ea-48ee-8b55-255ed89982a7",
             "title": "About Us",
             "content": "<p>Located downtown, we are a small boutique gift shop specializing in casino products.  Let us help you choose the perfect set of poker chips or porcelain dice.</p><p>Our knowledgeable and friendly staff is ready to assist you. We will gift wrap, pack and ship any purchase.</p>",
-            "dateCreated": "2017-08-30T06:47:12Z",
-            "lastUpdated": "2017-08-30T06:47:12Z"
+            "dateCreated": "2017-08-31T03:01:20Z",
+            "lastUpdated": "2017-08-31T03:01:20Z"
         },
         {
-            "uuid": "c760ce90-1e20-48b7-93a6-4805cfd56d03",
+            "uuid": "4dc8651e-5f45-4cc0-a114-9776c69e9e9c",
             "title": "Contact Us",
             "content": "<address><strong>Suited Spades Gift Shop</strong><br>1000 Main Street, Suite 543<br>Henderson, NV 89002<br><abbr title=\"Phone\">P:</abbr> (800) 543-8765</address>",
-            "dateCreated": "2017-08-30T06:47:12Z",
-            "lastUpdated": "2017-08-30T06:47:12Z"
+            "dateCreated": "2017-08-31T03:01:20Z",
+            "lastUpdated": "2017-08-31T03:01:20Z"
         },
         {
-            "uuid": "821a4555-f10f-4ebd-bf37-4188683a435f",
+            "uuid": "0f655871-4610-41e4-815f-788c4bab43a2",
             "title": "Privacy Policy",
             "content": "<p>Your privacy is important to us. Any information, both personal and financial, given to Suites Spade's Gift Shop will not be sold or shared with any third parties.</p>",
-            "dateCreated": "2017-08-30T06:47:12Z",
-            "lastUpdated": "2017-08-30T06:47:12Z"
+            "dateCreated": "2017-08-31T03:01:20Z",
+            "lastUpdated": "2017-08-31T03:01:20Z"
         }
     ],
     "uploads": [
         
     ],
     "layout": {
-        "uuid": "64230222-e5cd-42b2-a747-1fd42d5a443f",
+        "uuid": "51acc3b0-b99f-458f-a28f-b11ff2f04e38",
         "content": "\t<div id=\"container\">\n\t\t<div id=\"header\">\n\t\t\t\n\t\t\t<div id=\"logo-container\">\n\t\t\t\t<a href=\"/[[CONTEXT_NAME]]/\" id=\"logo\"> </a>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div id=\"header-content\">\n\t\t\t\t<div id=\"top-section\">\n\t\t\t\t\t<div class=\"section\">\n\t\t\t\t\t\t<strong>Suited Spades Gift Shop</strong>\n\t\t\t\t\t\t<br/>1000 Main Street\n\t\t\t\t\t\t<br/>Henderson, NV 89002\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"section\">\n\t\t\t\t\t\t<strong>Store Hours</strong>\n\t\t\t\t\t\t<br/>9am to 9pm Mon-Sat\n\t\t\t\t\t\t<br/>10am to 6pm Sundays\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"section\">\n\t\t\t\t\t\t<strong>Phone:</strong> (800) 543-8765\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"section\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<br class=\"clear\"/>\n\t\t\t\t</div>\n\t\t\t\t<div id=\"bottom-section\">\n\n\t\t\t\t\t<a href=\"/[[CONTEXT_NAME]]/shoppingCart\" id=\"shopping-cart\"></a>\n\t\t\t\t\t<div id=\"searchbox-container\">\n\t\t\t\t\t\t[[SEARCH_BOX]]\n\t\t\t\t\t</div>\n\t\t\t\t\t<br class=\"clear\"/>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<!-- end of header-content-->\n\t\t\t<br class=\"clear\"/>\n\t\t</div>\n\t\t\n\t\t<div id=\"navigation-container\">\n\t\t\t<div id=\"navigation\">\n\t\t\t\t<a href=\"/[[CONTEXT_NAME]]/page/store_view/Home\">Home</a>\n\t\t\t\t<a href=\"/[[CONTEXT_NAME]]/page/store_view/About Us\">About Us</a>\n\t\t\t\t<a href=\"/[[CONTEXT_NAME]]/page/store_view/Privacy Policy\">Privacy Policy</a>\n\t\t\t\t<a href=\"/[[CONTEXT_NAME]]/page/store_view/Contact Us\">Contact Us</a>\n\t\t\t\t[[ACCOUNT]]\n\t\t\t\t[[LOGOUT]]\n\t\t\t\t[[LOGIN]]\n\t\t\t\t[[REGISTER]]\n\t\t\t</div>\n\t\t</div>\n\t\t\n\t\t\n\t\t<div id=\"product-navigation\">\n\t\t\t<h3>Deluxe Casino Gifts</h3>\n\t\t\t[[CATALOGS]]\n\t\t\t[[CATALOG_FILTERS]]\n\t\t</div>\n\t\t\n\t\t\n\t\t<div id=\"content\">\n\t\t\t[[CONTENT]]\n\t\t</div>\t\n\t\t\n\t\t<br class=\"clear\"/>\n\t</div>\n\t\n\t<div id=\"footer\">\n\t\t<div id=\"copy\">\n\t\t\t&copy; 2017 Suited Spade's Gift Shop\n\t\t\t<br/>\n\t\t\t[[ADMIN_LINK]]\n\t\t</div>\n\t\t<div id=\"powered\">\n\t\t\tpowered by <a href=\"http://www.opengreenfield.org\" target=\"_blank\"><strong>Greenfield</strong></a>\n\t\t</div>\n\t</div>\n\n\t<br class=\"clear\"/>",
-        "dateCreated": "2017-08-30T06:47:12Z",
-        "lastUpdated": "2017-08-30T06:47:12Z"
+        "dateCreated": "2017-08-31T03:01:20Z",
+        "lastUpdated": "2017-08-31T03:01:20Z"
     },
     "logs": {
         "catalogViewLogs": [
