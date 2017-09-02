@@ -1,3 +1,5 @@
+update account set has_admin_role = true where username = 'admin'
+
 alter table account add column uuid character varying(255);
 alter table additional_photo add column uuid character varying(255);
 alter table catalog add column uuid character varying(255);

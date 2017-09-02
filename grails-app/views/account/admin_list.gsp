@@ -13,11 +13,33 @@
 		
 
 			<g:if test="${admin}">
-				<h2>Admin Accounts</h2>
+				<h2 class="pull-left">Admin Accounts</h2>
 			</g:if>
 			<g:else>
-				<h2>Customer Accounts</h2>
+				<h2 class="pull-left">Customer Accounts</h2>
 			</g:else>
+			
+
+			<g:if test="${admin}">
+				<div style="float:right; width:470px; text-align:right ">
+					<g:form action="admin_list" class="form-horizontal">
+						<input type="hidden" name="admin" value="true"/>
+						<input type="text" name="query" id="searchbox" class="form-control" style="width:250px;" placeholder="search name, username or email" value="${query}"/>
+						<g:submitButton name="submit" value="Search" id="search" class="btn btn-info"/>
+					</g:form>
+				</div>
+			</g:if>
+			<g:else>
+				<div style="float:right; width:470px; text-align:right ">
+					<g:form action="admin_list" class="form-horizontal">
+						<input type="hidden" name="admin" value="false"/>
+						<input type="text" name="query" id="searchbox" class="form-control" style="width:250px;" placeholder="search name, username or email" value="${query}"/>
+						<g:submitButton name="submit" value="Search" id="search" class="btn btn-info"/>
+					</g:form>
+				</div>
+			</g:else>
+		
+			<br class="clear"/>
 			
 			<g:if test="${flash.message}">
 				<div class="alert alert-info" role="status">${flash.message}</div>
@@ -128,7 +150,8 @@
 				</table>
 				
 				<div class="btn-group">
-					<g:paginate total="${accountInstanceTotal}" />
+					<g:paginate total="${accountInstanceTotal}" 
+						 	params="${[query : params.query ]}"/>
 				</div>
 			</g:if>
 			<g:else>

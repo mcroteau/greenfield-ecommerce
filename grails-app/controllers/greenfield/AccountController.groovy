@@ -462,6 +462,7 @@ class AccountController {
 		
 					if(accountInstance.save(flush:true)){
 					
+						accountInstance.hasAdminRole = false//TODO:used for easy searching in admin
 						accountInstance.createAccountRoles(false)
 						accountInstance.createAccountPermission()
 
@@ -548,8 +549,6 @@ class AccountController {
 			e.printStackTrace()
 		}
 	}
-	
-	
 	
 	
 	
@@ -707,26 +706,53 @@ class AccountController {
  	@Secured(['ROLE_ADMIN'])
 	def admin_list(){
 		authenticatedAdmin { adminAccount ->
-        	//params.max = Math.min(max ?: 10, 100)
 
         	def max = 10
 			def offset = params.offset ? params.offset : 0
 			def sort = params.sort ? params.sort : "id"
 			def order = params.order ? params.order : "asc"
-
-			def role
 			
-			if(params.admin == "true"){
-				request.admin = true
-				role = Role.findByAuthority(RoleName.ROLE_ADMIN.description())
+
+			def accountInstanceList = []
+			def accountInstanceTotal = 0
+
+			def hasAdminRole = (params.admin && params?.admin == "true") ? true : false
+			
+			if(params.query){
+				
+				def accountCriteria = Account.createCriteria()
+				def countCriteria = Account.createCriteria()
+
+				println "has admin role : ${params?.admin} : ${hasAdminRole}"
+				
+				accountInstanceTotal = countCriteria.count(){
+					and{
+						or {
+							ilike("username", "%${params.query}%")
+							ilike("email", "%${params.query}%")
+							ilike("name", "%${params.query}%")
+						}
+						eq("hasAdminRole", hasAdminRole)
+					}
+				}
+				
+				
+				accountInstanceList = accountCriteria.list(max: max, offset: offset, sort: sort, order: order){
+					and{
+						or {
+							ilike("username", "%${params.query}%")
+							ilike("email", "%${params.query}%")
+							ilike("name", "%${params.query}%")
+						}
+						eq("hasAdminRole", hasAdminRole)
+					}
+				}
+			
 			}else{
-				role = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
+				accountInstanceList = Account.findAllByHasAdminRole(hasAdminRole, [max: max, offset: offset, sort: sort, order: order])
+				accountInstanceTotal = Account.countByHasAdminRole(hasAdminRole)
 			}
-
-			def accountRoles = AccountRole.findAllByRole(role, [max: max, offset: offset])
-			def accountInstanceTotal = AccountRole.countByRole(role)
-			def accountInstanceList = accountRoles.collect(){ it.account }
-
+			
 			
 			accountInstanceList.each(){ it ->
 				def pageViews = 0
@@ -743,10 +769,12 @@ class AccountController {
 				it.catalogViews = catalogViews
 				it.productViews = productViews 
 				it.searches = searches
-				it.save(flush:true)
+				//TODO:make sure transient
+				//it.save(flush:true)
 			}
 
-			[ accountInstanceList: accountInstanceList, accountInstanceTotal: accountInstanceTotal ]
+			[ accountInstanceList: accountInstanceList, accountInstanceTotal: accountInstanceTotal, admin: hasAdminRole, query : params.query ]
+		
 		}
 	}
 

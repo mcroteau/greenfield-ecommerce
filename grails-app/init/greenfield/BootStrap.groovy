@@ -90,6 +90,7 @@ class BootStrap {
 			//def password = new Sha256Hash('admin').toHex()
 			def password = springSecurityService.encodePassword("admin")
 			def adminAccount = new Account(username : 'admin', password : password, name : 'Admin', email : 'admin@email.com')
+			adminAccount.hasAdminRole = true
 			adminAccount.save(flush:true)
 			
 			adminAccount.createAdminAccountRole()
