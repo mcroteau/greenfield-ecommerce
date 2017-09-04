@@ -36,7 +36,7 @@ ${raw(applicationService.getHeader("Order Details"))}
 				%>
 				<tr>
 					<td style="text-align:center;">${item.product.id}</td>
-					<td>${item.product.name}
+					<td><g:link controller="product" action="details" id="${item.product.id}">${item.product.name}</g:link>
 						<br/>
 						<g:if test="${item.shoppingCartItemOptions?.size() > 0}">
 							<div style="font-size:11px; color:#777">

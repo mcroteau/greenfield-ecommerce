@@ -27,3 +27,7 @@ alter table state add column uuid character varying(255);
 alter table transaction add column uuid character varying(255);
 alter table upload add column uuid character varying(255);
 alter table variant add column uuid character varying(255);
+
+
+alter table product_option
+ add "position" integer NOT NULL DEFAULT 0;

@@ -108,14 +108,14 @@
 				%>
 				
 				<tr>
-					<td style="text-align:center">${item.product.id}</td>
-					<td>${item.product.name}
+					<td style="text-align:center"><g:link controller="product" action="edit" id="${item.product.id}">${item.product.id}</g:link></td>
+					<td><g:link controller="product" action="edit" id="${item.product.id}">${item.product.name}</g:link>
 						<br/>
 						<g:if test="${item.shoppingCartItemOptions?.size() > 0}">
 							<div style="font-size:11px; color:#777">
 								<strong>options :&nbsp;</strong>
 								<g:each in="${item.shoppingCartItemOptions}" var="option">
-									<span class="option">${option.variant.name}
+									<span class="option" style="font-size: 11px;color: #777;">${option.variant.name}
 										($${applicationService.formatPrice(option.variant.price)})
 									</span>
 									<br/>
@@ -166,9 +166,9 @@
 			${transactionInstance?.shipCity},
 			${transactionInstance.shipState.name}
 			${transactionInstance?.shipZip}<br/>
-			${transactionInstance?.account.email}
+			${transactionInstance?.account.email}<br/>
 			<g:if test="${transactionInstance.account.phone}">
-				${transactionInstance?.account.phone}
+				phone:${transactionInstance?.account.phone}
 			</g:if>
 		</address>
 	</div>

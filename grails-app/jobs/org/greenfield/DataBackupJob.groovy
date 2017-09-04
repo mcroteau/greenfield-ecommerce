@@ -4,6 +4,9 @@ import java.io.InputStream
 import java.io.ByteArrayInputStream
 import java.text.SimpleDateFormat
 
+import groovy.time.TimeDuration
+import groovy.time.TimeCategory
+
 class DataBackupJob {
 
 	def BACKUP_FILE = "backup/greenfield-backup.json"
@@ -11,7 +14,7 @@ class DataBackupJob {
 	def exportDataService
 	
     static triggers = {
-      	simple startDelay: 60000 * 3, repeatInterval: 60000 * 15
+      	simple startDelay: 30000, repeatInterval: 60000 * 15
     }
 
     void execute() {
@@ -35,8 +38,12 @@ class DataBackupJob {
 		
 		def endDate = new Date()
 		def endDateTime = sdf.format(endDate)
+		
+		TimeDuration duration = TimeCategory.minus(endDate, startDate)
+		
 		println "**********************************************************"
 		println "           Backup Complete ${endDateTime}                 "
+		println "           Total Time : ${duration}                       "
 		println "**********************************************************"
     }
 	

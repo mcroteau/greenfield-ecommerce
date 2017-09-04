@@ -34,11 +34,12 @@ import org.greenfield.log.SearchLog
 import org.greenfield.State
 
 import java.text.SimpleDateFormat
+import groovy.time.TimeDuration
+import groovy.time.TimeCategory
 
 import java.io.File
 import groovy.json.JsonSlurper
 
-//TODO:remove, only using for parse method
 import grails.converters.JSON
 
 
@@ -49,19 +50,7 @@ class ImportController {
 	def catalogCount = 0
 	def pagesUpdated = 0
 
-	@Secured(['ROLE_ADMIN'])
-	def parse(){
-		def p = [:]
-		
-		def dateString = "2017-08-16T07:46:25Z"
-		def date = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", dateString)
-		
-		p['date'] = date
-		
-		def shoppingCarts = ShoppingCart.list()
-		
-		render shoppingCarts as JSON
-	}
+
 	
 	@Secured('ROLE_ADMIN')
 	def validate(){
@@ -221,9 +210,13 @@ class ImportController {
 		
 			def endDate = new Date()
 			def endDateTime = sdf.format(endDate)
-			
+		
+			TimeDuration duration = TimeCategory.minus(endDate, startDate)
+			println duration
+		
 			println "**********************************************************"
 			println "           Import Complete ${endDateTime}                 "
+		    println "           Total Time : ${duration}                       "
 			println "**********************************************************"
 			
 			
@@ -583,9 +576,6 @@ class ImportController {
 						}
 						shoppingCart.save(flush:true)
 										
-						println "shopping cart : ${shoppingCart}"
-						
-						
 						
 						if(account){
 							account.createShoppingCartPermission(shoppingCart)
