@@ -106,7 +106,7 @@ class ImportController {
 			if(json['accounts']){
 				println "importing accounts..."
 				def accountsCount = Account.count()
-				saveAccountData(json['accounts'])
+				saveAccountData(json['accounts']['data'])
 				request.accountsImported = Account.count() - accountsCount
 			}
 			
@@ -114,7 +114,7 @@ class ImportController {
 			if(json['catalogs']){
 				println "importing catalogs..."
 				def catalogsCount = Catalog.count()
-				saveCatalogData(json['catalogs'])			
+				saveCatalogData(json['catalogs']['data'])			
 				request.catalogsImported = Catalog.count() - catalogsCount
 			}
 			
@@ -122,7 +122,7 @@ class ImportController {
 			if(json['products']){
 				println "importing products..."
 				def productCount = Product.count()
-				saveProductData(json['products'])
+				saveProductData(json['products']['data'])
 				request.productsImported = Product.count() - productCount
 			}
 			
@@ -130,7 +130,7 @@ class ImportController {
 			if(json['productOptions']){
 				println "importing product options..."
 				def productOptionCount = ProductOption.count()
-				saveProductOptionData(json['productOptions'])
+				saveProductOptionData(json['productOptions']['data'])
 				request.productOptionsImported = ProductOption.count() - productOptionCount
 			}
 			
@@ -138,7 +138,7 @@ class ImportController {
 			if(json['specificationData']){
 				println "importing product specifications..."
 				def specificationCount = Specification.count()
-				saveSpecificationData(json['specificationData'])
+				saveSpecificationData(json['specifications']['data'], json['productSpecifications']['data'])
 				request.specificationsImported = Specification.count() - specificationCount
 			}
 			
@@ -146,7 +146,7 @@ class ImportController {
 			if(json['additionalPhotos']){
 				println "importing additional photos..."
 				def additionalPhotosCount = AdditionalPhoto.count()
-				saveAdditionalPhotos(json['additionalPhotos'])
+				saveAdditionalPhotos(json['additionalPhotos']['data'])
 				request.additionalPhotosImported = AdditionalPhoto.count() - additionalPhotosCount
 			
 			}
@@ -155,7 +155,7 @@ class ImportController {
 			if(json['shoppingCarts']){
 				println "importing shopping carts..."
 				def shoppingCartCount = ShoppingCart.count()
-				saveShoppingCartData(json['shoppingCarts'])
+				saveShoppingCartData(json['shoppingCarts']['data'])
 				request.shoppingCartsImported = ShoppingCart.count() - shoppingCartCount
 			}
 			
@@ -163,7 +163,7 @@ class ImportController {
 			if(json['orders']){
 				println "importing orders..."
 				def ordersCount = Transaction.count()
-				saveTransactionData(json['orders'])
+				saveTransactionData(json['orders']['data'])
 				request.ordersImported = Transaction.count() - ordersCount
 			}
 			
@@ -171,7 +171,7 @@ class ImportController {
 			if(json['pages']){
 				println "importing pages..."
 				def pagesCount = Page.count()
-				savePageData(json['pages'])
+				savePageData(json['pages']['data'])
 				request.pagesImported = (Page.count() - pagesCount) + pagesUpdated
 			}
 		
@@ -179,7 +179,7 @@ class ImportController {
 			if(json['uploads']){
 				println "importing uploads..."
 				def uploadsCount = Upload.count()
-				saveUploadsData(json['uploads'])
+				saveUploadsData(json['uploads']['data'])
 				request.uploadsImported = Upload.count() - uploadsCount
 			}
 			
@@ -239,302 +239,393 @@ class ImportController {
 		}
 	}
 	
+
+
 	
 	
-	def saveLogData(logData){
+	def saveAccountData(accounts){
 		def count = 0
-
-		if(logData.catalogViewLogs){
-			logData.catalogViewLogs.each(){ cvl ->
-				
-				def existingCatalogViewLog = CatalogViewLog.findByUuid(cvl.uuid)
-				if(!existingCatalogViewLog){
-					def catalog = Catalog.findByUuid(cvl.catalog)
+		accounts.each(){ data ->
+			if(data.username != 'admin'){
+			
+				def existingAccount = Account.findByUsername(data.username)
+	
+				if(!existingAccount){
 					
-					if(catalog){
-						if(params.performImport == "true"){
-							def account = Account.findByUuid(cvl?.account)
-							def catalogViewLog = new CatalogViewLog()
-							
-							catalogViewLog.uuid = cvl.uuid
-							catalogViewLog.catalog = catalog
-							catalogViewLog.account = account
-
-							catalogViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", cvl.dateCreated)
-							catalogViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", cvl.lastUpdated)
-							
-							catalogViewLog.save(flush:true)
-						}
+					def account = new Account()
+					
+					account.uuid = data.uuid
+					account.username = data.username
+					account.password = data.password
+					account.name = data.name
+					account.email = data.email
+					
+		            account.address1 = data.address1
+		            account.address2 = data.address2
+		            account.city = data.city
+					
+					def state = null
+					if(data.state){
+						state = State.get(data.state)
 					}
-
-					count++
-				}
-			}
-		}
-		println "catalog views added total logs: ${count}"
-
-
-		if(logData.productViewLogs){
-			logData.productViewLogs.each(){ pvl ->
-				
-				def existingProductViewLog = ProductViewLog.findByUuid(pvl.uuid)
-				if(!existingProductViewLog){
+					account.state = state
 					
-					def product = Product.findByUuid(pvl.product)
-					
-					if(product){
-						if(params.performImport == "true"){
-							
-							def account = Account.findByUuid(pvl?.account)
-							def productViewLog = new ProductViewLog()
-							
-							productViewLog.uuid = pvl.uuid
-							productViewLog.product = product
-							productViewLog.account = account
-
-							productViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.dateCreated)
-							productViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.lastUpdated)
-							
-							productViewLog.save(flush:true)
-						}
-					}
-					count++
-				}
-			}
-		}	
-		println "product views added total logs: ${count}"
-		
-
-
-		if(logData.pageViewLogs){
-			logData.pageViewLogs.each(){ pvl ->
-				
-				def existingPageViewLog = PageViewLog.findByUuid(pvl.uuid)
-				if(!existingPageViewLog){
-					
-					def page = Page.findByUuid(pvl.page)
-					
-					if(page){
-						if(params.performImport == "true"){
-							
-							def account = Account.findByUuid(pvl?.account)
-							def pageViewLog = new PageViewLog()
-							
-							pageViewLog.uuid = pvl.uuid
-							pageViewLog.page = page
-							pageViewLog.account = account
-
-							pageViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.dateCreated)
-							pageViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.lastUpdated)
-							
-							pageViewLog.save(flush:true)
-						}
-					}
-					count++
-				}
-			}
-		}	
-		println "page views added total logs: ${count}"
-
-
-		if(logData.searchLogs){
-			logData.searchLogs.each(){ sl ->
-				def existingSearchLog = SearchLog.findByUuid(sl.uuid)
-				if(!existingSearchLog){
+					account.zip = data.zip
+		            account.phone = data.phone
+		            account.ipAddress = data.ipAddress
+		            account.enabled = data.enabled
+		            account.accountExpired = data.accountExpired
+		            account.accountLocked = data.accountLocked
+		            account.passwordExpired = data.passwordExpired
+		            account.hasAdminRole = data.hasAdminRole
+		            account.addressVerified = data.addressVerified
+		            account.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.dateCreated)
+		            account.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.lastUpdated)
 					
 					if(params.performImport == "true"){
 						
-						def account = Account.findByUuid(sl?.account)
-						def searchLog = new SearchLog()
+						if(!account.validate()){
+						    account.errors.allErrors.each {
+						        println it
+						    }
+						}
 						
-						searchLog.uuid = sl.uuid
-						searchLog.query = sl.query
-						searchLog.account = account
-
-						searchLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sl.dateCreated)
-						searchLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sl.lastUpdated)
-						
-						searchLog.save(flush:true)
+						account.save(flush:true)
+					
+						if(account.hasAdminRole){
+							account.createAccountRoles(true)
+						}else{
+							account.createAccountRoles(false)
+						}
+						account.createAccountPermission()
 					}
+					
 					count++
+					request.accountsCount = count
+					
+				}else{
+					//account already exists
 				}
 			}
-		}		
-		println "search logs added total logs: ${count}"
-
-
-		//TODO: LoginLogs
-		
-		request.logsCount = count
-	}
-	
-	
-	def saveLayoutData(layoutData){
-		if(params.performImport == "true"){
-			def layout = Layout.findByName("STORE_LAYOUT")
-			layout.uuid = layoutData.uuid
-			layout.content = layoutData.content
-			layout.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", layoutData.dateCreated)
-			layout.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", layoutData.lastUpdated)
-			layout.save(flush:true)
 		}
-		request.layoutCount = 1
 	}
 	
 	
-	def saveUploadsData(uploads){
-		def count = 0
-		uploads.each(){ u ->	
-			def existingUpload = Upload.findByUuid(u.uuid)
-			if(!existingUpload){
-
+	
+	def saveCatalogData(catalogs){
+		catalogCount = 0
+		catalogs.each(){ data ->
+			def existingCatalog = Catalog.findByUuid(data.uuid)
+			
+			if(!existingCatalog){
+				def catalog =  populateCatalogData(data)
+				
 				if(params.performImport == "true"){
+					catalog.toplevel = true
+					catalog.save(flush:true)
+				}
+
+				if(data.subcatalogs){
+					saveSubcatalogs(catalog, data.subcatalogs)
+				}
+				catalogCount++
+			}else{
+				//TODO:catalog already exists
+			}
+		}
+		request.catalogsCount = catalogCount
+	}
+	
+	
+	def saveSubcatalogs(parentCatalog, subcatalogs){
+		subcatalogs.each(){ data ->
+			def existingCatalog = Catalog.findByUuid(data.uuid)
+			
+			if(!existingCatalog){
+				def catalog = populateCatalogData(data)
+				
+				if(params.performImport == "true"){
+					catalog.toplevel = false
+					catalog.save(flush:true)
 					
-					def upload = new Upload()
+					parentCatalog.addToSubcatalogs(catalog)
+					parentCatalog.save(flush:true)
 					
-					upload.uuid = u.uuid
-					upload.url = u.url
-					upload.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", u.dateCreated)
-					upload.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", u.lastUpdated)
-			    	
-					upload.save(flush:true)
+				}
+				if(data.subcatalogs){
+					saveSubcatalogs(catalog, data.subcatalogs)
+				}
+				catalogCount++
+			}
+		}
+	}
+	
+	
+	def populateCatalogData(data){
+		def catalog = new Catalog()
+		catalog.uuid = data.uuid
+		catalog.name = data.name
+		catalog.description = data.description
+		catalog.position = data.position
+		def parentCatalog = Catalog.findByUuid(data.parentCatalog)
+		if(parentCatalog){
+			catalog.parentCatalog = parentCatalog
+		}
+		return catalog
+	}
+	
+	
+	
+	
+	
+	def saveProductData(products){
+		def count = 0
+		
+		products.each(){ data ->
+			def existingProduct = Product.findByUuid(data.uuid)
+			
+			if(!existingProduct){
+				/**
+					TODO: requires all catalogs to be created. reconsider for updates
+				**/
+				if(catalogsExist(data.catalogs)){
+				
+					def product = new Product()
+					product.uuid = data.uuid
+					product.name = data.name
+					product.description = data.description
+					product.quantity = data.quantity
+					product.price = data.price
+					product.imageUrl = data.imageUrl
+					product.detailsImageUrl = data.detailsImageUrl
+					product.disabled = data.disabled
+					product.length = data.length
+					product.width = data.width
+					product.height = data.height
+					product.weight = data.weight
+					product.productNo = data.productNo
+					
+					product.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", data.dateCreated)
+		    		product.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", data.lastUpdated)
+							
+					if(params.performImport == "true"){		
+						
+						product.save(flush:true)//TODO:uncomment
+			    		
+						data.catalogs.each(){ c ->
+							def catalog = Catalog.findByUuid(c)
+							if(catalog){
+								product.addToCatalogs(catalog)
+								product.save(flush:true)//TODO:uncomment
+							}
+						}
+					}	
+				}else{
+					flash.message = "Make sure catalogs have been imported before products otherwise products will not be imported."
+				}	
+
+				count++	
+			}else{
+				flash.message = "Not all data will import as some data already exists with the same identifier"
+			}
+			request.productsCount = count			
+		}
+	}
+	
+	
+	def catalogsExist(catalogs){
+		def allExist = true
+		catalogs.each(){ catalog ->
+			def existingCatalog = Catalog.findByUuid(catalog)
+			if(!existingCatalog){
+				allExist = false
+			}
+		}
+		return allExist
+	}
+	
+	
+	
+	def saveProductOptionData(productOptions){
+		def count = 0
+		productOptions.each(){ po ->
+			
+			def existingProductOption = ProductOption.findByUuid(po.uuid)
+			if(!existingProductOption){
+			
+				def product = Product.findByUuid(po.product)
+				
+				if(product){
+					if(params.performImport == "true"){		
+						def productOption = new ProductOption()
+						productOption.uuid = po.uuid
+						productOption.name = po.name
+						productOption.product = product
+						productOption.save(flush:true)
+						
+						product.addToProductOptions(productOption)
+						product.save(flush:true)	
+						
+						if(po.variants){
+							po.variants.each(){ v ->
+								def variant = new Variant()
+								variant.uuid = v.uuid
+								variant.name = v.name
+								variant.price = v.price
+								variant.imageUrl = v.imageUrl
+								variant.position = v.position
+								variant.productOption = productOption
+                    	
+								variant.save(flush:true)
+								productOption.addToVariants(variant)
+								productOption.save(flush:true)
+							}
+						}				
+					}
+				}else{
+					//TODO: product doesn't exist
 				}
 				
 				count++
+			}else{
+				//TODO:existing product option
 			}
 		}
-		request.uploadsCount = count
+		
+		request.productOptionsCount = count
 	}
 	
 	
 	
-	def savePageData(pages){
+	
+	def saveSpecificationData(specifications, productSpecifications){
 		def count = 0
-		pagesUpdated = 0
-		
-		pages.each(){ p ->
-			
-			if(params.performImport == "true"){
+		if(specifications){
+			specifications.each(){ sp ->
+									
+				def existingSpecification = Specification.findByUuid(sp.uuid)
+				if(!existingSpecification){
+					
+					if(params.performImport == "true"){	
+										
+						def specification = new Specification()
+						specification.uuid = sp.uuid
+	    	    		
+						specification.name = sp.name
+						specification.filterName = sp.filterName
+			    		specification.position = sp.position
+	    	    		
+						specification.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sp.dateCreated)
+						specification.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sp.lastUpdated)
+						
+						specification.save(flush:true)
+						
+						if(sp.specificationOptions){
+							sp.specificationOptions.each(){ spo ->
+								def specificationOption = new SpecificationOption()
+								specificationOption.uuid = spo.uuid
+								specificationOption.name = spo.name
+						    	specificationOption.position = spo.position
+                            	
+								specificationOption.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", spo.dateCreated)
+								specificationOption.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", spo.lastUpdated)
+								
+								specificationOption.specification = specification
+								specificationOption.save(flush:true)
+								
+								specification.addToSpecificationOptions(specificationOption)
+								specification.save(flush:true)
+							}
+						}
+						
+						sp.catalogs.each(){ c ->
+							def catalog = Catalog.findByUuid(c)
+							if(catalog){
+								specification.addToCatalogs(catalog)
+								specification.save(flush:true)
+							}
+						}
+					}
 				
-				def existingPage = Page.findByTitle(p.title)
-				if(existingPage){
-					existingPage.uuid = p.uuid
-					existingPage.title = p.title
-					existingPage.content = p.content
-					existingPage.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.dateCreated)
-					existingPage.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.lastUpdated)
-					
-					existingPage.save(flush:true)
-					
-					pagesUpdated++
-					
+					count++
 				}else{
+					//TODO:existing specification
+				}
+				
+			}
+
+			if(params.performImport == "true"){	
+				
+				if(productSpecifications){
 					
-					def existingByUuid = Page.findByUuid(p.uuid)
-					
-					if(!existingByUuid){
+					productSpecifications.each(){ ps ->
 						
-						def page = new Page()
-						page.uuid = p.uuid
-						page.title = p.title
-						page.content = p.content
-						page.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.dateCreated)
-						page.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.lastUpdated)
-					
-						page.save(flush:true)
+						def specification = Specification.findByUuid(ps.specification)
+						def specificationOption = SpecificationOption.findByUuid(ps.specificationOption)
+						def product = Product.findByUuid(ps.product)
 						
-					}else{
-						existingByUuid.title = p.title
-						existingByUuid.title = p.title
-						existingByUuid.content = p.content
-						existingByUuid.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.dateCreated)
-						existingByUuid.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.lastUpdated)
-						existingByUuid.save(flush:true)
-						
-						pagesUpdated++
+						if(product && 
+								specification && 
+									specificationOption){
+										
+							def productSpecification = new ProductSpecification()
+							
+							productSpecification.uuid = ps.uuid
+							productSpecification.product = product
+							productSpecification.specification = specification
+							productSpecification.specificationOption = specificationOption
+							productSpecification.save(flush:true)
+							
+							product.addToProductSpecifications(productSpecification)
+							product.save(flush:true)
+						}
 					}
 				}
 			}
-			count++
 		}
-		request.pagesCount = count
+		request.productSpecificationsCount = count
 	}
 	
+
 	
-	def saveTransactionData(transactions){
+	def saveAdditionalPhotos(additionalPhotos){
 		def count = 0
-		
-		if(transactions){
-			transactions.each(){ t ->
+		additionalPhotos.each(){ ap ->
+			
+			def product = Product.findByUuid(ap.product)
+			if(product){	
+				def existingAdditionalPhoto = AdditionalPhoto.findByUuid(ap.uuid)
 				
-				def existingTransaction = Transaction.findByUuid(t.uuid)
-				
-				if(!existingTransaction){
-					def transaction = new Transaction()
+				if(!existingAdditionalPhoto){ 
 					
-					def account = Account.findByUuid(t.account)
-					def shoppingCart = ShoppingCart.findByUuid(t.shoppingCart)
+					if(params.performImport == "true"){
 					
-					if(account && shoppingCart){
+						def additionalPhoto = new AdditionalPhoto()
+						additionalPhoto.uuid = ap.uuid
+						additionalPhoto.name = ap.name
+						additionalPhoto.imageUrl = ap.imageUrl
+						additionalPhoto.detailsImageUrl = ap.detailsImageUrl
 						
-						transaction.uuid = t.uuid
-						transaction.account = account
-						transaction.shoppingCart = shoppingCart
+						additionalPhoto.product = product
 						
-						transaction.total = t.total
-						transaction.subtotal = t.subtotal
-						transaction.shipping = t.shipping
-						transaction.taxes = t.taxes
+	        			additionalPhoto.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", ap.dateCreated)
+	        			additionalPhoto.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", ap.lastUpdated)
 						
-						transaction.status = t.status
-						transaction.orderDate = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", t.orderDate)
-						
-						transaction.chargeId = t.chargeId
-						transaction.postageId = t.postageId
-						transaction.postageUrl = t.postageUrl
-	                	
-                    	transaction.shipName = t.shipName
-						transaction.shipAddress1 = t.shipAddress1
-						transaction.shipAddress2 = t.shipAddress2
-						transaction.shipCity = t.shipCity
-						
-						def shipState = null
-						if(t.shipState){
-							shipState = State.get(t.shipState)
-						}
-						transaction.shipState = shipState
-						transaction.shipZip = t.shipZip
-	                	
-						transaction.billName = t.billName
-						transaction.billAddress1 = t.billAddress1
-						transaction.billAddress2 = t.billAddress2
-						transaction.billCity = t.billCity
-						
-						def billState = null
-						if(t.billState){
-							billState = State.get(t.billState)
-						}
-						transaction.billState = billState
-						transaction.billZip = t.billZip
-	                	
-						transaction.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", t.dateCreated)
-						transaction.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", t.lastUpdated)
-						
-						transaction.save(flush:true)
-						
-						account.addToTransactions(transaction)
-						account.save(flush:true)
-						
-						account.createTransactionPermission(transaction)
-						
+						additionalPhoto.save(flush:true)
 					}
 					
 					count++
 				}
-			}		
-		}
-		request.ordersCount = count
+				
+				
+			}else{
+				flash.message = "Not all data will be imported. Please make sure you have catalogs and products created"
+			}
+		}	
+		request.additionalPhotosCount = count
 	}
+	
+
 	
 	
 	def saveShoppingCartData(shoppingCarts){
@@ -615,7 +706,6 @@ class ImportController {
 								}
 							}
 						}
-						
 					}
 
 					count++
@@ -631,381 +721,305 @@ class ImportController {
 	
 	
 	
-	def saveAdditionalPhotos(additionalPhotos){
+	def saveTransactionData(transactions){
 		def count = 0
-		additionalPhotos.each(){ ap ->
-			
-			def product = Product.findByUuid(ap.product)
-			if(product){	
-				def existingAdditionalPhoto = AdditionalPhoto.findByUuid(ap.uuid)
+		
+		if(transactions){
+			transactions.each(){ t ->
 				
-				if(!existingAdditionalPhoto){ 
+				def existingTransaction = Transaction.findByUuid(t.uuid)
+				
+				if(!existingTransaction){
+					def transaction = new Transaction()
 					
-					if(params.performImport == "true"){
+					def account = Account.findByUuid(t.account)
+					def shoppingCart = ShoppingCart.findByUuid(t.shoppingCart)
 					
-						def additionalPhoto = new AdditionalPhoto()
-						additionalPhoto.uuid = ap.uuid
-						additionalPhoto.name = ap.name
-						additionalPhoto.imageUrl = ap.imageUrl
-						additionalPhoto.detailsImageUrl = ap.detailsImageUrl
+					if(account && shoppingCart){
 						
-						additionalPhoto.product = product
+						transaction.uuid = t.uuid
+						transaction.account = account
+						transaction.shoppingCart = shoppingCart
 						
-	        			additionalPhoto.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", ap.dateCreated)
-	        			additionalPhoto.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", ap.lastUpdated)
+						transaction.total = t.total
+						transaction.subtotal = t.subtotal
+						transaction.shipping = t.shipping
+						transaction.taxes = t.taxes
 						
-						additionalPhoto.save(flush:true)
+						transaction.status = t.status
+						transaction.orderDate = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", t.orderDate)
+						
+						transaction.chargeId = t.chargeId
+						transaction.postageId = t.postageId
+						transaction.postageUrl = t.postageUrl
+	                	
+                    	transaction.shipName = t.shipName
+						transaction.shipAddress1 = t.shipAddress1
+						transaction.shipAddress2 = t.shipAddress2
+						transaction.shipCity = t.shipCity
+						
+						def shipState = null
+						if(t.shipState){
+							shipState = State.get(t.shipState)
+						}
+						transaction.shipState = shipState
+						transaction.shipZip = t.shipZip
+	                	
+						transaction.billName = t.billName
+						transaction.billAddress1 = t.billAddress1
+						transaction.billAddress2 = t.billAddress2
+						transaction.billCity = t.billCity
+						
+						def billState = null
+						if(t.billState){
+							billState = State.get(t.billState)
+						}
+						transaction.billState = billState
+						transaction.billZip = t.billZip
+	                	
+						transaction.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", t.dateCreated)
+						transaction.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", t.lastUpdated)
+						
+						transaction.save(flush:true)
+						
+						account.addToTransactions(transaction)
+						account.save(flush:true)
+						
+						account.createTransactionPermission(transaction)
+						
 					}
 					
 					count++
 				}
-				
-				
-			}else{
-				flash.message = "Not all data will be imported. Please make sure you have catalogs and products created"
-			}
-		}	
-		request.additionalPhotosCount = count
-	}
-	
-	
-	
-	def saveSpecificationData(specificationData){
-		def count = 0
-		if(specificationData.specifications){
-			specificationData.specifications.each(){ sp ->
-									
-				def existingSpecification = Specification.findByUuid(sp.uuid)
-				if(!existingSpecification){
-					
-					if(params.performImport == "true"){	
-										
-						def specification = new Specification()
-						specification.uuid = sp.uuid
-	    	    		
-						specification.name = sp.name
-						specification.filterName = sp.filterName
-			    		specification.position = sp.position
-	    	    		
-						specification.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sp.dateCreated)
-						specification.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sp.lastUpdated)
-						
-						specification.save(flush:true)
-						
-						if(sp.specificationOptions){
-							sp.specificationOptions.each(){ spo ->
-								def specificationOption = new SpecificationOption()
-								specificationOption.uuid = spo.uuid
-								specificationOption.name = spo.name
-						    	specificationOption.position = spo.position
-                            	
-								specificationOption.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", spo.dateCreated)
-								specificationOption.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", spo.lastUpdated)
-								
-								specificationOption.specification = specification
-								specificationOption.save(flush:true)
-								
-								specification.addToSpecificationOptions(specificationOption)
-								specification.save(flush:true)
-							}
-						}
-						
-						sp.catalogs.each(){ c ->
-							def catalog = Catalog.findByUuid(c)
-							if(catalog){
-								specification.addToCatalogs(catalog)
-								specification.save(flush:true)
-							}
-						}
-						
-					}
-				
-					count++
-				}else{
-					//TODO:existing specification
-				}
-				
-			}
-
-			if(params.performImport == "true"){	
-				if(specificationData.productSpecifications){
-					
-					specificationData.productSpecifications.each(){ ps ->
-						
-						def specification = Specification.findByUuid(ps.specification)
-						def specificationOption = SpecificationOption.findByUuid(ps.specificationOption)
-						def product = Product.findByUuid(ps.product)
-						
-						if(product && 
-								specification && 
-									specificationOption){
-										
-							def productSpecification = new ProductSpecification()
-							
-							productSpecification.uuid = ps.uuid
-							productSpecification.product = product
-							productSpecification.specification = specification
-							productSpecification.specificationOption = specificationOption
-							productSpecification.save(flush:true)
-							
-							product.addToProductSpecifications(productSpecification)
-							product.save(flush:true)
-						}
-					}
-				}
-			}
+			}		
 		}
-		request.productSpecificationsCount = count
+		request.ordersCount = count
+	}
+
+	
+	def savePageData(pages){
+		def count = 0
+		pagesUpdated = 0
+		
+		pages.each(){ p ->
+			
+			if(params.performImport == "true"){
+				
+				def existingPage = Page.findByTitle(p.title)
+				if(existingPage){
+					existingPage.uuid = p.uuid
+					existingPage.title = p.title
+					existingPage.content = p.content
+					existingPage.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.dateCreated)
+					existingPage.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.lastUpdated)
+					
+					existingPage.save(flush:true)
+					
+					pagesUpdated++
+					
+				}else{
+					
+					def existingByUuid = Page.findByUuid(p.uuid)
+					
+					if(!existingByUuid){
+						
+						def page = new Page()
+						page.uuid = p.uuid
+						page.title = p.title
+						page.content = p.content
+						page.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.dateCreated)
+						page.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.lastUpdated)
+					
+						page.save(flush:true)
+						
+					}else{
+						existingByUuid.title = p.title
+						existingByUuid.title = p.title
+						existingByUuid.content = p.content
+						existingByUuid.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.dateCreated)
+						existingByUuid.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.lastUpdated)
+						existingByUuid.save(flush:true)
+						
+						pagesUpdated++
+					}
+				}
+			}
+			count++
+		}
+		request.pagesCount = count
 	}
 	
 	
-	def saveProductOptionData(productOptions){
+	
+	def saveUploadsData(uploads){
 		def count = 0
-		productOptions.each(){ po ->
-			
-			def existingProductOption = ProductOption.findByUuid(po.uuid)
-			if(!existingProductOption){
-			
-				def product = Product.findByUuid(po.product)
-				
-				if(product){
-					if(params.performImport == "true"){		
-						def productOption = new ProductOption()
-						productOption.uuid = po.uuid
-						productOption.name = po.name
-						productOption.product = product
-						productOption.save(flush:true)
-						
-						product.addToProductOptions(productOption)
-						product.save(flush:true)	
-						
-						if(po.variants){
-							po.variants.each(){ v ->
-								def variant = new Variant()
-								variant.uuid = v.uuid
-								variant.name = v.name
-								variant.price = v.price
-								variant.imageUrl = v.imageUrl
-								variant.position = v.position
-								variant.productOption = productOption
-                    	
-								variant.save(flush:true)
-								productOption.addToVariants(variant)
-								productOption.save(flush:true)
-							}
-						}				
-					}
-				}else{
-					//TODO: product doesn't exist
+		uploads.each(){ u ->	
+			def existingUpload = Upload.findByUuid(u.uuid)
+			if(!existingUpload){
+
+				if(params.performImport == "true"){
+					
+					def upload = new Upload()
+					
+					upload.uuid = u.uuid
+					upload.url = u.url
+					upload.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", u.dateCreated)
+					upload.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", u.lastUpdated)
+			    	
+					upload.save(flush:true)
 				}
 				
 				count++
-			}else{
-				//TODO:existing product option
 			}
 		}
-		
-		request.productOptionsCount = count
+		request.uploadsCount = count
 	}
 	
 	
 	
-	def saveProductData(products){
+	
+	def saveLayoutData(layoutData){
+		if(params.performImport == "true"){
+			def layout = Layout.findByName("STORE_LAYOUT")
+			layout.uuid = layoutData.uuid
+			layout.content = layoutData.content
+			layout.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", layoutData.dateCreated)
+			layout.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", layoutData.lastUpdated)
+			layout.save(flush:true)
+		}
+		request.layoutCount = 1
+	}
+	
+	
+	
+	
+	def saveLogData(logData){
 		def count = 0
-		
-		products.each(){ data ->
-			def existingProduct = Product.findByUuid(data.uuid)
-			
-			if(!existingProduct){
-				/**
-					TODO: requires all catalogs to be created. reconsider for updates
-				**/
-				if(catalogsExist(data.catalogs)){
-				
-					def product = new Product()
-					product.uuid = data.uuid
-					product.name = data.name
-					product.description = data.description
-					product.quantity = data.quantity
-					product.price = data.price
-					product.imageUrl = data.imageUrl
-					product.detailsImageUrl = data.detailsImageUrl
-					product.disabled = data.disabled
-					product.length = data.length
-					product.width = data.width
-					product.height = data.height
-					product.weight = data.weight
-					product.productNo = data.productNo
-					
-					product.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", data.dateCreated)
-		    		product.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", data.lastUpdated)
-							
-					if(params.performImport == "true"){		
-						
-						product.save(flush:true)//TODO:uncomment
-			    		
-						data.catalogs.each(){ c ->
-							def catalog = Catalog.findByUuid(c)
-							if(catalog){
-								product.addToCatalogs(catalog)
-								product.save(flush:true)//TODO:uncomment
-							}
-						}
-					}	
-				}else{
-					flash.message = "Make sure catalogs have been imported before products otherwise products will not be imported."
-				}	
 
-				count++	
-			}else{
-				flash.message = "Not all data will import as some data already exists with the same identifier"
-			}
-			request.productsCount = count			
-		}
-	}
-	
-	
-	def catalogsExist(catalogs){
-		def allExist = true
-		catalogs.each(){ catalog ->
-			def existingCatalog = Catalog.findByUuid(catalog)
-			if(!existingCatalog){
-				allExist = false
-			}
-		}
-		return allExist
-	}
-	
-	
-	def saveAccountData(accounts){
-		def count = 0
-		accounts.each(){ data ->
-			if(data.username != 'admin'){
-			
-				def existingAccount = Account.findByUsername(data.username)
-	
-				if(!existingAccount){
+		if(logData.catalogViewLogs){
+			logData.catalogViewLogs['data'].each(){ cvl ->
+				
+				def existingCatalogViewLog = CatalogViewLog.findByUuid(cvl.uuid)
+				if(!existingCatalogViewLog){
+					def catalog = Catalog.findByUuid(cvl.catalog)
 					
-					def account = new Account()
-					
-					account.uuid = data.uuid
-					account.username = data.username
-					account.password = data.password
-					account.name = data.name
-					account.email = data.email
-					
-		            account.address1 = data.address1
-		            account.address2 = data.address2
-		            account.city = data.city
-					
-					def state = null
-					if(data.state){
-						state = State.get(data.state)
+					if(catalog){
+						if(params.performImport == "true"){
+							def account = Account.findByUuid(cvl?.account)
+							def catalogViewLog = new CatalogViewLog()
+							
+							catalogViewLog.uuid = cvl.uuid
+							catalogViewLog.catalog = catalog
+							catalogViewLog.account = account
+
+							catalogViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", cvl.dateCreated)
+							catalogViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", cvl.lastUpdated)
+							
+							catalogViewLog.save(flush:true)
+						}
 					}
-					account.state = state
+
+					count++
+				}
+			}
+		}
+		println "catalog views++ total: ${count}"
+
+
+		if(logData.productViewLogs){
+			logData.productViewLogs['data'].each(){ pvl ->
+				
+				def existingProductViewLog = ProductViewLog.findByUuid(pvl.uuid)
+				if(!existingProductViewLog){
 					
-					account.zip = data.zip
-		            account.phone = data.phone
-		            account.ipAddress = data.ipAddress
-		            account.enabled = data.enabled
-		            account.accountExpired = data.accountExpired
-		            account.accountLocked = data.accountLocked
-		            account.passwordExpired = data.passwordExpired
-		            account.hasAdminRole = data.hasAdminRole
-		            account.addressVerified = data.addressVerified
-		            account.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.dateCreated)
-		            account.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.lastUpdated)
+					def product = Product.findByUuid(pvl.product)
+					
+					if(product){
+						if(params.performImport == "true"){
+							
+							def account = Account.findByUuid(pvl?.account)
+							def productViewLog = new ProductViewLog()
+							
+							productViewLog.uuid = pvl.uuid
+							productViewLog.product = product
+							productViewLog.account = account
+
+							productViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.dateCreated)
+							productViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.lastUpdated)
+							
+							productViewLog.save(flush:true)
+						}
+					}
+					count++
+				}
+			}
+		}	
+		println "product views++ total: ${count}"
+		
+
+
+		if(logData.pageViewLogs){
+			logData.pageViewLogs['data'].each(){ pvl ->
+				
+				def existingPageViewLog = PageViewLog.findByUuid(pvl.uuid)
+				if(!existingPageViewLog){
+					
+					def page = Page.findByUuid(pvl.page)
+					
+					if(page){
+						if(params.performImport == "true"){
+							
+							def account = Account.findByUuid(pvl?.account)
+							def pageViewLog = new PageViewLog()
+							
+							pageViewLog.uuid = pvl.uuid
+							pageViewLog.page = page
+							pageViewLog.account = account
+
+							pageViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.dateCreated)
+							pageViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.lastUpdated)
+							
+							pageViewLog.save(flush:true)
+						}
+					}
+					count++
+				}
+			}
+		}	
+		println "page views++ total: ${count}"
+
+
+		if(logData.searchLogs){
+			logData.searchLogs['data'].each(){ sl ->
+				def existingSearchLog = SearchLog.findByUuid(sl.uuid)
+				if(!existingSearchLog){
 					
 					if(params.performImport == "true"){
 						
-						if(!account.validate()){
-						    account.errors.allErrors.each {
-						        println it
-						    }
-						}
+						def account = Account.findByUuid(sl?.account)
+						def searchLog = new SearchLog()
 						
-						account.save(flush:true)
-					
-						if(account.hasAdminRole){
-							account.createAccountRoles(true)
-						}else{
-							account.createAccountRoles(false)
-						}
-						account.createAccountPermission()
-					}
-					
-					count++
-					request.accountsCount = count
-					
-				}else{
-					//account already exists
-				}
-			}
-		}
-	}
-	
-	
-	def saveCatalogData(catalogs){
-		catalogCount = 0
-		catalogs.each(){ data ->
-			def existingCatalog = Catalog.findByUuid(data.uuid)
-			
-			if(!existingCatalog){
-				def catalog =  populateCatalogData(data)
-				
-				if(params.performImport == "true"){
-					catalog.toplevel = true
-					catalog.save(flush:true)
-				}
+						searchLog.uuid = sl.uuid
+						searchLog.query = sl.query
+						searchLog.account = account
 
-				if(data.subcatalogs){
-					saveSubcatalogs(catalog, data.subcatalogs)
+						searchLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sl.dateCreated)
+						searchLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sl.lastUpdated)
+						
+						searchLog.save(flush:true)
+					}
+					count++
 				}
-				catalogCount++
-			}else{
-				//TODO:catalog already exists
 			}
-		}
-		request.catalogsCount = catalogCount
+		}		
+		println "search logs++ total: ${count}"
+
+
+		//TODO: LoginLogs
+		
+		request.logsCount = count
 	}
 	
-	
-	def saveSubcatalogs(parentCatalog, subcatalogs){
-		subcatalogs.each(){ data ->
-			def existingCatalog = Catalog.findByUuid(data.uuid)
-			
-			if(!existingCatalog){
-				def catalog = populateCatalogData(data)
-				
-				if(params.performImport == "true"){
-					catalog.toplevel = false
-					catalog.save(flush:true)
-					
-					parentCatalog.addToSubcatalogs(catalog)
-					parentCatalog.save(flush:true)
-					
-				}
-				if(data.subcatalogs){
-					saveSubcatalogs(catalog, data.subcatalogs)
-				}
-				catalogCount++
-			}
-		}
-	}
-	
-	
-	def populateCatalogData(data){
-		def catalog = new Catalog()
-		catalog.uuid = data.uuid
-		catalog.name = data.name
-		catalog.description = data.description
-		catalog.position = data.position
-		def parentCatalog = Catalog.findByUuid(data.parentCatalog)
-		if(parentCatalog){
-			catalog.parentCatalog = parentCatalog
-		}
-		return catalog
-	}
 	
 	
 
