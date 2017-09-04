@@ -79,9 +79,8 @@ class ExportDataService {
 			def productSpecifications = ProductSpecification.list()
 			productSpecifications = formatProductSpecifications(productSpecifications)
 			
-			data['specificationData'] = [:]
-			data['specificationData']['specifications'] = specifications
-			data['specificationData']['productSpecifications'] = productSpecifications
+			data['specifications'] = specifications
+			data['productSpecifications'] = productSpecifications
 			
 		}
 		
@@ -144,8 +143,10 @@ class ExportDataService {
 			//TODO: add LoginLogs
 			//def loginLogs = LoginLog.list()
 			//loginLogs = formatLoginLogs(loginLogs)
+			def total = CatalogViewLog.count() + ProductViewLog.count() + PageViewLog.count() + SearchLog.count()
 			
 			data['logs'] = [:]
+			data['logs']['total'] = total
 			data['logs']['catalogViewLogs'] = catalogViewLogs
 			data['logs']['productViewLogs'] = productViewLogs
 			data['logs']['pageViewLogs'] = pageViewLogs
@@ -159,179 +160,267 @@ class ExportDataService {
 	}
 	
 	
-	def formatSearchLogs(unformattedSearchLogs){
-		def searchLogs = []
+	
+	def formatAccounts(unformattedAccounts){
+		def accounts = [:]
+		accounts['count'] = unformattedAccounts?.size()
+		accounts['data'] = []
 		
-		unformattedSearchLogs.each(){ sl ->
-			def searchLog = [:]
+		unformattedAccounts.each(){ ac ->
+			def account = [:]
+			account['uuid'] = ac.uuid
+			account['email'] = ac.email
+		    account['username'] = ac.username
+		    account['password'] = ac.password
+			account['name'] = ac.name
 			
-			searchLog['uuid'] = sl.uuid
-			searchLog['query'] = sl.query
-			searchLog['account'] = sl?.account ? sl.account.uuid : null
-			searchLog['dateCreated'] = sl.dateCreated
-			searchLog['lastUpdated'] = sl.lastUpdated
-			
-			searchLogs.add(searchLog)
-		}
-		
-		return searchLogs
-	}
-	
-	
-	def formatPageViewLogs(unformattedPageViewLogs){
-		def pageViewLogs = []
-		
-		unformattedPageViewLogs.each(){ pvl ->
-			def pageViewLog = [:]
-			
-			pageViewLog['uuid'] = pvl.uuid
-			pageViewLog['page'] = pvl.page.uuid
-			pageViewLog['account'] = pvl?.account ? pvl.account.uuid : null
-			pageViewLog['dateCreated'] = pvl.dateCreated
-			pageViewLog['lastUpdated'] = pvl.lastUpdated
-			
-			pageViewLogs.add(pageViewLog)
-		}
-		
-		return pageViewLogs
-	}
-	
-	
-	def formatProductViewLogs(unformattedProductViewLogs){
-		def productViewLogs = []
-		
-		unformattedProductViewLogs.each(){ pvl ->
-			def productViewLog = [:]
-			
-			productViewLog['uuid'] = pvl.uuid
-			productViewLog['product'] = pvl.product.uuid
-			productViewLog['account'] = pvl?.account ? pvl.account.uuid : null
-			productViewLog['dateCreated'] = pvl.dateCreated
-			productViewLog['lastUpdated'] = pvl.lastUpdated
-			
-			productViewLogs.add(productViewLog)
-		}
-		
-		return productViewLogs
-	}
-	
-	
-	def formatCatalogViewLogs(unformattedCatalogViewLogs){
-		def catalogViewLogs = []
-		
-		unformattedCatalogViewLogs.each(){ cvl ->
-			def catalogViewLog = [:]
-			
-			catalogViewLog['uuid'] = cvl.uuid
-			catalogViewLog['catalog'] = cvl.catalog.uuid
-			catalogViewLog['account'] = cvl?.account ? cvl.account.uuid : null
-			catalogViewLog['dateCreated'] = cvl.dateCreated
-			catalogViewLog['lastUpdated'] = cvl.lastUpdated
-			
-			catalogViewLogs.add(catalogViewLog)
-		}
-		
-		return catalogViewLogs
-	}
-	
-	
-	def formatLayout(l){
-		def layout = [:]
-		layout['uuid'] = l.uuid
-		layout['content'] = l.content
-		layout['dateCreated'] = l.dateCreated
-		layout['lastUpdated'] = l.lastUpdated
-		
-		return layout
-	}
-	
-	
-	def formatUploads(unformattedUploads){
-		def uploads = []
-		
-		unformattedUploads.each(){ u ->
-			def upload = [:]
-			upload['uuid'] = u.uuid
-			upload['url'] = u.url
-			upload['dateCreated'] = u.dateCreated
-			upload['lastUpdated'] = u.lastUpdated
-			
-			uploads.add(upload)
-		}
-		
-		return uploads
-	}
-	
-	
-	
-	def formatPages(unformattedPages){
-		def pages = []
-		
-		unformattedPages.each(){ p ->
-			def page = [:]
-			page['uuid'] = p.uuid
-			page['title'] = p.title
-			page['content'] = p.content
-			page['dateCreated'] = p.dateCreated
-			page['lastUpdated'] = p.lastUpdated
-			
-			pages.add(page)
-		}
-		
-		return pages
-	}
-	
-	
-	
-	def formatTransactions(unformattedTransactions){
-		def transactions = []
-		
-		unformattedTransactions.each(){ t ->
-			def transaction = [:]
-			transaction['uuid'] = t.uuid
-			transaction['total'] = t.total
-			transaction['subtotal'] = t.subtotal
-			transaction['shipping'] = t.shipping
-			transaction['taxes'] = t.taxes
-	
-			transaction['status'] = t.status
-			transaction['orderDate'] = t.orderDate
-	
-			transaction['chargeId'] = t.chargeId
-			transaction['postageId'] = t.postageId
-			transaction['postageUrl'] = t.postageUrl
-	
-			transaction['dateCreated'] = t.dateCreated
-			transaction['lastUpdated'] = t.lastUpdated
+			account['address1'] = (ac?.address1 ? ac.address1 : "")
+			account['address2'] = (ac?.address2 ? ac.address2 : "")
+			account['city'] = (ac?.city ? ac.city : "")
+			account['state'] = (ac?.state ? ac.state.id : "")
+			account['zip'] = (ac?.zip ? ac.zip : "")
 
-			transaction['shipName'] = t.shipName
-			transaction['shipAddress1'] = t.shipAddress1
-			transaction['shipAddress2'] = t.shipAddress2
-			transaction['shipCity'] = t.shipCity
-			transaction['shipState'] = t?.shipState?.id
-			transaction['shipZip'] = t.shipZip
-	
-			transaction['billName'] = t.billName
-			transaction['billAddress1'] = t.billAddress1
-			transaction['billAddress2'] = t.billAddress2
-			transaction['billCity'] = t.billCity
-			transaction['billState'] = t?.billState?.id
-			transaction['billZip'] = t.billZip
-	
-			transaction['account'] = t.account.uuid
-			transaction['shoppingCart'] = t.shoppingCart.uuid
+			account['phone'] = (ac?.phone ? ac.phone : "")
 			
-			transactions.add(transaction)
+			account['ipAddress'] = (ac?.ipAddress ? ac.ipAddress : "")
+
+			account['enabled'] = ac.enabled
+			account['accountExpired'] = ac.accountExpired
+			account['accountLocked'] = ac.accountLocked
+			account['passwordExpired'] = ac.passwordExpired
+			account['hasAdminRole'] = ac.hasAdminRole
+			account['addressVerified'] = ac.addressVerified
+			account['dateCreated'] = ac.dateCreated
+			account['lastUpdated'] = ac.lastUpdated
+			
+			accounts['data'].add(account)
 		}
 		
-		return transactions
+		return accounts
 	}
+	
+	
+	
+	
+	def formatCatalogs(unformattedCatalogs){
+		def catalogs = [:]
+		catalogs['count'] = Catalog.count()
+		catalogs['data'] = []
+		
+		unformattedCatalogs.each(){ catalog ->
+			def data = populateCatalogData(catalog)
+			catalogs['data'].add(data)
+		}
+		
+		return catalogs
+	}
+	
+	
+	def getSubcatalogs(subcatalogs, catalog){
+		catalog.subcatalogs.each(){ itx ->
+			def data = populateCatalogData(itx)
+			subcatalogs.add(data)
+		}
+		return subcatalogs
+	}
+	
+	
+	def populateCatalogData(catalog){
+		def data = [:]
+		data['uuid'] = catalog.uuid
+		data['name'] = catalog.name
+		data['description'] = catalog?.description ? catalog.description : ""
+		//TODO:might not need
+		//data['toplevel'] = catalog.toplevel
+		data['position'] = catalog.position
+		data['parentCatalog'] = catalog.parentCatalog ? catalog.parentCatalog.name : null
+		data['subcatalogs'] = []
+		
+		if(catalog.subcatalogs){
+			data['subcatalogs'] = getSubcatalogs([], catalog)
+		}
+		
+		return data		
+	}
+	
+	
+	
+	def formatProducts(unformattedProducts){
+		def products = [:]
+		products['count'] = unformattedProducts?.size()
+		products['data'] = []
+		
+		unformattedProducts.each(){ p ->
+			def product = [:]
+
+			product['uuid'] = p.uuid
+			product['name'] = p.name
+			product['description'] = p.description
+			product['quantity'] = p.quantity
+			product['price'] = p.price
+			product['imageUrl'] = p.imageUrl
+			product['detailsImageUrl'] = p.detailsImageUrl
+			product['disabled'] = p.disabled
+			product['length'] = p.length
+			product['width'] = p.width
+			product['height'] = p.height
+			product['weight'] = p.weight
+			product['productNo'] = p.productNo
+			
+			product['dateCreated'] = p.dateCreated
+			product['lastUpdated'] = p.lastUpdated
+			
+			product['catalogs'] = []
+			
+			p.catalogs.each(){ c ->
+				product['catalogs'].add(c.uuid)
+			}
+			
+			products['data'].add(product)
+		}
+		
+		return products
+	}
+	
+	
+	
+
+	def formatProductOptions(unformattedProductOptions){
+		def productOptions = [:]
+		productOptions['count'] = unformattedProductOptions?.size()
+		productOptions['data'] = []
+		
+		unformattedProductOptions.each(){ po ->
+			def productOption = [:]
+			
+			productOption['uuid'] = po.uuid
+			productOption['name'] = po.name
+			productOption['product'] = po.product.uuid
+			
+			productOption['variants'] = []
+			
+			if(po.variants){
+				po.variants.each(){ v ->
+					def variant = [:]
+					variant['uuid'] = v.uuid
+					variant['name'] = v.name
+					variant['price'] = v.price
+					variant['position'] = v.position
+					variant['imageUrl'] = v.imageUrl
+					variant['productOption'] = po.uuid
+					
+					productOption['variants'].add(variant)
+				}
+			}	
+			productOptions['data'].add(productOption)
+		}
+		return productOptions
+	}
+	
+	
+	
+	
+	def formatSpecifications(unformattedSpecifications){
+		def specifications = [:]
+		specifications['count'] = unformattedSpecifications?.size()
+		specifications['data'] = []
+		
+		unformattedSpecifications.each(){ sp ->
+			
+			def specification = [:]
+			if(sp.catalogs){
+				
+				specification['uuid'] = sp.uuid
+				specification['name'] = sp.name
+				specification['filterName'] = sp.filterName
+		    	specification['position'] = sp.position
+				specification['dateCreated'] = sp.dateCreated
+				specification['lastUpdated'] = sp.lastUpdated
+				
+				specification['specificationOptions'] = []
+				
+				if(sp.specificationOptions){
+					sp.specificationOptions.each(){ spo ->
+						
+						def specificationOption = [:]
+						specificationOption['uuid'] = spo.uuid
+						specificationOption['name'] = spo.name
+				    	specificationOption['position'] = spo.position
+						specificationOption['dateCreated'] = spo.dateCreated
+						specificationOption['lastUpdated'] = spo.lastUpdated
+						specificationOption['specification'] = sp.uuid
+			        	
+						specification['specificationOptions'].add(specificationOption)
+					}
+				}
+				
+				specification['catalogs'] = []
+				
+				sp.catalogs.each(){ c ->
+					specification['catalogs'].add(c.uuid)
+				}
+				
+				specifications['data'].add(specification)
+			}			
+		}
+		
+		return specifications
+	}
+	
+	
+	def formatProductSpecifications(unformattedProductSpecifications){
+		def productSpecifications = [:]
+		productSpecifications['count'] = unformattedProductSpecifications?.size()
+		productSpecifications['data'] = []
+		
+		unformattedProductSpecifications.each(){ ps ->
+			def productSpecification = [:]
+			productSpecification['uuid'] = ps.uuid
+			productSpecification['product'] = ps.product.uuid
+			productSpecification['specificationOption'] = ps.specificationOption.uuid
+			productSpecification['specification'] = ps.specification.uuid
+			productSpecification['dateCreated'] = ps.dateCreated
+			productSpecification['lastUpdated'] = ps.lastUpdated
+			
+			productSpecifications['data'].add(productSpecification)
+		}
+		
+		return productSpecifications
+	}
+
+	
+	
+	def formatAdditionalPhotos(unformattedAdditionalPhotos){
+		def additionalPhotos = [:]
+		additionalPhotos['count'] = unformattedAdditionalPhotos?.size()
+		additionalPhotos['data'] = []
+		
+		unformattedAdditionalPhotos.each(){ ap ->
+			def additionalPhoto = [:]
+			additionalPhoto['uuid'] = ap.uuid
+			additionalPhoto['name'] = ap.name
+			additionalPhoto['imageUrl'] = ap.imageUrl
+			additionalPhoto['detailsImageUrl'] = ap.detailsImageUrl
+	
+			additionalPhoto['dateCreated'] = ap.dateCreated
+			additionalPhoto['lastUpdated'] = ap.lastUpdated
+	
+			additionalPhoto['product'] = ap.product.uuid
+			
+			additionalPhotos['data'].add(additionalPhoto)
+		}
+		
+		return additionalPhotos
+	}
+	
 	
 	
 	
 	def formatShoppingCarts(unformattedShoppingCarts){
-		def shoppingCarts = []
-
+		def shoppingCarts = [:]
+		shoppingCarts['count'] = unformattedShoppingCarts?.size()
+		shoppingCarts['data'] = []
+		
 		unformattedShoppingCarts.each(){ sc ->
 			if(sc.shoppingCartItems){
 				def shoppingCart = [:]
@@ -380,7 +469,7 @@ class ExportDataService {
 				
 				}
 				
-				shoppingCarts.add(shoppingCart)
+				shoppingCarts['data'].add(shoppingCart)
 	
 			}
 		}
@@ -389,233 +478,195 @@ class ExportDataService {
 	}
 	
 	
-	def formatAdditionalPhotos(unformattedAdditionalPhotos){
-		def additionalPhotos = []
+	
+	
+	def formatTransactions(unformattedTransactions){
+		def transactions = [:]
+		transactions['count'] = unformattedTransactions?.size()
+		transactions['data'] = []
 		
-		unformattedAdditionalPhotos.each(){ ap ->
-			def additionalPhoto = [:]
-			additionalPhoto['uuid'] = ap.uuid
-			additionalPhoto['name'] = ap.name
-			additionalPhoto['imageUrl'] = ap.imageUrl
-			additionalPhoto['detailsImageUrl'] = ap.detailsImageUrl
+		unformattedTransactions.each(){ t ->
+			def transaction = [:]
+			transaction['uuid'] = t.uuid
+			transaction['total'] = t.total
+			transaction['subtotal'] = t.subtotal
+			transaction['shipping'] = t.shipping
+			transaction['taxes'] = t.taxes
 	
-			additionalPhoto['dateCreated'] = ap.dateCreated
-			additionalPhoto['lastUpdated'] = ap.lastUpdated
+			transaction['status'] = t.status
+			transaction['orderDate'] = t.orderDate
 	
-			additionalPhoto['product'] = ap.product.uuid
-			
-			additionalPhotos.add(additionalPhoto)
-		}
-		
-		return additionalPhotos
-	}
+			transaction['chargeId'] = t.chargeId
+			transaction['postageId'] = t.postageId
+			transaction['postageUrl'] = t.postageUrl
 	
-	
-	def formatProductSpecifications(unformattedProductSpecifications){
-		def productSpecifications = []
-		unformattedProductSpecifications.each(){ ps ->
-			def productSpecification = [:]
-			productSpecification['uuid'] = ps.uuid
-			productSpecification['product'] = ps.product.uuid
-			productSpecification['specificationOption'] = ps.specificationOption.uuid
-			productSpecification['specification'] = ps.specification.uuid
-			productSpecification['dateCreated'] = ps.dateCreated
-			productSpecification['lastUpdated'] = ps.lastUpdated
-			
-			productSpecifications.add(productSpecification)
-		}
-		
-		return productSpecifications
-	}
+			transaction['dateCreated'] = t.dateCreated
+			transaction['lastUpdated'] = t.lastUpdated
 
-
-
-	def formatSpecifications(unformattedSpecifications){
-		def specifications = []
-		unformattedSpecifications.each(){ sp ->
+			transaction['shipName'] = t.shipName
+			transaction['shipAddress1'] = t.shipAddress1
+			transaction['shipAddress2'] = t.shipAddress2
+			transaction['shipCity'] = t.shipCity
+			transaction['shipState'] = t?.shipState?.id
+			transaction['shipZip'] = t.shipZip
+	
+			transaction['billName'] = t.billName
+			transaction['billAddress1'] = t.billAddress1
+			transaction['billAddress2'] = t.billAddress2
+			transaction['billCity'] = t.billCity
+			transaction['billState'] = t?.billState?.id
+			transaction['billZip'] = t.billZip
+	
+			transaction['account'] = t.account.uuid
+			transaction['shoppingCart'] = t.shoppingCart.uuid
 			
-			def specification = [:]
-			if(sp.catalogs){
-				
-				specification['uuid'] = sp.uuid
-				specification['name'] = sp.name
-				specification['filterName'] = sp.filterName
-		    	specification['position'] = sp.position
-				specification['dateCreated'] = sp.dateCreated
-				specification['lastUpdated'] = sp.lastUpdated
-				
-				specification['specificationOptions'] = []
-				
-				if(sp.specificationOptions){
-					sp.specificationOptions.each(){ spo ->
-						
-						def specificationOption = [:]
-						specificationOption['uuid'] = spo.uuid
-						specificationOption['name'] = spo.name
-				    	specificationOption['position'] = spo.position
-						specificationOption['dateCreated'] = spo.dateCreated
-						specificationOption['lastUpdated'] = spo.lastUpdated
-						specificationOption['specification'] = sp.uuid
-			        	
-						specification['specificationOptions'].add(specificationOption)
-					}
-				}
-				
-				specification['catalogs'] = []
-				
-				sp.catalogs.each(){ c ->
-					specification['catalogs'].add(c.uuid)
-				}
-				
-				specifications.add(specification)
-			}			
+			transactions['data'].add(transaction)
 		}
 		
-		return specifications
-	}
-	
-
-	def formatProductOptions(unformattedProductOptions){
-		def productOptions = []
-		unformattedProductOptions.each(){ po ->
-			def productOption = [:]
-			
-			productOption['uuid'] = po.uuid
-			productOption['name'] = po.name
-			productOption['product'] = po.product.uuid
-			
-			productOption['variants'] = []
-			
-			if(po.variants){
-				po.variants.each(){ v ->
-					def variant = [:]
-					variant['uuid'] = v.uuid
-					variant['name'] = v.name
-					variant['price'] = v.price
-					variant['position'] = v.position
-					variant['imageUrl'] = v.imageUrl
-					variant['productOption'] = po.uuid
-					
-					productOption['variants'].add(variant)
-				}
-			}	
-			productOptions.add(productOption)
-		}
-		return productOptions
-	}
-	
-	
-	def formatProducts(unformattedProducts){
-		def products = []
-		unformattedProducts.each(){ p ->
-			def product = [:]
-
-			product['uuid'] = p.uuid
-			product['name'] = p.name
-			product['description'] = p.description
-			product['quantity'] = p.quantity
-			product['price'] = p.price
-			product['imageUrl'] = p.imageUrl
-			product['detailsImageUrl'] = p.detailsImageUrl
-			product['disabled'] = p.disabled
-			product['length'] = p.length
-			product['width'] = p.width
-			product['height'] = p.height
-			product['weight'] = p.weight
-			product['productNo'] = p.productNo
-			
-			product['dateCreated'] = p.dateCreated
-			product['lastUpdated'] = p.lastUpdated
-			
-			product['catalogs'] = []
-			
-			p.catalogs.each(){ c ->
-				product['catalogs'].add(c.uuid)
-			}
-			
-			products.add(product)
-		}
-		
-		return products
-	}
-	
-	
-	def formatAccounts(unformattedAccounts){
-		def accounts = []
-		
-		unformattedAccounts.each(){ ac ->
-			def account = [:]
-			account['uuid'] = ac.uuid
-			account['email'] = ac.email
-		    account['username'] = ac.username
-		    account['password'] = ac.password
-			account['name'] = ac.name
-			
-			account['address1'] = (ac?.address1 ? ac.address1 : "")
-			account['address2'] = (ac?.address2 ? ac.address2 : "")
-			account['city'] = (ac?.city ? ac.city : "")
-			account['state'] = (ac?.state ? ac.state.id : "")
-			account['zip'] = (ac?.zip ? ac.zip : "")
-
-			account['phone'] = (ac?.phone ? ac.phone : "")
-			
-			account['ipAddress'] = (ac?.ipAddress ? ac.ipAddress : "")
-
-			account['enabled'] = ac.enabled
-			account['accountExpired'] = ac.accountExpired
-			account['accountLocked'] = ac.accountLocked
-			account['passwordExpired'] = ac.passwordExpired
-			account['hasAdminRole'] = ac.hasAdminRole
-			account['addressVerified'] = ac.addressVerified
-			account['dateCreated'] = ac.dateCreated
-			account['lastUpdated'] = ac.lastUpdated
-			
-			accounts.add(account)
-		}
-		
-		return accounts
+		return transactions
 	}
 	
 	
 	
-	def formatCatalogs(unformattedCatalogs){
-		def catalogs = []
+	
+	def formatPages(unformattedPages){
+		def pages = [:]
+		pages['count'] = unformattedPages?.size()
+		pages['data'] = []
 		
-		unformattedCatalogs.each(){ catalog ->
-			def data = populateCatalogData(catalog)
-			catalogs.add(data)
+		unformattedPages.each(){ p ->
+			def page = [:]
+			page['uuid'] = p.uuid
+			page['title'] = p.title
+			page['content'] = p.content
+			page['dateCreated'] = p.dateCreated
+			page['lastUpdated'] = p.lastUpdated
+			
+			pages['data'].add(page)
 		}
 		
-		return catalogs
+		return pages
 	}
 	
 	
-	def getSubcatalogs(subcatalogs, catalog){
-		catalog.subcatalogs.each(){ itx ->
-			def data = populateCatalogData(itx)
-			subcatalogs.add(data)
+	def formatUploads(unformattedUploads){
+		def uploads = [:]
+		uploads['count'] = unformattedUploads?.size()
+		uploads['data'] = []
+		
+		unformattedUploads.each(){ u ->
+			def upload = [:]
+			upload['uuid'] = u.uuid
+			upload['url'] = u.url
+			upload['dateCreated'] = u.dateCreated
+			upload['lastUpdated'] = u.lastUpdated
+			
+			uploads['data'].add(upload)
 		}
-		return subcatalogs
+		
+		return uploads
 	}
 	
 	
-	def populateCatalogData(catalog){
-		def data = [:]
-		data['uuid'] = catalog.uuid
-		data['name'] = catalog.name
-		data['description'] = catalog?.description ? catalog.description : ""
-		//TODO:might not need
-		//data['toplevel'] = catalog.toplevel
-		data['position'] = catalog.position
-		data['parentCatalog'] = catalog.parentCatalog ? catalog.parentCatalog.name : null
-		data['subcatalogs'] = []
+	
+	def formatLayout(l){
+		def layout = [:]
+		layout['uuid'] = l.uuid
+		layout['content'] = l.content
+		layout['dateCreated'] = l.dateCreated
+		layout['lastUpdated'] = l.lastUpdated
 		
-		if(catalog.subcatalogs){
-			data['subcatalogs'] = getSubcatalogs([], catalog)
+		return layout
+	}
+	
+	
+	def formatCatalogViewLogs(unformattedCatalogViewLogs){
+		def catalogViewLogs = [:]
+		catalogViewLogs['count'] = unformattedCatalogViewLogs?.size()
+		catalogViewLogs['data'] = []
+		
+		unformattedCatalogViewLogs.each(){ cvl ->
+			def catalogViewLog = [:]
+			
+			catalogViewLog['uuid'] = cvl.uuid
+			catalogViewLog['catalog'] = cvl.catalog.uuid
+			catalogViewLog['account'] = cvl?.account ? cvl.account.uuid : null
+			catalogViewLog['dateCreated'] = cvl.dateCreated
+			catalogViewLog['lastUpdated'] = cvl.lastUpdated
+			
+			catalogViewLogs['data'].add(catalogViewLog)
 		}
 		
-		return data		
+		return catalogViewLogs
 	}
+	
+	
+	
+	def formatProductViewLogs(unformattedProductViewLogs){
+		def productViewLogs = [:]
+		productViewLogs['count'] = unformattedProductViewLogs?.size()
+		productViewLogs['data'] = []
+		
+		unformattedProductViewLogs.each(){ pvl ->
+			def productViewLog = [:]
+			
+			productViewLog['uuid'] = pvl.uuid
+			productViewLog['product'] = pvl.product.uuid
+			productViewLog['account'] = pvl?.account ? pvl.account.uuid : null
+			productViewLog['dateCreated'] = pvl.dateCreated
+			productViewLog['lastUpdated'] = pvl.lastUpdated
+			
+			productViewLogs['data'].add(productViewLog)
+		}
+		
+		return productViewLogs
+	}
+	
+	
+	def formatPageViewLogs(unformattedPageViewLogs){
+		def pageViewLogs = [:]
+		pageViewLogs['count'] = unformattedPageViewLogs?.size()
+		pageViewLogs['data'] = []
+		
+		unformattedPageViewLogs.each(){ pvl ->
+			def pageViewLog = [:]
+			
+			pageViewLog['uuid'] = pvl.uuid
+			pageViewLog['page'] = pvl.page.uuid
+			pageViewLog['account'] = pvl?.account ? pvl.account.uuid : null
+			pageViewLog['dateCreated'] = pvl.dateCreated
+			pageViewLog['lastUpdated'] = pvl.lastUpdated
+			
+			pageViewLogs['data'].add(pageViewLog)
+		}
+		
+		return pageViewLogs
+	}
+	
+	
+	
+	def formatSearchLogs(unformattedSearchLogs){
+		def searchLogs = [:]
+		searchLogs['count'] = unformattedSearchLogs?.size()
+		searchLogs['data'] = []
+		
+		unformattedSearchLogs.each(){ sl ->
+			def searchLog = [:]
+			
+			searchLog['uuid'] = sl.uuid
+			searchLog['query'] = sl.query
+			searchLog['account'] = sl?.account ? sl.account.uuid : null
+			searchLog['dateCreated'] = sl.dateCreated
+			searchLog['lastUpdated'] = sl.lastUpdated
+			
+			searchLogs['data'].add(searchLog)
+		}
+		
+		return searchLogs
+	}
+	
+	
+	
 	
 	
 	def formatJson(data){
