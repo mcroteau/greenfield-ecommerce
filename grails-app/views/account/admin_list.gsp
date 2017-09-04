@@ -86,15 +86,20 @@
 							
 							<g:sortableColumn property="email" title="Email" />
 						
-							<g:sortableColumn property="pageViews" title="Searches" />
+							<th>Searches</th>
+							<!--<g:sortableColumn property="searches" title="Searches" />-->
 
-							<g:sortableColumn property="pageViews" title="Page Views" />
+							<th>Page Views</th>
+							<!--<g:sortableColumn property="pageViews" title="Page Views" />-->
 
-							<g:sortableColumn property="catalogViews" title="Catalog Views" />
+							<th>Catalog Views</th>
+							<!--<g:sortableColumn property="catalogViews" title="Catalog Views" />-->
 
-							<g:sortableColumn property="productViews" title="Product Views" />
+							<th>Product Views</th>
+							<!--<g:sortableColumn property="productViews" title="Product Views" />-->
 
-							<g:sortableColumn property="orders" title="Orders" />
+							<th>Orders</th>
+							<!--<g:sortableColumn property="orders" title="Orders" />-->
 							
 							<th></th>
 						</tr>

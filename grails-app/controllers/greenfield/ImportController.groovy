@@ -33,12 +33,14 @@ import org.greenfield.log.SearchLog
 
 import org.greenfield.State
 
+import java.text.SimpleDateFormat
 
 import java.io.File
 import groovy.json.JsonSlurper
 
 //TODO:remove, only using for parse method
 import grails.converters.JSON
+
 
 @Mixin(BaseController)
 class ImportController {
@@ -96,8 +98,15 @@ class ImportController {
  	@Secured(['ROLE_ADMIN'])
 	def import_data(){
 			
-		
 		try{
+			def sdf = new SimpleDateFormat("dd MMM - hh:mm:ssa")
+		
+			def startDate = new Date()
+			def startDateTime = sdf.format(startDate)
+		
+			println "**********************************************************"
+			println "             Data Import ${startDateTime}                 "
+			println "**********************************************************"
 			
 			def jsonMultipartFile = request.getFile('json-data')
 			def jsonFile = convert(jsonMultipartFile)
@@ -209,6 +218,13 @@ class ImportController {
 				
 				request.logsImported = queriesTotal + pageViewsTotal + productViewsTotal + catalogViewsTotal
 			}
+		
+			def endDate = new Date()
+			def endDateTime = sdf.format(endDate)
+			
+			println "**********************************************************"
+			println "           Import Complete ${endDateTime}                 "
+			println "**********************************************************"
 			
 			
 			if(params.performImport == "true"){
@@ -256,9 +272,9 @@ class ImportController {
 							
 							catalogViewLog.save(flush:true)
 						}
-						count++
 					}
-					
+
+					count++
 				}
 			}
 		}
@@ -288,8 +304,8 @@ class ImportController {
 							
 							productViewLog.save(flush:true)
 						}
-						count++
 					}
+					count++
 				}
 			}
 		}	
@@ -320,9 +336,8 @@ class ImportController {
 							
 							pageViewLog.save(flush:true)
 						}
-						count++
 					}
-					
+					count++
 				}
 			}
 		}	
@@ -377,22 +392,23 @@ class ImportController {
 	def saveUploadsData(uploads){
 		def count = 0
 		uploads.each(){ u ->	
-			if(params.performImport == "true"){
-				
-				def existingUpload = Upload.findByUuid(u.uuid)
-				
-				if(!existingUpload){
+			def existingUpload = Upload.findByUuid(u.uuid)
+			if(!existingUpload){
+
+				if(params.performImport == "true"){
+					
 					def upload = new Upload()
 					
 					upload.uuid = u.uuid
 					upload.url = u.url
 					upload.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", u.dateCreated)
 					upload.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", u.lastUpdated)
-				
+			    	
 					upload.save(flush:true)
 				}
+				
+				count++
 			}
-			count++
 		}
 		request.uploadsCount = count
 	}
@@ -424,7 +440,7 @@ class ImportController {
 					def existingByUuid = Page.findByUuid(p.uuid)
 					
 					if(!existingByUuid){
-						println "not existing : ${existingByUuid} - ${p}"
+						
 						def page = new Page()
 						page.uuid = p.uuid
 						page.title = p.title
@@ -433,6 +449,7 @@ class ImportController {
 						page.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", p.lastUpdated)
 					
 						page.save(flush:true)
+						
 					}else{
 						existingByUuid.title = p.title
 						existingByUuid.title = p.title
@@ -456,7 +473,9 @@ class ImportController {
 		
 		if(transactions){
 			transactions.each(){ t ->
+				
 				def existingTransaction = Transaction.findByUuid(t.uuid)
+				
 				if(!existingTransaction){
 					def transaction = new Transaction()
 					
@@ -485,14 +504,24 @@ class ImportController {
 						transaction.shipAddress1 = t.shipAddress1
 						transaction.shipAddress2 = t.shipAddress2
 						transaction.shipCity = t.shipCity
-						transaction.shipState = State.get(t.shipState)
+						
+						def shipState = null
+						if(t.shipState){
+							shipState = State.get(t.shipState)
+						}
+						transaction.shipState = shipState
 						transaction.shipZip = t.shipZip
 	                	
 						transaction.billName = t.billName
 						transaction.billAddress1 = t.billAddress1
 						transaction.billAddress2 = t.billAddress2
 						transaction.billCity = t.billCity
-						transaction.billState = State.get(t.billState)
+						
+						def billState = null
+						if(t.billState){
+							billState = State.get(t.billState)
+						}
+						transaction.billState = billState
 						transaction.billZip = t.billZip
 	                	
 						transaction.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", t.dateCreated)
@@ -506,8 +535,9 @@ class ImportController {
 						account.createTransactionPermission(transaction)
 						
 					}
+					
+					count++
 				}
-				count++
 			}		
 		}
 		request.ordersCount = count
@@ -546,8 +576,17 @@ class ImportController {
 					if(sc.shoppingCartItems && 
 							params.performImport == "true"){	
 							
+						if(!shoppingCart.validate()){
+						    shoppingCart.errors.allErrors.each {
+						        println it
+						    }
+						}
 						shoppingCart.save(flush:true)
 										
+						println "shopping cart : ${shoppingCart}"
+						
+						
+						
 						if(account){
 							account.createShoppingCartPermission(shoppingCart)
 						}				
@@ -588,10 +627,12 @@ class ImportController {
 						}
 						
 					}
+
+					count++
+
 				}else{
-					message = message + "<br/>Some shopping carts already exist with the same identifier"
+					flash.message = "Some shopping carts already exist with the same identifier"
 				}
-				count++
 			}
 		}
 		
@@ -608,26 +649,31 @@ class ImportController {
 			if(product){	
 				def existingAdditionalPhoto = AdditionalPhoto.findByUuid(ap.uuid)
 				
-				if(!existingAdditionalPhoto && 
-					params.performImport == "true"){
+				if(!existingAdditionalPhoto){ 
 					
-					def additionalPhoto = new AdditionalPhoto()
-					additionalPhoto.uuid = ap.uuid
-					additionalPhoto.name = ap.name
-					additionalPhoto.imageUrl = ap.imageUrl
-					additionalPhoto.detailsImageUrl = ap.detailsImageUrl
+					if(params.performImport == "true"){
 					
-					additionalPhoto.product = product
+						def additionalPhoto = new AdditionalPhoto()
+						additionalPhoto.uuid = ap.uuid
+						additionalPhoto.name = ap.name
+						additionalPhoto.imageUrl = ap.imageUrl
+						additionalPhoto.detailsImageUrl = ap.detailsImageUrl
+						
+						additionalPhoto.product = product
+						
+	        			additionalPhoto.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", ap.dateCreated)
+	        			additionalPhoto.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", ap.lastUpdated)
+						
+						additionalPhoto.save(flush:true)
+					}
 					
-	        		additionalPhoto.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", ap.dateCreated)
-	        		additionalPhoto.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", ap.lastUpdated)
-					
-					additionalPhoto.save(flush:true)
+					count++
 				}
+				
+				
 			}else{
 				flash.message = "Not all data will be imported. Please make sure you have catalogs and products created"
 			}
-			count++
 		}	
 		request.additionalPhotosCount = count
 	}
@@ -861,8 +907,14 @@ class ImportController {
 		            account.address1 = data.address1
 		            account.address2 = data.address2
 		            account.city = data.city
-		            account.state = State.get(data.state) ? State.get(data.state) : null
-		            account.zip = data.zip
+					
+					def state = null
+					if(data.state){
+						state = State.get(data.state)
+					}
+					account.state = state
+					
+					account.zip = data.zip
 		            account.phone = data.phone
 		            account.ipAddress = data.ipAddress
 		            account.enabled = data.enabled
@@ -875,6 +927,13 @@ class ImportController {
 		            account.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", data.lastUpdated)
 					
 					if(params.performImport == "true"){
+						
+						if(!account.validate()){
+						    account.errors.allErrors.each {
+						        println it
+						    }
+						}
+						
 						account.save(flush:true)
 					
 						if(account.hasAdminRole){

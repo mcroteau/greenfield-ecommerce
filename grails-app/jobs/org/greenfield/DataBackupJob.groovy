@@ -2,6 +2,7 @@ package org.greenfield
 
 import java.io.InputStream
 import java.io.ByteArrayInputStream
+import java.text.SimpleDateFormat
 
 class DataBackupJob {
 
@@ -14,9 +15,15 @@ class DataBackupJob {
     }
 
     void execute() {
-		println "***********************************************"
-		println "***          Executing Data Backup          ***"
-		println "***********************************************"
+		def sdf = new SimpleDateFormat("dd MMM - hh:mm:ssa")
+		
+		def startDate = new Date()
+		def startDateTime = sdf.format(startDate)
+		
+		println "**********************************************************"
+		println "             Data Backup ${startDateTime}                 "
+		println "**********************************************************"
+		
 		
 		def params = createParametersMap()
 		def json = exportDataService.export(params)
@@ -26,9 +33,11 @@ class DataBackupJob {
 
 		backupFile.write(json)
 		
-		println "***********************************************"
-		println "***             Backup Complete             ***"
-		println "***********************************************"
+		def endDate = new Date()
+		def endDateTime = sdf.format(endDate)
+		println "**********************************************************"
+		println "           Backup Complete ${endDateTime}                 "
+		println "**********************************************************"
     }
 	
 	

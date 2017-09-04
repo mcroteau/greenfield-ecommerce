@@ -8,6 +8,8 @@ import java.awt.Graphics2D
 import grails.util.Environment
 import grails.converters.*
 
+import org.greenfield.Product
+import org.greenfield.ProductOption
 import org.greenfield.Variant
 
 import grails.plugin.springsecurity.annotation.Secured
@@ -16,7 +18,50 @@ import grails.plugin.springsecurity.annotation.Secured
 @Mixin(BaseController)
 class ProductOptionController {
 
+    @Secured(['ROLE_ADMIN'])
+    def manage_positions(Long id){
+        authenticatedAdmin { adminAccount ->
+			def product = Product.get(id)
+			if(!product){
+				flash.message = "Product not found..."
+				redirect(controller: 'product', action:'list')
+			}
+            def productOptions = ProductOption.findAllByProduct(product)
+            [ productInstance : product, productOptions: productOptions ]
+        }
+    }
 
+    
+    @Secured(['ROLE_ADMIN'])
+    def update_positions(Long id){    
+        authenticatedAdmin { adminAccount ->
+			if(!params.positions){
+				flash.message = "Something went wrong while saving positions ..."
+				redirect(action:'manage_positions')
+				return
+			}
+			
+			def positions = params.positions.split(',').collect{it as int}
+			
+			if(!positions){
+				flash.message = "Something went wrong while saving positions ..."
+				redirect(action:'manage_positions')
+				return
+			}
+			
+			positions.eachWithIndex(){ productOptionId, position ->
+				def productOption = ProductOption.get(productOptionId)
+				productOption.position = position
+				productOption.save(flush:true)
+			}
+			
+			flash.message = "Successfully updated positions"
+			redirect(action : 'manage_positions', id: params.id)
+        }
+    }
+	
+	
+	
 	@Secured(['ROLE_ADMIN'])
 	def edit(Long id){
 		authenticatedAdminProductOption { adminAccount, productOptionInstance ->

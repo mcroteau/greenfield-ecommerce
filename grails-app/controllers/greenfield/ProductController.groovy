@@ -631,7 +631,8 @@ class ProductController {
 	@Secured(['ROLE_ADMIN'])
 	def product_options(Long id){
 		authenticatedAdminProduct { adminAccount, productInstance ->
-			[productInstance : productInstance]
+			def productOptions = ProductOption.findAllByProduct(productInstance)
+			[productInstance : productInstance, productOptions: productOptions]
 		}
 	}
 	

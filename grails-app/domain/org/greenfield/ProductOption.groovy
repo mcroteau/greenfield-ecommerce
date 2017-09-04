@@ -9,13 +9,14 @@ class ProductOption {
 	String uuid
 
 	String name
+	int position
 
 	static belongsTo = [ product: Product ]
 	
 	static hasMany = [ variants: Variant ]
 	
 	static mapping = {
-	    sort "name"
+	    sort position: "asc"
         variants cascade: "all-delete-orphan"
 	}
 	

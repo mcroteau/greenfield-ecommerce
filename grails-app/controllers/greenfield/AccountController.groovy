@@ -603,8 +603,9 @@ class AccountController {
 		authenticatedAdmin { adminAccount ->
 			def accountInstance = new Account(params)
 			
-	   		//def password = new Sha256Hash(params.password).toHex()
-			def password = springSecurityService.encodePassword(params.password)
+			println "Account Instance : ${accountInstance}"
+			
+	   		def password = springSecurityService.encodePassword(params.password)
 			accountInstance.password = password
 
 			def includeAdminRole = false
@@ -612,13 +613,32 @@ class AccountController {
 					params.admin == "on"){
 				includeAdminRole = true
 			}
-
-			accountInstance.createAccountRoles(includeAdminRole)
-			accountInstance.createAccountPermission()
-
 			
-       		flash.message = "Account successfully saved"
-       		redirect(action: "admin_show", id: accountInstance.id)
+			accountInstance.hasAdminRole = includeAdminRole
+			
+			if(accountInstance.validate()){
+				accountInstance.save(flush:true)
+				
+				accountInstance.createAccountRoles(includeAdminRole)
+				accountInstance.createAccountPermission()
+
+				println "saved account : ${accountInstance}"
+				
+		       	flash.message = "Account successfully saved"
+		       	redirect(action: "admin_show", id: accountInstance.id)
+				
+			}else{
+				def message = "Something went wrong while saving account.<br/>"
+				message = message + "Please make sure username is at least 6 characters long<br/>"
+				message = message + "Also make sure you've entered a valid email<br/>"
+				
+				flash.message = message
+				
+			    accountInstance.errors.allErrors.each {
+			        println it
+			    }
+				redirect(action: 'admin_create', accountInstance: accountInstance, params: params)
+			}
 		}
 	}
 	
@@ -707,16 +727,19 @@ class AccountController {
 	def admin_list(){
 		authenticatedAdmin { adminAccount ->
 
+			//TODO:add sorting by columns
+			println "params : ${params}"
+			
         	def max = 10
-			def offset = params.offset ? params.offset : 0
-			def sort = params.sort ? params.sort : "id"
-			def order = params.order ? params.order : "asc"
+			def offset = params?.offset ? params.offset : 0
+			def sort = params?.sort ? params.sort : "id"
+			def order = params?.order ? params.order : "asc"
 			
 
 			def accountInstanceList = []
 			def accountInstanceTotal = 0
 
-			def hasAdminRole = (params.admin && params?.admin == "true") ? true : false
+			def hasAdminRole = (params?.admin && params?.admin == "true") ? true : false
 			
 			if(params.query){
 				
@@ -753,28 +776,28 @@ class AccountController {
 				accountInstanceTotal = Account.countByHasAdminRole(hasAdminRole)
 			}
 			
-			
-			accountInstanceList.each(){ it ->
-				def pageViews = 0
-				def catalogViews = 0
-				def productViews = 0
-				def searches = 0
-
-				pageViews = PageViewLog.countByAccount(it)
-				catalogViews = CatalogViewLog.countByAccount(it)
-				productViews = ProductViewLog.countByAccount(it)
-				searches = SearchLog.countByAccount(it)
-
-				it.pageViews = pageViews 
-				it.catalogViews = catalogViews
-				it.productViews = productViews 
-				it.searches = searches
-				//TODO:make sure transient
-				//it.save(flush:true)
+			if(accountInstanceList){
+				accountInstanceList.each(){ it ->
+					def pageViews = 0
+					def catalogViews = 0
+					def productViews = 0
+					def searches = 0
+                	
+					pageViews = PageViewLog.countByAccount(it)
+					catalogViews = CatalogViewLog.countByAccount(it)
+					productViews = ProductViewLog.countByAccount(it)
+					searches = SearchLog.countByAccount(it)
+                	
+					it.pageViews = pageViews 
+					it.catalogViews = catalogViews
+					it.productViews = productViews 
+					it.searches = searches
+					//TODO:make sure transient
+					//it.save(flush:true)
+				}
 			}
-
+			
 			[ accountInstanceList: accountInstanceList, accountInstanceTotal: accountInstanceTotal, admin: hasAdminRole, query : params.query ]
-		
 		}
 	}
 

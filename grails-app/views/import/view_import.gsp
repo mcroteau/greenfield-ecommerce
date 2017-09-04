@@ -10,11 +10,14 @@
 		<div id="export-data-view" class="content" role="main">
 	
 			<g:if test="${flash.message}">
-				<div class="alert alert-info" role="status">${flash.message}</div>
+				<div class="alert alert-info" role="status">${raw(flash.message)}</div>
 			</g:if>
 		
 			<div id="data-check-container">
-				
+
+				<div class="alert alert-info" role="status">Data Import could take upwards around 15+ minutes depending on file size. Please be patient.
+				</div>
+			
 				<div id="data-check-form">
 					<h2 style="margin:10px 0px; padding:0px;">Data Check</h2>
 					<p class="secondary">Import &amp; Export is meant as an alternate backup mechanism of data<br/>
@@ -64,15 +67,18 @@
 			</div>
 			
 			<br class="clear"/>
+			<hr/>
 			<br/>
+			
 	
 			<div id="data-check-container">
 			
 				<div id="data-check-form" style="margin-top:0px;">
 					<h2 style="margin-top:0px">Import Data</h2>
             		
-					<p class="secondary">This will perform data import<br/>
-					Expecting Greenfield Json formatted data. <br/>Run 'Data Check' to insure data to be imported is correct</p>
+					<p class="secondary">This will perform the actual data import<br/>
+					Expecting Greenfield Backup Json formatted data. <br/>Run 'Data Check' to insure data to be imported is correct</p>
+					
 					
 					<g:uploadForm action="import_data" class="form-horizontal" >
 						

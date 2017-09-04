@@ -17,6 +17,8 @@
 			<h2>Product Options
 				<g:link action="add_product_option" name="edit" class="btn btn-primary pull-right" id="${productInstance.id}" style="margin-left:10px;">Add Product Option</g:link>
 				
+				<g:link controller="productOption" action="manage_positions" name="edit" class="btn btn-default pull-right" id="${productInstance.id}" style="margin-left:10px;">Order Options</g:link>
+				
 				<g:link action="edit" name="edit" class="btn btn-default pull-right" id="${productInstance.id}">Back to Product</g:link>
 			</h2>
 		
@@ -34,17 +36,17 @@
 				<div class="alert alert-info" role="status">${flash.message}</div>
 			</g:if>
 			
-			<g:if test="${productInstance.productOptions.size() > 0}">
+			<g:if test="${productOptions.size() > 0}">
 				<table class="table table-condensed" style="width:550px;">
 					<thead>
 					<tr>
 						<th>Name</th>
-						<th># Variants</th>
+						<th>Variants</th>
 						<th></th>
 					</tr>
 					</thead>
 					<tbody>
-					<g:each in="${productInstance.productOptions}" status="i" var="productOption">
+					<g:each in="${productOptions}" status="i" var="productOption">
 						<tr>
 							<td>${productOption.name}</td>
 							<td><g:if test="${productOption.variants.size() > 0 }">

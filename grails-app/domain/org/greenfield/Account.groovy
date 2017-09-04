@@ -118,9 +118,11 @@ class Account {
 	}
 
 
-
 	static constraints = {
 		uuid(nullable:true)
+        username(size:5..21, nullable: false, blank: false, unique: true)
+        email(email:true, nullable: false, blank: false, unique: true)
+		password(minSize: 5, nullable:false, blank:false, column: '`password`')
 		name(blank:true, nullable:true)
 		address1(nullable:true)
 		address2(nullable:true)
@@ -132,9 +134,6 @@ class Account {
 		addressVerified(nullable:true, default:true)
 		ipAddress(blank:true, nullable:true)
 		resetUUID(nullable:true)
-        username(size:5..15, nullable: false, blank: false, unique: true)
-        email(email:true, nullable: false, blank: false, unique: true)
-		password(minSize: 5, nullable:false, blank:false, column: '`password`')
 		id generator: 'sequence', params:[sequence:'ID_ACCOUNT_PK_SEQ']
     }
 	
