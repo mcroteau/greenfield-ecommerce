@@ -65,9 +65,9 @@ class ImportController {
 		println "Uploads : ${Upload.count()}"
 		println "Customers : ${Account.count()}"
 		println "Orders : ${Transaction.count()}"
-		println "PageViews : ${PageViewLog.count()}"
-		println "ProductViews : ${ProductViewLog.count()}"
 		println "CatalogViews : ${CatalogViewLog.count()}"
+		println "ProductViews : ${ProductViewLog.count()}"
+		println "PageViews : ${PageViewLog.count()}"
 		println "SearchQueries : ${SearchLog.count()}"
 		println "ShoppingCartItemOptions : ${ShoppingCartItemOption.count()}"
 		println "Abandoned/Active Carts : ${ShoppingCart.countByStatus(ShoppingCartStatus.ACTIVE.description())}"
@@ -135,7 +135,7 @@ class ImportController {
 			}
 			
 			
-			if(json['specificationData']){
+			if(json['specifications']){
 				println "importing product specifications..."
 				def specificationCount = Specification.count()
 				saveSpecificationData(json['specifications']['data'], json['productSpecifications']['data'])
@@ -592,11 +592,12 @@ class ImportController {
 		def count = 0
 		additionalPhotos.each(){ ap ->
 			
-			def product = Product.findByUuid(ap.product)
-			if(product){	
-				def existingAdditionalPhoto = AdditionalPhoto.findByUuid(ap.uuid)
-				
-				if(!existingAdditionalPhoto){ 
+			def existingAdditionalPhoto = AdditionalPhoto.findByUuid(ap.uuid)
+			
+			if(!existingAdditionalPhoto){ 
+			
+				def product = Product.findByUuid(ap.product)
+				if(product){	
 					
 					if(params.performImport == "true"){
 					
@@ -614,10 +615,10 @@ class ImportController {
 						additionalPhoto.save(flush:true)
 					}
 					
-					count++
 				}
 				
 				
+				count++
 			}else{
 				flash.message = "Not all data will be imported. Please make sure you have catalogs and products created"
 			}

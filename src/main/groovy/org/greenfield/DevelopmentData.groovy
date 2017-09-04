@@ -630,9 +630,9 @@ public class DevelopmentData {
 	
 	
 	def createActivityLogs(){
-		generatePageViews()
-		generateProductViews()
 		generateCatalogViews()
+		generateProductViews()
+		generatePageViews()
 		generateSearchQueries()
 	}
 	

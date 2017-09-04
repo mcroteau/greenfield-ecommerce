@@ -23,6 +23,7 @@ class ProductOption {
     static constraints = {
 		uuid(nullable:true)
         name(nullable: false, blank: false)
+		position(nullable:true)
 		id generator: 'sequence', params:[sequence:'ID_PRODUCT_OPTION_PK_SEQ']
     }
 }
