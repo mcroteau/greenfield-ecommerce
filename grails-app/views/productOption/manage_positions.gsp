@@ -49,6 +49,14 @@
 				<g:link controller="product" action="product_options" name="product_options" class="btn btn-default pull-right" id="${productInstance.id}">Back to Product Options</g:link>
 			</h2>
 			
+			<div class="form-row">
+				<span class="form-label secondary">Product</span>
+				<span class="input-container">
+					<span class="label label-default">${productInstance?.name}</span>
+				</span>
+				<br class="clear"/>
+			</div>
+			
 			<p class="information secondary">Click, drag and drop product option to desired positions.  Click "Update Product Option Positions" to save changes</p>
 			
 			<div class="clear" style="margin-top:20px;"></div>

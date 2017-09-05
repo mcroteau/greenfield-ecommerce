@@ -50,6 +50,7 @@ class Account {
 	int productViews
 	int pageViews
 	int searches
+	int orders
 
 	//TODO:reconsider transients
  	//static transients = ['pageViews', 'catalogViews', 'productViews', 'searches']
@@ -138,6 +139,7 @@ class Account {
 		productViews(nullable:true, default:0)
 		pageViews(nullable:true, default:0)
 		searches(nullable:true, default:0)
+		orders(nullable:true, default:0)
 		id generator: 'sequence', params:[sequence:'ID_ACCOUNT_PK_SEQ']
     }
 	

@@ -152,6 +152,9 @@ class ShoppingCartController {
     		    	transaction.chargeId = charge.id
 					transaction.save(flush:true)
 
+					customerAccount.orders = Transaction.countByAccount(customerAccount)
+					customerAccount.save(flush:true)
+					
 					adjustInventory(shoppingCart)
 
 					sendNewOrderEmail(customerAccount, transaction)

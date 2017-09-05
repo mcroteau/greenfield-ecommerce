@@ -618,6 +618,9 @@ public class DevelopmentData {
 		
 					transaction.save(flush:true)
 
+					customer.orders = Transaction.countByAccount(customer)
+					customer.save(flush:true)
+					
 					customer.createTransactionPermission(transaction)
 				}
 			}

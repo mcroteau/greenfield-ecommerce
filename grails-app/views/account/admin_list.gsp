@@ -1,5 +1,12 @@
 
-<%@ page import="org.greenfield.Account" %>
+<%@ 
+page import="org.greenfield.Account" 
+page import="org.greenfield.log.CatalogViewLog"
+page import="org.greenfield.log.ProductViewLog"
+page import="org.greenfield.log.PageViewLog"
+page import="org.greenfield.log.SearchLog"
+page import="org.greenfield.Transaction"
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -86,16 +93,15 @@
 							
 							<g:sortableColumn property="email" title="Email" params="${[admin:admin]}"/>
 
-							<g:sortableColumn property="catalogViews" title="Catalog Views" params="${[admin:admin]}"/>
+							<g:sortableColumn property="catalogViews" title="Catalog Views (${CatalogViewLog.count()})" params="${[admin:admin]}"/>
 
-							<g:sortableColumn property="productViews" title="Product Views" params="${[admin:admin]}"/>
+							<g:sortableColumn property="productViews" title="Product Views (${ProductViewLog.count()})" params="${[admin:admin]}"/>
 
-							<g:sortableColumn property="pageViews" title="Page Views" params="${[admin:admin]}"/>						
+							<g:sortableColumn property="pageViews" title="Page Views (${PageViewLog.count()})" params="${[admin:admin]}"/>						
 							
-							<g:sortableColumn property="searches" title="Searches" params="${[admin:admin]}"/>
+							<g:sortableColumn property="searches" title="Searches (${SearchLog.count()})" params="${[admin:admin]}"/>
 
-							<th>Orders</th>
-							<!--<g:sortableColumn property="orders" title="Orders" />-->
+							<g:sortableColumn property="orders" title="Orders (${Transaction.count()})" />
 							
 							<th></th>
 						</tr>
@@ -137,7 +143,7 @@
 							</td>
 					
 							<td align="center">
-								<g:link controller="account" action="admin_order_history" params="[id: accountInstance.id]" class="">${accountInstance.transactions.size()}
+								<g:link controller="account" action="admin_order_history" params="[id: accountInstance.id]" class="">${accountInstance.orders}
 								</g:link>
 							</td>
 

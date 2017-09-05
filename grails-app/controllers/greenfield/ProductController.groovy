@@ -86,9 +86,10 @@ class ProductController {
             return
         }
 		
+		def baseProductOptions = ProductOption.findAllByProduct(productInstance)
 		def productOptions = []
 		
-		productInstance.productOptions.each(){ productOption ->
+		baseProductOptions.each(){ productOption ->
 			
 			def option = [:]
 			option.id = productOption.id

@@ -54,6 +54,7 @@ class ImportController {
 	
 	@Secured('ROLE_ADMIN')
 	def validate(){
+		println "Accounts : ${Account.count()}"
 		println "Catalogs : ${Catalog.count()}"
 		println "Products : ${Product.count()}"
 		println "Product Options : ${ProductOption.count()}"
@@ -63,12 +64,13 @@ class ImportController {
 		println "ProductSpecifications : ${ProductSpecification.count()}"
 		println "AdditionalPhotos : ${AdditionalPhoto.count()}"
 		println "Uploads : ${Upload.count()}"
-		println "Customers : ${Account.count()}"
 		println "Orders : ${Transaction.count()}"
 		println "CatalogViews : ${CatalogViewLog.count()}"
 		println "ProductViews : ${ProductViewLog.count()}"
 		println "PageViews : ${PageViewLog.count()}"
-		println "SearchQueries : ${SearchLog.count()}"
+		println "SearchLogs : ${SearchLog.count()}"
+		println "ShoppingCarts : ${ShoppingCart.count()}"
+		println "ShoppingCartItems : ${ShoppingCartItem.count()}"
 		println "ShoppingCartItemOptions : ${ShoppingCartItemOption.count()}"
 		println "Abandoned/Active Carts : ${ShoppingCart.countByStatus(ShoppingCartStatus.ACTIVE.description())}"
 		
@@ -212,8 +214,7 @@ class ImportController {
 			def endDateTime = sdf.format(endDate)
 		
 			TimeDuration duration = TimeCategory.minus(endDate, startDate)
-			println duration
-		
+			
 			println "**********************************************************"
 			println "           Import Complete ${endDateTime}                 "
 		    println "           Total Time : ${duration}                       "
@@ -786,6 +787,9 @@ class ImportController {
 						
 						account.addToTransactions(transaction)
 						account.save(flush:true)
+
+						account.orders = Transaction.countByAccount(account)
+						account.save(flush:true)
 						
 						account.createTransactionPermission(transaction)
 						
@@ -931,7 +935,7 @@ class ImportController {
 				}
 			}
 		}
-		println "- importing catalog views..."
+		println "importing catalog views..."
 
 
 		if(logData.productViewLogs){
@@ -968,7 +972,7 @@ class ImportController {
 				}
 			}
 		}	
-		println "- importing product views..."
+		println "importing product views..."
 		
 
 
@@ -1006,7 +1010,7 @@ class ImportController {
 				}
 			}
 		}	
-		println "- importing page views..."
+		println "importing page views..."
 
 
 		if(logData.searchLogs){
@@ -1038,7 +1042,7 @@ class ImportController {
 				}
 			}
 		}		
-		println "- importing searches..."
+		println "importing searches..."
 
 
 		//TODO: LoginLogs
