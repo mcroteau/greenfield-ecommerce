@@ -603,8 +603,6 @@ class AccountController {
 		authenticatedAdmin { adminAccount ->
 			def accountInstance = new Account(params)
 			
-			println "Account Instance : ${accountInstance}"
-			
 	   		def password = springSecurityService.encodePassword(params.password)
 			accountInstance.password = password
 
@@ -622,8 +620,6 @@ class AccountController {
 				accountInstance.createAccountRoles(includeAdminRole)
 				accountInstance.createAccountPermission()
 
-				println "saved account : ${accountInstance}"
-				
 		       	flash.message = "Account successfully saved"
 		       	redirect(action: "admin_show", id: accountInstance.id)
 				
