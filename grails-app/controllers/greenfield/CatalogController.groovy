@@ -145,13 +145,20 @@ class CatalogController {
 		def catalogViewLog = new CatalogViewLog()
 		catalogViewLog.catalog = catalogInstance
 		
+		def accountInstance
 		if(principal?.username){
-			def accountInstance = Account.findByUsername(principal?.username)
+			accountInstance = Account.findByUsername(principal?.username)
 			catalogViewLog.account = accountInstance
 		}
-
+		
 		catalogViewLog.save(flush:true)
+		
+		if(accountInstance){
+			accountInstance.catalogViews = CatalogViewLog.countByAccount(accountInstance)
+			accountInstance.save(flush:true)
+		}	
 	}
+	
 
 
     def isFilterRequest(params){

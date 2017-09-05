@@ -35,6 +35,7 @@ class DevelopmentController {
 	def generate_development_data(){
 		def developmentData = new DevelopmentData(springSecurityService)
 		developmentData.init()
+		flash.message = "Successfully generated development data..."
 		redirect(controller:'configuration', action:'index')
 	}
 	

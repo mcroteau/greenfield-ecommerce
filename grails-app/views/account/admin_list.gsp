@@ -85,18 +85,13 @@
 							<g:sortableColumn property="username" title="Username" />
 							
 							<g:sortableColumn property="email" title="Email" />
-						
-							<th>Searches</th>
-							<!--<g:sortableColumn property="searches" title="Searches" />-->
 
-							<th>Page Views</th>
-							<!--<g:sortableColumn property="pageViews" title="Page Views" />-->
+							<g:sortableColumn property="catalogViews" title="Catalog Views" />
 
-							<th>Catalog Views</th>
-							<!--<g:sortableColumn property="catalogViews" title="Catalog Views" />-->
+							<g:sortableColumn property="productViews" title="Product Views" />
 
-							<th>Product Views</th>
-							<!--<g:sortableColumn property="productViews" title="Product Views" />-->
+							<g:sortableColumn property="pageViews" title="Page Views" />						
+							<g:sortableColumn property="searches" title="Searches" />
 
 							<th>Orders</th>
 							<!--<g:sortableColumn property="orders" title="Orders" />-->
@@ -115,29 +110,30 @@
 						
 							<td>${fieldValue(bean: accountInstance, field: "email")}</td>
 						
+
 							<td align="center">
 								<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">
-									${fieldValue(bean: accountInstance, field: "searches")}
+									${accountInstance.catalogViews}
 								</g:link>
 							</td>
 
 							<td align="center">
 								<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">
-									${fieldValue(bean: accountInstance, field: "pageViews")}
+									${accountInstance.productViews}
 								</g:link>
 							</td>
-
+							
 							<td align="center">
 								<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">
-									${fieldValue(bean: accountInstance, field: "catalogViews")}</g:link>
-							</td>
-
-							<td align="center">
-								<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">
-									${fieldValue(bean: accountInstance, field: "productViews")}
+									${accountInstance.pageViews}
 								</g:link>
 							</td>
-								
+						
+							<td align="center">
+								<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">
+									${accountInstance.searches}
+								</g:link>
+							</td>
 					
 							<td align="center">
 								<g:link controller="account" action="admin_order_history" params="[id: accountInstance.id]" class="">${accountInstance.transactions.size()}

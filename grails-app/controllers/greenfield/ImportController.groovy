@@ -226,6 +226,7 @@ class ImportController {
 				request.checkResults = true		
 			}
 			
+			flash.message = "Successfully imported data"
 			
 			render(view: 'view_import')
 			
@@ -912,11 +913,17 @@ class ImportController {
 							catalogViewLog.uuid = cvl.uuid
 							catalogViewLog.catalog = catalog
 							catalogViewLog.account = account
-
+							
 							catalogViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", cvl.dateCreated)
 							catalogViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", cvl.lastUpdated)
 							
 							catalogViewLog.save(flush:true)
+
+							if(account){
+								account.catalogViews = CatalogViewLog.countByAccount(account)
+								account.save(flush:true)
+							}
+							
 						}
 					}
 
@@ -924,7 +931,7 @@ class ImportController {
 				}
 			}
 		}
-		println "catalog views++ total: ${count}"
+		println "- importing catalog views..."
 
 
 		if(logData.productViewLogs){
@@ -949,13 +956,19 @@ class ImportController {
 							productViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.lastUpdated)
 							
 							productViewLog.save(flush:true)
+
+							if(account){
+								account.productViews = ProductViewLog.countByAccount(account)
+								account.save(flush:true)
+							}
+							
 						}
 					}
 					count++
 				}
 			}
 		}	
-		println "product views++ total: ${count}"
+		println "- importing product views..."
 		
 
 
@@ -976,18 +989,24 @@ class ImportController {
 							pageViewLog.uuid = pvl.uuid
 							pageViewLog.page = page
 							pageViewLog.account = account
-
+							
 							pageViewLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.dateCreated)
 							pageViewLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", pvl.lastUpdated)
 							
 							pageViewLog.save(flush:true)
+							
+							if(account){
+								account.pageViews = PageViewLog.countByAccount(account)
+								account.save(flush:true)
+							}
+							
 						}
 					}
 					count++
 				}
 			}
 		}	
-		println "page views++ total: ${count}"
+		println "- importing page views..."
 
 
 		if(logData.searchLogs){
@@ -1003,17 +1022,23 @@ class ImportController {
 						searchLog.uuid = sl.uuid
 						searchLog.query = sl.query
 						searchLog.account = account
-
+						
 						searchLog.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sl.dateCreated)
 						searchLog.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sl.lastUpdated)
 						
 						searchLog.save(flush:true)
+
+						if(account){
+							account.searches = SearchLog.countByAccount(account)
+							account.save(flush:true)
+						}
+						
 					}
 					count++
 				}
 			}
 		}		
-		println "search logs++ total: ${count}"
+		println "- importing searches..."
 
 
 		//TODO: LoginLogs

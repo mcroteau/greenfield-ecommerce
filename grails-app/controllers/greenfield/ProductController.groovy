@@ -54,13 +54,18 @@ class ProductController {
 				
 			def searchLog = new SearchLog()
 			searchLog.query = params.query.toLowerCase()
-
+			
+			def accountInstance
 			if(principal?.username){
-				def accountInstance = Account.findByUsername(principal?.username)
+				accountInstance = Account.findByUsername(principal?.username)
 				searchLog.account = accountInstance
 			}
 			searchLog.save(flush:true)
 			
+			if(accountInstance){
+				accountInstance.searches = SearchLog.countByAccount(accountInstance)
+				accountInstance.save(flush:true)
+			}			
 			
 			[products : products, offset : offset, max : max, query : params.query ]
 		}else{
@@ -98,12 +103,18 @@ class ProductController {
 		
 		def productViewLog = new ProductViewLog()
 		productViewLog.product = productInstance
+		
+		def accountInstance
 		if(principal?.username){
-			def accountInstance = Account.findByUsername(principal?.username)
+			accountInstance = Account.findByUsername(principal?.username)
 			productViewLog.account = accountInstance
 		}
 		productViewLog.save(flush:true)
 		
+		if(accountInstance){
+			accountInstance.productViews = ProductViewLog.countByAccount(accountInstance)
+			accountInstance.save(flush:true)
+		}
 
 
 		def url = request.getRequestURL()

@@ -734,7 +734,6 @@ class AccountController {
 			def sort = params?.sort ? params.sort : "id"
 			def order = params?.order ? params.order : "asc"
 			
-
 			def accountInstanceList = []
 			def accountInstanceTotal = 0
 
@@ -745,8 +744,6 @@ class AccountController {
 				def accountCriteria = Account.createCriteria()
 				def countCriteria = Account.createCriteria()
 
-				println "has admin role : ${params?.admin} : ${hasAdminRole}"
-				
 				accountInstanceTotal = countCriteria.count(){
 					and{
 						or {
@@ -773,27 +770,6 @@ class AccountController {
 			}else{
 				accountInstanceList = Account.findAllByHasAdminRole(hasAdminRole, [max: max, offset: offset, sort: sort, order: order])
 				accountInstanceTotal = Account.countByHasAdminRole(hasAdminRole)
-			}
-			
-			if(accountInstanceList){
-				accountInstanceList.each(){ it ->
-					def pageViews = 0
-					def catalogViews = 0
-					def productViews = 0
-					def searches = 0
-                	
-					pageViews = PageViewLog.countByAccount(it)
-					catalogViews = CatalogViewLog.countByAccount(it)
-					productViews = ProductViewLog.countByAccount(it)
-					searches = SearchLog.countByAccount(it)
-                	
-					it.pageViews = pageViews 
-					it.catalogViews = catalogViews
-					it.productViews = productViews 
-					it.searches = searches
-					//TODO:make sure transient
-					//it.save(flush:true)
-				}
 			}
 			
 			[ accountInstanceList: accountInstanceList, accountInstanceTotal: accountInstanceTotal, admin: hasAdminRole, query : params.query ]

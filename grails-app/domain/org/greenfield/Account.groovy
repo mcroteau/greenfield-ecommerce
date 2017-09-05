@@ -46,10 +46,10 @@ class Account {
 	Date lastUpdated
 
 	//TODO:investigate
-	def pageViews
-	def catalogViews
-	def productViews
-	def searches
+	int catalogViews
+	int productViews
+	int pageViews
+	int searches
 
 	//TODO:reconsider transients
  	//static transients = ['pageViews', 'catalogViews', 'productViews', 'searches']
@@ -134,6 +134,10 @@ class Account {
 		addressVerified(nullable:true, default:true)
 		ipAddress(blank:true, nullable:true)
 		resetUUID(nullable:true)
+		catalogViews(nullable:true, default:0)
+		productViews(nullable:true, default:0)
+		pageViews(nullable:true, default:0)
+		searches(nullable:true, default:0)
 		id generator: 'sequence', params:[sequence:'ID_ACCOUNT_PK_SEQ']
     }
 	

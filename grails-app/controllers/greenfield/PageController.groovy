@@ -43,11 +43,17 @@ class PageController {
 		def pageViewLog = new PageViewLog()
 		pageViewLog.page = pageInstance
 
+		def accountInstance
 		if(principal?.username){
-			def accountInstance = Account.findByUsername(principal?.username)
+			accountInstance = Account.findByUsername(principal?.username)
 			pageViewLog.account = accountInstance
 		}
 		pageViewLog.save(flush:true)
+		
+		if(accountInstance){
+			accountInstance.pageViews = PageViewLog.countByAccount(accountInstance)
+			accountInstance.save(flush:true)
+		}
 		
 		[pageInstance : pageInstance]
 	}

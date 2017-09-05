@@ -27,7 +27,7 @@ public class DevelopmentData {
 	def CUSTOMERS_COUNT       = 20
 	def ORDERS_COUNT          = 20
 	def PAGE_VIEWS_COUNT      = 10
-	def PRODUCT_VIEWS_COUNT   = 20
+	def PRODUCT_VIEWS_COUNT   = 30
 	def CATALOG_VIEWS_COUNT   = 40
 	def SEARCH_QUERIES_COUNT  = 30
 	def ABANDONED_CARTS_COUNT = 10
@@ -627,8 +627,6 @@ public class DevelopmentData {
 	}
 
 	
-	
-	
 	def createActivityLogs(){
 		generateCatalogViews()
 		generateProductViews()
@@ -650,16 +648,20 @@ public class DevelopmentData {
 				def pageViewLog = new PageViewLog()
 				pageViewLog.page = page
 
-				if(n % 3 == 0){
+				def account
+				if(n % 2 == 0){
 					int accountId = rand.nextInt(NUMBER_CUSTOMERS) + 1
-					def account = Account.get(accountId)
+					account = Account.get(accountId)
 					pageViewLog.account = account
 				}
 
-				pageViewLog.save(flush:true)
-				
 				pageViewLog.dateCreated = generateRandomDate()
 				pageViewLog.save(flush:true)
+				
+				if(account){
+					account.pageViews = PageViewLog.countByAccount(account)
+					account.save(flush:true)
+				}
 			}
 		}
 		println "PageViews : ${PageViewLog.count()}"
@@ -678,16 +680,19 @@ public class DevelopmentData {
 				def productViewLog = new ProductViewLog()
 				productViewLog.product = product
 
-				if(n % 3 == 0){
+				def account
+				if(n % 2 == 0){
 					int accountId = rand.nextInt(NUMBER_CUSTOMERS) + 1
-					def account = Account.get(accountId)
+					account = Account.get(accountId)
 					productViewLog.account = account
 				}
-
-				productViewLog.save(flush:true)
-
 				productViewLog.dateCreated = generateRandomDate()
 				productViewLog.save(flush:true)
+				
+				if(account){
+					account.productViews = ProductViewLog.countByAccount(account)
+					account.save(flush:true)
+				}
 			}
 		}
 		println "ProductViews : ${ProductViewLog.count()}"
@@ -706,16 +711,20 @@ public class DevelopmentData {
 				def catalogViewLog = new CatalogViewLog()
 				catalogViewLog.catalog = catalog
 
-				if(n % 3 == 0){
+				def account
+				if(n % 2 == 0){
 					int accountId = rand.nextInt(NUMBER_CUSTOMERS) + 1
-					def account = Account.get(accountId)
+					account = Account.get(accountId)
 					catalogViewLog.account = account
 				}
-
-				catalogViewLog.save(flush:true)
-
+				
 				catalogViewLog.dateCreated = generateRandomDate()
 				catalogViewLog.save(flush:true)
+				
+				if(account){
+					account.catalogViews = CatalogViewLog.countByAccount(account)
+					account.save(flush:true)
+				}
 			}
 		}
 		println "CatalogViews : ${CatalogViewLog.count()}"
@@ -734,16 +743,20 @@ public class DevelopmentData {
 			def searchLog = new SearchLog()
 			searchLog.query = query
 
-			if(n % 3 == 0){
+			def account
+			if(n % 2 == 0){
 				int accountId = rand.nextInt(NUMBER_CUSTOMERS) + 1
-				def account = Account.get(accountId)
+				account = Account.get(accountId)
 				searchLog.account = account
 			}
 
-			searchLog.save(flush:true)
-
 			searchLog.dateCreated = generateRandomDate()
 			searchLog.save(flush:true)
+			
+			if(account){
+				account.searches = SearchLog.countByAccount(account)
+				account.save(flush:true)
+			}		
 		}
 		println "SearchLogs : ${SearchLog.count()}"
 	}
