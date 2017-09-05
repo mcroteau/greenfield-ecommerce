@@ -82,16 +82,17 @@
 					<thead>
 						<tr>
 							<!-- TODO: make sortable, may require refactoring Account hasMany to include hasMany roles/authorities -->
-							<g:sortableColumn property="username" title="Username" />
+							<g:sortableColumn property="username" title="Username" params="${[admin:admin]}"/>
 							
-							<g:sortableColumn property="email" title="Email" />
+							<g:sortableColumn property="email" title="Email" params="${[admin:admin]}"/>
 
-							<g:sortableColumn property="catalogViews" title="Catalog Views" />
+							<g:sortableColumn property="catalogViews" title="Catalog Views" params="${[admin:admin]}"/>
 
-							<g:sortableColumn property="productViews" title="Product Views" />
+							<g:sortableColumn property="productViews" title="Product Views" params="${[admin:admin]}"/>
 
-							<g:sortableColumn property="pageViews" title="Page Views" />						
-							<g:sortableColumn property="searches" title="Searches" />
+							<g:sortableColumn property="pageViews" title="Page Views" params="${[admin:admin]}"/>						
+							
+							<g:sortableColumn property="searches" title="Searches" params="${[admin:admin]}"/>
 
 							<th>Orders</th>
 							<!--<g:sortableColumn property="orders" title="Orders" />-->
