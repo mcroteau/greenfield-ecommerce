@@ -221,13 +221,13 @@ class ImportController {
 			
 			
 			if(params.performImport == "true"){
+				flash.message = "Successfully imported data"
 				request.importResults = true
 			}else{
 				request.checkResults = true		
 			}
 			
-			flash.message = "Successfully imported data"
-			
+		
 			render(view: 'view_import')
 			
 		}catch(IOException ioe){
