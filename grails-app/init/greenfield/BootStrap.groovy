@@ -65,7 +65,8 @@ class BootStrap {
 		//createDevelopmentData()
 		
 		missingUuidHelperService.correctMissingUuids()
-		calculateResolveCountData()
+		
+		//calculateResolveCountData()
 	}
 	
 	
