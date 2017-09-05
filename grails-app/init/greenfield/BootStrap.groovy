@@ -24,6 +24,11 @@ import grails.util.Environment
 
 import org.greenfield.DevelopmentData
 
+import org.greenfield.log.CatalogViewLog
+import org.greenfield.log.ProductViewLog
+import org.greenfield.log.PageViewLog
+import org.greenfield.log.SearchLog
+
 import java.util.Random
 import groovy.io.FileType			
 			
@@ -60,6 +65,7 @@ class BootStrap {
 		//createDevelopmentData()
 		
 		missingUuidHelperService.correctMissingUuids()
+		calculateResolveCountData()
 	}
 	
 	
@@ -472,6 +478,29 @@ class BootStrap {
 	}
 	
 	
+	
+	
+	def calculateResolveCountData(){
+		def accounts = Account.list()
+		accounts.each{ account ->
+			def catalogViews = CatalogViewLog.countByAccount(account)
+			account.catalogViews = catalogViews
+			
+			def productViews = ProductViewLog.countByAccount(account)
+			account.productViews = productViews
+			
+			def pageViews = PageViewLog.countByAccount(account)
+			account.pageViews = pageViews
+			
+			def searches = SearchLog.countByAccount(account)
+			account.searches = searches
+			
+			def orders = Transaction.countByAccount(account)
+			account.orders = orders
+			
+			account.save(flush:true)
+		}
+	}
 	
 	
 	def destroy = {}

@@ -30,6 +30,29 @@ alter table variant add column uuid character varying(255);
 
 
 alter table product_option
- add "position" integer NOT NULL DEFAULT 0;
+ add "position" integer DEFAULT 0;
 
 update product_option set position = 0 where position is null;
+	
+	
+alter table account add catalog_views integer default 0;
+alter table account add product_views integer default 0;
+alter table account add page_views integer default 0;
+alter table account add searches integer default 0;
+alter table account add orders integer default 0;
+
+update account set catalog_views = 0 where catalog_views is null;
+update account set product_views = 0 where product_views is null;
+update account set page_views = 0 where page_views is null;
+update account set searches = 0 where searches is null;
+update account set orders = 0 where orders is null;
+	
+	
+
+
+
+
+
+
+
+	
