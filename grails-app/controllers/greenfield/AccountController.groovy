@@ -728,7 +728,6 @@ class AccountController {
 		authenticatedAdmin { adminAccount ->
 
 			//TODO:add sorting by columns
-			println "params : ${params}"
 			
         	def max = 10
 			def offset = params?.offset ? params.offset : 0

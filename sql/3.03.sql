@@ -31,3 +31,5 @@ alter table variant add column uuid character varying(255);
 
 alter table product_option
  add "position" integer NOT NULL DEFAULT 0;
+
+update product_option set position = 0 where position is null;
