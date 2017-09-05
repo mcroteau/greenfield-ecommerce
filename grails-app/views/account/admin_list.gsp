@@ -148,7 +148,7 @@ page import="org.greenfield.Transaction"
 							</td>
 
 							<td>
-								<g:link controller="account" action="admin_edit" params="[id: accountInstance.id]" class="">Edit</g:link>&nbsp;&nbsp;
+								<g:link controller="account" action="admin_edit" params="[id: accountInstance.id]" class="edit-${accountInstance.id}">Edit</g:link>&nbsp;&nbsp;
 								<g:link controller="account" action="account_activity" params="[id: accountInstance.id]" class="">Activity</g:link>
 							</td>
 						

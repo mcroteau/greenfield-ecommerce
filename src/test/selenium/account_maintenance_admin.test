@@ -193,7 +193,12 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Edit</td>
+	<td>link=Admin Users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=a.edit-3</td>
 	<td></td>
 </tr>
 <tr>
