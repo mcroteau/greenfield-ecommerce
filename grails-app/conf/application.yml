@@ -1,5 +1,7 @@
 server:
-        contextPath: /greenfield
+    contextPath: /greenfield    
+    session:
+        timeout : 7200
 
 ---
 grails:

@@ -4,14 +4,14 @@
 
 ${raw(applicationService.getHeader("Checkout"))}
 
-	<h4>Successfully Processed Order</h4>
+	<h4>Successfully Processed Order. Thank you!</h4>
 	
 	<h2>Order # : ${transaction.id}</h2>
 	
 	<table class="table table-bordered">
 		<thead>
 			<tr style="background:#efefef">
-				<th style="text-align:center">ID</th>
+				<th style="text-align:center">Id</th>
 				<th>Name</th>
 				<th style="text-align:center">Price</th>
 				<th style="text-align:center">Quantity</th>
@@ -94,8 +94,16 @@ ${raw(applicationService.getHeader("Checkout"))}
 				${transaction.shipAddress2}<br/>
 			</g:if>
 			${transaction.shipCity}, ${transaction?.shipState?.name}<br/>
-			${transaction.shipZip}		
+			${transaction.shipZip}	
+			
+			<br/>
+			<br/>
+			<strong>email:</strong>&nbsp;${transaction?.account.email}<br/>
+			<g:if test="${transaction.account.phone}">
+				<strong>phone</strong>:&nbsp;${transaction?.account.phone}
+			</g:if>
 		</address>
+		
 	</div>
 	
 	<br style="clear:both;"/>

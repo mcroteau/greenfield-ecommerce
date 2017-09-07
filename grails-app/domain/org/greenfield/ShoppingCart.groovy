@@ -14,6 +14,7 @@ class ShoppingCart {
 	BigDecimal subtotal
 	BigDecimal total
 		
+	//TODO:remove for anonymous checkout?	
 	Account account
 		
   	Date dateCreated
@@ -29,6 +30,7 @@ class ShoppingCart {
 	
     static constraints = {	
 		uuid(nullable:true)
+		account(nullable:true)
 		status(nullable:false)
 		taxes(nullable:true)
 		shipping(nullable:true)

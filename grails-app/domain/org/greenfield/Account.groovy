@@ -52,12 +52,7 @@ class Account {
 	int searches
 	int orders
 
-	//TODO:reconsider transients
- 	//static transients = ['pageViews', 'catalogViews', 'productViews', 'searches']
 
-	//TODO:Remove cleanup
-	//static hasMany = [ authorities: AccountRole, permissions: Permission, transactions : Transaction ]
-	//static hasMany = [ permissions: Permission, transactions : Transaction ]
 	static hasMany = [ permissions: Permission, transactions : Transaction ]
 	
 	Set<Role> getAuthorities() {
@@ -71,11 +66,6 @@ class Account {
 	def createTransactionPermission(transaction){
 		createPermission(ControllerConstants.TRANSACTION_PERMISSION + transaction.id)
 	}
-
-	def createShoppingCartPermission(shoppingCart){
-		createPermission(ControllerConstants.SHOPPING_CART_PERMISSION + shoppingCart.id)
-	}
-
 
 	def createAdminAccountRole(){
 		def adminRole = Role.findByAuthority(RoleName.ROLE_ADMIN.description())
@@ -121,7 +111,7 @@ class Account {
 
 	static constraints = {
 		uuid(nullable:true)
-        username(size:5..21, nullable: false, blank: false, unique: true)
+        username(size:5..255, nullable: false, blank: false, unique: true)
         email(email:true, nullable: false, blank: false, unique: true)
 		password(minSize: 5, nullable:false, blank:false, column: '`password`')
 		name(blank:true, nullable:true)

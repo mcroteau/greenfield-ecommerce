@@ -670,10 +670,11 @@ class ImportController {
 						}
 						shoppingCart.save(flush:true)
 										
-						
+						/** TODO: anonymous checkout
 						if(account){
 							account.createShoppingCartPermission(shoppingCart)
 						}				
+						**/
 						
 						sc.shoppingCartItems.each(){ sci ->
 							def product = Product.findByUuid(sci.product)

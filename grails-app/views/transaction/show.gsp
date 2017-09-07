@@ -165,10 +165,12 @@
 			</g:if>
 			${transactionInstance?.shipCity},
 			${transactionInstance.shipState.name}
-			${transactionInstance?.shipZip}<br/>
-			${transactionInstance?.account.email}<br/>
+			${transactionInstance?.shipZip}
+			<br/>
+			<br/>
+			<strong>email:</strong>&nbsp;${transactionInstance?.account.email}<br/>
 			<g:if test="${transactionInstance.account.phone}">
-				phone:${transactionInstance?.account.phone}
+				<strong>phone</strong>:&nbsp;${transactionInstance?.account.phone}
 			</g:if>
 		</address>
 	</div>

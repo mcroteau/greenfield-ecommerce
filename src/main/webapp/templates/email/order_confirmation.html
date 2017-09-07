@@ -72,11 +72,14 @@
 							${transaction.shipAddress2}<br/>
 						<%}%>
 						${transaction.shipCity}, ${transaction.shipState.name}<br/>
-						${transaction.shipZip}<br/>
-						<%if(transaction.account.phone){%>
-							${transaction.account.phone}<br/>
-						<%}%>
+						${transaction.shipZip}
+						<br/>
 						${transaction.account.email}
+						<br/>
+						<%if(transaction.account.phone){%>
+							<em>phone</em>:&nbsp;${transaction.account.phone}<br/>
+						<%}%>
+						<br/>
 					</p>
 				</td>
 				<td style="width:70px;"></td>
