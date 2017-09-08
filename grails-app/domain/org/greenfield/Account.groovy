@@ -67,6 +67,10 @@ class Account {
 		createPermission(ControllerConstants.TRANSACTION_PERMISSION + transaction.id)
 	}
 
+	def createShoppingCartPermission(shoppingCart){
+		createPermission(ControllerConstants.SHOPPING_CART_PERMISSION + shoppingCart.id)
+	}
+
 	def createAdminAccountRole(){
 		def adminRole = Role.findByAuthority(RoleName.ROLE_ADMIN.description())
 		createAccountRole(adminRole)

@@ -52,7 +52,8 @@ class ExportController {
 		println "resolve missing uuids..."
 		missingUuidHelperService.correctMissingUuids()
 		def json = [:]
-		render json as JSON
+		def shoppingCarts = ShoppingCart.list()
+		render shoppingCarts as JSON
 	}
 	
  	@Secured(['ROLE_ADMIN'])

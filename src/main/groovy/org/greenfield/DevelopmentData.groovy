@@ -593,8 +593,7 @@ public class DevelopmentData {
 					shoppingCart.total = shoppingCart.subtotal + taxes + shipping
 					shoppingCart.save(flush:true)
 					
-					//TODO:anonymous checkout
-					//customer.createShoppingCartPermission(shoppingCart)
+					customer.createShoppingCartPermission(shoppingCart)
 		
 
 					def transaction = new Transaction()
