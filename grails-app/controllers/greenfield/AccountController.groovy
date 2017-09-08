@@ -693,7 +693,7 @@ class AccountController {
        		    return
        		}
 
-       		def transactions = Transaction.findAllByAccount(accountInstance, [sort: "orderDate", order: "asc"])
+       		def transactions = Transaction.findAllByAccount(accountInstance, [sort: "orderDate", order: "desc"])
        		def transactionTotal = Transaction.countByAccount(accountInstance)
 
        		[accountInstance : accountInstance, transactionInstanceList: transactions, transactionInstanceTotal: transactionTotal]

@@ -830,6 +830,9 @@ public class DevelopmentData {
 					shoppingCart.subtotal = (product.price * quantity) + optionsTotal
 					shoppingCart.total = shoppingCart.subtotal + taxes + shipping
 					shoppingCart.save(flush:true)
+					
+					customer.createShoppingCartPermission(shoppingCart)
+		
 				}
 			}
 		}

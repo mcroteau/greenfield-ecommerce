@@ -494,7 +494,7 @@ private def authenticatedPermittedShoppingCart(Closure c){
 		}
 
 		if(!permission && !accountRole){
-			flash.message = "You do not have permission to access this account..."
+			flash.message = "You do not have permission to access this shopping cart..."
 			forward(controller:'store', action:'index')
 			return
 		}

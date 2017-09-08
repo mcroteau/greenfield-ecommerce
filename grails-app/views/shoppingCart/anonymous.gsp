@@ -62,7 +62,7 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 							<g:form controller="shoppingCart" action="remove_item" method="get" id="${shoppingCartInstance.id}">
 								<input type="hidden" name="itemId" value="${item.id}"/>
 								<input type="hidden" name="id" value="${shoppingCartInstance.id}"/>
-								<input type="submit" class="btn btn-sm btn-default" name="submit" value="Remove Item"/>
+								<input type="submit" class="btn btn-sm btn-default remove-${item.id}" name="submit" value="Remove Item"/>
 							</g:form>
 						</td>
 					</tr>

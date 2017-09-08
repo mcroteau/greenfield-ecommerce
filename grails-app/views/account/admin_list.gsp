@@ -89,7 +89,7 @@ page import="org.greenfield.Transaction"
 					<thead>
 						<tr>
 							<!-- TODO: make sortable, may require refactoring Account hasMany to include hasMany roles/authorities -->
-							<g:sortableColumn property="username" title="Username" params="${[admin:admin]}"/>
+							<g:sortableColumn property="name" title="Name" params="${[admin:admin]}"/>
 							
 							<g:sortableColumn property="email" title="Email" params="${[admin:admin]}"/>
 
@@ -112,10 +112,10 @@ page import="org.greenfield.Transaction"
 					
 							<td>
 								<g:link action="admin_show" id="${accountInstance.id}">
-								${fieldValue(bean: accountInstance, field: "username")}</g:link>
+								${accountInstance.name}</g:link>
 							</td>
 						
-							<td>${fieldValue(bean: accountInstance, field: "email")}</td>
+							<td>${accountInstance.email}</td>
 						
 
 							<td align="center">

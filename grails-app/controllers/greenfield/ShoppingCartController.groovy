@@ -32,6 +32,7 @@ import org.greenfield.State
 
 import grails.plugin.springsecurity.annotation.Secured
 
+import greenfield.common.ControllerConstants
 
 @Mixin(BaseController)
 class ShoppingCartController {
@@ -51,13 +52,28 @@ class ShoppingCartController {
 
 	@Secured(['permitAll'])
     def index() {	
-		println "index: ${session['shoppingCart']}"
 		if(springSecurityService.isLoggedIn()){
-			println "authenticated ${session['shoppingCart']}"
+			
 			def customerAccount = Account.findByUsername(principal?.username)
+			//println  "is logged in... ${customerAccount}"
+			
 			def shoppingCartInstance = ShoppingCart.findByAccountAndStatus(customerAccount, ShoppingCartStatus.ACTIVE.description())
-			calculateShoppingCartSubtotal(shoppingCartInstance)
-			[shoppingCartInstance : shoppingCartInstance]			
+			
+			if(shoppingCartInstance){
+				def permission = customerAccount.permissions.find { 
+					it.permission == ControllerConstants.SHOPPING_CART_PERMISSION + shoppingCartInstance.id
+				}
+			
+				if(!permission){
+					flash.message = "You do not have permission to access this shopping cart..."
+					redirect(controller:'store', action:'index')
+				}
+			
+				calculateShoppingCartSubtotal(shoppingCartInstance)
+			}
+			
+			[shoppingCartInstance : shoppingCartInstance]
+						
 		}else{
 			redirect(action:'anonymous')
 		}
@@ -66,8 +82,6 @@ class ShoppingCartController {
 
 	@Secured(['permitAll'])
 	def anonymous(){
-		println "annonymous: ${session['shoppingCart']}"
-		println "Timeout: ${session.getMaxInactiveInterval()} seconds"
 		def uuid = session['shoppingCart']
 		def shoppingCartInstance = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
 		calculateShoppingCartSubtotal(shoppingCartInstance)
@@ -78,8 +92,6 @@ class ShoppingCartController {
 
 	@Secured(['permitAll'])
 	def add(){
-		
-		println "add : ${session['shoppingCart']}"
 		
 		def productInstance = Product.findById(params.id)
 		
@@ -131,7 +143,6 @@ class ShoppingCartController {
 		def shoppingCart
 		
 		if(springSecurityService.isLoggedIn()){
-			println "here... : ${principal?.username}"
 			
 			def account = Account.findByUsername(principal?.username)
 			shoppingCart = ShoppingCart.findByAccountAndStatus(account, ShoppingCartStatus.ACTIVE.description())
@@ -143,25 +154,25 @@ class ShoppingCartController {
 				shoppingCart.save(flush:true)
 			}
 			
+			account.createShoppingCartPermission(shoppingCart)
+			
 		}else{
-			println "\n\nelse on logged in user"
+			
 			if(session['shoppingCart']){
-				println "get session shopping cart"
+				
 				def uuid = session['shoppingCart']
-				println "uuid : ${uuid}"
 				shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
+			
 			}else{
-				println "create new session shopping cart"
+			
 				shoppingCart = new ShoppingCart()
-				println "creating session cart : ${shoppingCart.uuid}"
 				session['shoppingCart'] = shoppingCart.uuid
 				shoppingCart.status = ShoppingCartStatus.ACTIVE.description()
 				shoppingCart.save(flush:true)
+			
 			}
 		}
 		
-
-		println "done : shopping cart : ${shoppingCart}"
 
 		if(!shoppingCart){
 			println "Shopping cart didnt save..."
@@ -296,8 +307,12 @@ class ShoppingCartController {
 			redirect(action:'anonymous')
 		}
 		
-		calculateTotal(shoppingCart)
-		
+		try{
+			calculateTotal(shoppingCart)
+		}catch(Exception e){
+			e.printStackTrace()
+		}
+	
 		[ shoppingCart: shoppingCart ]
 	}
 	
@@ -372,6 +387,7 @@ class ShoppingCartController {
 		
 
 		if(!account.validate()){
+			println "* errors with saving account account..."
 			account.errors.allErrors.each {
 			    println it
 			}
@@ -464,9 +480,7 @@ class ShoppingCartController {
 				account.save(flush:true)
 				
 				adjustInventory(shoppingCart)
-
 				sendNewOrderEmail(account, transaction)
-				
 				session['shoppingCart'] = null
 				
 				
@@ -539,8 +553,9 @@ class ShoppingCartController {
 			taxes = applicationService.formatPrice(taxes)
 		
 			def total = 0 
+			
 			total = subtotal + taxes + shoppingCart.shipping
-		
+			
 			shoppingCart.subtotal = subtotal
 			shoppingCart.taxes = taxes
 			shoppingCart.total = total
@@ -558,10 +573,10 @@ class ShoppingCartController {
 		def easypostEnabled = applicationService.getEasyPostEnabled()
 
 		if(easypostEnabled == "true" && 
-				params.set != "true"){
+				params.set != "true" && 
+				shoppingCart.account){
 			
 			try{
-			
 			
 				def apiKey
 				
