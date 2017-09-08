@@ -115,7 +115,9 @@ page import="org.greenfield.Transaction"
 								${accountInstance.name}</g:link>
 							</td>
 						
-							<td>${accountInstance.email}</td>
+							<td>${accountInstance.email}<br/>
+								${accountInstance.username}
+							</td>
 						
 
 							<td align="center">
