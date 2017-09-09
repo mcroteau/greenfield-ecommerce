@@ -422,30 +422,33 @@ class ExportDataService {
 		shoppingCarts['data'] = []
 		
 		unformattedShoppingCarts.each(){ sc ->
-			if(sc.shoppingCartItems){
-				def shoppingCart = [:]
-				shoppingCart['uuid'] = sc.uuid
-				shoppingCart['status'] = sc.status
-				shoppingCart['taxes'] = sc.taxes
-				shoppingCart['shipping'] = sc.shipping
-				shoppingCart['subtotal'] = sc.subtotal
-				shoppingCart['total'] = sc.total
-		    	
+			
+			def shoppingCart = [:]
+			shoppingCart['uuid'] = sc.uuid
+			shoppingCart['status'] = sc.status
+			shoppingCart['taxes'] = sc.taxes
+			shoppingCart['shipping'] = sc.shipping
+			shoppingCart['subtotal'] = sc.subtotal
+			shoppingCart['total'] = sc.total
+		    
+			if(sc.account){
 				shoppingCart['account'] = sc.account.uuid
+			}
+			
+			shoppingCart['shipmentId'] = sc.shipmentId
+			shoppingCart['shipmentDays'] = sc.shipmentDays
+			shoppingCart['shipmentCarrier'] = sc.shipmentCarrier
+			shoppingCart['shipmentService'] = sc.shipmentService
+			shoppingCart['shipmentRateId'] = sc.shipmentRateId
+		    
+		  	shoppingCart['dateCreated'] = sc.dateCreated
+			shoppingCart['lastUpdated'] = sc.lastUpdated
+	        	
+			shoppingCart['shoppingCartItems'] = []	
+			
+			if(sc.shoppingCartItems){
+				sc?.shoppingCartItems.each(){ sci ->
 				
-				shoppingCart['shipmentId'] = sc.shipmentId
-				shoppingCart['shipmentDays'] = sc.shipmentDays
-				shoppingCart['shipmentCarrier'] = sc.shipmentCarrier
-				shoppingCart['shipmentService'] = sc.shipmentService
-				shoppingCart['shipmentRateId'] = sc.shipmentRateId
-		    	
-		  		shoppingCart['dateCreated'] = sc.dateCreated
-				shoppingCart['lastUpdated'] = sc.lastUpdated
-	        		
-				shoppingCart['shoppingCartItems'] = []	
-				
-				sc.shoppingCartItems.each(){ sci ->
-					
 					def shoppingCartItem = [:]
 					shoppingCartItem['uuid'] = sci.uuid
 					shoppingCartItem['quantity'] = sci.quantity
@@ -460,18 +463,17 @@ class ExportDataService {
 							shoppingCartItemOption['uuid'] = scio.uuid
 							shoppingCartItemOption['variant'] = scio.variant.uuid
 							shoppingCartItemOption['shoppingCartItem'] = scio.shoppingCartItem.uuid
-			
+			    	
 							shoppingCartItem['shoppingCartItemOptions'].add(shoppingCartItemOption)
 						}
 					}
-			
+			    	
 					shoppingCart['shoppingCartItems'].add(shoppingCartItem)
-				
 				}
-				
-				shoppingCarts['data'].add(shoppingCart)
-	
 			}
+			
+			shoppingCarts['data'].add(shoppingCart)
+	
 		}
 		
 		return shoppingCarts

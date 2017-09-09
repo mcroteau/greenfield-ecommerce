@@ -641,8 +641,6 @@ class ImportController {
 				
 				if(!existingShoppingCart){
 					
-					def account = Account.findByUuid(sc.account)
-				
 					def shoppingCart = new ShoppingCart()
 					shoppingCart.uuid = sc.uuid
 					shoppingCart.status = sc.status
@@ -650,7 +648,13 @@ class ImportController {
 	        		shoppingCart.shipping = sc.shipping
 	        		shoppingCart.subtotal = sc.subtotal
 	        		shoppingCart.total = sc.total
-	        		shoppingCart.account = account
+					
+					def account
+					if(sc.account){
+						account = Account.findByUuid(sc.account)
+						shoppingCart.account = account
+					}
+					
 	        		shoppingCart.shipmentId = sc.shipmentId
 	        		shoppingCart.shipmentDays = sc.shipmentDays
 	        		shoppingCart.shipmentCarrier = sc.shipmentCarrier
@@ -660,8 +664,7 @@ class ImportController {
 	        		shoppingCart.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.lastUpdated)
 					
 					
-					if(sc.shoppingCartItems && 
-							params.performImport == "true"){	
+					if(params.performImport == "true"){	
 							
 						if(!shoppingCart.validate()){
 						    shoppingCart.errors.allErrors.each {
@@ -674,36 +677,38 @@ class ImportController {
 							account.createShoppingCartPermission(shoppingCart)
 						}				
 						
-						sc.shoppingCartItems.each(){ sci ->
-							def product = Product.findByUuid(sci.product)
-							
-							if(product){
+						if(sc.shoppingCartItems){
+							sc.shoppingCartItems.each(){ sci ->
+								def product = Product.findByUuid(sci.product)
 								
-								def shoppingCartItem = new ShoppingCartItem()
-								shoppingCartItem.uuid = sci.uuid
-								shoppingCartItem.quantity = sci.quantity
-								shoppingCartItem.product = product
-								shoppingCartItem.shoppingCart = shoppingCart
-								shoppingCartItem.save(flush:true)
-								
-								shoppingCart.addToShoppingCartItems(shoppingCartItem)
-								shoppingCart.save(flush:true)
-								
-								if(sci.shoppingCartItemOptions){
-									sci.shoppingCartItemOptions.each(){ scio ->
-										
-										def variant = Variant.findByUuid(scio.variant)
-										if(variant){
-											def shoppingCartItemOption = new ShoppingCartItemOption()
-											shoppingCartItemOption.uuid = scio.uuid
-											shoppingCartItemOption.variant = variant
-											shoppingCartItemOption.shoppingCartItem = shoppingCartItem
-											shoppingCartItemOption.save(flush:true)
+								if(product){
+									
+									def shoppingCartItem = new ShoppingCartItem()
+									shoppingCartItem.uuid = sci.uuid
+									shoppingCartItem.quantity = sci.quantity
+									shoppingCartItem.product = product
+									shoppingCartItem.shoppingCart = shoppingCart
+									shoppingCartItem.save(flush:true)
+									
+									shoppingCart.addToShoppingCartItems(shoppingCartItem)
+									shoppingCart.save(flush:true)
+									
+									if(sci.shoppingCartItemOptions){
+										sci.shoppingCartItemOptions.each(){ scio ->
 											
-											shoppingCartItem.addToShoppingCartItemOptions(shoppingCartItemOption)
-											shoppingCartItem.save(flush:true)
+											def variant = Variant.findByUuid(scio.variant)
+											if(variant){
+												def shoppingCartItemOption = new ShoppingCartItemOption()
+												shoppingCartItemOption.uuid = scio.uuid
+												shoppingCartItemOption.variant = variant
+												shoppingCartItemOption.shoppingCartItem = shoppingCartItem
+												shoppingCartItemOption.save(flush:true)
+												
+												shoppingCartItem.addToShoppingCartItemOptions(shoppingCartItemOption)
+												shoppingCartItem.save(flush:true)
+											}
+											
 										}
-										
 									}
 								}
 							}
