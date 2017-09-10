@@ -5,15 +5,13 @@ import java.math.BigDecimal;
 import groovy.text.SimpleTemplateEngine
 import org.springframework.web.context.request.RequestContextHolder
 
-//TODO:moved to grails.web.servlet.mvc
-//import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import grails.web.servlet.mvc.GrailsParameterMap 
 import grails.util.Holders
 
 
 class ApplicationService {
-
-    def grailsApplication
+    
+	def grailsApplication
 	
 	def layout
 	def header
@@ -25,7 +23,7 @@ class ApplicationService {
 	def homepage
 	def properties
 
-	
+
 	def init(){
 		if(!header && !footer){
 			refresh()
@@ -551,9 +549,8 @@ class ApplicationService {
 	
 	def getGreeting(){
 		def subject = SecurityUtils.getSubject();
-
 		if(subject.isAuthenticated()){
-			return "<span id=\"greeting\">Welcome back <a href=\"/${getContextName()}/account/customer_profile\">${subject.principal}</a></span>"
+			return "<span id=\"greeting\">Welcome back <a href=\"/${getContextName()}/account/customer_profile\">${subject.principal}}</a></span>"
 		}else{
 			return "<span></span>"
 		}
@@ -588,11 +585,21 @@ class ApplicationService {
 	}
 	
 	def getAccount(){
-		return "<a href=\"/${getContextName()}/account/customer_profile\" id=\"my-account\">My Account</a>"
+		def subject = SecurityUtils.getSubject();
+		if(subject.isAuthenticated()){
+			return "<a href=\"/${getContextName()}/account/customer_profile\" id=\"my-account\">My Account</a>"
+		}else{
+			return ""
+		}
 	}
 	
 	def getOrderHistory(){
-		return "<a href=\"/${getContextName()}/account/order_history\" id=\"account-order-history\">Order History</a>"
+		def subject = SecurityUtils.getSubject();
+		if(subject.isAuthenticated()){
+			return "<a href=\"/${getContextName()}/account/order_history\" id=\"account-order-history\">Order History</a>"
+		}else{
+			return ""
+		}
 	}
 	
 	def getAdminLink(){

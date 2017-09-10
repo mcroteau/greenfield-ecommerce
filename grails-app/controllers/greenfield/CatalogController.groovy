@@ -4,7 +4,6 @@ import org.springframework.dao.DataIntegrityViolationException
 import greenfield.common.BaseController
 
 import org.greenfield.log.CatalogViewLog
-import org.apache.shiro.SecurityUtils
 
 import org.greenfield.Account
 import org.greenfield.Catalog

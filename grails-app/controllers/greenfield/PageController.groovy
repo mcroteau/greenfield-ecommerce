@@ -7,8 +7,6 @@ import org.greenfield.Account
 import org.greenfield.Page
 import org.greenfield.log.PageViewLog
 
-import org.apache.shiro.SecurityUtils
-
 import grails.plugin.springsecurity.annotation.Secured
 
 

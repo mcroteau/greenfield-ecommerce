@@ -5,7 +5,6 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.greenfield.common.ShoppingCartStatus
 import org.greenfield.common.OrderStatus
 import org.greenfield.common.RoleName
-import org.apache.shiro.SecurityUtils
 import greenfield.common.BaseController
 import com.stripe.Stripe
 import com.stripe.model.Charge

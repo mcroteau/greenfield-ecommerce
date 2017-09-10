@@ -3,16 +3,12 @@ package greenfield
 import org.springframework.dao.DataIntegrityViolationException
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.apache.shiro.authc.UsernamePasswordToken
-import org.apache.shiro.SecurityUtils
 import grails.converters.*
 import java.util.UUID
 import groovy.text.SimpleTemplateEngine
 
 import greenfield.common.BaseController
 import greenfield.common.ControllerConstants
-
-import org.apache.shiro.SecurityUtils
-import org.apache.shiro.subject.Subject
 
 import com.easypost.EasyPost
 import com.easypost.model.Address

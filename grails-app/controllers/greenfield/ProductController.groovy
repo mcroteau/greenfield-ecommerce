@@ -8,9 +8,6 @@ import java.awt.Graphics2D
 import grails.util.Environment
 import grails.converters.*
 
-//TODO:remove SecurityUtils from project
-import org.apache.shiro.SecurityUtils
-
 import org.greenfield.Account
 import org.greenfield.log.ProductViewLog
 import org.greenfield.log.SearchLog
