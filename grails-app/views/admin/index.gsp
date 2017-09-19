@@ -124,31 +124,31 @@
 	<div id="store-stats">
 		
 		<div class="store-stat">
-			<span class="store-stat-value">${storeStatistics.generalStats.products}</span>
+			<span class="store-stat-value"><g:link controller="product" action="list">${storeStatistics.generalStats.products}</g:link></span>
 			<span class="store-stat-label secondary">Products</span>
 		</div>
 
 		
 		<div class="store-stat">
-			<span class="store-stat-value">${storeStatistics.generalStats.outOfStock}</span>
+			<span class="store-stat-value"><g:link controller="product" action="outofstock">${storeStatistics.generalStats.outOfStock}</g:link></span>
 			<span class="store-stat-label secondary">Out of Stock</span>
 		</div>
 		
 		
 		<div class="store-stat">
-			<span class="store-stat-value">${storeStatistics.generalStats.catalogs}</span>
+			<span class="store-stat-value"><g:link controller="catalog" action="list">${storeStatistics.generalStats.catalogs}</g:link></span>
 			<span class="store-stat-label secondary">Catalogs</span>
 		</div>
 		
 		
 		<div class="store-stat">
-			<span class="store-stat-value">${storeStatistics.generalStats.customers}</span>
+			<span class="store-stat-value"><g:link controller="account" action="admin_list" params="${[admin:false]}">${storeStatistics.generalStats.customers}</g:link></span>
 			<span class="store-stat-label secondary">Customers</span>
 		</div>
 		
 		
 		<div class="store-stat">
-			<span class="store-stat-value">${storeStatistics.generalStats.abandonedCarts}</span>
+			<span class="store-stat-value"><g:link controller="shoppingCart" action="active">${storeStatistics.generalStats.abandonedCarts}</g:link></span>
 			<span class="store-stat-label secondary">Abandoned Carts</span>
 		</div>
 		

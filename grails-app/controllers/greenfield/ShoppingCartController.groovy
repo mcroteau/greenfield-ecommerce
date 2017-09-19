@@ -43,6 +43,20 @@ class ShoppingCartController {
 	def springSecurityService
 
 
+	@Secured(['ROLE_ADMIN'])
+	def active(){		
+		params.max = 10
+		params.sort = "dateCreated"
+		params.order = "desc"
+		
+		def totalActiveShoppingCarts = ShoppingCart.countByStatus(ShoppingCartStatus.ACTIVE.description())
+		def activeShoppingCarts = ShoppingCart.findAllByStatus(ShoppingCartStatus.ACTIVE.description(), params)
+		
+		
+		[activeShoppingCarts: activeShoppingCarts, totalActiveShoppingCarts: totalActiveShoppingCarts]
+	}
+
+
 	@Secured(['ROLE_CUSTOMER','ROLE_ADMIN'])
 	def view(){
 		redirect(action : 'index')
