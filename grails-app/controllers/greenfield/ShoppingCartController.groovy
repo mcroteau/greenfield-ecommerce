@@ -16,6 +16,7 @@ import com.easypost.EasyPost
 import com.easypost.model.Address
 import com.easypost.model.Parcel
 import com.easypost.model.Shipment
+import com.easypost.model.CustomsItem
 import com.easypost.exception.EasyPostException
 import grails.util.Environment
 
@@ -550,7 +551,9 @@ class ShoppingCartController {
 	
 	
 	def calculateTotal(shoppingCart){
-	
+		
+		println "calculate total..."
+
 		if(shoppingCart &&
 			shoppingCart?.shoppingCartItems.size() > 0){
 			
@@ -585,10 +588,13 @@ class ShoppingCartController {
 		def customer = shoppingCart.account
 		def easypostEnabled = applicationService.getEasyPostEnabled()
 
+		println params.set
+		println "easypostEnabled?"
 		if(easypostEnabled == "true" && 
 				params.set != "true" && 
 				shoppingCart.account){
 			
+			println "here..."
 			try{
 			
 				def apiKey
@@ -641,18 +647,41 @@ class ShoppingCartController {
 				}
 				
 				if(packageSize.weight > 0){
+					
 					parcelMap.put("weight", packageSize.weight);
 					Parcel parcel = Parcel.create(parcelMap);
 				
+
+					Map<String, Object> customsItemMap = new HashMap<String, Object>();
+					customsItemMap.put("description", "T-shirt");
+					customsItemMap.put("quantity", 1);
+					customsItemMap.put("value", 10);
+					customsItemMap.put("weight", 5);
+					customsItemMap.put("origin_country", "us");
+					customsItemMap.put("hs_tariff_number", "123456");
+					CustomsItem customsItem1 = CustomsItem.create(customsItemMap);
+
+
 					Map<String, Object> shipmentMap = new HashMap<String, Object>();
 					shipmentMap.put("to_address", verifiedToAddress);
 					shipmentMap.put("from_address", verifiedFromAddress);
 					shipmentMap.put("parcel", parcel);
 
-					//println "creating shipment using api..."
-					Shipment shipment = Shipment.create(shipmentMap);
+
+					shipmentMap.put("customs_info", customsItem1)
+
+
+					println "creating shipment using api..."
+					Shipment shipment
+					try{
+						shipment = Shipment.create(shipmentMap);	
+					}catch(Exception e){
+						e.printStackTrace()
+					}
 					
-					//println shipment
+					println "here..."
+					println shipment
+					
 					if(shipment && shipment.rates.size() > 0){
 						def rate = getLowestRate(shipment)
 						shoppingCart.shipping = rate.rate
