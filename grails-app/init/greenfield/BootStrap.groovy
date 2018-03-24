@@ -62,7 +62,7 @@ class BootStrap {
 		println 'Accounts : ' + Account.count()
 
 		//Development Data
-		//createDevelopmentData()
+		createDevelopmentData()
 		
 		missingUuidHelperService.correctMissingUuids()
 		

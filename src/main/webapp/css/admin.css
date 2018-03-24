@@ -30,6 +30,7 @@ span, p, table, td, th{
 	background:#1c695b;
 	background:#384249;
 	background:#1c695b;
+	/**background:#13544A;**/
 }
 
 
@@ -148,8 +149,8 @@ span, p, table, td, th{
 
 
 #header{
-	margin-top:10px;
-	margin-bottom:3px;
+	margin-top:7px;
+	margin-bottom:2px;
 }
 
 
@@ -249,7 +250,7 @@ h1.dashboard{
 
 #store-stats{
 	padding:5px;
-	margin:0px auto 15px auto;
+	margin:0px auto 11px auto;
 	border-top:dashed 1px #ddd;
 	border-bottom:dashed 1px #ddd;
 	text-align:center;

@@ -78,8 +78,31 @@ for (Object param : keys) {
 				<p class="product-name" id="product-name-${productInstance.id}">${productInstance.name}</p>
 			</g:link>
 	
+			<style type="text/css">
+				.price-details span{
+					display:block;
+					text-align:center;
+					border:solid 0px #ddd;
+				}
+				.sales-price{
+					font-size:12px;
+					text-decoration: line-through;
+				}
+			</style>
+				
 			<g:link controller="product" action="details" id="${productInstance.id}">
-				<p class="product-price">$${applicationService.formatPrice(productInstance.price)}</p>
+				<g:if test="${productInstance.salesPrice}">
+					<div class="price-details">
+						<span class="sales-price">$${applicationService.formatPrice(productInstance.price)}</span>
+						<span class="product-price">$${applicationService.formatPrice(productInstance.salesPrice)}</span>
+					</div>
+				</g:if>
+				<g:else>
+					<div class="price-details">
+						<span class="sales-price">&nbsp;</span>
+						<span class="product-price">$${applicationService.formatPrice(productInstance.price)}</span>
+					</div>
+				</g:else>
 	        </g:link>
             
             <%--

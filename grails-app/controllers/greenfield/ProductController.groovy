@@ -219,11 +219,11 @@ class ProductController {
     def save() {
 		authenticatedAdmin { adminAccount ->
 		    
-//		    println "sale price : " + params.salePrice
+//		    println "sale price : " + params.salesPrice
 
 			def productInstance = new Product(params)
 			
-//			println "product sale price : " + productInstance.salePrice
+//			println "product sale price : " + productInstance.salesPrice
 
 			def catalogIdsArray = []
 			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)

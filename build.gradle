@@ -72,3 +72,8 @@ bootRun {
  //   minifyCss = true
   //  includes = ["js/*", "css/**", "bootstrap/**", "images/**"]
 //}
+
+String.metaClass.uncapitalize = {
+    if (delegate.length() <= 1) return delegate.toLowerCase()
+    return delegate[0].toLowerCase() + delegate[1..-1]
+}

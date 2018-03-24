@@ -544,6 +544,9 @@ class ShoppingCartController {
 				}
 			}				
 			def productTotal = shoppingCartItem.product.price + optionsTotal
+			if(shoppingCartItem.product.salesPrice){
+				productTotal = shoppingCartItem.product.salesPrice + optionsTotal
+			}
 			subtotal += (productTotal * shoppingCartItem.quantity)
 		}
 		return subtotal

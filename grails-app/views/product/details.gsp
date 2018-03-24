@@ -32,9 +32,8 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 			<g:if test="${productInstance?.detailsImageUrl}">
 				<a href="/${applicationService.getContextName()}/${productInstance.imageUrl}" id="main_preview_link">
 					<img 
-						src="/${applicationService.getContextName()}/${productInstance?.detailsImageUrl}" 
-						id="main_preview" 
-						style="width:300px;border:solid 1px #ddd"/><br/>
+						src="/${applicationService.getContextName()}/${productInstance?.detailsImageUrl}" id="main_preview" 
+							style="width:300px;border:solid 1px #ddd"/><br/>
 					<span style="font-size:10px; color:#888">Click to see full sized image</span>
 				</a>
 			</g:if>
@@ -104,8 +103,30 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 		<div class="product_details">
 			<g:form controller="shoppingCart" action="add" class="form-inline">
 				<h1 class="product_name">${productInstance.name}</h1>
-				<h2 class="product_price" style="margin-top:0px;">$${applicationService.formatPrice(productInstance.price)}</h2>
-				
+				<style type="text/css">
+					.sales-price{
+						font-size:17px;
+						text-decoration: line-through;
+					}
+					.on-sale{
+						color:#fff;
+						background:#DF0016;
+						display:inline-block;
+						padding:3px 7px;
+						-webkit-border-radius: 3px;
+						-moz-border-radius: 3px;
+						border-radius: 3px;
+					}
+				</style>
+					
+				<g:if test="${productInstance.salesPrice}">
+					<span class="on-sale">Sale</span>
+					<span class="sales-price">$${applicationService.formatPrice(productInstance.price)}</span>
+					<h2 class="product_price" style="margin-top:0px;">$${applicationService.formatPrice(productInstance.salesPrice)}</h2>
+				</g:if>
+				<g:else>
+					<h2 class="product_price" style="margin-top:0px;">$${applicationService.formatPrice(productInstance.price)}</h2>
+				</g:else>
 				<div style="text-align:left; margin-top:20px;">
 				
 					<g:each in="${productOptions}" var="productOption">

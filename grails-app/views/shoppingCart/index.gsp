@@ -33,6 +33,9 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 							}	
 						}
 						def productTotal = item.product.price + optionsTotal
+						if(item.product.salesPrice){
+							productTotal = item.product.salesPrice + optionsTotal
+						}
 						def extendedPrice = productTotal * item.quantity
 					%>
 					<tr>

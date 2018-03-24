@@ -66,7 +66,7 @@
 						
 							<g:sortableColumn property="price" title="${message(code: 'product.price.label', default: '$ Price')}" />
 
-							<g:sortableColumn property="price" title="${message(code: 'product.price.label', default: '$ Sale Price')}" />
+							<g:sortableColumn property="salesPrice" title="${message(code: 'product.salesPrice.label', default: '$ Sale Price')}" />
 							
 							<th></th>
 						
@@ -100,7 +100,7 @@
 							<td>$${applicationService.formatPrice(productInstance.price)}</td>
 							
 						
-							<td>$${applicationService.formatPrice(productInstance.salePrice)}</td>
+							<td>$${applicationService.formatPrice(productInstance.salesPrice)}</td>
 						
 						
 						
