@@ -24,7 +24,7 @@ span, p, table, td, th{
 	right:0;
 	top:0;
 	bottom:0;
-	height:375px;
+	height:473px;
 	z-index:-1000;
 	position:fixed;
 	background:#1c695b;
@@ -38,15 +38,19 @@ span, p, table, td, th{
 	width:960px;
 	min-height:500px;
 	background:#fff;
-	margin:50px auto;
+	margin:50px auto 150px auto;
 	margin:25px auto 80px auto;
+	margin:13px auto 180px auto;
 	padding:15px 25px 30px 15px;
 	border-radius: 3px 3px 3px 3px;
 	-moz-border-radius: 3px 3px 3px 3px;
 	-webkit-border-radius: 3px 3px 3px 3px;
-	box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.38);
-	-moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.38);
-	-webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.38);
+	box-shadow: 0px 0px 13px 0px rgba(0,0,0,0.38);
+	-moz-box-shadow: 0px 0px 13px 0px rgba(0,0,0,0.38);
+	-webkit-box-shadow: 0px 0px 13px 0px rgba(0,0,0,0.38);
+	border-radius: 0px 0px 0px 0px;
+	-moz-border-radius: 0px 0px 0px 0px;
+	-webkit-border-radius: 0px 0px 0px 0px;
 }
 
 
@@ -61,6 +65,10 @@ span, p, table, td, th{
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;	
+
+	border-radius: 0px 0px 3px 3px;	
+	-moz-border-radius: 0px 0px 3px 3px;	
+	-webkit-border-radius: 0px 0px 3px 3px;	
 }
 
 
@@ -79,6 +87,9 @@ span, p, table, td, th{
 	-moz-border-radius-topright: 3px;
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;	
 }
 
 #admin-nav li{
@@ -138,7 +149,7 @@ span, p, table, td, th{
 
 #header{
 	margin-top:10px;
-	margin-bottom:10px;
+	margin-bottom:3px;
 }
 
 

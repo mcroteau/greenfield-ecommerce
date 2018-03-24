@@ -36,7 +36,7 @@ class EmailService {
 		props.put("mail.smtp.port",            port);
  
  	   
-		//println "to : ${toAddress} -> from : ${fromAddress} -> auth : ${auth} -> starttls : ${starttls} -> host : ${host} -> port : ${port}"
+		println "to : ${toAddress} -> from : ${fromAddress} -> auth : ${auth} -> starttls : ${starttls} -> host : ${host} -> port : ${port}"
 		
 		Session session = Session.getInstance(props,
 		  	new Authenticator() {

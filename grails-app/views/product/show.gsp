@@ -19,6 +19,8 @@
 			
 			<h2>Show Product
 			
+				<g:link controller="product" action="create" class="btn btn-primary pull-right" style="margin-left:10px;">New Product</g:link>
+
 				<g:link controller="product" action="list" class="btn btn-default pull-right">Back to List</g:link>
 				<br class="clear"/>
 			</h2>
@@ -69,7 +71,6 @@
 				
 				<div class="form-row">
 					<span class="form-label full secondary">Name 
-						<span class="information secondary block">Name must be unique</span>
 					</span>
 					<span class="input-container">
 						<input name="name" type="text" class="form-control threefifty" value="${productInstance?.name}" disabled="disabled"/>
@@ -95,6 +96,17 @@
 					<span class="form-label full secondary">Price $</span>
 					<span class="input-container">
 						<input name="price" type="text" class="form-control " style="width:150px" value="${productInstance?.price}" disabled="disabled"/>
+					</span>
+					<br class="clear"/>
+				</div>
+
+			
+			
+				
+				<div class="form-row">
+					<span class="form-label full secondary">Sale Price $</span>
+					<span class="input-container">
+						<input name="salePrice" type="text" class="form-control " style="width:150px" value="${productInstance?.salePrice}" disabled="disabled"/>
 					</span>
 					<br class="clear"/>
 				</div>

@@ -97,6 +97,19 @@
 				</div>
 				
 				
+
+		
+				
+				<div class="form-row">
+					<span class="form-label full secondary">Sale Price $</span>
+					<span class="input-container">
+						<input name="salePrice" type="text" class="form-control " style="width:150px; float:left;" value="${productInstance?.salePrice}" id="salePrice"/>
+
+						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:150px;">Leave blank or enter same price for no sale price</span>
+					</span>
+					<br class="clear"/>
+				</div>
+				
 			
 			
 				
@@ -175,7 +188,6 @@
 					</span>
 					
 					<span class="input-container">
-						
 						<textarea  name="description" id="description" class="form-control" style="height:150px; width:380px;">${productInstance?.description}</textarea>
 					</span>
 					<br class="clear"/>

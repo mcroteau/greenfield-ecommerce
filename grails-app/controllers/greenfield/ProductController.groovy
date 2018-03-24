@@ -137,8 +137,9 @@ class ProductController {
     def list(Integer max) {
 		authenticatedAdmin { adminAccount ->
 			params.max = Math.min(max ?: 10, 100)
-			params.sort = "id"
-			params.order = "asc"
+			params.sort = params.sort ? params.sort : "id"
+			params.order = params.order ? params.order : "asc"
+
     		[productInstanceList: Product.list(params), productInstanceTotal: Product.count()]
 		}
     }
@@ -218,8 +219,12 @@ class ProductController {
     def save() {
 		authenticatedAdmin { adminAccount ->
 		    
+//		    println "sale price : " + params.salePrice
+
 			def productInstance = new Product(params)
 			
+//			println "product sale price : " + productInstance.salePrice
+
 			def catalogIdsArray = []
 			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
 			

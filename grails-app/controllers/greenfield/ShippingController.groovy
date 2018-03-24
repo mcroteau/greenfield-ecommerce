@@ -119,8 +119,6 @@ class ShippingController {
                     	
 						Shipment shipment = Shipment.create(shipmentMap);
 						
-						println "here..."
-
 						def carriers = [:]
 						shipment.rates.each { rate ->
 							if(!carriers[rate.carrier]){

@@ -552,7 +552,7 @@ class ShoppingCartController {
 	
 	def calculateTotal(shoppingCart){
 		
-		println "calculate total..."
+		//println "calculate total..."
 
 		if(shoppingCart &&
 			shoppingCart?.shoppingCartItems.size() > 0){
@@ -588,13 +588,12 @@ class ShoppingCartController {
 		def customer = shoppingCart.account
 		def easypostEnabled = applicationService.getEasyPostEnabled()
 
-		println params.set
-		println "easypostEnabled?"
+		
 		if(easypostEnabled == "true" && 
 				params.set != "true" && 
 				shoppingCart.account){
 			
-			println "here..."
+			
 			try{
 			
 				def apiKey
@@ -647,7 +646,7 @@ class ShoppingCartController {
 				}
 				
 				if(packageSize.weight > 0){
-					
+
 					parcelMap.put("weight", packageSize.weight);
 					Parcel parcel = Parcel.create(parcelMap);
 				
@@ -671,7 +670,7 @@ class ShoppingCartController {
 					shipmentMap.put("customs_info", customsItem1)
 
 
-					println "creating shipment using api..."
+					//println "creating shipment using api..."
 					Shipment shipment
 					try{
 						shipment = Shipment.create(shipmentMap);	
@@ -679,8 +678,7 @@ class ShoppingCartController {
 						e.printStackTrace()
 					}
 					
-					println "here..."
-					println shipment
+					//println shipment
 					
 					if(shipment && shipment.rates.size() > 0){
 						def rate = getLowestRate(shipment)

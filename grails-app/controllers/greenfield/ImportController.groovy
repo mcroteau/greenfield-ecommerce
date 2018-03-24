@@ -306,7 +306,9 @@ class ImportController {
 					request.accountsCount = count
 					
 				}else{
-					//account already exists
+					//ensure account uuid matches file
+					existingAccount.uuid = data.uuid
+					existingAccount.save(flush:true)
 				}
 			}
 		}
@@ -320,6 +322,10 @@ class ImportController {
 			def existingCatalog = Catalog.findByUuid(data.uuid)
 			
 			if(!existingCatalog){
+				existingCatalog = Catalog.findByName(data.name)
+			}
+
+			if(!existingCatalog){
 				def catalog =  populateCatalogData(data)
 				
 				if(params.performImport == "true"){
@@ -332,7 +338,13 @@ class ImportController {
 				}
 				catalogCount++
 			}else{
-				//TODO:catalog already exists
+				//ensure uuid is from file data
+				existingCatalog.uuid = data.uuid
+				existingCatalog.save(flush:true)
+				
+				if(data.subcatalogs){
+					saveSubcatalogs(existingCatalog, data.subcatalogs)
+				}
 			}
 		}
 		request.catalogsCount = catalogCount
@@ -343,6 +355,15 @@ class ImportController {
 		subcatalogs.each(){ data ->
 			def existingCatalog = Catalog.findByUuid(data.uuid)
 			
+			if(!existingCatalog){
+				existingCatalog = Catalog.findByName(data.name)
+			}
+
+			if(existingCatalog){
+				existingCatalog.uuid = data.uuid
+				existingCatalog.save(flush:true)
+			}
+
 			if(!existingCatalog){
 				def catalog = populateCatalogData(data)
 				
@@ -358,6 +379,14 @@ class ImportController {
 					saveSubcatalogs(catalog, data.subcatalogs)
 				}
 				catalogCount++
+			}else{
+				//ensure uuid is from file data
+				existingCatalog.uuid = data.uuid
+				existingCatalog.save(flush:true)
+				
+				if(data.subcatalogs){
+					saveSubcatalogs(existingCatalog, data.subcatalogs)
+				}
 			}
 		}
 	}
@@ -429,6 +458,9 @@ class ImportController {
 				count++	
 			}else{
 				flash.message = "Not all data will import as some data already exists with the same identifier"
+				//insure uuid matches data file
+				existingProduct.uuid = data.uuid
+				existingProduct.save(flush:true)
 			}
 			request.productsCount = count			
 		}
