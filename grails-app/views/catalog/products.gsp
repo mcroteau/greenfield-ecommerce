@@ -99,8 +99,8 @@ for (Object param : keys) {
 				</g:if>
 				<g:else>
 					<div class="price-details">
-						<span class="sales-price">&nbsp;</span>
 						<span class="product-price">$${applicationService.formatPrice(productInstance.price)}</span>
+						<span class="sales-price"></span>
 					</div>
 				</g:else>
 	        </g:link>

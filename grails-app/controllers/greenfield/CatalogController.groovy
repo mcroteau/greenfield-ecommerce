@@ -39,6 +39,8 @@ class CatalogController {
 
 		def max = 12
 		def offset = params.offset ? params.offset : 0
+		def sort = params.sort ? params.sort : "name"
+		//def desc = 
 		
 		if(!catalogInstance){	
 			flash.message = "Unable to find Catalog..."
@@ -58,8 +60,14 @@ class CatalogController {
 			 		}
 				}
 			}
-		
-			products = Product.createCriteria().list(max: max, offset: offset){
+			/**
+			install_name_tool -change libdb2.dylib /Users/mcroteau/Library/Python/2.7/lib/python/site-packages/clidriver/lib/libdb2.dylib ibm_db.so
+			
+			install_name_tool -change libdb2.dylib /usr/local/lib/python3.6/site-packages/ibm_db-2.0.8-py3.6-macosx-10.11-x86_64.egg/clidriver/lib ibm_db.so
+			
+			**/
+			
+			products = Product.createCriteria().list(max: max, offset: offset, sort: sort){
 				and{
 					eq("disabled", false)
 					gt("quantity", 0)
