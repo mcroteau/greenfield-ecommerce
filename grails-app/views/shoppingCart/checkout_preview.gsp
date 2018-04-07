@@ -47,7 +47,7 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 		<table class="table table-bordered">
 			<thead>
 				<tr style="background:#efefef">
-					<th style="text-align:center">ID</th>
+					<th style="text-align:center">Id</th>
 					<th>Name</th>
 					<th>Price</th>
 					<th style="text-align:center">Quantity</th>
@@ -65,6 +65,9 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 							}	
 						}
 						def productTotal = item.product.price + optionsTotal
+						if(item.product.salesPrice){
+							productTotal = item.product.salesPrice + optionsTotal
+						}
 						def extendedPrice = productTotal * item.quantity
 					%>
 					
@@ -85,7 +88,12 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 								</div>
 							</g:if>
 						</td>
-						<td>$${applicationService.formatPrice(productTotal)}</td>
+						<td>
+						    <g:if test="${item.product.salesPrice}">
+						        <span class="regular-price">$${applicationService.formatPrice(item.product.price)}</span>
+						    </g:if>
+						    $${applicationService.formatPrice(productTotal)}
+						</td>
 						<td style="text-align:center">${item.quantity}</td>
 						<td id="extended_price" style="text-align:right;">
 							$${applicationService.formatPrice(extendedPrice)}
@@ -223,10 +231,9 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 					</div>
 				</div>
 				-->
-				
-				
+
+
 				<input type="hidden" name="stripeToken" value="" id="stripeToken"/>
-	   			<input type="hidden" name="total" value="${total}"/> 
 				<input type="hidden" name="id" value="${shoppingCart?.id}"/> 
 		
 				

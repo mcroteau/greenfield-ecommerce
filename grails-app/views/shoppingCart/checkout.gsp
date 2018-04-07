@@ -27,7 +27,10 @@ ${raw(applicationService.getHeader("Checkout"))}
 							optionsTotal += option.variant.price
 						}	
 					}
-					def productTotal = item.product.price + optionsTotal
+                    def productTotal = item.product.price + optionsTotal
+                    if(item.product.salesPrice){
+                        productTotal = item.product.salesPrice + optionsTotal
+                    }
 					def extendedPrice = productTotal * item.quantity
 				%>
 				
@@ -49,6 +52,9 @@ ${raw(applicationService.getHeader("Checkout"))}
 						</g:if>
 					</td>
 					<td style="text-align:center">
+                        <g:if test="${item.product.salesPrice}">
+                            <span class="regular-price">$${applicationService.formatPrice(item.product.price)}</span>
+                        </g:if>
 						$${applicationService.formatPrice(productTotal)}
 					</td>
 					<td style="text-align:center">${item.quantity}</td>

@@ -31,7 +31,7 @@ ${raw(applicationService.getHeader("Order Details"))}
 							optionsTotal += option.variant.price
 						}	
 					}
-					def productTotal = item.product.price + optionsTotal
+					def productTotal = item.checkoutPrice + optionsTotal
 					def extendedPrice = productTotal * item.quantity
 				%>
 				<tr>

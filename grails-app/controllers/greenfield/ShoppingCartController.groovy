@@ -494,6 +494,7 @@ class ShoppingCartController {
 				account.save(flush:true)
 				
 				adjustInventory(shoppingCart)
+				setCheckoutPrice(shoppingCart)
 				sendNewOrderEmail(account, transaction)
 				session['shoppingCart'] = null
 				
@@ -511,6 +512,16 @@ class ShoppingCartController {
 			redirect(controller:'store', action:'index')
 		}
 		
+	}
+
+
+	def setCheckoutPrice(shoppinCart){
+		shoppinCart.shoppingCartItems.each { item ->
+			if(item.product.salesPrice){
+				item.checkoutPrice = item.product.salesPrice
+				item.save(flush:true)
+			}
+		}
 	}
 
 

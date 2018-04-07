@@ -14,7 +14,6 @@ class Product {
 	int quantity
 	BigDecimal price
 	BigDecimal salesPrice
-	BigDecimal checkoutPrice
 	
 	String imageUrl
 	String detailsImageUrl
@@ -48,7 +47,6 @@ class Product {
 		quantity(nullable:false)
 		price(nullable:false)
 		salesPrice(nullable:true)
-		checkoutPrice(nullable:true, defaultValue:0)
 		imageUrl(nullable:true)
 		disabled(nullable:true)
 		detailsImageUrl(nullable:true)

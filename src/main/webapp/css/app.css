@@ -148,10 +148,6 @@ input[type="password"]{
     z-index: 2;
 }
 
-
-
-
-
 .product_photos_wrapper{
 	float:left;
 	height:auto;
@@ -210,4 +206,10 @@ input[type="password"]{
 	width:auto;
 	float:right;
 	margin-bottom:20px;
+}
+
+.regular-price{
+    font-size:10px;
+    text-decoration: line-through;
+    display:block;
 }

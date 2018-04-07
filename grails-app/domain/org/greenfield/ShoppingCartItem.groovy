@@ -12,6 +12,9 @@ class ShoppingCartItem {
 	
 	Product product
 	ShoppingCart shoppingCart
+
+	BigDecimal checkoutPrice
+
 	static belongsTo = [ ShoppingCart ]
 	
 	static hasMany = [ shoppingCartItemOptions : ShoppingCartItemOption ]
@@ -23,6 +26,7 @@ class ShoppingCartItem {
     static constraints = {
 		uuid(nullable:true)
 		quantity(nullable:true)
+		checkoutPrice(nullable:true, defaultValue:0)
 		id generator: 'sequence', params:[sequence:'ID_SHOPPING_CART_ITEM_PK_SEQ']
     }
 }
