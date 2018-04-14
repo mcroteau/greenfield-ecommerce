@@ -1,8 +1,0 @@
-
-add sort by name by default
-consider adding sort options
-add sales price to shopping cart screen
-add sales price to checkout screen
-price to checkout price
-sales price for checkout price
-add checkout price for order review screen

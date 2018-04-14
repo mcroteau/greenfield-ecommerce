@@ -123,7 +123,12 @@
 							</div>
 						</g:if>
 					</td>
-					<td style="text-align:center">$${applicationService.formatPrice(productTotal)}</td>
+					<td style="text-align:center">
+					    $${applicationService.formatPrice(productTotal)}
+                        <g:if test="${item.checkoutPrice != item.regularPrice}">
+                            <span class="regular-price">$${applicationService.formatPrice(item.product.price)}</span>
+                        </g:if>
+					</td>
 					<td style="text-align:center">${item.quantity}</td>
 					<td id="extended_price" style="text-align:center">$${applicationService.formatPrice(extendedPrice)}</td>
 				</tr>

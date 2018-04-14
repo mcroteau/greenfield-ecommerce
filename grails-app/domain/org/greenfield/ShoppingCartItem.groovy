@@ -13,6 +13,7 @@ class ShoppingCartItem {
 	Product product
 	ShoppingCart shoppingCart
 
+	BigDecimal regularPrice
 	BigDecimal checkoutPrice
 
 	static belongsTo = [ ShoppingCart ]
@@ -27,6 +28,7 @@ class ShoppingCartItem {
 		uuid(nullable:true)
 		quantity(nullable:true)
 		checkoutPrice(nullable:true, defaultValue:0)
+		regularPrice(nullable:true, defaultValue:0)
 		id generator: 'sequence', params:[sequence:'ID_SHOPPING_CART_ITEM_PK_SEQ']
     }
 }

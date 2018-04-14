@@ -312,7 +312,7 @@ class ShoppingCartController {
 	}
 	
 	
-	def anonymous_checkout_preview(){
+	def anonymous_preview(){
 		def uuid = session['shoppingCart']
 		def shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
 		
@@ -515,12 +515,16 @@ class ShoppingCartController {
 	}
 
 
-	def setCheckoutPrice(shoppinCart){
-		shoppinCart.shoppingCartItems.each { item ->
+	def setCheckoutPrice(shoppingCart){
+		shoppingCart.shoppingCartItems.each { item ->
+			item.regularPrice = item.product.price
 			if(item.product.salesPrice){
 				item.checkoutPrice = item.product.salesPrice
-				item.save(flush:true)
+			}else{
+				item.checkoutPrice = item.product.price
 			}
+
+			item.save(flush:true)
 		}
 	}
 

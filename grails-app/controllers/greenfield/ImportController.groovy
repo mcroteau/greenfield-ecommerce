@@ -427,6 +427,7 @@ class ImportController {
 					product.description = data.description
 					product.quantity = data.quantity
 					product.price = data.price
+					product.salesPrice = data.salesPrice
 					product.imageUrl = data.imageUrl
 					product.detailsImageUrl = data.detailsImageUrl
 					product.disabled = data.disabled
@@ -714,11 +715,24 @@ class ImportController {
 								def product = Product.findByUuid(sci.product)
 								
 								if(product){
-									
+
 									def shoppingCartItem = new ShoppingCartItem()
 									shoppingCartItem.uuid = sci.uuid
 									shoppingCartItem.quantity = sci.quantity
 									shoppingCartItem.product = product
+
+									if(sci.regularPrice){
+										shoppingCartItem.regularPrice = sci.regularPrice
+									}else{
+										shoppingCartItem.regularPrice = product.price
+									}
+
+									if(sci.checkoutPrice){
+										shoppingCartItem.checkoutPrice = sci.checkoutPrice
+									}else{
+										shoppingCartItem.checkoutPrice = product.price
+									}
+
 									shoppingCartItem.shoppingCart = shoppingCart
 									shoppingCartItem.save(flush:true)
 									

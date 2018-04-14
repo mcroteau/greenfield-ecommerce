@@ -156,6 +156,7 @@ body, html{
 	padding:20px;
 	float:left;
 	width:660px;
+	min-height:342px;
 	background:#fff;
 	margin:0px 0px 40px 20px;
 	border:solid 1px #ddd;

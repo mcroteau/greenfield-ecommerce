@@ -46,7 +46,7 @@
 				<g:each in="${transactionInstanceList}" status="i" var="transactionInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td>${transactionInstance.id}</td>
+						<td><g:link action="show" id="${transactionInstance.id}">${transactionInstance.id}</g:link></td>
 					
 						<td><g:link action="show" id="${transactionInstance.id}"><g:formatDate date="${transactionInstance.orderDate}" format="dd MMM yyyy hh:mm a" /></g:link></td>
 						

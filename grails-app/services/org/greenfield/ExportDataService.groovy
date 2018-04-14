@@ -17,6 +17,7 @@ import org.greenfield.AdditionalPhoto
 import org.greenfield.ShoppingCart
 import org.greenfield.ShoppingCartItem
 import org.greenfield.ShoppingCartItemOption
+import org.greenfield.common.ShoppingCartStatus
 
 import org.greenfield.Transaction
 import org.greenfield.Page
@@ -258,6 +259,7 @@ class ExportDataService {
 			product['description'] = p.description
 			product['quantity'] = p.quantity
 			product['price'] = p.price
+			product['salesPrice'] = p.salesPrice
 			product['imageUrl'] = p.imageUrl
 			product['detailsImageUrl'] = p.detailsImageUrl
 			product['disabled'] = p.disabled
@@ -453,6 +455,16 @@ class ExportDataService {
 					shoppingCartItem['uuid'] = sci.uuid
 					shoppingCartItem['quantity'] = sci.quantity
 					shoppingCartItem['product'] = sci.product.uuid
+
+					if(sc.status == ShoppingCartStatus.TRANSACTION.description()){
+						shoppingCartItem['regularPrice'] = sci.product.price
+						if(sci.product.salesPrice){
+							shoppingCartItem['checkoutPrice'] = sci.product.salesPrice
+						}else{
+							shoppingCartItem['checkoutPrice'] = sci.product.price
+						}
+					}
+
 					shoppingCartItem['shoppingCart'] = sci.shoppingCart.uuid
 					
 					shoppingCartItem['shoppingCartItemOptions'] = []

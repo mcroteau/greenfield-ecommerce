@@ -306,6 +306,9 @@ public class DevelopmentData {
             (1..numberProducts).each{ i ->
     			def product = new Product()
     			product.price = i * 10
+				if(i % 3 == 0){
+					product.salesPrice = i * 10 - 7
+				}
     			product.quantity = i * 10
     			product.weight = 16
     			catalogIdsArray.each {
@@ -320,7 +323,8 @@ public class DevelopmentData {
     		}
         }
 	}
-	
+
+
     def createProductOptions(){
 		
 		productOptions.each() { po ->
@@ -561,8 +565,17 @@ public class DevelopmentData {
 				
 				
 					def shoppingCartItem = new ShoppingCartItem()
+
 					shoppingCartItem.quantity = quantity
 					shoppingCartItem.product = product
+					shoppingCartItem.regularPrice = product.price
+
+					if(product.salesPrice && product.salesPrice != 0){
+						shoppingCartItem.checkoutPrice = product.salesPrice
+					}else{
+						shoppingCartItem.checkoutPrice = product.price
+					}
+
 					shoppingCartItem.save(flush:true)
 					
 					def optionsTotal = 0

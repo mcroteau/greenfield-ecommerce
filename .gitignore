@@ -10,6 +10,7 @@ CHANGELOG.md
 .gradle
 *.iml
 /build
+Todo.md
 
 # logs
 stacktrace.log

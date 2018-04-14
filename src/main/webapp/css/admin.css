@@ -773,6 +773,12 @@ float:left;
 	opacity:1 !important;
 }
 
+.regular-price{
+    font-size:10px;
+    text-decoration: line-through;
+    display:block;
+}
+
 
 
 

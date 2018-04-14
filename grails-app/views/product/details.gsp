@@ -111,6 +111,7 @@ ${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Pr
 					.on-sale{
 						color:#fff;
 						background:#d7182b;
+						background:#667;
 						display:inline-block;
 						padding:3px 7px;
 						-webkit-border-radius: 3px;

@@ -33,6 +33,9 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 							}	
 						}
 						def productTotal = item.product.price + optionsTotal
+						if(item.product.salesPrice && item.product.salesPrice != 0){
+							productTotal = item.product.salesPrice + optionsTotal
+						}
 						def extendedPrice = productTotal * item.quantity
 					%>
 					<tr>
@@ -53,6 +56,9 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 						</td>
 						<td style="text-align:center">
 							$${applicationService.formatPrice(productTotal)}
+						    <g:if test="${item.product.salesPrice}">
+						        <span class="regular-price">$${applicationService.formatPrice(item.product.price)}</span>
+						    </g:if>
 						</td>
 						<td style="text-align:center">${item.quantity}</td>
 						<td  style="text-align:center" id="extended_price">
@@ -76,7 +82,7 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 		</table>
 		
 		<div>
-			<g:form controller="shoppingCart" action="anonymous_checkout_preview" id="${shoppingCartInstance?.id}">
+			<g:form controller="shoppingCart" action="anonymous_preview" id="${shoppingCartInstance?.id}">
 				<input type="hidden" name="id" value="${shoppingCartInstance?.id}"/> 
 				<g:submitButton name="submit" value="Checkout" class="btn btn-primary pull-right" id="checkout-btn"/>
 			</g:form>
@@ -85,6 +91,8 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 	<g:else>
 		<p>Your Shopping Cart is currently empty...</p>
 	</g:else>
+
+	<br class="clear"/>
 	
 
 ${raw(applicationService.getFooter())}	
