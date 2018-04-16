@@ -695,8 +695,8 @@ class ImportController {
 	        		shoppingCart.shipmentRateId = sc.shipmentRateId
 	        		shoppingCart.dateCreated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.dateCreated)
 	        		shoppingCart.lastUpdated = Date.parse("yyyy-MM-dd'T'HH:mm:ssX", sc.lastUpdated)
-					
-					
+
+
 					if(params.performImport == "true"){	
 							
 						if(!shoppingCart.validate()){
@@ -747,6 +747,7 @@ class ImportController {
 												def shoppingCartItemOption = new ShoppingCartItemOption()
 												shoppingCartItemOption.uuid = scio.uuid
 												shoppingCartItemOption.variant = variant
+												shoppingCartItemOption.checkouPrice = scio.checkouPrice
 												shoppingCartItemOption.shoppingCartItem = shoppingCartItem
 												shoppingCartItemOption.save(flush:true)
 												
@@ -756,6 +757,10 @@ class ImportController {
 											
 										}
 									}
+
+
+
+
 								}
 							}
 						}

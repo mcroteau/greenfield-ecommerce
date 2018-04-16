@@ -494,7 +494,7 @@ class ShoppingCartController {
 				account.save(flush:true)
 				
 				adjustInventory(shoppingCart)
-				setCheckoutPrice(shoppingCart)
+				setCheckoutPrices(shoppingCart)
 				sendNewOrderEmail(account, transaction)
 				session['shoppingCart'] = null
 				
@@ -515,7 +515,7 @@ class ShoppingCartController {
 	}
 
 
-	def setCheckoutPrice(shoppingCart){
+	def setCheckoutPrices(shoppingCart){
 		shoppingCart.shoppingCartItems.each { item ->
 			item.regularPrice = item.product.price
 			if(item.product.salesPrice){
@@ -523,8 +523,14 @@ class ShoppingCartController {
 			}else{
 				item.checkoutPrice = item.product.price
 			}
-
 			item.save(flush:true)
+
+			if(item.shoppingCartItemOptions?.size() > 0){
+				item.shoppingCartItemOptions.each(){ option ->
+					option.checkoutPrice = option.variant.price
+					option.save(fluh:true)
+				}
+			}
 		}
 	}
 
@@ -534,7 +540,7 @@ class ShoppingCartController {
 			def product = shoppingCartItem.product
 			def quantityAdjustment = shoppingCartItem.quantity
 			product.quantity = product.quantity - quantityAdjustment
-			//TODO:catch before adding to cart if item quantity is atleast number requested
+			//TODO:catch before adding to cart if item quantity is at least number requested
 			product.save(flush:true)
 		}
 	}

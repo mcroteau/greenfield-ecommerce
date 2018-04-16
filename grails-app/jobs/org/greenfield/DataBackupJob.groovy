@@ -14,7 +14,7 @@ class DataBackupJob {
 	def exportDataService
 	
     static triggers = {
-      	simple startDelay: 60000 * 42, repeatInterval: 60000 * 73
+      	simple startDelay: 60000 * 7, repeatInterval: 60000 * 73
     }
 
     void execute() {

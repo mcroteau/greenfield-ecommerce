@@ -231,10 +231,43 @@ public class DevelopmentData {
 		createActivityLogs()
 		createAbandonedCarts()
 	}
-	
-	
 
-	
+
+
+
+
+	def createAccounts(){
+
+		def customerRole = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
+		//def password = new Sha256Hash('customer').toHex()
+		def password = springSecurityService.encodePassword("password")
+
+		(1..CUSTOMERS_COUNT).each {
+			def customer = new Account()
+			customer.username = "customer${it}"
+			customer.password = password
+			customer.name = "John Smith ${it}"
+			customer.email = "customer${it}@email.com"
+
+			customer.address1 = "${it} Main Street"
+			customer.address2 = "Apt. #${it}"
+			customer.city = "Anchorage"
+			customer.state = State.findByName("Alaska")
+			customer.zip = "99501"
+			customer.save(flush:true)
+
+			customer.createAccountRoles(false)
+			customer.createAccountPermission()
+
+		}
+
+		NUMBER_CUSTOMERS = Account.count()
+		println "Accounts : ${NUMBER_CUSTOMERS}"
+	}
+
+
+
+
 	def createCatalogs(){
 		catalogs.each{ c ->
 			def catalog = new Catalog()
@@ -494,42 +527,9 @@ public class DevelopmentData {
 		
 		println "Uploads : ${Upload.count()}"
 	}
-	
-	
-	
-	
-	def createAccounts(){
-		
-		def customerRole = Role.findByAuthority(RoleName.ROLE_CUSTOMER.description())
-		//def password = new Sha256Hash('customer').toHex()
-		def password = springSecurityService.encodePassword("password")
 
-		(1..CUSTOMERS_COUNT).each {
-			def customer = new Account()
-			customer.username = "customer${it}"
-			customer.password = password
-			customer.name = "John Smith ${it}"
-			customer.email = "customer${it}@email.com"
-			
-			customer.address1 = "${it} Main Street"
-			customer.address2 = "Apt. #${it}"
-			customer.city = "Anchorage"
-			customer.state = State.findByName("Alaska")
-			customer.zip = "99501"
-			customer.save(flush:true)
 
-			customer.createAccountRoles(false)
-			customer.createAccountPermission()
-		
-		}
-		
-		NUMBER_CUSTOMERS = Account.count()
-		println "Accounts : ${NUMBER_CUSTOMERS}"
-	}
-	
-	
 
-	
 	def createOrders(){
 		
 		Random rand = new Random()
@@ -587,6 +587,7 @@ public class DevelopmentData {
 							
 							def shoppingCartItemOption = new ShoppingCartItemOption()
 							shoppingCartItemOption.variant = variant
+							shoppingCartItemOption.checkouPrice = variant.price
 							shoppingCartItemOption.shoppingCartItem = shoppingCartItem
 							shoppingCartItemOption.save(flush:true)
 							
@@ -602,7 +603,7 @@ public class DevelopmentData {
 					
 					shoppingCart.taxes = taxes
 					shoppingCart.shipping = shipping
-					shoppingCart.subtotal = (product.price * quantity) + optionsTotal
+					shoppingCart.subtotal = (shoppingCartItem.checkoutPrice * quantity) + optionsTotal
 					shoppingCart.total = shoppingCart.subtotal + taxes + shipping
 					shoppingCart.save(flush:true)
 					
