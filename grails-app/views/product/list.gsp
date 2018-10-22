@@ -116,6 +116,10 @@
 			</g:if>
 			<g:else>
 				<p>No products found</p>
+			
+				<g:if test="${catalogCount == 0}">
+					<g:link controller="catalog" action="create" class="btn btn-primary">Create Catalog</g:link>
+				</g:if>
 			</g:else>
 		</div>
 	</body>

@@ -140,7 +140,7 @@ class ProductController {
 			params.sort = params.sort ? params.sort : "id"
 			params.order = params.order ? params.order : "asc"
 
-    		[productInstanceList: Product.list(params), productInstanceTotal: Product.count()]
+    		[productInstanceList: Product.list(params), productInstanceTotal: Product.count(), catalogCount: Catalog.count()]
 		}
     }
 

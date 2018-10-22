@@ -747,7 +747,7 @@ class ImportController {
 												def shoppingCartItemOption = new ShoppingCartItemOption()
 												shoppingCartItemOption.uuid = scio.uuid
 												shoppingCartItemOption.variant = variant
-												shoppingCartItemOption.checkouPrice = scio.checkouPrice
+												shoppingCartItemOption.checkoutPrice = scio.checkouPrice
 												shoppingCartItemOption.shoppingCartItem = shoppingCartItem
 												shoppingCartItemOption.save(flush:true)
 												

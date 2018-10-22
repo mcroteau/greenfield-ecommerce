@@ -587,7 +587,7 @@ public class DevelopmentData {
 							
 							def shoppingCartItemOption = new ShoppingCartItemOption()
 							shoppingCartItemOption.variant = variant
-							shoppingCartItemOption.checkouPrice = variant.price
+							shoppingCartItemOption.checkoutPrice = variant.price
 							shoppingCartItemOption.shoppingCartItem = shoppingCartItem
 							shoppingCartItemOption.save(flush:true)
 							
