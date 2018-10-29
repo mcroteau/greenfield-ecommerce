@@ -24,10 +24,12 @@
 
 
 			<g:if test="${flash.error}">
+				<br/>
 				<div class="alert alert-danger" role="status">${flash.error}</div>
 			</g:if>
 			
 			<g:if test="${flash.message}">
+				<br/>
 				<div class="alert alert-info" role="status">${flash.message}</div>
 			</g:if>
 			

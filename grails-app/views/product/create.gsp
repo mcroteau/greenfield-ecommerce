@@ -116,7 +116,11 @@
 				<div class="form-row">
 					<span class="form-label full secondary">Quantity</span>
 					<span class="input-container">
-						<input name="quantity" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.quantity}" id="quantity"/>
+						<%
+							def quantity =  productInstance?.quantity
+							if(quantity == 0)quantity = 1
+						%>
+						<input name="quantity" type="text" class="form-control" style="width:75px;float:left" value="${quantity}" id="quantity"/>
 						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:150px;">Quantity of 0 will categorize product as “out of stock”</span>
 					</span>
 					<br class="clear"/>

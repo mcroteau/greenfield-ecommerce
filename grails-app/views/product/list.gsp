@@ -103,7 +103,6 @@
 							<td>$${applicationService.formatPrice(productInstance.salesPrice)}</td>
 						
 						
-						
 							<td><g:link controller="product" action="edit" params="[id: productInstance.id]" class="edit-product-${productInstance.id}">Edit</g:link></td>
 						</tr>
 					</g:each>
@@ -115,10 +114,17 @@
 				<g:link controller="product" action="outofstock" class="pull-right">Out of Stock</g:link>
 			</g:if>
 			<g:else>
-				<p>No products found</p>
+
+				<div class="alert alert-info">There are no products yet...<br/><br/>
+					<g:link controller="product" action="create" class="btn btn-primary">New Product</g:link>
+				</div>
 			
 				<g:if test="${catalogCount == 0}">
-					<g:link controller="catalog" action="create" class="btn btn-primary">Create Catalog</g:link>
+
+					<div class="alert alert-info"><strong>There are no catalogs yet</strong><br/>You need to create a catalog before creating products.<br/><br/>
+						<g:link controller="catalog" action="create" class="btn btn-primary">Create Catalog</g:link>
+					</div>
+					
 				</g:if>
 			</g:else>
 		</div>
