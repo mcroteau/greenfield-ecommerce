@@ -11,6 +11,18 @@ order review screen with sales - verify totals
 checkout screen 1 without sales price - verify totals
 checkout screen 2 without sales price - verify totals
 order review screen without - verify totals
+add sales prices on development data
+
+
+Poker Chips
+	Clay Chips - 100/80
+	Ceramic Chips - 120
+	Composite - 110
+	
+Cart Checkout
+	Clay chips 80
+	Composite 2x110
+		300
 
 
 add sort by name by default

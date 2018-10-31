@@ -126,14 +126,17 @@
 					<br class="clear"/>
 				</div>
 				
+			
+			
 				
-
-		
+				
+			
+			
 				
 				<div class="form-row">
 					<span class="form-label full secondary">Sale Price $</span>
 					<span class="input-container">
-						<input name="salesPrice" type="text" class="form-control " style="width:150px; float:left;" value="${productInstance?.salesPrice ?productInstance?.salesPrice : 0}" id="salesPrice"/>
+						<input name="salesPrice" type="text" class="form-control " style="width:150px; float:left;" value="${productInstance?.salesPrice ?productInstance?.salesPrice : '-'}" id="salesPrice"/>
 
 						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:150px;">Leave blank or enter same price for no sale price</span>
 					</span>

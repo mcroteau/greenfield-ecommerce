@@ -219,14 +219,17 @@ class ProductController {
     def save() {
 		authenticatedAdmin { adminAccount ->
 		    
-//		    println "sale price : " + params.salesPrice
-
+		    println "sale price : " + params.salesPrice
+			
+			resolveSalesPrice(params)
+			
 			def productInstance = new Product(params)
 			
 //			println "product sale price : " + productInstance.salesPrice
 
 			def catalogIdsArray = []
 			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
+			
 			
 	    	if(!productInstance.validate()){
 				println "**************************"
@@ -497,6 +500,8 @@ class ProductController {
 		    	e.printStackTrace();
 		    }
 			
+			resolveSalesPrice(params)
+			
 			productInstance.properties = params
 			
 			
@@ -680,6 +685,10 @@ class ProductController {
 				render(view : 'add_product_option')
 			}
 		}
+	}
+	
+	def resolveSalesPrice(params){
+		if(params.salesPrice == '-')params.salesPrice = null
 	}
 	
 }

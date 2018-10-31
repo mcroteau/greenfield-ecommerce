@@ -106,7 +106,7 @@
 				<div class="form-row">
 					<span class="form-label full secondary">Sale Price $</span>
 					<span class="input-container">
-						<input name="salesPrice" type="text" class="form-control " style="width:150px" value="${productInstance?.salesPrice}" disabled="disabled"/>
+						<input name="salesPrice" type="text" class="form-control " style="width:150px" value="${productInstance?.salesPrice ? productInstance.salesPrice : '-'}" disabled="disabled"/>
 					</span>
 					<br class="clear"/>
 				</div>

@@ -523,6 +523,7 @@ class ShoppingCartController {
 			}else{
 				item.checkoutPrice = item.product.price
 			}
+			println item.checkoutPrice
 			item.save(flush:true)
 
 			if(item.shoppingCartItemOptions?.size() > 0){
