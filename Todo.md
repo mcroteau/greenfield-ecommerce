@@ -1,17 +1,21 @@
+*sorting admin products
+*create product
+*edit product
+*save product
+*update product
+*show product
 
-*perform product creation with sales prices
-*product details with sales price
-*catalog product screen with sales price
-*catalog product screen without sales price
-*product details store front with sales price
-*product details store front without sales price
-checkout screen 1 with sales price - verify totals
-checkout screen 2 with sales price - verify totals
-order review screen with sales - verify totals
-checkout screen 1 without sales price - verify totals
-checkout screen 2 without sales price - verify totals
-order review screen without - verify totals
-add sales prices on development data
+*catalog screen
+*product details
+
+*shopping cart
+*checkout screen
+*checkout complete
+*order review
+*admin order review
+
+
+
 
 
 Poker Chips

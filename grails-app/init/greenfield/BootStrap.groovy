@@ -23,6 +23,7 @@ import org.greenfield.Transaction
 import grails.util.Environment
 
 import org.greenfield.DevelopmentData
+import org.greenfield.DevelopmentDataSimple
 
 import org.greenfield.log.CatalogViewLog
 import org.greenfield.log.ProductViewLog
@@ -62,16 +63,23 @@ class BootStrap {
 		println 'Accounts : ' + Account.count()
 
 		//Development Data
-		//createDevelopmentData()//TODO:
+		//createDevelopmentData()//TODO:refactor
+		//createDevelopmentDataSimple()//TODO:
 		
 		missingUuidHelperService.correctMissingUuids()
 		
 		//calculateResolveCountData()
 	}
 	
-	
+	//TODO:refactor
 	def createDevelopmentData(){
 		def developmentData = new DevelopmentData(springSecurityService)
+		developmentData.init()
+	}
+	
+	
+	def createDevelopmentDataSimple(){
+		def developmentData = new DevelopmentDataSimple(springSecurityService)
 		developmentData.init()
 	}
 	

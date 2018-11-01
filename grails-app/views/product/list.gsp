@@ -66,7 +66,7 @@
 						
 							<g:sortableColumn property="price" title="${message(code: 'product.price.label', default: '$ Price')}" />
 
-							<g:sortableColumn property="salesPrice" title="${message(code: 'product.salesPrice.label', default: '$ Sale Price')}" />
+							<g:sortableColumn property="salesPrice" title="${message(code: 'product.salesPrice.label', default: '$ Sales Price')}" />
 							
 							<th></th>
 						
