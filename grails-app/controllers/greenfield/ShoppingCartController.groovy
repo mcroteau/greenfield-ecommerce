@@ -234,15 +234,15 @@ class ShoppingCartController {
 					if(option.variants?.size() > 0){
 
 						def id = params["product_option_${option.id}"]
-					
+						
 						def variant = Variant.get(id)
 						if(variant){
 							def shoppingCartItemOption = new ShoppingCartItemOption()
-						
+							
 							shoppingCartItemOption.variant = variant
 							shoppingCartItemOption.shoppingCartItem = shoppingCartItem
 							shoppingCartItemOption.save(flush:true)
-						
+							
 					
 							shoppingCartItem.addToShoppingCartItemOptions(shoppingCartItemOption)
 							shoppingCartItem.save(flush:true)
@@ -255,6 +255,7 @@ class ShoppingCartController {
 
 		flash.message = "Successfully added item to cart"
 		
+
 		if(isLoggedIn()){
 			redirect(action : 'index')
 		}else{
@@ -523,13 +524,13 @@ class ShoppingCartController {
 			}else{
 				item.checkoutPrice = item.product.price
 			}
-			println item.checkoutPrice
 			item.save(flush:true)
-
+			
 			if(item.shoppingCartItemOptions?.size() > 0){
 				item.shoppingCartItemOptions.each(){ option ->
+					println "option price : " + option.variant.name + ": " + option.variant.price
 					option.checkoutPrice = option.variant.price
-					option.save(fluh:true)
+					option.save(flush:true)
 				}
 			}
 		}

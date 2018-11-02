@@ -100,7 +100,7 @@
 					def optionsTotal = 0
 					if(item.shoppingCartItemOptions?.size() > 0){
 						item.shoppingCartItemOptions.each(){ option ->
-							optionsTotal += option.variant.price
+							optionsTotal += option.checkoutPrice
 						}	
 					}
 					def productTotal = item.checkoutPrice + optionsTotal
@@ -116,7 +116,7 @@
 								<strong>options :&nbsp;</strong>
 								<g:each in="${item.shoppingCartItemOptions}" var="option">
 									<span class="option" style="font-size: 11px;color: #777;">${option.variant.name}
-										($${applicationService.formatPrice(option.variant.price)})
+										($${applicationService.formatPrice(option.checkoutPrice)})
 									</span>
 									<br/>
 								</g:each>
@@ -126,7 +126,7 @@
 					<td style="text-align:center">
 					    $${applicationService.formatPrice(productTotal)}
                         <g:if test="${item.checkoutPrice != item.regularPrice}">
-                            <span class="regular-price">$${applicationService.formatPrice(item.product.price)}</span>
+                            <span class="regular-price">$${applicationService.formatPrice(item.regularPrice)}</span>
                         </g:if>
 					</td>
 					<td style="text-align:center">${item.quantity}</td>

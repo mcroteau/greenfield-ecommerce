@@ -474,7 +474,7 @@ class ExportDataService {
 							def shoppingCartItemOption = [:]
 							shoppingCartItemOption['uuid'] = scio.uuid
 							shoppingCartItemOption['variant'] = scio.variant.uuid
-							shoppingCartItemOption['checkouPrice'] = scio.checkouPrice
+							shoppingCartItemOption['checkoutPrice'] = scio.checkoutPrice
 							shoppingCartItemOption['shoppingCartItem'] = scio.shoppingCartItem.uuid
 			    	
 							shoppingCartItem['shoppingCartItemOptions'].add(shoppingCartItemOption)

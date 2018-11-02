@@ -480,7 +480,7 @@ private def authenticatedPermittedShoppingCart(Closure c){
 		def shoppingCartInstance = ShoppingCart.get(params.id)
 		
 		if(!shoppingCartInstance){
-			flash.message = "Unable to find Order, please try again"
+			flash.message = "Unable to find order, please try again"
 			forward(controller:'store', action:'index')
 			return
 		}
@@ -528,7 +528,7 @@ private def authenticatedPermittedShoppingCart(Closure c){
 		def transactionInstance = Transaction.get(params.id)
 		
 		if(!transactionInstance){
-			flash.message = "Unable to find Order, please try again"
+			flash.message = "Unable to find order, please try again"
 			forward(controller:'store', action:'index')
 			return
 		}

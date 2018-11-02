@@ -24,7 +24,7 @@ ${raw(applicationService.getHeader("Checkout"))}
 					def optionsTotal = 0
 					if(item.shoppingCartItemOptions?.size() > 0){
 						item.shoppingCartItemOptions.each(){ option ->
-							optionsTotal += option.variant.price
+							optionsTotal += option.checkoutPrice
 						}	
 					}
                     def productTotal = item.checkoutPrice + optionsTotal
@@ -41,7 +41,7 @@ ${raw(applicationService.getHeader("Checkout"))}
 								<strong>options :&nbsp;</strong>
 								<g:each in="${item.shoppingCartItemOptions}" var="option">
 									<span class="option">${option.variant.name}
-										($${applicationService.formatPrice(option.variant.price)})
+										($${applicationService.formatPrice(option.checkoutPrice)})
 									</span>
 									<br/>
 								</g:each>
