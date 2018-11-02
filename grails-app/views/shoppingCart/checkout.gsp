@@ -49,10 +49,13 @@ ${raw(applicationService.getHeader("Checkout"))}
 						</g:if>
 					</td>
 					<td style="text-align:center">
-						$${applicationService.formatPrice(productTotal)}
                         <g:if test="${item.regularPrice != item.checkoutPrice}">
+							$${applicationService.formatPrice(item.checkoutPrice)}
                             <span class="regular-price">$${applicationService.formatPrice(item.regularPrice)}</span>
                         </g:if>
+						<g:else>
+							$${applicationService.formatPrice(item.checkoutPrice)}
+						</g:else>
 					</td>
 					<td style="text-align:center">${item.quantity}</td>
 					<td id="extended_price" style="text-align:center">

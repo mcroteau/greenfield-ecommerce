@@ -56,7 +56,20 @@
 			</div>
 			
 			<div class="clear"></div>
+			
+			<br/>
+			
+			<div class="alert alert-info" role="status">
+			
+				<strong>What are Product Options?</strong><br/><br/>
 				
+				Product Options are things like Color, Size, Type anything that is a descriptor that has more than one option or what is called a variant within Greenfield. Variants have a possible additional price. Product Options have variants.<br/></br>
+				
+				Example:<br/>
+				Size : Small, Medium, Large $0 additional price. XLarge $3.00 additional
+				
+				
+			</div>	
 		</div>
 
 	

@@ -219,8 +219,6 @@ class ProductController {
     def save() {
 		authenticatedAdmin { adminAccount ->
 		    
-		    println "sale price : " + params.salesPrice
-			
 			resolveSalesPrice(params)
 			
 			def productInstance = new Product(params)

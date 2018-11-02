@@ -90,9 +90,12 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 						</td>
 						<td>
 						    <g:if test="${item.product.salesPrice}">
-						        <span class="regular-price">$${applicationService.formatPrice(item.product.price)}</span>
-						    </g:if>
-						    $${applicationService.formatPrice(productTotal)}
+								$${applicationService.formatPrice(item.product.salesPrice)}
+							    <span class="regular-price">$${applicationService.formatPrice(item.product.price)}</span>
+							</g:if>
+							<g:else>
+								$${applicationService.formatPrice(item.product.price)}
+							</g:else>
 						</td>
 						<td style="text-align:center">${item.quantity}</td>
 						<td id="extended_price" style="text-align:right;">
