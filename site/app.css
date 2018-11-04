@@ -185,3 +185,10 @@ strong.highlight{
 	font-family:Georgia;
 	font-size:.93em;
 }
+#github-social{
+	margin:5px auto;
+}
+#github-social span{
+	display:inline-block;
+    margin:0px 10px !important;
+}

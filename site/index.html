@@ -10,10 +10,12 @@
 	<link rel="stylesheet" href="bootstrap-buttons.min.css" />
 	<link rel="stylesheet" href="app.css" />
 
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
+
 </head>
 <body>
   
-	<div id="content" style="margin:40px auto 200px auto;">
+	<div id="content" style="margin:30px auto 200px auto;">
 		
 		
 		<div id="header">
@@ -29,13 +31,19 @@
 			</div>
 			
 			
-			<div class="github-button-container" id="watch-button-container">
-				<iframe src="http://ghbtns.com/github-btn.html?user=opengreenfield&repo=greenfield&type=watch&count=true&size=small" id="star-repo"
-				class="github-button"
-				allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
-			</div>			
 			<div class="clear"></div>
 			
+			
+            <div id="github-social">
+             	<a class="github-button" href="https://github.com/opengreenfield/greenfield/subscription" data-icon="octicon-eye" data-size="large" data-show-count="true" aria-label="Watch opengreenfield/greenfield on GitHub">Watch</a>
+
+				<a class="github-button" href="https://github.com/opengreenfield/greenfield" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star opengreenfield/greenfield on GitHub">Star</a>
+
+				<a class="github-button" href="https://github.com/opengreenfield/greenfield/fork" data-icon="octicon-repo-forked" data-size="large" data-show-count="true" aria-label="Fork opengreenfield/greenfield on GitHub">Fork</a>
+
+				<a class="github-button" href="https://github.com/opengreenfield/greenfield/archive/master.zip" data-icon="octicon-cloud-download" data-size="large" aria-label="Download opengreenfield/greenfield on GitHub">Download</a>
+            </div>
+			 
 	
 			<div id="greenfield-definition">
 				<p style="font-style:italic"><strong>[green-feeld]</strong> (noun)</p>
@@ -147,7 +155,7 @@
 			<h1>Get Started</h1>
 			<p>Want to check Greenfield out, run it in development mode</p>
 			<ol>
-				<li>Install <strong class="highlight">Grails 3.2.8</strong> or higher</li>
+				<li>Install <strong class="highlight">Grails 3.3.4</strong> or higher</li>
 				<li>Install <strong class="highlight">Java JDK 1.8</strong> or higher</strong></li>
 				<li>Install <strong class="highlight">Git</strong></li>
 				<li>Clone the repository, <strong class="highlight">git clone https://github.com/opengreenfield/greenfield.git</strong></li>

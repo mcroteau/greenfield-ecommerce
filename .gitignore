@@ -22,6 +22,6 @@ stacktrace.log
 *.war
 
 # project settings
-#web-app/settings/settings.properties
+web-app/settings/settings.properties
 
 src/main/webapp/backup/greenfield-backup.json
