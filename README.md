@@ -6,7 +6,7 @@ Greenfield is a lightweight eCommerce application focused on quick and easy setu
 
 
 ## Requirements
-	* Grails 3.2.8 or greater
+	* Grails 3.3.8 or greater
 	* Java JDK 1.8 or greater
 	* Can easily be modified for most RDBMS
 
