@@ -43,7 +43,17 @@
 			
 					<g:hiddenField name="id" value="${accountInstance?.id}" />
 				
-
+					<g:if test="${accountInstance.username == 'admin'}">
+						<div class="form-row">
+							<span class="form-label full">UUID</span>
+							<span class="input-container">
+								${accountInstance?.uuid}
+							</span>
+							<br class="clear"/>
+						</div>
+					</g:if>
+				
+				
 					<div class="form-row">
 						<span class="form-label full">Username</span>
 						<span class="input-container">

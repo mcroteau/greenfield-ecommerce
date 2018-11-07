@@ -47,6 +47,17 @@
 			
 				<g:hiddenField name="id" value="${accountInstance?.id}" />
 				
+				
+				<g:if test="${accountInstance.username == 'admin'}">
+					<div class="form-row">
+						<span class="form-label full">UUID</span>
+						<span class="input-container">
+							<g:textField type="uuid" name="uuid" value="${accountInstance?.uuid}" class="form-control twofifty"/>
+						</span>
+						<span class="information">You can manually set UUID to match exported data UUID for admin account</span>
+						<br class="clear"/>
+					</div>
+				</g:if>
 
 				<div class="form-row">
 					<span class="form-label full">Username</span>

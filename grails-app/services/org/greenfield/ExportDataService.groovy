@@ -457,12 +457,8 @@ class ExportDataService {
 					shoppingCartItem['product'] = sci.product.uuid
 
 					if(sc.status == ShoppingCartStatus.TRANSACTION.description()){
-						shoppingCartItem['regularPrice'] = sci.product.price
-						if(sci.product.salesPrice){
-							shoppingCartItem['checkoutPrice'] = sci.product.salesPrice
-						}else{
-							shoppingCartItem['checkoutPrice'] = sci.product.price
-						}
+						shoppingCartItem['regularPrice'] = sci.regularPrice
+						shoppingCartItem['checkoutPrice'] = sci.checkoutPrice
 					}
 
 					shoppingCartItem['shoppingCart'] = sci.shoppingCart.uuid
