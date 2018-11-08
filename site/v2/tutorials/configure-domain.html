@@ -1,0 +1,265 @@
+<html>
+<head>
+		
+	<title>Configuring Domain, Apache + Tomcat + mod_jk + mod_rewrite on Ubuntu 14.04.</title>	
+	
+	<meta name="description" content="Configuring Domain, Apache + Tomcat + mod_jk + mod_rewrite on Ubuntu 14.04. Greenfield is a lightweight open source eCommerce application.">
+	
+	<meta name="keywords" content="configure domain apache, mod_jk + mod_rewrite, Apache + Tomcat + mod_jk + mod_rewrite, apache + tomcat + domain">
+		
+	<link rel="stylesheet" href="../bootstrap-buttons.min.css" />
+	<link rel="stylesheet" href="../bootstrap-code.min.css" />
+	<link rel="stylesheet" href="../app.css" />
+
+</head>
+<body>
+	
+	<div id="content">
+		
+		
+		<div id="header">
+			
+			<div class="github-button-container" id="watch-button-container">
+				<span class="github-button">&nbsp;</span>
+			</div>
+			
+			
+			<div id="greenfield-logo">
+				<img src="../logo.png" style="margin:0px auto 0px auto"/>
+				<span id="tagline">open source ecommerce</span>
+			</div>
+			
+			<div class="github-button-container" id="watch-button-container">
+				<iframe src="http://ghbtns.com/github-btn.html?user=opengreenfield&repo=greenfield&type=watch&count=true&size=small" id="star-repo"
+				class="github-button"
+				allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+			</div>			
+			<div class="clear"></div>
+			
+		</div>
+		
+		
+		
+		<div id="navigation-container">
+			
+			<ul id="navigation">
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../index.html#features">Features</a></li>
+				<li><a href="../index.html#started">Getting Started</a></li>
+				<li><a href="../index.html#screenshots">Screenshots</a></li>
+				<li><a href="index.html">Tutorials</a></li>
+				<li><a href="../index.html#support">Support</a></li>
+			</ul>
+			
+		</div>
+		
+		
+		
+				
+		<div id="howto" class="section">
+			
+			<h1>Configuring Domain, Apache + Tomcat + mod_jk + mod_rewrite on Ubuntu 14.04</h1>
+			
+			<p>This tutorial will walk you through the steps required to point your domain web address at the Greenfield application running in Tomcat.</p>
+			
+			<p>This tutorial assumes that you have installed and configured Apache &amp; Tomcat and have Greenfield running in Tomcat.  If you haven't done this already, follow <a href="simple-server.html">Minimum Server Setup : Apache, Tomcat &amp; Greenfield on Ubuntu 14.04</a> for detailed instructions on how to install and configure Apache &amp; Tomcat for Greenfield on an Ubuntu 14.04 Web Server</p> 
+			
+			<p>This tutorial also assumes that you have pointed your <strong>@</strong> record at your VPS server's IP address in your ISP Domain management system.</p>
+			
+			
+			
+			
+			<h3 class="separation">1. Install &amp; configure Apache mod_jk module</h3>
+			
+			<div class="step-instructions">
+				
+				<p>The Apache <strong>mod_jk</strong> module will allow us to mount our Greenfield application enabling you to browse to the Greenfield application without having to specify Tomcat's 8080 port.</p>
+				
+				<p>Example</p>
+				<pre>http://{{server ip address}}/greenfield</pre>
+					
+					
+					
+				<p>This is an important step allowing you to later rewrite requests to the Greenfield application running in Tomcat</p>
+				
+				<div class="instructions">
+					<p><strong>Install mod_jk module</strong></p>
+					<pre>sudo apt-get install libapache2-mod-jk</pre>
+				</div>	
+				
+				
+				<div class="instructions">
+					<p><strong>Edit workers.properties file</strong></p>
+					<pre>sudo vim /etc/libapache2-mod-jk/workers.properties</pre>
+					
+					<p>Confirm <strong>java_home</strong> is set to the following</p>
+					<pre>workers.java_home=/usr/lib/jvm/default-java</pre>
+					
+					<p>Confirm <strong>tomcat_home</strong> is properly set to your tomcat install location. </p>
+					<pre>workers.tomcat_home=/usr/local/tomcat/tomcat-current</pre>
+				</div>
+				
+				
+				
+				<div class="instructions">
+					<p><strong>Verify Tomcat's <code>server.xml</code> has AJP/1.3 definition </strong></p>
+					<p>Open File</p>
+					<pre>sudo vim /usr/local/tomcat/tomcat-current/conf/server.xml</pre>
+					<p>Verify following line is uncommented</p>
+					<pre>&lt;Connector port="8009" protocol="AJP/1.3" redirectPort="8443" /&gt;</pre>
+				</div>
+				
+				
+			</div>
+
+
+
+
+			
+			<h3 class="separation">2. Enable Apache mod_rewrite module</h3>
+			
+			<div class="step-instructions">
+				
+				<div class="instructions">
+					<p><strong>cd into Apache's <code>mods-available</code> directory</strong></p>
+					<pre>cd /etc/apache2/mods-available/</pre>
+				</div>
+				
+				
+				<div class="instructions">
+					<p><strong>Run command to enable mod_rewrite module</strong></p>
+					<pre>sudo a2enmod rewrite</pre>
+				</div>
+				
+				<div class="instructions">
+					<p><strong>Restart Apache</strong></p>
+					<pre>sudo service apache2 restart</pre>
+				</div>
+				
+			</div>
+			
+			
+			
+		
+			
+			
+			<h3 class="separation">3. Create Virtual Host files for your website domain</h3>
+			
+			<div class="step-instructions">
+				
+				<p>In this section we will be creating 2 <strong>Virtual Host</strong> files for your domain.  One for <strong>http://www.domain.com</strong>, the other for <strong>http://domain.com</strong></p>
+			
+				
+				<div class="instructions">
+					<p><strong>cd into sites-available directory</strong></p>
+					<pre>cd /etc/apache2/sites-available</pre>
+				</div>
+				
+				
+				
+				<div class="instructions">
+					<p><strong>Create www_domain.conf Virtual Host file</strong></p>
+					<p>This file will tell Apache to take requests for your domain and pass them to the Greenfield application running in Tomcat</p>
+					<p class="information">Substite 'domain' for a descriptor matching your domain</p>
+					<pre>sudo vim www_domain.conf</pre>
+					<p>Past the following into the file</p>
+					<p class="information">Substitute your domain web address for www.domain.com</p>
+<pre>&lt;VirtualHost *:80&gt;
+	ServerName www.domain.com
+	ServerAdmin admin@domain.com
+	
+	JkMount /greenfield* ajp13_worker
+	
+	&lt;Directory /&gt;
+	        Options FollowSymLinks
+	        AllowOverride None
+	        RewriteEngine On
+	        RewriteRule \/$ /greenfield [L]
+	&lt;/Directory>
+&lt;/VirtualHost&gt;
+</pre>
+					<p>Save file</p>
+				</div>
+				
+				
+				
+				
+				<div class="instructions">
+					<p><strong>Create domain.conf Virtual Host file</strong></p>
+					<p>This file will rewrite requests from domain.com to ww.domain.com</p>
+					<pre>sudo vim domain.conf</pre>
+					<p>Past the following into the file</p>
+<pre>&lt;VirtualHost *:80&gt;
+	ServerName domain.com
+	ServerAdmin admin@domain.com
+	
+	RewriteEngine On
+	RewriteRule \/$ http://www.domain.com [L]
+&lt;/VirtualHost&gt;
+</pre>
+					<p>Save file</p>
+				</div>
+				
+				
+				
+				
+				<div class="instructions">
+					<p><strong>Enable both site configurations</strong></p>
+					
+					<pre>sudo a2ensite www_domain.conf</pre>
+					<pre>sudo a2ensite domain.conf</pre>
+				</div>
+				
+				
+				
+				<div class="instructions">
+					<p><strong>Create <code>greenfield</code> directory</strong></p>
+					<pre>sudo mkdir /var/www/html/greenfield</pre>
+				</div>
+				
+				
+				<div class="instructions">
+					<p><strong>Restart Apache</strong></p>
+					<pre>sudo service apache2 restart</pre>
+				</div>
+				
+				
+				
+				<div class="instructions">
+					<p><strong>Verify domain successfully pointed at Greenfield application running in tomcat by browsing to </strong></p>
+					<pre>http://www.domain.com</pre>
+					<p>If everything is setup correctly, Apache will take the request and forward to the Greenfield application running in Tomcat.  The final Url will read something like</p>
+					
+					<pre>http://www.domain.com/greenfield</pre>
+			
+					<p class="information">Again, substituting your web domain address for domain.com</p>
+				</div>
+				
+			</div>
+		
+		
+		
+			
+			
+		</div>
+		
+</div>
+
+
+
+
+	
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-40862316-6', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
+	  
+	  
+	  
+</body>
