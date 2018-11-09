@@ -13,41 +13,106 @@
 	<script async defer src="https://buttons.github.io/buttons.js"></script>
 
 	<style type="text/css">
-		#header-wrapper{
+		#header-container{
+			position:relative;
 			background:#39414a;
 			height:483px;
+			background-image:url('images/homepage-splash.png');
+    		background-repeat: no-repeat;
+		    background-attachment: absolute;
+		    background-position: center bottom; 
+		}
+		#header{
+			width:927px;
+			padding-top:27px;
+		}
+		#logo-container{
+			float:left;
+			text-align:left;
+		}
+		#logo-homepage{
+		}
+		#tagline-homepage{
+			font-size:12px;
+			display:block;
+			color:#b3b3b3;
+			margin-left:46px;
+		}
+		#navigation-container-homepage{
+			float:right;
+			margin:10px 0px !important;
+			padding:0px !important;
+		}
+		#navigation-homepage{
+			list-style:none;
+			margin:0px !important;
+			padding:0px !important;
+		}
+		#navigation-homepage li{
+			font-weight:normal !important;
+			display:inline-block;
+			margin-left:30px;
+		}
+		#navigation-homepage li a{
+			color:#b3b3b3;
+			font-size:13px;
+			font-family:arial !important;
+			font-weight:100 !important;
+			text-decoration:none;
+			display:inline-block;
+		}
+		#navigation-homepage li a:hover{
+			text-decoration:none;
 		}
 	</style>
 </head>
 <body>
 
-	<div id="header-wrapper">
+	<div id="header-container">
   		<div id="header">
 			
+			<div id="logo-container">
+				<img src="images/greenfield-logo-v2.png" alt="Greenfield: Open Source Grails/Java eCommerce" id="logo-homepage"/>
+				<div style="position:relative">
+					<span id="tagline-homepage">Open Source Grails/Java eCommerce</span>
+				</div>
+			</div>
+			
+			<div id="navigation-container-homepage">
+			
+				<ul id="navigation-homepage">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="index.html#features">Features</a></li>
+					<li><a href="index.html#run-it">Get Started</a></li>
+					<li><a href="index.html#screenshots">Screenshots</a></li>
+					<li><a href="tutorials/index.html">Tutorials</a></li>
+					<li><a href="index.html#support">Support</a></li>
+					<li><a href="http://github.com/opengreenfield/greenfield" target="_blank" id="github-repo-button">Github</a></li>
+				</ul>
+			
+			</div>
+			
+			<br class="clear"/>
 			
 		</div>
+		
 	</div>
   
   
 	<div id="content" style="margin:30px auto 200px auto;">
 		
 		
-		
-		
 		<div id="header2">
-			
-			<div class="github-button-container" id="watch-button-container">
-				<span class="github-button">&nbsp;</span>
+							 
+	
+			<div id="greenfield-definition">
+				<p style="font-style:italic"><strong>[green-feeld]</strong> (noun)</p>
+				
+				<ol style="padding:0px 0px 0px 20px;margin-bottom:35px;">
+					<li style="font-style:italic; font-family:Georgia; font-size:16px;">An undeveloped or agricultural tract of land that is a potential site for commercial development</li>
+				</ol>
+
 			</div>
-			
-			
-			<div id="greenfield-logo">
-				<img src="logo.png" style="margin:0px auto 0px auto" alt="Greenfield : Open Source eCommerce"/>
-				<span id="tagline">open source ecommerce</span>
-			</div>
-			
-			
-			<div class="clear"></div>
 			
 			
             <div id="github-social">
@@ -59,58 +124,17 @@
 
 				<a class="github-button" href="https://github.com/opengreenfield/greenfield/archive/master.zip" data-icon="octicon-cloud-download" data-size="large" aria-label="Download opengreenfield/greenfield on GitHub">Download</a>
             </div>
-			 
-	
-			<div id="greenfield-definition">
-				<p style="font-style:italic"><strong>[green-feeld]</strong> (noun)</p>
-				
-				<ol style="padding:0px 0px 0px 20px;margin-bottom:35px;">
-					<li style="font-style:italic; font-family:Georgia; font-size:16px;">An undeveloped or agricultural tract of land that is a potential site for commercial development</li>
-				</ol>
 
-			</div>
 
-			<div id="action-button-container" style="margin-bottom:24px;text-align:center">
-			
-				
-				<div class="action-container" style="text-align:center;width:100% !important; margin:auto;">
-					<a href="https://github.com/opengreenfield/greenfield" class="btn btn-primary action-button" id="github" target="_blank" title="Greenfield : Open Source eCommerce">Checkout/Clone on Github</a>
-				</div>
-				
-				<div class="clear"></div>
-				
-			</div>
 			
 		</div>
 
-
-		<div id="navigation-container">
-			
-			<ul id="navigation">
-				<li><a href="index.html">Home</a></li>
-				<li><a href="index.html#demo">Demo</a></li>
-				<li><a href="index.html#screenshots">Screenshots</a></li>
-				<li><a href="index.html#run-it">Get Started</a></li>
-				<li><a href="index.html#features">Features</a></li>
-				<!--<li><a href="index.html#started">Getting Started</a></li>-->
-				<li><a href="tutorials/index.html">Tutorials</a></li>
-				<li><a href="index.html#support">Support</a></li>
-			</ul>
-			
-		</div>		
-	
-       	<div id="demo" class="section" style="margin-bottom:50px !important;">
-            <h1>Demo</h1>
-            <p>Login <strong class="highlight">admin:admin </strong></p>
-            <p><a href="http://104.156.252.167:8080/greenfield/admin" target="_blank">http://104.156.252.167:8080/greenfield/admin</a></p>
-            <p>Go to <a href="http://104.156.252.167:8080/greenfield/admin" target="_blank">admin</a> after login</p>
-        </div>
 
 
 		
 		<div id="what" class="section" style="margin-bottom:50px !important;">
 			<h1>What is Greenfield</h1>
-			<p>Greenfield is a lightweight open source eCommerce application focused on quick and easy setup. Greenfield is built on Grails, a full stack web application framework for the JVM. <a href="http://www.grails.org" target="_blank">Lean more about Grails</a></p>
+			<p>Greenfield is a lightweight open source Grails/Java eCommerce application focused on quick and easy setup. Greenfield is built on Grails, a full stack web application framework for the JVM (Java Environment). <a href="http://www.grails.org" target="_blank">Lean more about Grails</a></p>
 		</div>
 		
 		
@@ -171,7 +195,7 @@
 			<h1>Get Started</h1>
 			<p>Want to check Greenfield out, run it in development mode</p>
 			<ol>
-				<li>Install <strong class="highlight">Grails 3.3.4</strong> or higher</li>
+				<li>Install <strong class="highlight">Grails 3.3.8</strong> or higher</li>
 				<li>Install <strong class="highlight">Java JDK 1.8</strong> or higher</strong></li>
 				<li>Install <strong class="highlight">Git</strong></li>
 				<li>Clone the repository, <strong class="highlight">git clone https://github.com/opengreenfield/greenfield.git</strong></li>
