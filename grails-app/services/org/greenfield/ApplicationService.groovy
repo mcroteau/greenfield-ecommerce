@@ -12,6 +12,7 @@ import grails.util.Holders
 class ApplicationService {
     
 	def grailsApplication
+	def springSecurityService
 	
 	def layout
 	def header
@@ -603,7 +604,26 @@ class ApplicationService {
 	}
 	
 	def getAdminLink(){
+		if(hasAdministrationRole()){
+			return "<a href=\"/${getContextName()}/admin\" id=\"admin-link\">Administration</a>"
+		}else{
+			return ""
+		}
+		
 		return "<a href=\"/${getContextName()}/admin\" id=\"admin-link\">Administration</a>"
+	}
+	
+	def hasAdministrationRole(){
+		if(!springSecurityService){
+			springSecurityService = grailsApplication.classLoader.loadClass("grails.plugin.springsecurity.SpringSecurityService").newInstance()
+		}
+		def principal = springSecurityService.principal
+		def authorities = principal.authorities
+		def admininstrator = false
+		authorities.each() { role ->
+			if(role.authority == "ROLE_ADMIN")admininstrator = true
+		}	
+		return admininstrator
 	}
 	
 	
