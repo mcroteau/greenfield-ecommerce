@@ -10,6 +10,9 @@ class Layout {
 	
 	String name
 	String content
+	String css
+	String javascript
+	boolean defaultLayout
 	
 	Date dateCreated
 	Date lastUpdated
@@ -20,8 +23,11 @@ class Layout {
 	
 	static constraints = {
 		uuid(nullable:true)
-		name(unique:true)
-		content(size:0..65535)
+		name(nullable:false, unique:true)
+		content(blank:false, nullable:false, size:0..65535)
+		css(blank:true, nullable:true, size:0..65535)
+		javascript(blank:true, nullable:true, size:0..65535)
+		defaultLayout(nullable:false, default:false)
 		id generator: 'sequence', params:[sequence:'ID_LAYOUT_PK_SEQ']
     }
 	

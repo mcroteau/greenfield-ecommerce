@@ -55,7 +55,7 @@ class BootStrap {
 		println "***********************************************"
 		createCountries()
 		createStates()
-		createLayout()
+		//createLayout()//TODO:uncomment
 		createPages()
 		createRoles()
 		createAdmin()
@@ -135,7 +135,9 @@ class BootStrap {
 
 			def layout = new Layout()
 			layout.content = layoutContent
-			layout.name = "STORE_LAYOUT"
+			layout.name = "Preset Layout, change at will"
+			layout.defaultLayout = true
+			
 			layout.save(flush:true)
 			
 		}

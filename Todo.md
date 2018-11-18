@@ -1,3 +1,14 @@
+Test without default layout
+add default property to import, export and backup process on Layout
+remove the need to use the store.css
+move layout css into Layout domain class
+add section for additional javascript to Layout domain class
+
+
+
+
+
+
 *sorting admin products
 *create product
 *edit product
