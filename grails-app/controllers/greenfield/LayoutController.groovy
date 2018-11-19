@@ -26,9 +26,10 @@ class LayoutController {
     def index() {	
 		authenticatedAdmin{ adminAccount ->
 			def offset = params.offset ? params.offset : 0
-			def layouts = Layout.findAll(max:10, offset:offset, sort:"name", order: "asc")
-			
-			
+			def sort = params.sort ? params.sort : "name"
+			def order = params.order ? params.order : "asc"
+			def layouts = Layout.findAll(max:10, offset:offset, sort: sort, order: order)
+		
 			/**
 			File cssFile = grailsApplication.mainContext.getResource("css/store.css").file
 			String css = cssFile.text
@@ -36,7 +37,7 @@ class LayoutController {
 			[layout : Layout.findByName("STORE_LAYOUT").content, css : css]
 			**/
 			
-			[layouts: layouts]
+			[layouts: layouts, layoutInstanceTotal: Layout.count()]
 			
 		}
 	}
@@ -97,15 +98,84 @@ class LayoutController {
 	        return
 	    }
 		
-		
-		
 		redirect(action:"show", id: layoutInstance.id)
 	}
 	
 	
 	
+	
  	@Secured(['ROLE_ADMIN'])
- 	def update(){
+	def show(Long id){
+		def layoutInstance = Layout.get(id)
+		if(!layoutInstance){
+			flash.message = "Unable to find layout ${id}"
+			redirect(action:"index")
+		}
+		[layoutInstance: layoutInstance]
+	}
+	
+ 	@Secured(['ROLE_ADMIN'])
+	def edit(Long id){
+		def layoutInstance = Layout.get(id)
+		if(!layoutInstance){
+			flash.message = "Unable to find layout ${id}"
+			redirect(action:"index")
+		}
+		[layoutInstance: layoutInstance]
+	}
+	
+	
+	
+ 	@Secured(['ROLE_ADMIN'])
+    def update(Long id, Long version) {
+		def layoutInstance = Layout.get(id)
+		if(!layoutInstance){
+			flash.message = "Unable to find layout ${id}"
+			redirect(action:"index")
+		}
+		
+    	layoutInstance.properties = params
+		
+		if(!layoutInstance.name){
+			flash.message = "Please make sure layout name is not empty"
+	        render(view: "edit", model: [layoutInstance: layoutInstance])
+	        return
+		}
+		
+		
+		if(layoutInstance.content && !layoutInstance.content.contains("[[CONTENT]]")){
+			flash.message = "Please make sure layout contains [[CONTENT]] tag"
+	        render(view: "edit", model: [layoutInstance: layoutInstance])
+	        return
+		}
+
+
+		def existingDefaultLayouts = Layout.findAllByDefaultLayout(true)
+		if(!layoutInstance.defaultLayout){
+			if(!existingDefaultLayouts)layoutInstance.defaultLayout = true
+		}else{
+			existingDefaultLayouts.each{ layout ->
+				if(layout != layoutInstance){
+					layout.defaultLayout = false
+					layout.save(flush:true)
+				}
+			}
+		}
+		
+		
+		if(!layoutInstance.save(flush: true)) {
+			flash.message = "Please make sure layout is not empty and contains [[CONTENT]] tag"
+	        render(view: "edit", model: [layoutInstance: layoutInstance])
+	        return
+	    }
+		
+		redirect(action:"show", id: layoutInstance.id)
+		
+	}
+	
+	
+ 	@Secured(['ROLE_ADMIN'])
+ 	def update_old(){
 		authenticatedAdmin{ adminAccount ->
 			
 			if(!params.layout.contains("[[CONTENT]]")){

@@ -40,21 +40,31 @@
 			
 		<g:if test="${layouts?.size() > 0}">
 			<table class="table">
-				<tr>
-					<th>Name</th>
-					<th>Default</th>
-					<th></th>
-				</tr>
-				<g:each in="${layouts}" var="layout">
+				<thead>
 					<tr>
-						<td>${layout.name}</td>
-						<td>${layout.default}</td>
+						<g:sortableColumn property="name" title="Name" />
+						<g:sortableColumn property="defaultLayout" title="Default" />
+						<th></th>
+					</tr>
+				</thead>
+				<g:each in="${layouts}" var="layoutInstance">
+					<tr>
+						<td>${layoutInstance.name}</td>
 						<td>
-							
+							<g:if test="${layoutInstance.defaultLayout}">
+								Default
+							</g:if>
+						</td>
+						<td>
+							<g:link controller="layout" action="edit" params="[id: layoutInstance?.id]" class="${layoutInstance.name}-edit">Edit</g:link>
 						</td>
 					</tr>
 				</g:each>
 			</table>
+
+			<div class="btn-group">
+				<g:paginate total="${layoutInstanceTotal}" />
+			</div>
 		</g:if>	
 		<g:else>
 			<div class="alert alert-info" style="margin-top:10px;"><strong>How did you do that?</strong>

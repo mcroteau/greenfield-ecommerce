@@ -4,6 +4,18 @@ remove the need to use the store.css
 move layout css into Layout domain class
 add section for additional javascript to Layout domain class
 
+** Following
+/ home page 
+per page
+per catalog
+per product
+
+search results
+checkout preview
+checkout screen
+checkout success
+registration
+login
 
 
 

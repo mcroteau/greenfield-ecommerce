@@ -41,6 +41,8 @@
 			
 			<div class="form-group" style="margin-top:30px">
 				<g:submitButton class="btn btn-primary pull-right" name="save" value="Save Store Layout" />
+				<g:link class="btn btn-default pull-right" controller="layout" action="index" style="display:inline-block;margin-right:10px;">Back to Layouts</g:link>
+			<br class="clear"/>
 			</div>
 			
 			<h2>New Layout</h2>
@@ -59,13 +61,14 @@
 					<span class="information secondary block">Selecting default will automatically unassign the other</span>
 				</span>
 				<span class="input-container">
-					<g:checkBox name="default" value="${layoutInstance?.defaultLayout}" checked="${layoutInstance?.defaultLayout}"/>
+					<g:checkBox name="defaultLayout" value="${layoutInstance?.defaultLayout}" checked="${layoutInstance?.defaultLayout}"/>
 				</span>
 				<br class="clear"/>
 			</div>
-
 			
-			<h2>Layout HTML</h2>
+			<hr/>
+			
+			<h3>Store Layout HTML</h3>
 			
 			<p class="instructions">Layout code will automatically be wrapped by necessary wrapper html that includes everything necessary for your store front. <g:link controller="layout" action="edit_wrapper">Edit Main HTML Wrapper</g:link>.</p><p class="instructions">Place all layout code below. Be sure to include <strong>[[CONTENT]]</strong> tag.  <g:link controller="layout" action="tags">View All Available Tags</g:link>.</p>  
 			

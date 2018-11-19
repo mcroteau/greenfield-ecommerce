@@ -16,6 +16,14 @@
 				background:#f8f8f8;
 				font-family: Monaco,"MonacoRegular",monospace;
 			}
+			#javascript-textarea{
+				height:275px; 
+				width:100%;
+				font-size:12px;
+				background:#f8f8f8;
+				font-family: Monaco,"MonacoRegular",monospace;
+			}
+			
 		</style>
 		
 	</head>
@@ -29,34 +37,79 @@
 			<div class="alert alert-danger" style="margin-top:10px;">${flash.error}</div>
 		</g:if>
 		
-		<g:form controller="layout" action="update">
+		
+		<g:form method="post" >
+		
+			<g:hiddenField name="id" value="${layoutInstance?.id}" />
+			<g:hiddenField name="version" value="${layoutInstance?.version}" />
+			
 			
 			<div class="form-group" style="margin-top:30px">
-				<g:submitButton class="btn btn-primary pull-right" name="updateLayout" value="Update Store Layout & CSS" />
+				<g:actionSubmit class="btn btn-primary pull-right" action="update" value="Update Store Layout" />
+				
+				<g:link class="btn btn-default pull-right" controller="layout" action="index" style="display:inline-block;margin-right:10px;">Back to Layouts</g:link>
+				<br class="clear"/>
 			</div>
 			
-			<h2>Store Layout</h2>
-			<p class="instructions">Place all layout code below.  Be sure to include <strong>[[CONTENT]]</strong> tag.  <g:link controller="layout" action="tags">View All Available Tags</g:link>.</p>  
+			
+			<div class="form-row">
+				<span class="form-label twohundred secondary">Name 
+					<span class="information secondary block">Name must be unique</span>
+				</span>
+				<span class="input-container">
+					<input name="name" type="text" class="form-control threefifty" value="${layoutInstance?.name}" id="name"/>
+				</span>
+				<br class="clear"/>
+			</div>
+			<div class="form-row">
+				<span class="form-label twohundred secondary">Default 
+					<span class="information secondary block">Selecting default will automatically unassign the other</span>
+				</span>
+				<span class="input-container">
+					<g:checkBox name="defaultLayout" value="${layoutInstance?.defaultLayout}" checked="${layoutInstance?.defaultLayout}"/>
+				</span>
+				<br class="clear"/>
+			</div>
+			
+			<hr/>
+			
+			<h3>Store Layout HTML</h3>
+			
+			<p class="instructions">Layout code will automatically be wrapped by necessary wrapper html that includes everything necessary for your store front. <g:link controller="layout" action="edit_wrapper">Edit Main HTML Wrapper</g:link>.</p><p class="instructions">Place all layout code below. Be sure to include <strong>[[CONTENT]]</strong> tag.  <g:link controller="layout" action="tags">View All Available Tags</g:link>.</p>  
+			
+			<p class="instructions">[[CONTENT]] tag is where all store front product, catalog, page and other content is displayed automatically</p>
 			
 			<p class="instructions"><g:link controller="layout" action="how">How the Layout Engine works</g:link></p>
 			
-			
 			<textarea id="layout-textarea"
-					name="layout" 
-					class="form-control">${layout}</textarea>
+					name="content" 
+					class="form-control">${layoutInstance?.content}</textarea>
 			
 
 			
 			<h3>Store CSS</h3>
-			<p class="instructions">Place all supporting css code below</p>
+			<p class="instructions">Much of the storefront has css code, however your layout will need its own  supporting css code below</p>
 			
 			<textarea id="css-textarea" 
 					name="css" 
-					class="form-control">${css}</textarea>
+					class="form-control">${layoutInstance?.css}</textarea>
 			
 			<br class="clear"/>
 			
-			<g:submitButton class="btn btn-primary pull-right" name="updateLayout" value="Update Store Layout & CSS" style="margin-bottom:30px;margin-top:30px;" />
+			
+			<h3>Store Javascript</h3>
+			<p class="instructions">This section is for such things as home page carousels, sliding panes or any other Javascript goodness to add to your storefront</p>
+			<p class="instructions">This will be added at the bottom of your page layout. Warning, there are additional scripts on a per page basis that may conflict. Please check variable names on page load to ensure no duplicates or interference with base store front.</p>
+			<textarea id="javascript-textarea" 
+					name="javascript" 
+					class="form-control">${layoutInstance?.javascript}</textarea>
+					
+			
+			<div class="form-group" style="margin-top:30px">
+				<g:actionSubmit class="btn btn-primary pull-right" action="update" value="Update Store Layout" />
+				
+				<g:actionSubmit class="btn btn-danger pull-right" action="delete" value="Delete" formnovalidate="" onclick="return confirm('Are you sure you want to delete this Layout?');" style="display:inline-block; margin-right:10px;"/>
+			</div>
 			
 		</g:form>
 		
