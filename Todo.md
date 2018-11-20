@@ -3,6 +3,7 @@ add default property to import, export and backup process on Layout
 remove the need to use the store.css
 move layout css into Layout domain class
 add section for additional javascript to Layout domain class
+update development data for catalogs, products and pages to have default layouts
 
 ** Following
 / home page 
@@ -16,6 +17,7 @@ checkout screen
 checkout success
 registration
 login
+
 
 
 

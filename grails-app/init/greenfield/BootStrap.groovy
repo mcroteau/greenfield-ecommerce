@@ -55,7 +55,7 @@ class BootStrap {
 		println "***********************************************"
 		createCountries()
 		createStates()
-		//createLayout()//TODO:uncomment
+		createLayout()//TODO:uncomment
 		createPages()
 		createRoles()
 		createAdmin()
@@ -135,7 +135,7 @@ class BootStrap {
 
 			def layout = new Layout()
 			layout.content = layoutContent
-			layout.name = "Preset Layout, change at will"
+			layout.name = "Store Layout: Prepackaged"
 			layout.defaultLayout = true
 			
 			layout.save(flush:true)
@@ -149,50 +149,55 @@ class BootStrap {
 
 	
 	def createPages(){
-		createHomepage()
-		createAboutUs()
-		createContactUs()
-		createPrivacyPolicy()
+		def layout = Layout.findByDefaultLayout(true)
+		createHomepage(layout)
+		createAboutUs(layout)
+		createContactUs(layout)
+		createPrivacyPolicy(layout)
 		println "Pages : ${Page.count()}"
 	}
 	
-	def createHomepage(){
+	def createHomepage(layout){
 		def homepage = Page.findByTitle("Home")
 		if(!homepage){
 			def home = new Page()
 			home.title = "Home"
 			home.content = "Put your home page content here..."
+			home.layout = layout
 			home.save(flush:true)
 		}
 	}
 	
 	
-	def createAboutUs(){
+	def createAboutUs(layout){
 		def aboutUs = Page.findByTitle("About Us")
 		if(!aboutUs){
 			def page = new Page()
 			page.title = "About Us"
 			page.content = "<p>Located downtown, we are a small boutique gift shop specializing in casino products.  Let us help you choose the perfect set of poker chips or porcelain dice.</p><p>Our knowledgeable and friendly staff is ready to assist you. We will gift wrap, pack and ship any purchase.</p>"
+			page.layout = layout
 			page.save(flush:true)
 		}
 	}
 	
-	def createContactUs(){
+	def createContactUs(layout){
 		def contactUs = Page.findByTitle("Contact Us")
 		if(!contactUs){
 			def page = new Page()
 			page.title = "Contact Us"
 			page.content = "<address><strong>Suited Spades Gift Shop</strong><br>1000 Main Street, Suite 543<br>Henderson, NV 89002<br><abbr title=\"Phone\">P:</abbr> (800) 543-8765</address>"
+			page.layout = layout
 			page.save(flush:true)
 		}
 	}
 	
-	def createPrivacyPolicy(){
+	def createPrivacyPolicy(layout){
 		def privacyPage = Page.findByTitle("Privacy Policy")
 		if(!privacyPage){
 			def page = new Page()
 			page.title = "Privacy Policy"
 			page.content = "<p>Your privacy is important to us. Any information, both personal and financial, given to Suites Spade's Gift Shop will not be sold or shared with any third parties.</p>"
+			page.layout = layout
 			page.save(flush:true)
 		}
 	}

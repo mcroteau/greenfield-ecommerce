@@ -14,9 +14,9 @@ class ApplicationService {
 	def grailsApplication
 	def springSecurityService
 	
-	def layout
 	def header
 	def footer
+	def layoutWrapper
 	
 	static scope = "singleton"
 	static transactional = true
@@ -27,10 +27,55 @@ class ApplicationService {
 
 	def init(){
 		if(!header && !footer){
-			refresh()
+			//refresh()//TODO:delete?
 			setProperties()
 		}
 	}
+	
+	
+	
+	def renderHeader(pageInstance){
+		/**
+			get layout file
+			get layout from page instance
+			add css section at top head
+			render layout tags
+		**/
+		refreshBaseLayoutWrapper()
+		
+		
+	}
+	
+	
+	def refreshBaseLayoutWrapper(){
+		File layoutFile = grailsApplication.mainContext.getResource("templates/storefront/layout-wrapper.html").file
+		layoutWrapperHtml = layoutFile.text
+	}
+	
+	
+	
+	
+	def renderLayoutTags(section){
+		section = section.replace("[[SEARCH_BOX]]", getSearchBox())
+		section = section.replace("[[SHOPPING_CART]]", getShoppingCart())
+		section = section.replace("[[ACCOUNT]]", getAccount())
+		section = section.replace("[[GREETING]]", getGreeting())
+		section = section.replace("[[LOGIN]]", getLogin())
+		section = section.replace("[[LOGOUT]]", getLogout())
+		section = section.replace("[[REGISTER]]", getRegister())
+		section = section.replace("[[ORDER_HISTORY]]", getOrderHistory())
+		section = section.replace("[[ADMIN_LINK]]", getAdminLink())
+		
+		if(section.contains("[[GOOGLE_ANALYTICS]]")) section = section.replace("[[GOOGLE_ANALYTICS]]", getGoogleAnalyticsCode())
+		
+		return section
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	def refresh(){
@@ -75,10 +120,15 @@ class ApplicationService {
 		footer = footer.replace("[[GOOGLE_ANALYTICS]]", getGoogleAnalyticsCode())
 		
 		def storeName = getStoreName().replaceAll("[^\\w\\s]",""); 
+		header = header.replace("[[SITE_NAME]]", storeName)
 		footer = footer.replace("[[SITE_NAME]]", storeName)
 	}
 	
 	
+	
+
+	
+	/** OLD GET HEADER METHODS **/
 	
 	def getHeader(Catalog catalogInstance, String title, boolean productPage, GrailsParameterMap params){
 		if(!header)refresh()

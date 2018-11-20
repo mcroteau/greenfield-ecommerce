@@ -10,6 +10,7 @@ class Catalog {
 
 	String name
 	String description
+	Layout layout
 
 	Date dateCreated
 	Date lastUpdated

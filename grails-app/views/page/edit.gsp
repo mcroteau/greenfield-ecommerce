@@ -83,6 +83,22 @@
 				</div>
 				
 				
+						  
+
+		 		<div class="form-row">
+		 			<span class="form-label full secondary">Layout</span>
+		 			<span class="input-container">
+						<g:select name="layout.id"
+								from="${Layout.list()}"
+								value="${pageInstance?.layout?.id}"
+								optionKey="id" 
+								optionValue="name" 
+								class="form-control"/>
+		 			</span>
+		 			<br class="clear"/>
+		 		</div> 
+						  
+						  
 			
 				<div class="form-row">
 					<span class="form-label full secondary">Description 

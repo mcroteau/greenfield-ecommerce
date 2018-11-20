@@ -10,8 +10,8 @@ class UrlMappings {
         }
 
         "/"{ 
-            controller = "store"
-            action = "index"
+            controller = "page"
+            action = "home"
         }
 
         "/shopping_cart"{

@@ -30,6 +30,8 @@ class Product {
 
 	String productNo
 	
+	Layout layout
+	
 	static hasMany = [ catalogs: Catalog, additionalPhotos: AdditionalPhoto, productOptions: ProductOption, productSpecifications: ProductSpecification ]
 	
 	

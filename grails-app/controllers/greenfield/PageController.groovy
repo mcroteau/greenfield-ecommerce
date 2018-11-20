@@ -57,12 +57,23 @@ class PageController {
 	}
 	
 	
+	//TODO:catch if deleted in database
+ 	@Secured(['permitAll'])
+	def home(){
+		def pageInstance = Page.findByTitle("Home")
+		[pageInstance: pageInstance]
+	}
+	
+	
+	
+	
 
 	/** ADMINISTRATION METHODS **/
 	
  	@Secured(['ROLE_ADMIN'])
     def create() {
-        [pageInstance: new Page(params)]
+		def layouts = Layout.list()
+        [pageInstance: new Page(params), layouts: layouts]
     }
 	
 	
@@ -98,7 +109,8 @@ class PageController {
  	@Secured(['ROLE_ADMIN'])
     def edit(Long id) {
 		authenticatedAdminPage { adminAccount, pageInstance ->
-        	[pageInstance: pageInstance]
+			def layouts = Layout.list()
+        	[pageInstance: pageInstance, layouts: layouts]
 		}
     }
 
