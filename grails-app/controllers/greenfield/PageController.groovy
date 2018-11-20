@@ -6,6 +6,7 @@ import greenfield.common.BaseController
 import org.greenfield.Account
 import org.greenfield.Page
 import org.greenfield.log.PageViewLog
+import org.greenfield.Layout
 
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -100,7 +101,8 @@ class PageController {
  	@Secured(['ROLE_ADMIN'])
     def show(Long id) {
 		authenticatedAdminPage { adminAccount, pageInstance ->
-        	[pageInstance: pageInstance]
+			def layouts = Layout.list()
+        	[pageInstance: pageInstance, layouts: layouts]
 		}
     }
 	

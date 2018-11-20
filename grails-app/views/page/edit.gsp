@@ -1,4 +1,5 @@
 <%@ page import="org.greenfield.Page" %>
+<%@ page import="org.greenfield.Layout %>
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
@@ -89,7 +90,7 @@
 		 			<span class="form-label full secondary">Layout</span>
 		 			<span class="input-container">
 						<g:select name="layout.id"
-								from="${Layout.list()}"
+								from="${layouts}"
 								value="${pageInstance?.layout?.id}"
 								optionKey="id" 
 								optionValue="name" 

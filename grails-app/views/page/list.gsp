@@ -35,6 +35,8 @@
 						
 						<th>url</th>
 						
+						<th>Layout</th>
+						
 						<th></th>
 					
 					</tr>
@@ -47,6 +49,8 @@
 					
 						<td>/${applicationService.getContextName()}/page/store_view/${pageInstance.title} &nbsp;&nbsp;
 						<a href="/${applicationService.getContextName()}/page/store_view/${URLEncoder.encode("${pageInstance.title}", "UTF-8")}" class="information" target="_blank">Test</a></td>
+						
+						<td><g:link controller="layout" action="edit" id="${pageInstance.layout.id}">${pageInstance.layout.name}</g:link></td>
 					
 						<td><g:link action="edit" id="${pageInstance.id}" class="">Edit</g:link></td>
 					

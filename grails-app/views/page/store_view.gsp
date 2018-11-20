@@ -1,7 +1,7 @@
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
-${raw(applicationService.getHeader("${pageInstance?.title}"))}
+${raw(applicationService.getPageHeader(pageInstance))}
 	
 <g:if test="${flash.message}">
 	<div class="alert alert-info" role="status">${flash.message}</div>
@@ -9,4 +9,4 @@ ${raw(applicationService.getHeader("${pageInstance?.title}"))}
 
 ${raw(pageInstance?.content)}	
 
-${raw(applicationService.getFooter())}
+${raw(applicationService.getPageFooter(pageInstance))}

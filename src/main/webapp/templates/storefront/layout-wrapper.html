@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<!--//
+		
+		This file serves as a wrapper around store content, edit or create with caution 
+		
+		STORE_LAYOUT : renders the layout defined for the specific page
+		STORE_CSS : renders store css defined within a layout
+		STORE_JAVASCRIPT : renders javascript defined within a layout 
+		
+	-->
 	<title>[[TITLE]]</title>
 	<meta name="keywords" content="[[META_KEYWORDS]]">
 	<meta name="description" content="[[META_DESCRIPTION]]">
@@ -12,11 +21,21 @@
 	<link rel="stylesheet" href="/[[CONTEXT_NAME]]/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css">
 	<link rel="stylesheet" href="/[[CONTEXT_NAME]]/css/app.css" type="text/css">
 	<link rel="stylesheet" href="/[[CONTEXT_NAME]]/css/store.css" type="text/css">
+	
+	<style type="text/css">
+		[[STORE_CSS]]
+	</style>
 </head>
 <body>
 	
+
+<!--The layout engine inserts page layout here, splits on CONTENT and renders tags-->
 [[STORE_LAYOUT]]
 
+
+<script>
+	[[STORE_JAVASCRIPT]]
+</script>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

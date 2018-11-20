@@ -39,7 +39,7 @@
 		
 		
 		<div class="form-group" style="margin-top:30px">
-			<g:link class="btn btn-primary pull-right" controller="layout" action="create">New Store Layout</g:link>
+			<g:link class="btn btn-primary pull-right" controller="layout" action="edit" id="${layoutInstance?.id}">Edit Store Layout</g:link>
 			<g:link class="btn btn-default pull-right" controller="layout" action="index" style="display:inline-block;margin-right:10px;">Back to Layouts</g:link>
 			<br class="clear"/>
 		</div>
@@ -94,7 +94,7 @@
 				
 		
 		<div class="form-group" style="margin-top:30px">
-			<g:submitButton class="btn btn-primary pull-right" name="save" value="Save Store Layout" />
+			<g:link class="btn btn-primary pull-right" controller="layout" action="edit" id="${layoutInstance?.id}">Edit Store Layout</g:link>
 		</div>
 			
 			

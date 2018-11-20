@@ -17,6 +17,7 @@ import org.greenfield.Specification
 import org.greenfield.Variant
 import org.greenfield.Page
 import org.greenfield.State
+import org.greenfield.Layout
 
 import org.greenfield.log.ProductViewLog
 import org.greenfield.log.PageViewLog

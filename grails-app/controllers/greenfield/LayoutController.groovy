@@ -190,7 +190,7 @@ class LayoutController {
 			
 			def css = params.css
 			css = css.replace("[[CONTEXT_NAME]]",  applicationService.getContextName())
-			bw.write(params.css);
+			bw.write(params.css);//TODO:might need to fix
 			bw.close();
 			
 			
@@ -213,19 +213,37 @@ class LayoutController {
 	
  	@Secured(['ROLE_ADMIN'])	
 	def edit_wrapper(){
-		File wrapperFile = grailsApplication.mainContext.getResource("templates/storefront/layout-wrapper.html").file
-		String html = wrapperFile.text
-		[html: html]
+		File layoutFile = grailsApplication.mainContext.getResource("templates/storefront/layout-wrapper.html").file
+		def layoutWrapper = layoutFile.text
+		
+		[layoutWrapper: layoutWrapper]
 	}
 	
 	
  	@Secured(['ROLE_ADMIN'])	
 	def update_wrapper(){
+		File layoutFile = grailsApplication.mainContext.getResource("templates/storefront/layout-wrapper.html").file
+		FileWriter fw = new FileWriter(layoutFile.getAbsoluteFile());
+		BufferedWriter bw = new BufferedWriter(fw);
+		def html = params.layoutWrapper
+		bw.write(html)
+		bw.close()
+		flash.message = "Successfully updated base layout"
+		redirect(action:"edit_wrapper")
 	}
 	
-	
- 	@Secured(['ROLE_ADMIN'])	
-	def show_wrapper(){
+ 	@Secured(['ROLE_ADMIN'])
+	def restore_wrapper(){		
+		File backuplayoutFile = grailsApplication.mainContext.getResource("templates/storefront/layout-wrapper.backup").file
+		
+		File layoutFile = grailsApplication.mainContext.getResource("templates/storefront/layout-wrapper.html").file
+		FileWriter fw = new FileWriter(layoutFile.getAbsoluteFile());
+		BufferedWriter bw = new BufferedWriter(fw);
+		
+		bw.write(backuplayoutFile.text)
+		bw.close()
+		flash.message = "Successfully updated base layout"
+		redirect(action:"edit_wrapper")
 	}
 	
 }

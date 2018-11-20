@@ -34,28 +34,54 @@ class ApplicationService {
 	
 	
 	
-	def renderHeader(pageInstance){
+	def getPageHeader(pageInstance){
 		/**
 			get layout file
 			get layout from page instance
 			add css section at top head
 			render layout tags
 		**/
-		refreshBaseLayoutWrapper()
+		refreshBaseLayoutWrapper(pageInstance.layout)
+
+		header = header.replace("[[STORE_CSS]]", pageInstance.layout.css)
+
+		def titleFull = getStoreName() + " : " + pageInstance.title
 		
-		
+		header = header.replace("[[TITLE]]", titleFull)
+		header = header.replace("[[META_KEYWORDS]]", getMetaKeywords())
+		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
+		header = header.replace("[[CONTEXT_NAME]]", getContextName())
+		header = header.replace("[[CATALOGS]]", getCatalogsMain())
+        header = header.replace("[[CATALOG_FILTERS]]", "")
+		return header
+	}
+	
+	def getPageFooter(pageInstance){
+		refreshBaseLayoutWrapper(pageInstance.layout)
+
+		footer = footer.replace("[[STORE_JAVASCRIPT]]", pageInstance.layout.javascript)
+		return footer
 	}
 	
 	
-	def refreshBaseLayoutWrapper(){
+	
+	
+	def refreshBaseLayoutWrapper(layout){
+		if(!grailsApplication){
+			grailsApplication = Holders.grailsApplication
+		}
 		File layoutFile = grailsApplication.mainContext.getResource("templates/storefront/layout-wrapper.html").file
-		layoutWrapperHtml = layoutFile.text
+		layoutWrapper = layoutFile.text
+		layoutWrapper = layoutWrapper.replace("[[STORE_LAYOUT]]", layout.content)
+		String[] split = layoutWrapper.split("\\[\\[CONTENT\\]\\]");
+		header = renderHtmlTags(split[0])
+		footer = renderHtmlTags(split[1])
 	}
 	
 	
 	
 	
-	def renderLayoutTags(section){
+	def renderHtmlTags(section){
 		section = section.replace("[[SEARCH_BOX]]", getSearchBox())
 		section = section.replace("[[SHOPPING_CART]]", getShoppingCart())
 		section = section.replace("[[ACCOUNT]]", getAccount())

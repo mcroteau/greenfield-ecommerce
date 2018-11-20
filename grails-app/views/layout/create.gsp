@@ -94,6 +94,7 @@
 			
 			<h3>Store Javascript</h3>
 			<p class="instructions">This section is for such things as home page carousels, sliding panes or any other Javascript goodness to add to your storefront</p>
+			<p>Please use single quotes for javascript variables</p>
 			<p class="instructions">This will be added at the bottom of your page layout. Warning, there are additional scripts on a per page basis that may conflict. Please check variable names on page load to ensure no duplicates or interference with base store front.</p>
 			<textarea id="javascript-textarea" 
 					name="javascript" 
