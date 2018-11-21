@@ -32,11 +32,18 @@
 		
 		<div class="form-group" style="margin-top:30px">
 			<g:link class="btn btn-primary pull-right" controller="layout" action="create">New Layout</g:link>
+			<g:link class="pull-right" style="display:inline-block;margin-right:30px">Other Pages</g:link>
+			<g:link class="pull-right" style="display:inline-block;margin-right:30px">Pages</g:link>
+			<g:link class="pull-right" style="display:inline-block;margin-right:30px">Catalogs</g:link>
+			<g:link class="pull-right" style="display:inline-block;margin-right:30px">Products</g:link>
 		</div>
 		
 		<h2>Store Layouts</h2>
 		<p class="instructions"><g:link controller="layout" action="edit_wrapper">Edit Main HTML Wrapper</g:link></p>  
 			
+		
+		<p>Each page, whether it be a product page, custom page, catalog or other supporting page can have its own distinct layout.</p>
+		
 			
 		<g:if test="${layouts?.size() > 0}">
 			<table class="table">

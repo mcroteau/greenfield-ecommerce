@@ -5,6 +5,7 @@ move layout css into Layout domain class
 add section for additional javascript to Layout domain class
 update development data for catalogs, products and pages to have default layouts
 delete store controller and store/index.gsp folder and gsp
+create 2 home pages??
 
 ** Following
 / home page 

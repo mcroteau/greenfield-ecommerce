@@ -3,7 +3,7 @@
 <head>
 	<!--//
 		
-		This file serves as a wrapper around store content, edit or create with caution 
+		This file serves as a wrapper for store content, edit or create with caution 
 		
 		STORE_LAYOUT : renders the layout defined for the specific page
 		STORE_CSS : renders store css defined within a layout

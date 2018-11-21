@@ -12,6 +12,13 @@ class LayoutController {
 	def applicationService
 	//Grails 2 explicitly set
     //def grailsApplication
+	private final String SETTINGS_FILE = "settings.properties"
+	
+	private final String CHECKOUT_PREVIEW = "checkout.preview.layout"
+	private final String CHECKOUT_SCREEN = "checkout.screen.layout"
+	private final String CHECKOUT_SUCCESS = "checkout.success.layout"
+	private final String REGISTRATION_SCREEN = "registration.screen.layout"
+	private final String LOGIN_SCREEN = "login.screen.layout"
 	
 
  	@Secured(['ROLE_ADMIN'])	
@@ -245,5 +252,25 @@ class LayoutController {
 		flash.message = "Successfully updated base layout"
 		redirect(action:"edit_wrapper")
 	}
+	
+	
+	
+ 	@Secured(['ROLE_ADMIN'])
+	def edit_support_layouts(){
+		
+	}
+	
+ 	@Secured(['ROLE_ADMIN'])
+	def update_support_layouts(){
+		
+		Properties prop = new Properties();
+		File propertiesFile = grailsApplication.mainContext.getResource("settings/${SETTINGS_FILE}").file
+		FileInputStream inputStream = new FileInputStream(propertiesFile)
+		
+		prop.load(inputStream);
+		
+		try{
+	}
+	
 	
 }
