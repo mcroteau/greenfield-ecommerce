@@ -76,9 +76,14 @@
 			
 			<p class="instructions"><g:link controller="layout" action="how">How the Layout Engine works</g:link></p>
 			
+			<%
+			def layoutContent = layoutInstance?.content
+			if(!layoutContent)layoutContent = "[[CONTENT]]"
+			%>
+			
 			<textarea id="layout-textarea"
 					name="content" 
-					class="form-control">${layoutInstance?.content}</textarea>
+					class="form-control">${layoutContent}</textarea>
 			
 
 			

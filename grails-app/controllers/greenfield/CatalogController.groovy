@@ -9,6 +9,7 @@ import org.greenfield.Account
 import org.greenfield.Catalog
 import org.greenfield.Product
 import org.greenfield.Specification
+import org.greenfield.Layout
 
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -260,10 +261,12 @@ class CatalogController {
     def create() {
 		authenticatedAdmin { adminAccount -> 
 			
+			def layouts = Layout.list()
+			
 			numberSpaces = 1
 			def catalogOptions = getCatalogOptions()
 			
-	    	[ catalogInstance: new Catalog(params), catalogOptions: catalogOptions ]
+	    	[ catalogInstance: new Catalog(params), catalogOptions: catalogOptions, layouts: layouts ]
     	}
 	}
 
@@ -274,10 +277,12 @@ class CatalogController {
     def show(Long id) {
 		authenticatedAdminCatalog { adminAccount, catalogInstance ->	
 			
+			def layouts = Layout.list()
+			
 			numberSpaces = 1
 			def catalogOptions = getCatalogOptionsWithCatalog(catalogInstance)
 			
-    	    [ catalogInstance: catalogInstance, catalogOptions: catalogOptions ]			
+    	    [ catalogInstance: catalogInstance, catalogOptions: catalogOptions, layouts: layouts ]			
 		}
     }
 
@@ -288,6 +293,8 @@ class CatalogController {
     def edit(Long id) {
 		authenticatedAdminCatalog { adminAccount, catalogInstance ->	
 			
+			def layouts = Layout.list()
+			
 			numberSpaces = 1
 			def catalogOptions = getCatalogOptionsWithCatalog(catalogInstance)
 			
@@ -297,7 +304,7 @@ class CatalogController {
                     idEq(catalogInstance.id)
                 }
             }
-    	    [ catalogInstance: catalogInstance, catalogOptions: catalogOptions, specifications: specifications ]
+    	    [ catalogInstance: catalogInstance, catalogOptions: catalogOptions, specifications: specifications, layouts: layouts ]
 		}
     }
 	

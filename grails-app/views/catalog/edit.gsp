@@ -94,6 +94,21 @@
 				</div>
 				
 				
+					  
+		 		<div class="form-row">
+		 			<span class="form-label twohundred secondary">Layout</span>
+		 			<span class="input-container">
+						<g:select name="layout.id"
+								from="${layouts}"
+								value="${catalogInstance?.layout?.id}"
+								optionKey="id" 
+								optionValue="name" 
+								class="form-control"/>
+		 			</span>
+		 			<br class="clear"/>
+		 		</div>
+				
+				
 
 				<div class="form-row">
 					<span class="form-label twohundred secondary">Description 

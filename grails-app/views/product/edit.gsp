@@ -312,7 +312,21 @@
 				</div>
 			
 				
-			
+				  
+	 			<div class="form-row">
+	 				<span class="form-label full secondary">Layout</span>
+	 				<span class="input-container">
+						<g:select name="layout.id"
+								from="${layouts}"
+								value="${productInstance?.layout?.id}"
+								optionKey="id" 
+								optionValue="name" 
+								class="form-control"/>
+	 				</span>
+	 				<br class="clear"/>
+	 			</div>
+				
+				
 				
 				<div class="form-row">
 					<span class="form-label full hint">Disabled</span>

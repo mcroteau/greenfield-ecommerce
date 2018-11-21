@@ -84,6 +84,22 @@
 					<br class="clear"/>
 				</div>
 				
+					  
+
+		 		<div class="form-row">
+		 			<span class="form-label twohundred secondary">Layout</span>
+		 			<span class="input-container">
+						<g:select name="layout.id"
+								from="${layouts}"
+								value="${catalogInstance?.layout?.id}"
+								optionKey="id" 
+								optionValue="name" 
+								class="form-control"
+								disabled="disabled"/>
+		 			</span>
+		 			<br class="clear"/>
+		 		</div>
+				
 				
 				
 				<div class="form-row">
@@ -96,9 +112,8 @@
 					<br class="clear"/>
 				</div>
 				
-				
-				
-				
+
+					  
 				
 				<div class="buttons-container">
 				

@@ -18,6 +18,7 @@ import org.greenfield.AdditionalPhoto
 import org.greenfield.ProductOption
 import org.greenfield.ProductSpecification 
 import org.greenfield.Variant
+import org.greenfield.Layout
 
 
 import grails.plugin.springsecurity.annotation.Secured
@@ -186,6 +187,9 @@ class ProductController {
 	@Secured(['ROLE_ADMIN'])
     def create() {
 		authenticatedAdmin { adminAccount ->
+			
+			def layouts = Layout.list()
+			
 			if(Catalog.count() == 0){
 				flash.message = "You must create at least one Catalog before creating Products"
 				redirect(controller:'product', action: 'list')
@@ -200,7 +204,7 @@ class ProductController {
 			}
 			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
 			
-			[ productInstance: productInstance, catalogIdSelectionList: catalogIdSelectionList ]
+			[ productInstance: productInstance, catalogIdSelectionList: catalogIdSelectionList, layouts: layouts ]
     	}
 	}	
 	
@@ -337,7 +341,8 @@ class ProductController {
 	@Secured(['ROLE_ADMIN'])
 	def show(Long id) {
 		authenticatedAdminProduct { adminAccount, productInstance ->
-    	    [productInstance: productInstance]
+			def layouts = Layout.list()
+    	    [productInstance: productInstance, layouts: layouts]
 		}
     }
 	
@@ -348,6 +353,9 @@ class ProductController {
 	@Secured(['ROLE_ADMIN'])
     def edit(Long id) {
 		authenticatedAdminProduct { adminAccount, productInstance ->
+			
+			def layouts = Layout.list()
+			
 			if(Catalog.count() == 0){
 				flash.error = "Product will not display in store front until Catalogs have been created and products have been added to Catalogs."
 			}
@@ -357,7 +365,7 @@ class ProductController {
 				catalogIdsArray = productInstance?.catalogs.collect { it.id }
 			}
 			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
-    	    [ productInstance: productInstance, catalogIdsArray: catalogIdsArray, catalogIdSelectionList: catalogIdSelectionList ]
+    	    [ productInstance: productInstance, catalogIdsArray: catalogIdsArray, catalogIdSelectionList: catalogIdSelectionList, layouts: layouts ]
 		}
     }
 	

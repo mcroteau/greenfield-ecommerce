@@ -1,9 +1,9 @@
-<%@ page import="org.greenfield.State" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 	<meta name="layout" content="admin">
-	<g:set var="entityName" value="${message(code: 'catalog.label', default: 'Catalog')}" />
+	
 	<title>Greenfield : Shipping Settings</title>
 	<style type="text/css">
 		.section{
@@ -11,12 +11,16 @@
 		}
 	</style>
 		
-	<link rel="stylesheet" href="${resource(dir:'js/lib/ckeditor/4.4.0', file:'contents.css')}" />
 </head>
 
 <body>
 
-	<h2>Shipping Settings</h2>
+	<div class="form-group" style="margin-top:30px">
+		<g:link class="btn btn-default pull-right" controller="layout" action="create">New Layout</g:link>
+		<g:link controller="layout" action="index" class="btn btn-default pull-right" style="display:inline-block;margin-right:10px;">Store Layouts</g:link>
+	</div>
+
+	<h2>Store Screen Layouts</h2>
 	
 	<g:if test="${flash.message}">
 		<div class="alert alert-info" role="status">${flash.message}</div>
@@ -27,17 +31,7 @@
 	</g:if>
 	
 	
-	<ul class="nav nav-tabs" style="margin-bottom:30px;">
-		<li class="inactive"><g:link uri="/configuration/settings" class="btn btn-default">Store Settings</g:link></li>
-		<li class="inactive"><g:link uri="/configuration/email_settings" class="btn btn-default">Email Settings</g:link></li>
-		<li class="inactive"><g:link uri="/configuration/stripe_settings" class="btn btn-default">Stripe/Payment Settings</g:link></li>
-		<li class="inactive"><g:link uri="/configuration/shipping_settings" class="btn btn-default">Shipping Settings</g:link></li>
-		<li class="active"><g:link uri="/configuration/shipping_settings" class="btn btn-default">Additional Layouts </g:link></li>
-	</ul>
-	
-	
-	
-	<form action="save_support_layouts" class="form-horizontal">
+	<form action="save_support_layouts" class="form-horizontal" method="post">
 		
 		<p>This is where pages like the login page, check out screens, registration screen layouts are set. The only screen not set here is search results. Search results uses the default store layout</p>
 		
@@ -52,28 +46,14 @@
 			login
 			-->
 			
-		<div class="form-row">
-			<span class="form-label twohundred">Login Screen</span>
-			<span class="input-container">
-				<g:select name="login_screen"
-			          from="${State.list()}"
-			          value="${shipping_settings?.state}"
-			          optionKey="id" 
-					  optionValue="name"
-					  id="shipState"
-					  class="form-control"
-					  style="width:175px;"/>
-			</span>
-			<br class="clear"/>
-		</div>
-		
+
 			
 		<div class="form-row">
 			<span class="form-label twohundred">Registration Screens</span>
 			<span class="input-container">
 				<g:select name="registration_screen"
-			          from="${State.list()}"
-			          value="${shipping_settings?.state}"
+			          from="${layouts}"
+			          value="${registration_screen}"
 			          optionKey="id" 
 					  optionValue="name"
 					  id="shipState"
@@ -88,8 +68,8 @@
 			<span class="form-label twohundred">Checkout Preview</span>
 			<span class="input-container">
 				<g:select name="checkout_preview"
-			          from="${State.list()}"
-			          value="${shipping_settings?.state}"
+			          from="${layouts}"
+			          value="${checkout_preview}"
 			          optionKey="id" 
 					  optionValue="name"
 					  id="shipState"
@@ -103,8 +83,8 @@
 			<span class="form-label twohundred">Checkout Screen</span>
 			<span class="input-container">
 				<g:select name="checkout_screen"
-			          from="${State.list()}"
-			          value="${shipping_settings?.state}"
+			          from="${layouts}"
+			          value="${checkout_screen}"
 			          optionKey="id" 
 					  optionValue="name"
 					  id="shipState"
@@ -118,8 +98,8 @@
 			<span class="form-label twohundred">Checkout Success</span>
 			<span class="input-container">
 				<g:select name="checkout_success"
-			          from="${State.list()}"
-			          value="${shipping_settings?.state}"
+			          from="${layouts}"
+			          value="${checkout_success}"
 			          optionKey="id" 
 					  optionValue="name"
 					  id="shipState"
@@ -137,7 +117,7 @@
 			
 		<div class="buttons-container">
 			<span class="form-label twohundred">&nbsp;</span>
-			<g:link controller="configuration" action="index" class="btn btn-default">Cancel</g:link>
+			<g:link controller="layout" action="index" class="btn btn-default">Store Layouts</g:link>
 			<g:submitButton value="Save Layouts" name="submit" class="btn btn-primary"/>
 		</div>
 		

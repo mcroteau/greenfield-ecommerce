@@ -43,26 +43,49 @@ class ApplicationService {
 		**/
 		refreshBaseLayoutWrapper(pageInstance.layout)
 
-		header = header.replace("[[STORE_CSS]]", pageInstance.layout.css)
+		header = header.replace("[[STORE_CSS]]", pageInstance?.layout?.css ? pageInstance?.layout?.css : "")
 
 		def titleFull = getStoreName() + " : " + pageInstance.title
-		
-		header = header.replace("[[TITLE]]", titleFull)
-		header = header.replace("[[META_KEYWORDS]]", getMetaKeywords())
-		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
-		header = header.replace("[[CONTEXT_NAME]]", getContextName())
-		header = header.replace("[[CATALOGS]]", getCatalogsMain())
-        header = header.replace("[[CATALOG_FILTERS]]", "")
+		replaceAdditionalHeaderTags(titleFull)
 		return header
 	}
 	
 	def getPageFooter(pageInstance){
 		refreshBaseLayoutWrapper(pageInstance.layout)
 
-		footer = footer.replace("[[STORE_JAVASCRIPT]]", pageInstance.layout.javascript)
+		footer = footer.replace("[[STORE_JAVASCRIPT]]", pageInstance?.layout?.javascript ? pageInstance?.layout?.javascript : "")
 		return footer
 	}
 	
+	def getScreenHeader(title){
+		/**
+			get layout file
+			get layout from page instance
+			add css section at top head
+			render layout tags
+		**/
+
+		if(!properties)setProperties()
+		def layout = getLayoutScreenTitle(title)
+		refreshBaseLayoutWrapper(layout)
+
+		header = header.replace("[[STORE_CSS]]", layout?.css ? layout?.css : "")
+
+		def titleFull = getStoreName() + " : " + title
+		replaceAdditionalHeaderTags(titleFull)
+
+		return header
+	}
+	
+	def getScreenFooter(title){
+
+		if(!properties)setProperties()
+		def layout = getLayoutScreenTitle(title)
+		refreshBaseLayoutWrapper(layout)
+
+		footer = footer.replace("[[STORE_JAVASCRIPT]]", layout?.javascript ? layout?.javascript : "")
+		return footer
+	}
 	
 	
 	
@@ -97,7 +120,49 @@ class ApplicationService {
 		return section
 	}
 	
+	def replaceAdditionalHeaderTags(titleFull){
+		header = header.replace("[[TITLE]]", titleFull)
+		header = header.replace("[[META_KEYWORDS]]", getMetaKeywords())
+		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
+		header = header.replace("[[CONTEXT_NAME]]", getContextName())
+		header = header.replace("[[CATALOGS]]", getCatalogsMain())
+        header = header.replace("[[CATALOG_FILTERS]]", "")
+	}
 	
+	
+	def getLayoutScreenTitle(title){
+		/**
+		private final String CHECKOUT_PREVIEW = "checkout.preview.layout"
+		private final String CHECKOUT_SCREEN = "checkout.screen.layout"
+		private final String CHECKOUT_SUCCESS = "checkout.success.layout"
+		private final String REGISTRATION_SCREEN = "registration.screen.layout"
+		
+		**/
+		def layoutId = ""
+		def layout = Layout.findByDefaultLayout(true)
+		switch (title){
+			case "Registration": 
+			    layoutId = properties.get("registration.screen.layout")
+				break
+			case "Checkout Preview": 
+			    layoutId = properties.get("checkout.preview.layout")
+				break
+			case "Checkout Screen":
+			    layoutId = properties.get("checkout.success.layout")
+				break
+			case "Checkout Success":
+			    layoutId = properties.get("checkout.success.layout")
+				break
+			default : 
+				layoutId = 0
+				break
+		}
+		
+		if(layoutId != 0){
+			layout = Layout.get(Integer.parseInt(layoutId))
+		}
+		return layout
+	}
 	
 	
 	

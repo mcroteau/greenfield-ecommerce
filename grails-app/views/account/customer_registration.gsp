@@ -2,7 +2,8 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${raw(applicationService.getHeader("Registration"))}
+<!-- changing the name Registration to something else will cause issues -->
+${raw(applicationService.getScreenHeader("Registration"))}
   
 	
 	<div id="registration_form" style="width:350px;">
@@ -92,4 +93,4 @@ ${raw(applicationService.getHeader("Registration"))}
 	})
 </script>
 
-${raw(applicationService.getFooter())}
+${raw(applicationService.getScreenFooter("Registration"))}

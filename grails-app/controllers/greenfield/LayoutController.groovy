@@ -14,11 +14,11 @@ class LayoutController {
     //def grailsApplication
 	private final String SETTINGS_FILE = "settings.properties"
 	
+	/** TODO: investigate whether to customize login screen layout & search results layout **/
 	private final String CHECKOUT_PREVIEW = "checkout.preview.layout"
 	private final String CHECKOUT_SCREEN = "checkout.screen.layout"
 	private final String CHECKOUT_SUCCESS = "checkout.success.layout"
 	private final String REGISTRATION_SCREEN = "registration.screen.layout"
-	private final String LOGIN_SCREEN = "login.screen.layout"
 	
 
  	@Secured(['ROLE_ADMIN'])	
@@ -258,18 +258,61 @@ class LayoutController {
  	@Secured(['ROLE_ADMIN'])
 	def edit_support_layouts(){
 		
+		Properties prop = new Properties();
+		try{
+			File propertiesFile = grailsApplication.mainContext.getResource("settings/${SETTINGS_FILE}").file
+			FileInputStream inputStream = new FileInputStream(propertiesFile)
+			
+			prop.load(inputStream);
+			request.checkout_preview = prop.getProperty(CHECKOUT_PREVIEW)
+			request.checkout_screen = prop.getProperty(CHECKOUT_SCREEN)
+			request.checkout_success = prop.getProperty(CHECKOUT_SUCCESS)
+			request.registration_screen = prop.getProperty(REGISTRATION_SCREEN)
+			/**
+			private final String CHECKOUT_PREVIEW = "checkout.preview.layout"
+			private final String CHECKOUT_SCREEN = "checkout.screen.layout"
+			private final String CHECKOUT_SUCCESS = "checkout.success.layout"
+			private final String REGISTRATION_SCREEN = "registration.screen.layout"
+			**/
+			
+			def layouts = Layout.list()
+			
+			[layouts: layouts]
+			
+		}catch(Exception e){
+			flash.message = "Something went wrong, check to make sure there is a settings.properties file under settings"
+			redirect(controller:"layout", action:"index")
+		}
 	}
 	
  	@Secured(['ROLE_ADMIN'])
-	def update_support_layouts(){
+	def save_support_layouts(){
 		
 		Properties prop = new Properties();
-		File propertiesFile = grailsApplication.mainContext.getResource("settings/${SETTINGS_FILE}").file
-		FileInputStream inputStream = new FileInputStream(propertiesFile)
-		
-		prop.load(inputStream);
-		
 		try{
+			File propertiesFile = grailsApplication.mainContext.getResource("settings/${SETTINGS_FILE}").file
+			FileInputStream inputStream = new FileInputStream(propertiesFile)
+		
+			prop.load(inputStream);
+			prop.setProperty(CHECKOUT_PREVIEW, params.checkout_preview);
+			prop.setProperty(CHECKOUT_SCREEN, params.checkout_screen);
+			prop.setProperty(CHECKOUT_SUCCESS, params.checkout_success);
+			prop.setProperty(REGISTRATION_SCREEN, params.registration_screen)
+			def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('settings')
+			absolutePath = absolutePath.endsWith("/") ? absolutePath : absolutePath + "/"
+			def filePath = absolutePath + SETTINGS_FILE
+			
+		    prop.store(new FileOutputStream(filePath), null);
+
+			applicationService.setProperties()
+			
+		}catch(Exception e){
+			flash.message = "Something went wrong, check to make sure there is a settings.properties file under settings"
+			redirect(controller:"layout", action:"index")
+		}
+		
+		flash.message = "Successfully updated screen layouts"
+		redirect(action: "edit_support_layouts")
 	}
 	
 	

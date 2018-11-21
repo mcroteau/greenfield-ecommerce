@@ -32,10 +32,10 @@
 		
 		<div class="form-group" style="margin-top:30px">
 			<g:link class="btn btn-primary pull-right" controller="layout" action="create">New Layout</g:link>
-			<g:link class="pull-right" style="display:inline-block;margin-right:30px">Other Pages</g:link>
-			<g:link class="pull-right" style="display:inline-block;margin-right:30px">Pages</g:link>
-			<g:link class="pull-right" style="display:inline-block;margin-right:30px">Catalogs</g:link>
-			<g:link class="pull-right" style="display:inline-block;margin-right:30px">Products</g:link>
+			<g:link class="pull-right" controller="layout" action="edit_support_layouts"  style="display:inline-block;margin-right:30px">Other Pages</g:link>
+			<g:link class="pull-right" controller="page" action="list"  style="display:inline-block;margin-right:30px">Pages</g:link>
+			<g:link class="pull-right" controller="catalog" action="list"  style="display:inline-block;margin-right:30px">Catalogs</g:link>
+			<g:link class="pull-right" controller="product" action="list" style="display:inline-block;margin-right:30px">Products</g:link>
 		</div>
 		
 		<h2>Store Layouts</h2>
