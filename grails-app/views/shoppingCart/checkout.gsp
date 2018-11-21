@@ -2,7 +2,7 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${raw(applicationService.getHeader("Checkout"))}
+${raw(applicationService.getScreenHeader("Checkout Success"))}
 
 	<h4>Successfully Processed Order. Thank you!</h4>
 	
@@ -114,4 +114,4 @@ ${raw(applicationService.getHeader("Checkout"))}
 	
 	<br style="clear:both;"/>
 	
-${raw(applicationService.getFooter())}
+${raw(applicationService.getScreenFooter("Checkout Success"))}

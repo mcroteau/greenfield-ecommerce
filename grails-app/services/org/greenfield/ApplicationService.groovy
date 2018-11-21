@@ -248,7 +248,7 @@ class ApplicationService {
 			    layoutId = properties.get("checkout.preview.layout")
 				break
 			case "Checkout":
-			    layoutId = properties.get("checkout.success.layout")
+			    layoutId = properties.get("checkout.screen.layout")
 				break
 			case "Checkout Success":
 			    layoutId = properties.get("checkout.success.layout")

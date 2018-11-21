@@ -2,7 +2,7 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${raw(applicationService.getHeader("Order Details"))}
+${raw(applicationService.getDefaultHeader("Order Details"))}
 
 
 	<h2>Order # : ${transactionInstance.id}
@@ -109,4 +109,4 @@ ${raw(applicationService.getHeader("Order Details"))}
 	<br style="clear:both;"/>
 	
 	
-${raw(applicationService.getFooter())}
+${raw(applicationService.getDefaultFooter())}

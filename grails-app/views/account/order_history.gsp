@@ -2,7 +2,7 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${raw(applicationService.getHeader("Order History"))}
+${raw(applicationService.getDefaultHeader("Order History"))}
 
 <h1>Order History : <sec:username/></h1>
 			
@@ -39,4 +39,4 @@ ${raw(applicationService.getHeader("Order History"))}
 </g:else>
 	
 
-${raw(applicationService.getFooter())}
+${raw(applicationService.getDefaultFooter())}

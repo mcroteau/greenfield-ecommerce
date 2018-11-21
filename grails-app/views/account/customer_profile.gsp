@@ -3,7 +3,7 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${raw(applicationService.getHeader("Account Info"))}
+${raw(applicationService.getDefaultHeader("Account Info"))}
 	
 		<style type="text/css">
 			.form-group label{
@@ -121,4 +121,4 @@ ${raw(applicationService.getHeader("Account Info"))}
 		
 		
 
-${raw(applicationService.getFooter())}	
+${raw(applicationService.getDefaultFooter())}	
