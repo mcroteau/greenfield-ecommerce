@@ -2,7 +2,7 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${raw(applicationService.getHeader("Search Results"))}
+${raw(applicationService.getDefaultHeader("Search Results"))}
 
 <h3>Search Results for "${query}"</h3>
 			
@@ -86,4 +86,4 @@ ${raw(applicationService.getHeader("Search Results"))}
 		<p>No search results found</p>
 </g:else>
 
-${raw(applicationService.getFooter())}
+${raw(applicationService.getDefaultFooter())}

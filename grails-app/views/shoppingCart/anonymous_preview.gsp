@@ -4,8 +4,8 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
 	
 
-	
-${raw(applicationService.getHeader("Shopping Cart"))}
+
+${raw(applicationService.getScreenHeader("Checkout"))}
 
 	<!--<script src="/${applicationService.getContextName()}/js/lib/stripe/stripe.js"></script>
 
@@ -380,4 +380,4 @@ $(document).ready(function(){
 </script>			
 
 
-${raw(applicationService.getFooter())}	
+${raw(applicationService.getScreenFooter("Checkout"))}	

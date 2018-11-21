@@ -2,7 +2,7 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${raw(applicationService.getHeader("Login"))}
+${raw(applicationService.getDefaultHeader("Login"))}
   
 
 	<g:if test="${flash.message}">
@@ -45,4 +45,4 @@ ${raw(applicationService.getHeader("Login"))}
 	<br style="clear:both">
 			
 			
-${raw(applicationService.getFooter())}
+${raw(applicationService.getDefaultFooter())}

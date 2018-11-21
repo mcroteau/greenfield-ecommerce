@@ -11,7 +11,7 @@
 	}
 %>
 	
-${raw(applicationService.getHeader(catalogInstance, "${productInstance?.name} Product Details", true, params))}
+${raw(applicationService.getProductHeader(catalogInstance, productInstance, "${productInstance?.name} Product Details", true, params))}
 
 
 <% if(catalogInstance){ %>
@@ -363,4 +363,4 @@ $(document).ready(function(){
 <br class="clear"/>
 
 
-${raw(applicationService.getFooter())}
+${raw(applicationService.getProductFooter(productInstance))}

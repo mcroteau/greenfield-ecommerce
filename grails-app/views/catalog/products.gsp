@@ -1,7 +1,8 @@
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
 
-${raw(applicationService.getHeader(catalogInstance, "Products", false, params))}
+
+${raw(applicationService.getCatalogHeader(catalogInstance, "Products", false, params))}
 
 <%
 def pageParams = [:]
@@ -224,4 +225,4 @@ for (Object param : keys) {
 
 </script>
 
-${raw(applicationService.getFooter())}
+${raw(applicationService.getCatalogFooter(catalogInstance))}

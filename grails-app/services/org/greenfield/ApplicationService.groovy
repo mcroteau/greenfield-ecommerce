@@ -34,6 +34,104 @@ class ApplicationService {
 	
 	
 	
+	def getDefaultHeader(title){
+		/**
+			get layout file
+			get layout from page instance
+			add css section at top head
+			render layout tags
+		**/
+		def layout = Layout.findByDefaultLayout(true)
+		refreshBaseLayoutWrapper(layout)
+
+		header = header.replace("[[STORE_CSS]]", layout?.css ? layout?.css : "")
+
+		def titleFull = getStoreName() + " : " + title
+		replaceAdditionalHeaderTags(titleFull)
+		return header
+	}
+	
+	def getDefaultFooter(){
+		def layout = Layout.findByDefaultLayout(true)
+		refreshBaseLayoutWrapper(layout)
+
+		footer = footer.replace("[[STORE_JAVASCRIPT]]", layout?.javascript ? layout?.javascript : "")
+		return footer
+	}
+	
+	
+	
+	
+	def getCatalogHeader(Catalog catalogInstance, String title, boolean productPage, GrailsParameterMap params){
+		/**
+			get layout file
+			get layout from page instance
+			add css section at top head
+			render layout tags
+		**/
+		refreshBaseLayoutWrapper(catalogInstance.layout)
+
+		header = header.replace("[[STORE_CSS]]", catalogInstance?.layout?.css ? catalogInstance?.layout?.css : "")
+
+		def titleFull = getStoreName() + " : " + title
+		//replaceAdditionalHeaderTags(titleFull)//TODO:refactor to be able to use
+
+		
+		header = header.replace("[[TITLE]]", titleFull)
+		header = header.replace("[[META_KEYWORDS]]", getMetaKeywords())
+		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
+		header = header.replace("[[CONTEXT_NAME]]", getContextName())
+		header = header.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance, params))
+        header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage, params))
+		
+		return header
+	}
+	
+	def getCatalogFooter(catalogInstance){
+		refreshBaseLayoutWrapper(catalogInstance.layout)
+
+		footer = footer.replace("[[STORE_JAVASCRIPT]]", catalogInstance?.layout?.javascript ? catalogInstance?.layout?.javascript : "")
+		return footer
+	}
+	
+	
+	
+	
+	def getProductHeader(Catalog catalogInstance, Product productInstance, String title, boolean productPage, GrailsParameterMap params){
+		/**
+			get layout file
+			get layout from page instance
+			add css section at top head
+			render layout tags
+		**/
+		refreshBaseLayoutWrapper(productInstance.layout)
+
+		header = header.replace("[[STORE_CSS]]", productInstance?.layout?.css ? productInstance?.layout?.css : "")
+
+		def titleFull = getStoreName() + " : " + title
+		//replaceAdditionalHeaderTags(titleFull)//TODO:refactor to be able to use
+
+		
+		header = header.replace("[[TITLE]]", titleFull)
+		header = header.replace("[[META_KEYWORDS]]", getMetaKeywords())
+		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
+		header = header.replace("[[CONTEXT_NAME]]", getContextName())
+		header = header.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance, params))
+        header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage, params))
+		
+		return header
+	}
+	
+	def getProductFooter(productInstance){
+		refreshBaseLayoutWrapper(productInstance.layout)
+
+		footer = footer.replace("[[STORE_JAVASCRIPT]]", productInstance?.layout?.javascript ? productInstance?.layout?.javascript : "")
+		return footer
+	}
+	
+	
+	
+	
 	def getPageHeader(pageInstance){
 		/**
 			get layout file
@@ -56,6 +154,8 @@ class ApplicationService {
 		footer = footer.replace("[[STORE_JAVASCRIPT]]", pageInstance?.layout?.javascript ? pageInstance?.layout?.javascript : "")
 		return footer
 	}
+	
+	
 	
 	def getScreenHeader(title){
 		/**
@@ -147,7 +247,7 @@ class ApplicationService {
 			case "Checkout Preview": 
 			    layoutId = properties.get("checkout.preview.layout")
 				break
-			case "Checkout Screen":
+			case "Checkout":
 			    layoutId = properties.get("checkout.success.layout")
 				break
 			case "Checkout Success":
