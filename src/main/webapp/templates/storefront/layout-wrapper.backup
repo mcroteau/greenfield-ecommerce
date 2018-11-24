@@ -17,6 +17,7 @@
 	<link rel="shortcut icon" type="image/png" href="/[[CONTEXT_NAME]]/images/favicon.png"/>
 	
 	<script src="/[[CONTEXT_NAME]]/js/lib/jquery/1.11.0/jquery.js"></script>
+	<script src="/[[CONTEXT_NAME]]/js/lib/jquery-ui/1.11.2/jquery-ui.js"></script>
 	<script src="/[[CONTEXT_NAME]]/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="/[[CONTEXT_NAME]]/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css">
 	<link rel="stylesheet" href="/[[CONTEXT_NAME]]/css/app.css" type="text/css">

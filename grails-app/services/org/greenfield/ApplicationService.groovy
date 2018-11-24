@@ -130,15 +130,16 @@ class ApplicationService {
 	}
 	
 	
+
 	
+	def getPageContent(pageInstance){
+		setPageHeader(pageInstance)
+		setPageFooter(pageInstance)
+		def content = pageInstance?.content
+		return header + content + footer
+	}
 	
-	def getPageHeader(pageInstance){
-		/**
-			get layout file
-			get layout from page instance
-			add css section at top head
-			render layout tags
-		**/
+	def setPageHeader(pageInstance){
 		refreshBaseLayoutWrapper(pageInstance.layout)
 
 		header = header.replace("[[STORE_CSS]]", pageInstance?.layout?.css ? pageInstance?.layout?.css : "")
@@ -148,12 +149,13 @@ class ApplicationService {
 		return header
 	}
 	
-	def getPageFooter(pageInstance){
-		refreshBaseLayoutWrapper(pageInstance.layout)
-
+	def setPageFooter(pageInstance){
 		footer = footer.replace("[[STORE_JAVASCRIPT]]", pageInstance?.layout?.javascript ? pageInstance?.layout?.javascript : "")
 		return footer
 	}
+	
+	
+	
 	
 	
 	
@@ -227,6 +229,7 @@ class ApplicationService {
 		header = header.replace("[[CONTEXT_NAME]]", getContextName())
 		header = header.replace("[[CATALOGS]]", getCatalogsMain())
         header = header.replace("[[CATALOG_FILTERS]]", "")
+		return header
 	}
 	
 	
