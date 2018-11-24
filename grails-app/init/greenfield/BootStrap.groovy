@@ -48,6 +48,13 @@ class BootStrap {
 	def springSecurityService
 	def missingUuidHelperService
 	
+	//TODO:move these constants to reusable, check ConfigurationController, LayoutController and ApplicationService
+	private final String SETTINGS_FILE = "settings.properties"
+	private final String CHECKOUT_PREVIEW = "checkout.preview.layout"
+	private final String CHECKOUT_SCREEN = "checkout.screen.layout"
+	private final String CHECKOUT_SUCCESS = "checkout.success.layout"
+	private final String REGISTRATION_SCREEN = "registration.screen.layout"
+	
 
     def init = { servletContext ->
 		println "***********************************************"
@@ -55,7 +62,7 @@ class BootStrap {
 		println "***********************************************"
 		createCountries()
 		createStates()
-		createLayout()//TODO:uncomment
+		createLayout()
 		createPages()
 		createRoles()
 		createAdmin()
@@ -64,7 +71,7 @@ class BootStrap {
 
 		//Development Data
 		//createDevelopmentData()//TODO:refactor
-		//createDevelopmentDataSimple()//TODO:refactor
+		createDevelopmentDataSimple()//TODO:refactor
 		
 		missingUuidHelperService.correctMissingUuids()
 		
@@ -127,9 +134,8 @@ class BootStrap {
 	
 	
 	def createLayout(){
-	
+		
 		if(Layout.count() == 0){		
-			
 			File layoutFile = grailsApplication.mainContext.getResource("templates/storefront/layout.html").file
 			String layoutContent = layoutFile.text
 
@@ -139,10 +145,36 @@ class BootStrap {
 			layout.defaultLayout = true
 			
 			layout.save(flush:true)
-			
+			setDefaultScreensLayouts(layout.id.toString())
 		}
 		
 		println "Layouts : ${Layout.count()}"
+	}
+	
+	
+	def setDefaultScreensLayouts(layoutId){
+		
+		Properties prop = new Properties();
+		try{
+			File propertiesFile = grailsApplication.mainContext.getResource("settings/${SETTINGS_FILE}").file
+			FileInputStream inputStream = new FileInputStream(propertiesFile)
+		
+			prop.load(inputStream);
+			prop.setProperty(CHECKOUT_PREVIEW, layoutId);
+			prop.setProperty(CHECKOUT_SCREEN, layoutId);
+			prop.setProperty(CHECKOUT_SUCCESS, layoutId);
+			prop.setProperty(REGISTRATION_SCREEN, layoutId)
+			def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('settings')
+			absolutePath = absolutePath.endsWith("/") ? absolutePath : absolutePath + "/"
+			def filePath = absolutePath + SETTINGS_FILE
+			
+		    prop.store(new FileOutputStream(filePath), null);
+
+			
+		}catch(Exception e){
+			e.printStackTrace()
+		}
+	
 	}
 
 

@@ -43,6 +43,7 @@ public class DevelopmentDataSimple {
 		]
 	]
     
+	def layout
 	def springSecurityService
 
 	DevelopmentDataSimple(springSecurityService){
@@ -53,7 +54,8 @@ public class DevelopmentDataSimple {
 		println "***********************************************"
 		println "***       Generating Development Data       ***"
 		println "***********************************************"
-
+		
+		getSetLayout()
 		createAccounts()
 		createCatalogs()
 		createProducts()
@@ -62,6 +64,9 @@ public class DevelopmentDataSimple {
 	}
 
 
+	def getSetLayout(){
+		layout = Layout.findByDefaultLayout(true)
+	}
 
 
 
@@ -101,6 +106,7 @@ public class DevelopmentDataSimple {
 			def catalog = new Catalog()
 			catalog.name = c.name
 			catalog.toplevel = true
+			catalog.layout = layout
 			catalog.save(flush:true)
 			if(c.subcatalogs){
 				createSubcatalogs(c, catalog)
@@ -117,6 +123,7 @@ public class DevelopmentDataSimple {
 			def subcatalog = new Catalog()
 			subcatalog.name = c.name
 			subcatalog.toplevel = false
+			subcatalog.layout = layout
 			subcatalog.parentCatalog = parentCatalog
 			subcatalog.save(flush:true)
 			
@@ -172,6 +179,7 @@ public class DevelopmentDataSimple {
 				}
     			product.quantity = i * 10
     			product.weight = 16
+				product.layout = layout
     			catalogIdsArray.each {
     				def cc = Catalog.get(it)
     				product.addToCatalogs(cc)

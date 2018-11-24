@@ -408,7 +408,7 @@ class ShoppingCartController {
 			}
 			
 			flash.message = "Something went wrong. Your email may be too long... no funds were charged. Please try again."
-			redirect(action:'anonymous_checkout_preview')
+			redirect(action:'anonymous_preview')//TODO:remove anonymous_checkout_preview
 			return
 		}
 		

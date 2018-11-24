@@ -118,6 +118,7 @@
 $(document).ready(function(){
 	$("#layout-textarea").allowTabChar();
 	$("#css-textarea").allowTabChar();
+	$("#javascript-textarea").allowTabChar();
 });
 </script>		
 		
