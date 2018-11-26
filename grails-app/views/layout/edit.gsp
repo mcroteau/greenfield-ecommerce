@@ -92,16 +92,33 @@
 			
 			<h3>Store Layout HTML</h3>
 			
-			<p class="instructions">Layout code will automatically be wrapped by necessary wrapper html that includes everything necessary for your store front. <g:link controller="layout" action="edit_wrapper">Edit Main HTML Wrapper</g:link>.</p><p class="instructions">Place all layout code below. Be sure to include <strong>[[CONTENT]]</strong> tag.  <g:link controller="layout" action="tags">View All Available Tags</g:link>.</p>  
+			<p class="instructions">Layout code will automatically be wrapped by necessary wrapper html that includes everything necessary for your store front. <g:link controller="layout" action="edit_wrapper">Edit Main HTML Wrapper</g:link>. All that is needed here is all html within your <strong>body</strong> tag. Libraries included jQuery, jQuery UI &amp; Bootstrap CSS.</p>
+			
+			<p class="instructions">Place all layout code below. Be sure to include <strong>[[CONTENT]]</strong> tag.  <g:link controller="layout" action="tags">View All Available Tags</g:link>.</p>  
 			
 			<p class="instructions">[[CONTENT]] tag is where all store front product, catalog, page and other content is displayed automatically</p>
 			
 			<p class="instructions"><g:link controller="layout" action="how">How the Layout Engine works</g:link></p>
 			
-			<textarea id="layout-textarea"
-					name="content" 
-					class="form-control">${layoutInstance?.content}</textarea>
-			
+			<style type="text/css">
+				.layout-code{ 
+					margin:0px;
+					color:#999; 
+					color:#fff;
+					font-size:12px;
+					display:block;
+				}
+			</style>
+				
+			<div style="border:solid 1px #ddd; background:#333;background:#384248">
+				<span class="layout-code">&lt;html&gt;</span>
+				<span class="layout-code">&nbsp;&nbsp;&nbsp;&lt;body&gt;</span>
+				<textarea id="layout-textarea"
+						name="content" 
+						class="form-control">${layoutInstance?.content}}</textarea>
+				<span class="layout-code">&nbsp;&nbsp;&nbsp;&lt;/body&gt;</span>
+				<span class="layout-code">&lt;/html&gt;</span>
+			</div>
 
 			
 			<h3>Store CSS</h3>

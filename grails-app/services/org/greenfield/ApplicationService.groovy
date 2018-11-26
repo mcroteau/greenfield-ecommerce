@@ -26,10 +26,7 @@ class ApplicationService {
 
 
 	def init(){
-		if(!header && !footer){
-			//refresh()//TODO:delete?
-			setProperties()
-		}
+		setProperties()
 	}
 	
 	
@@ -49,6 +46,7 @@ class ApplicationService {
 		def layout = Layout.findByDefaultLayout(true)
 		refreshBaseLayoutWrapper(layout)
 
+		footer = footer.replace("[[CONTEXT_NAME]]", getContextName())
 		footer = footer.replace("[[CATALOGS]]", getCatalogsMain())
         footer = footer.replace("[[CATALOG_FILTERS]]", "")
 		footer = footer.replace("[[STORE_JAVASCRIPT]]", layout?.javascript ? layout?.javascript : "")
@@ -86,6 +84,7 @@ class ApplicationService {
 	def getCatalogFooter(catalogInstance, boolean productPage, GrailsParameterMap params){
 		refreshBaseLayoutWrapper(catalogInstance.layout)
 
+		footer = footer.replace("[[CONTEXT_NAME]]", getContextName())
 		footer = footer.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance, params))
 		footer = footer.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage, params))
 		footer = footer.replace("[[STORE_JAVASCRIPT]]", catalogInstance?.layout?.javascript ? catalogInstance?.layout?.javascript : "")
@@ -123,6 +122,7 @@ class ApplicationService {
 	def getProductFooter(Catalog catalogInstance, Product productInstance, boolean productPage, GrailsParameterMap params){
 		refreshBaseLayoutWrapper(productInstance.layout)
 
+		footer = footer.replace("[[CONTEXT_NAME]]", getContextName())
 		footer = footer.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance, params))
         footer = footer.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage, params))
 		footer = footer.replace("[[STORE_JAVASCRIPT]]", productInstance?.layout?.javascript ? productInstance?.layout?.javascript : "")
@@ -150,6 +150,7 @@ class ApplicationService {
 	}
 	
 	def setPageFooter(pageInstance){
+		footer = footer.replace("[[CONTEXT_NAME]]", getContextName())
 		footer = footer.replace("[[CATALOGS]]", getCatalogsMain())
         footer = footer.replace("[[CATALOG_FILTERS]]", "")
 		footer = footer.replace("[[STORE_JAVASCRIPT]]", pageInstance?.layout?.javascript ? pageInstance?.layout?.javascript : "")
@@ -274,6 +275,8 @@ class ApplicationService {
 	
 	
 	
+	/** OLD GET HEADER METHODS **/
+	/**
 	def refresh(){
 		if(!grailsApplication){
 			grailsApplication = Holders.grailsApplication
@@ -324,7 +327,6 @@ class ApplicationService {
 	
 
 	
-	/** OLD GET HEADER METHODS **/
 	
 	def getHeader(Catalog catalogInstance, String title, boolean productPage, GrailsParameterMap params){
 		if(!header)refresh()
@@ -340,7 +342,6 @@ class ApplicationService {
 
 		return header
 	}
-	
 	
 	
 	def getHeader(String title){
@@ -373,6 +374,7 @@ class ApplicationService {
 		footer = footer.replace("[[CONTEXT_NAME]]", getContextName())
 		return footer
 	}
+	**/
 
 
 
@@ -797,7 +799,7 @@ class ApplicationService {
 	def getGreeting(){
 		def subject = SecurityUtils.getSubject();
 		if(subject.isAuthenticated()){
-			return "<span id=\"greeting\">Welcome back <a href=\"/${getContextName()}/account/customer_profile\">${subject.principal}}</a></span>"
+			return "<span id=\"greeting\">Welcome back <a href=\"/${getContextName()}/account/customer_profile\">${subject.principal}</a></span>"
 		}else{
 			return "<span></span>"
 		}
