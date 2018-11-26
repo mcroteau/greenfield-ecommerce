@@ -225,4 +225,4 @@ for (Object param : keys) {
 
 </script>
 
-${raw(applicationService.getCatalogFooter(catalogInstance))}
+${raw(applicationService.getCatalogFooter(catalogInstance, false, params))}

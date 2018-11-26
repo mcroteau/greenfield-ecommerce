@@ -363,4 +363,4 @@ $(document).ready(function(){
 <br class="clear"/>
 
 
-${raw(applicationService.getProductFooter(productInstance))}
+${raw(applicationService.getProductFooter(catalogInstance, productInstance, true, params))}

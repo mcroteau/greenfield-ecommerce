@@ -35,12 +35,6 @@ class ApplicationService {
 	
 	
 	def getDefaultHeader(title){
-		/**
-			get layout file
-			get layout from page instance
-			add css section at top head
-			render layout tags
-		**/
 		def layout = Layout.findByDefaultLayout(true)
 		refreshBaseLayoutWrapper(layout)
 
@@ -55,6 +49,8 @@ class ApplicationService {
 		def layout = Layout.findByDefaultLayout(true)
 		refreshBaseLayoutWrapper(layout)
 
+		footer = footer.replace("[[CATALOGS]]", getCatalogsMain())
+        footer = footer.replace("[[CATALOG_FILTERS]]", "")
 		footer = footer.replace("[[STORE_JAVASCRIPT]]", layout?.javascript ? layout?.javascript : "")
 		return footer
 	}
@@ -82,14 +78,16 @@ class ApplicationService {
 		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
 		header = header.replace("[[CONTEXT_NAME]]", getContextName())
 		header = header.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance, params))
-        header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage, params))
+		header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage, params))
 		
 		return header
 	}
 	
-	def getCatalogFooter(catalogInstance){
+	def getCatalogFooter(catalogInstance, boolean productPage, GrailsParameterMap params){
 		refreshBaseLayoutWrapper(catalogInstance.layout)
 
+		footer = footer.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance, params))
+		footer = footer.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage, params))
 		footer = footer.replace("[[STORE_JAVASCRIPT]]", catalogInstance?.layout?.javascript ? catalogInstance?.layout?.javascript : "")
 		return footer
 	}
@@ -122,9 +120,11 @@ class ApplicationService {
 		return header
 	}
 	
-	def getProductFooter(productInstance){
+	def getProductFooter(Catalog catalogInstance, Product productInstance, boolean productPage, GrailsParameterMap params){
 		refreshBaseLayoutWrapper(productInstance.layout)
 
+		footer = footer.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance, params))
+        footer = footer.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage, params))
 		footer = footer.replace("[[STORE_JAVASCRIPT]]", productInstance?.layout?.javascript ? productInstance?.layout?.javascript : "")
 		return footer
 	}
@@ -150,6 +150,8 @@ class ApplicationService {
 	}
 	
 	def setPageFooter(pageInstance){
+		footer = footer.replace("[[CATALOGS]]", getCatalogsMain())
+        footer = footer.replace("[[CATALOG_FILTERS]]", "")
 		footer = footer.replace("[[STORE_JAVASCRIPT]]", pageInstance?.layout?.javascript ? pageInstance?.layout?.javascript : "")
 		return footer
 	}

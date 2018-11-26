@@ -2,6 +2,10 @@ package greenfield
 
 import greenfield.common.BaseController
 import org.greenfield.Layout
+import org.greenfield.Page
+import org.greenfield.Product
+import org.greenfield.Catalog
+
 
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -315,5 +319,54 @@ class LayoutController {
 		redirect(action: "edit_support_layouts")
 	}
 	
+	
+	def apply_pages(){
+		def layout = Layout.get(params.id)
+		if(!layout){
+			flash.message = "Something went wrong, please try again"
+			redirect(action:"list")
+		}
+		def pages = Page.list()
+		pages.each(){ page ->
+			page.layout = layout
+			page.save(flush:true)
+		}
+		flash.message = "Successfully applied layout to all pages"
+		redirect(action:"show", id: params.id)
+	}
+
+	
+	
+	def apply_products(){
+		def layout = Layout.get(params.id)
+		if(!layout){
+			flash.message = "Something went wrong, please try again"
+			redirect(action:"list")
+		}
+		def products = Product.list()
+		products.each(){ product ->
+			product.layout = layout
+			product.save(flush:true)
+		}
+		flash.message = "Successfully applied layout to all products"
+		redirect(action:"show", id: params.id)
+	}
+
+	
+	
+	def apply_catalogs(){
+		def layout = Layout.get(params.id)
+		if(!layout){
+			flash.message = "Something went wrong, please try again"
+			redirect(action:"list")
+		}
+		def catalogs = Catalog.list()
+		catalogs.each(){ catalog ->
+			catalog.layout = layout
+			catalog.save(flush:true)
+		}
+		flash.message = "Successfully applied layout to all catalogs"
+		redirect(action:"show", id: params.id)
+	}
 	
 }

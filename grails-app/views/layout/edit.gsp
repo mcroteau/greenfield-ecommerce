@@ -36,7 +36,24 @@
 		<g:if test="${flash.error}">
 			<div class="alert alert-danger" style="margin-top:10px;">${flash.error}</div>
 		</g:if>
-		
+
+				
+		<div style="margin-bottom:20px">
+			
+			<g:form controller="layout" action="apply_catalogs" method="post" id="${layoutInstance.id}">
+				<input type="submit" value="Apply to all Catalogs" class="btn btn-default pull-right" style="display:inline-block;"/>
+			</g:form>
+			
+			<g:form controller="layout" action="apply_products" method="post" id="${layoutInstance.id}">
+				<input type="submit" value="Apply to all Products" class="btn btn-default pull-right" style="display:inline-block; margin-right:10px"/>
+			</g:form>
+			
+			<g:form controller="layout" action="apply_pages" method="post" id="${layoutInstance.id}">
+				<input type="submit" value="Apply to all Pages" class="btn btn-default pull-right" style="display:inline-block; margin-right:10px"/>
+			</g:form>
+			
+		</div>
+		<br class="clear"/>
 		
 		<g:form method="post" >
 		
@@ -113,7 +130,26 @@
 			</div>
 			
 		</g:form>
-		
+				
+		<br class="clear"/>
+				
+		<div style="margin-top:20px">
+			
+			<g:form controller="layout" action="apply_catalogs" method="post" id="${layoutInstance.id}">
+				<input type="submit" value="Apply to all Catalogs" class="btn btn-default pull-right" style="display:inline-block;"/>
+			</g:form>
+			
+			<g:form controller="layout" action="apply_products" method="post" id="${layoutInstance.id}">
+				<input type="submit" value="Apply to all Products" class="btn btn-default pull-right" style="display:inline-block; margin-right:10px"/>
+			</g:form>
+			
+			<g:form controller="layout" action="apply_pages" method="post" id="${layoutInstance.id}">
+				<input type="submit" value="Apply to all Pages" class="btn btn-default pull-right" style="display:inline-block; margin-right:10px"/>
+			</g:form>
+			
+		</div>
+	
+		<br class="clear"/>
 		
 
 <script type="text/javascript">
