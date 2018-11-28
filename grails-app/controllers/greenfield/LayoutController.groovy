@@ -192,10 +192,12 @@ class LayoutController {
 		if(!layout){
 			flash.message = "Unable to find layout"
 			redirect(action: "index")
+			return
 		}
 		if(layout.defaultLayout){
 			flash.message = "This layout is default, please change default layout before continuing"
 			redirect(action: "index")
+			return
 		}
 		
 		try{

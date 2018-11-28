@@ -407,7 +407,7 @@ class ShoppingCartController {
 			    println it
 			}
 			
-			flash.message = "Something went wrong. Your email may be too long... no funds were charged. Please try again."
+			flash.message = "Something went wrong. Your email may be too long, an account may already exist or something else... no funds were charged. Please try again."
 			redirect(action:'anonymous_preview')//TODO:remove anonymous_checkout_preview
 			return
 		}

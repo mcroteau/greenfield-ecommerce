@@ -91,7 +91,7 @@ page import="org.greenfield.Transaction"
 							<!-- TODO: make sortable, may require refactoring Account hasMany to include hasMany roles/authorities -->
 							<g:sortableColumn property="name" title="Name" params="${[admin:admin]}"/>
 							
-							<g:sortableColumn property="email" title="Email" params="${[admin:admin]}"/>
+							<g:sortableColumn property="email" title="Email/Username" params="${[admin:admin]}"/>
 
 							<g:sortableColumn property="catalogViews" title="Catalog Views (${CatalogViewLog.count()})" params="${[admin:admin]}"/>
 

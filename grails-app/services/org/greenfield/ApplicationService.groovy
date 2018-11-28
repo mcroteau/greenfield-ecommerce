@@ -188,6 +188,9 @@ class ApplicationService {
 		def layout = getLayoutScreenTitle(title)
 		refreshBaseLayoutWrapper(layout)
 
+		footer = footer.replace("[[CONTEXT_NAME]]", getContextName())
+		footer = footer.replace("[[CATALOGS]]", getCatalogsMain())
+        footer = footer.replace("[[CATALOG_FILTERS]]", "")
 		footer = footer.replace("[[STORE_JAVASCRIPT]]", layout?.javascript ? layout?.javascript : "")
 		return footer
 	}

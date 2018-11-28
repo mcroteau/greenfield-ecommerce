@@ -121,10 +121,11 @@ class ExportDataService {
 		}
 		
 		if(params.exportLayout == "on"){
-			println "exporting layout..."
-			def layout = Layout.findByName("STORE_LAYOUT")
-			layout = formatLayout(layout)
-			data['layout'] = layout
+			println "exporting layouts disabled, quotes issue on ..."
+			
+			//def layout = Layout.findByName("STORE_LAYOUT")
+			//layout = formatLayout(layout)
+			//data['layout'] = layout
 		}
 		
 		if(params.exportLogs == "on"){
@@ -230,6 +231,7 @@ class ExportDataService {
 		def data = [:]
 		data['uuid'] = catalog.uuid
 		data['name'] = catalog.name
+		data['layout'] = catalog.layout.uuid
 		data['description'] = catalog?.description ? catalog.description : ""
 		//TODO:might not need
 		//data['toplevel'] = catalog.toplevel
@@ -268,6 +270,7 @@ class ExportDataService {
 			product['height'] = p.height
 			product['weight'] = p.weight
 			product['productNo'] = p.productNo
+			product['layout'] = p.layout.uuid
 			
 			product['dateCreated'] = p.dateCreated
 			product['lastUpdated'] = p.lastUpdated
@@ -550,6 +553,7 @@ class ExportDataService {
 			page['uuid'] = p.uuid
 			page['title'] = p.title
 			page['content'] = p.content
+			page['layout'] = p.layout.uuid
 			page['dateCreated'] = p.dateCreated
 			page['lastUpdated'] = p.lastUpdated
 			
@@ -584,6 +588,8 @@ class ExportDataService {
 		def layout = [:]
 		layout['uuid'] = l.uuid
 		layout['content'] = l.content
+		layout['css'] = l.css
+		layout['javascript'] = l.javascript
 		layout['dateCreated'] = l.dateCreated
 		layout['lastUpdated'] = l.lastUpdated
 		
