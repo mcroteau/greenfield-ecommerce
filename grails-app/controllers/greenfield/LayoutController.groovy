@@ -185,6 +185,35 @@ class LayoutController {
 	}
 	
 	
+	
+ 	@Secured(['ROLE_ADMIN'])
+	def delete(Long id){
+		def layout = Layout.get(id)
+		if(!layout){
+			flash.message = "Unable to find layout"
+			redirect(action: "index")
+		}
+		if(layout.defaultLayout){
+			flash.message = "This layout is default, please change default layout before continuing"
+			redirect(action: "index")
+		}
+		
+		try{
+		
+			layout.delete(flush:true)
+			flash.message = "Successfully deleted layout"
+			redirect(action: "index")
+			
+		}catch(Exception e){
+			e.printStackTrace()
+			flash.message = "Something went wrong. This layout is either assigned to Products, Pages or Catalogs"
+			redirect(action: "show", id: id)
+		}
+		
+	}
+	
+	
+	/**
  	@Secured(['ROLE_ADMIN'])
  	def update_old(){
 		authenticatedAdmin{ adminAccount ->
@@ -220,6 +249,7 @@ class LayoutController {
 			redirect( action:'index')
 		}
 	}
+	**/
 	
 	
  	@Secured(['ROLE_ADMIN'])	

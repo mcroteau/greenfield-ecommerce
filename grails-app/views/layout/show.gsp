@@ -16,9 +16,10 @@
 				background:#f8f8f8;
 				font-family: Monaco,"MonacoRegular",monospace;
 			}
+			#css-textarea,
 			#javascript-textarea{
 				height:275px; 
-				width:100%;
+				width:90%;
 				font-size:12px;
 				background:#f8f8f8;
 				font-family: Monaco,"MonacoRegular",monospace;
@@ -79,7 +80,7 @@
 		</div>
 
 		
-		<h3>Store Layout HTML</h3>
+		<h3>Layout HTML</h3>
 		
 		<p class="instructions">Layout code will automatically be wrapped by necessary wrapper html that includes everything necessary for your store front. <g:link controller="layout" action="edit_wrapper">Edit Main HTML Wrapper</g:link>.</p><p class="instructions">Place all layout code below. Be sure to include <strong>[[CONTENT]]</strong> tag.  <g:link controller="layout" action="tags">View All Available Tags</g:link>.</p>  
 		
@@ -94,7 +95,7 @@
 		
 
 		
-		<h3>Store CSS</h3>
+		<h3>Layout CSS</h3>
 		<textarea id="css-textarea" 
 				name="css" 
 				class="form-control"
@@ -103,7 +104,7 @@
 		<br class="clear"/>
 		
 		
-		<h3>Store Javascript</h3>
+		<h3>Layout Javascript</h3>
 		<textarea id="javascript-textarea" 
 				name="javascript" 
 				class="form-control"

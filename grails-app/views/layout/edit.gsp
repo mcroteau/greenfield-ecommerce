@@ -16,9 +16,10 @@
 				background:#f8f8f8;
 				font-family: Monaco,"MonacoRegular",monospace;
 			}
+			#css-textarea,
 			#javascript-textarea{
 				height:275px; 
-				width:100%;
+				width:90%;
 				font-size:12px;
 				background:#f8f8f8;
 				font-family: Monaco,"MonacoRegular",monospace;
@@ -90,7 +91,7 @@
 			
 			<hr/>
 			
-			<h3>Store Layout HTML</h3>
+			<h3>Layout HTML</h3>
 			
 			<p class="instructions">Layout code will automatically be wrapped by necessary wrapper html that includes everything necessary for your store front. <g:link controller="layout" action="edit_wrapper">Edit Main HTML Wrapper</g:link>. All that is needed here is all html within your <strong>body</strong> tag. Libraries included jQuery, jQuery UI &amp; Bootstrap CSS.</p>
 			
@@ -115,13 +116,13 @@
 				<span class="layout-code">&nbsp;&nbsp;&nbsp;&lt;body&gt;</span>
 				<textarea id="layout-textarea"
 						name="content" 
-						class="form-control">${layoutInstance?.content}}</textarea>
+						class="form-control">${layoutInstance?.content}</textarea>
 				<span class="layout-code">&nbsp;&nbsp;&nbsp;&lt;/body&gt;</span>
 				<span class="layout-code">&lt;/html&gt;</span>
 			</div>
 
 			
-			<h3>Store CSS</h3>
+			<h3>Layout CSS</h3>
 			<p class="instructions">Much of the storefront has css code, however your layout will need its own  supporting css code below</p>
 			
 			<textarea id="css-textarea" 
@@ -131,10 +132,14 @@
 			<br class="clear"/>
 			
 			
-			<h3>Store Javascript</h3>
+			<h3>Layout Javascript</h3>
+			
 			<p class="instructions">This section is for such things as home page carousels, sliding panes or any other Javascript goodness to add to your storefront</p>
+			
 			<p>Please use single quotes for javascript variables</p>
+			
 			<p class="instructions">This will be added at the bottom of your page layout. Warning, there are additional scripts on a per page basis that may conflict. Please check variable names on page load to ensure no duplicates or interference with base store front.</p>
+			
 			<textarea id="javascript-textarea" 
 					name="javascript" 
 					class="form-control">${layoutInstance?.javascript}</textarea>

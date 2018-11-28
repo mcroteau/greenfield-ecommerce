@@ -13,12 +13,17 @@ per page
 per catalog
 per product
 
-search results
+registration
 checkout preview
 checkout screen
 checkout success
-registration
+
+
 login
+search results
+account details
+order history
+order details
 
 
 
