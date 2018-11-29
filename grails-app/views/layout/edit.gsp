@@ -7,26 +7,6 @@
 		
 		<script type="text/javascript" src="${resource(dir:'js/allow-tab.js')}"></script>
 		
-		<style type="text/css">
-			#css-textarea,
-			#layout-textarea{
-				height:350px; 
-				width:100%;
-				font-size:12px;
-				background:#f8f8f8;
-				font-family: Monaco,"MonacoRegular",monospace;
-			}
-			#css-textarea,
-			#javascript-textarea{
-				height:275px; 
-				width:90%;
-				font-size:12px;
-				background:#f8f8f8;
-				font-family: Monaco,"MonacoRegular",monospace;
-			}
-			
-		</style>
-		
 	</head>
 	<body>
 
@@ -101,15 +81,7 @@
 			
 			<p class="instructions"><g:link controller="layout" action="how">How the Layout Engine works</g:link></p>
 			
-			<style type="text/css">
-				.layout-code{ 
-					margin:0px;
-					color:#999; 
-					color:#fff;
-					font-size:12px;
-					display:block;
-				}
-			</style>
+
 				
 			<div style="border:solid 1px #ddd; background:#333;background:#384248">
 				<span class="layout-code">&lt;html&gt;</span>
@@ -125,9 +97,13 @@
 			<h3>Layout CSS</h3>
 			<p class="instructions">Much of the storefront has css code, however your layout will need its own  supporting css code below</p>
 			
-			<textarea id="css-textarea" 
-					name="css" 
-					class="form-control">${layoutInstance?.css}</textarea>
+			<div id="layout-code-wrapper" class="css">
+				<span class="layout-code">&lt;style&gt;</span>
+				<textarea id="css-textarea" 
+						name="css" 
+						class="form-control">${layoutInstance?.css}</textarea>
+				<span class="layout-code">&lt;/style&gt;</span>
+			</div>
 			
 			<br class="clear"/>
 			
@@ -140,9 +116,14 @@
 			
 			<p class="instructions">This will be added at the bottom of your page layout. Warning, there are additional scripts on a per page basis that may conflict. Please check variable names on page load to ensure no duplicates or interference with base store front.</p>
 			
-			<textarea id="javascript-textarea" 
-					name="javascript" 
-					class="form-control">${layoutInstance?.javascript}</textarea>
+			
+			<div id="layout-code-wrapper" class="javascript">
+				<span class="layout-code">&lt;script&gt;</span>
+				<textarea id="javascript-textarea" 
+						name="javascript" 
+						class="form-control">${layoutInstance?.javascript}</textarea>
+				<span class="layout-code">&lt;/script&gt;</span>
+			</div>
 					
 			
 			<div class="form-group" style="margin-top:30px">

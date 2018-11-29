@@ -112,6 +112,7 @@ ${raw(applicationService.getProductHeader(catalogInstance, productInstance, "${p
 						color:#fff;
 						background:#d7182b;
 						background:#667;
+						background:#ff0000;
 						display:inline-block;
 						padding:3px 7px;
 						-webkit-border-radius: 3px;

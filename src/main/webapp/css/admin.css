@@ -780,8 +780,39 @@ float:left;
 }
 
 
+#layout-code-wrapper{
+	border:solid 1px #ddd; 
+	background:#384248;
+}
 
+#layout-code-wrapper.css,
+#layout-code-wrapper.javascript{
+	width:90%;
+}
 
+.layout-code{ 
+	margin:0px;
+	color:#999; 
+	color:#fff;
+	font-size:12px;
+	display:block;
+}
+
+#css-textarea,
+#layout-textarea{
+	height:350px; 
+	width:100%;
+	font-size:12px;
+	background:#f8f8f8;
+	font-family: Monaco,"MonacoRegular",monospace;
+}
+#css-textarea,
+#javascript-textarea{
+	height:275px;
+	font-size:12px;
+	background:#f8f8f8;
+	font-family: Monaco,"MonacoRegular",monospace;
+}
 
 
 

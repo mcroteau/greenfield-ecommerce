@@ -7,25 +7,6 @@
 		
 		<script type="text/javascript" src="${resource(dir:'js/allow-tab.js')}"></script>
 		
-		<style type="text/css">
-			#css-textarea,
-			#layout-textarea{
-				height:350px; 
-				width:100%;
-				font-size:12px;
-				background:#f8f8f8;
-				font-family: Monaco,"MonacoRegular",monospace;
-			}
-			#css-textarea,
-			#javascript-textarea{
-				height:275px; 
-				width:90%;
-				font-size:12px;
-				background:#f8f8f8;
-				font-family: Monaco,"MonacoRegular",monospace;
-			}
-			
-		</style>
 		
 	</head>
 	<body>
@@ -87,28 +68,43 @@
 		<p class="instructions">[[CONTENT]] tag is where all store front product, catalog, page and other content is displayed automatically</p>
 		
 		<p class="instructions"><g:link controller="layout" action="how">How the Layout Engine works</g:link></p>
-		
-		<textarea id="layout-textarea"
-				name="content" 
-				class="form-control"
-				disabled>${layoutInstance?.content}</textarea>
-		
+			
+			
+		<div id="layout-code-wrapper">
+			<span class="layout-code">&lt;html&gt;</span>
+			<span class="layout-code">&nbsp;&nbsp;&nbsp;&lt;body&gt;</span>
+			<textarea id="layout-textarea"
+					name="content" 
+					class="form-control"
+					disabled>${layoutInstance?.content}</textarea>
+			<span class="layout-code">&nbsp;&nbsp;&nbsp;&lt;/body&gt;</span>
+			<span class="layout-code">&lt;/html&gt;</span>
+		</div>	
 
 		
 		<h3>Layout CSS</h3>
-		<textarea id="css-textarea" 
-				name="css" 
-				class="form-control"
-				disabled>${layoutInstance?.css}</textarea>
+			
+		<div id="layout-code-wrapper" class="css">
+			<span class="layout-code">&lt;style&gt;</span>
+			<textarea id="css-textarea" 
+					name="css" 
+					class="form-control"
+					disabled>${layoutInstance?.css}</textarea>
+			<span class="layout-code">&lt;/style&gt;</span>
+		</div>
 		
 		<br class="clear"/>
 		
 		
 		<h3>Layout Javascript</h3>
-		<textarea id="javascript-textarea" 
-				name="javascript" 
-				class="form-control"
-				disabled>${layoutInstance?.javascript}</textarea>
+		<div id="layout-code-wrapper" class="javascript">
+			<span class="layout-code">&lt;script&gt;</span>
+			<textarea id="javascript-textarea" 
+					name="javascript" 
+					class="form-control"
+					disabled>${layoutInstance?.javascript}</textarea>
+			<span class="layout-code">&lt;/script&gt;</span>
+		</div>
 				
 		
 		<div class="form-group" style="margin-top:30px">
