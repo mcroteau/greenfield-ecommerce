@@ -2,7 +2,7 @@
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
 
-${raw(applicationService.getHeader("Shopping Cart"))}
+${raw(applicationService.getDefaultHeader("Select Shipping Option"))}
 
 
 <h2 style="margin-top:0px; margin-bottom:20px;">Select Shipping Option</h2>
@@ -110,5 +110,5 @@ ${raw(applicationService.getHeader("Shopping Cart"))}
 	<g:link controller="account" action="customer_profile" class="btn btn-default" style="margin:10px auto">Change Address</g:link>
 	
 </div>
-
-${raw(applicationService.getFooter())}	
+			
+${raw(applicationService.getDefaultFooter())}
