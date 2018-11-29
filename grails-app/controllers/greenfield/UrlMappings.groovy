@@ -18,6 +18,11 @@ class UrlMappings {
             controller = "shoppingCart"
         }
 
+		"/store/index"{
+			controller = "page"
+			action = "home"
+		}
+
         "500"(view:'/error')
         "404"(view:'/notFound')
 
