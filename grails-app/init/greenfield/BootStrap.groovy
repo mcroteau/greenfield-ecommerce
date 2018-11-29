@@ -71,7 +71,7 @@ class BootStrap {
 
 		//Development Data
 		//createDevelopmentData()//TODO:refactor
-		createDevelopmentDataSimple()//TODO:refactor
+		//createDevelopmentDataSimple()//TODO:refactor
 		
 		missingUuidHelperService.correctMissingUuids()
 		
