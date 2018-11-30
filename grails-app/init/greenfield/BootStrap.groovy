@@ -141,7 +141,7 @@ class BootStrap {
 
 			def layout = new Layout()
 			layout.content = layoutContent
-			layout.name = "Store Layout: Prepackaged"
+			layout.name = "Store Layout: Preset"
 			layout.defaultLayout = true
 			
 			layout.save(flush:true)

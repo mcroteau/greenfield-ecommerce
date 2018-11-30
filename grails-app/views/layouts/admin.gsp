@@ -75,9 +75,9 @@
 				<li><g:link uri="/transaction/list" class="${ordersActive}">Orders</g:link></li>
 				<li><g:link uri="/page/list" class="${pagesActive}">Pages</g:link></li>
 				<li><g:link uri="/account/admin_list?admin=false" class="${accountsActive}">Accounts</g:link></li>
-				<li><g:link uri="/configuration/settings" class="${settingsActive}">Settings</g:link></li>
 				<li><g:link uri="/configuration/index" class="${importActive}">Import/Export</g:link></li>
 				<li><g:link uri="/layout/index" class="${layoutActive}">Store Layouts</g:link></li>
+				<li><g:link uri="/configuration/settings" class="${settingsActive}">Settings</g:link></li>
 			</ul>
 			
 		</div>

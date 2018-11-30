@@ -45,6 +45,7 @@ span, p, table, td, th{
 	margin:50px auto 150px auto;
 	margin:25px auto 80px auto;
 	margin:13px auto 180px auto;
+	margin:13px 0px 180px 13px;
 	padding:15px 25px 30px 15px;
 
 	/**TODO:uncomment dumbed down ui**/
@@ -55,6 +56,7 @@ span, p, table, td, th{
 	-moz-border-radius: 3px 3px 3px 3px;
 	-webkit-border-radius: 3px 3px 3px 3px;**/
 	border:solid 1px #ddd;
+	border:solid 1px #273238;
 }
 
 
@@ -82,7 +84,7 @@ span, p, table, td, th{
 	float:left;
 	margin-bottom:200px;
 	padding-bottom:15px;
-	background:#f8f8f8;
+	background:#fff;
 	background:#384249;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -91,6 +93,7 @@ span, p, table, td, th{
 	border-radius: 3px 3px 3px 3px;	
 	-moz-border-radius: 3px 3px 3px 3px;	
 	-webkit-border-radius: 3px 3px 3px 3px;	
+	border:solid 1px #273238;
 }
 
 
@@ -112,6 +115,7 @@ span, p, table, td, th{
 	border-radius: 3px 3px 0px 0px;	
 	-moz-border-radius: 3px 3px 0px 0px;	
 	-webkit-border-radius: 3px 3px 0px 0px;	
+	border-bottom:solid 1px #273238;
 }
 
 #admin-nav li{
@@ -139,7 +143,7 @@ span, p, table, td, th{
 
 /**TODO: Remove, dumbed down ui **/
 #admin-nav li a{
-	color:rgba(255,255,255,0.54);
+	color:rgba(0,0,0,1);
 	height:54px;
 	font-size:15px;
 	display:block;
@@ -147,9 +151,9 @@ span, p, table, td, th{
 	text-align:left;
 	vertical-align:middle;
 	font-family:Roboto-Thin;
-	background:#f8f8f8;
-	background:#384249;
-	border-top:none;
+	font-family:Roboto;
+	background:#fff;
+	border-top:solid 0px #475057;
 	border-bottom:solid 1px #273238;
 	outline:none;
 	text-decoration:none;
@@ -159,6 +163,7 @@ span, p, table, td, th{
 	color:rgba(255,255,255,0.87);
 	background:#273238;
 	text-decoration:none;
+	font-family:Roboto-Thin;
 }
 
 #admin-nav li a:active,
@@ -166,6 +171,15 @@ span, p, table, td, th{
 	color:rgba(255,255,255,0.87);
 	background:#273238;
 	text-decoration:none;
+}
+
+/**TODO:Remove**/
+#admin-nav li a:active,
+#admin-nav li a.active{
+	color:rgba(255,255,255,1);
+	background:#273238;
+	text-decoration:none;
+	font-family:Roboto-Thin;
 }
 
 #admin-nav li a:visited, 
@@ -852,8 +866,11 @@ float:left;
 	font-family: Monaco,"MonacoRegular",monospace;
 }
 
-
-
+.btn{
+	border-radius: 1px 1px 1px 1px;	
+	-moz-border-radius: 1px 1px 1px 1px;		
+	-webkit-border-radius: 1px 1px 1px 1px;	
+}
 
 
 
