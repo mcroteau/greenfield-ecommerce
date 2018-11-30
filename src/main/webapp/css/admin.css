@@ -3,6 +3,7 @@ body,html{
 	padding:0px;
 	margin:0px;
 	font-family:Arial;
+	background:#fff;
 }
 
 body, html, div,
@@ -31,28 +32,29 @@ span, p, table, td, th{
 	background:#1c695b;
 	background:#384249;
 	background:#1c695b;
+	opacity:0;
 	/**background:#13544A;**/
 }
 
 
 
 #outer-container{
-	width:960px;
+	width:962px;
 	min-height:500px;
 	background:#fff;
 	margin:50px auto 150px auto;
 	margin:25px auto 80px auto;
 	margin:13px auto 180px auto;
 	padding:15px 25px 30px 15px;
-	border-radius: 3px 3px 3px 3px;
+
+	/**TODO:uncomment dumbed down ui**/
+	/**box-shadow: 0px 0px 13px 0px rgba(0,0,0,0.38);**/
+	/**-moz-box-shadow: 0px 0px 13px 0px rgba(0,0,0,0.38);**/
+	/**-webkit-box-shadow: 0px 0px 13px 0px rgba(0,0,0,0.38);**/
+	/**border-radius: 3px 3px 3px 3px;
 	-moz-border-radius: 3px 3px 3px 3px;
-	-webkit-border-radius: 3px 3px 3px 3px;
-	box-shadow: 0px 0px 13px 0px rgba(0,0,0,0.38);
-	-moz-box-shadow: 0px 0px 13px 0px rgba(0,0,0,0.38);
-	-webkit-box-shadow: 0px 0px 13px 0px rgba(0,0,0,0.38);
-	border-radius: 3px 3px 3px 3px;
-	-moz-border-radius: 3px 3px 3px 3px;
-	-webkit-border-radius: 3px 3px 3px 3px;
+	-webkit-border-radius: 3px 3px 3px 3px;**/
+	border:solid 1px #ddd;
 }
 
 
@@ -63,6 +65,24 @@ span, p, table, td, th{
 	float:left;
 	margin-bottom:200px;
 	padding-bottom:15px;
+	background:#384249;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;	
+
+	border-radius: 3px 3px 3px 3px;	
+	-moz-border-radius: 3px 3px 3px 3px;	
+	-webkit-border-radius: 3px 3px 3px 3px;	
+	/**TODO:remove, dumbed down ui**/
+}
+
+/**TODO:remove dumbed down ui**/
+#admin-nav-container{
+	width:145px;
+	float:left;
+	margin-bottom:200px;
+	padding-bottom:15px;
+	background:#f8f8f8;
 	background:#384249;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -112,6 +132,24 @@ span, p, table, td, th{
 	font-family:Roboto-Thin;
 	background:#384249;
 	border-top:solid 1px #475057;
+	border-bottom:solid 1px #273238;
+	outline:none;
+	text-decoration:none;
+}
+
+/**TODO: Remove, dumbed down ui **/
+#admin-nav li a{
+	color:rgba(255,255,255,0.54);
+	height:54px;
+	font-size:15px;
+	display:block;
+	padding:15px 10px 0px 20px;
+	text-align:left;
+	vertical-align:middle;
+	font-family:Roboto-Thin;
+	background:#f8f8f8;
+	background:#384249;
+	border-top:none;
 	border-bottom:solid 1px #273238;
 	outline:none;
 	text-decoration:none;
