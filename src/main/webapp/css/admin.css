@@ -15,6 +15,7 @@ span, p, table, td, th{
 
 .secondary{
 	color : rgba(0,0,0,0.54);
+	text-decoration:uppercase;
 }
 
 .hint{
@@ -57,6 +58,7 @@ span, p, table, td, th{
 	-webkit-border-radius: 3px 3px 3px 3px;**/
 	border:solid 1px #ddd;
 	border:solid 1px #273238;
+	border:solid 1px #ccc;
 }
 
 
@@ -121,13 +123,14 @@ span, p, table, td, th{
 #admin-nav li{
 	padding:0px;
 	margin:0px;
-	height:54px;
+	/**height:54px;**/
 	display:block;
 }
 
+
 #admin-nav li a{
 	color:rgba(255,255,255,0.54);
-	height:54px;
+	/**TODO:uncomment height:54px;**/
 	font-size:15px;
 	display:block;
 	padding:15px 10px 0px 20px;
@@ -144,14 +147,13 @@ span, p, table, td, th{
 /**TODO: Remove, dumbed down ui **/
 #admin-nav li a{
 	color:rgba(0,0,0,1);
-	height:54px;
-	font-size:15px;
+	font-size:14px;
 	display:block;
-	padding:15px 10px 0px 20px;
+	padding:15px 10px 15px 10px;
 	text-align:left;
 	vertical-align:middle;
 	font-family:Roboto-Thin;
-	font-family:Roboto;
+	font-family:Roboto-Regular;
 	background:#fff;
 	border-top:solid 0px #475057;
 	border-bottom:solid 1px #273238;
@@ -312,7 +314,7 @@ h1.dashboard{
 	-webkit-border-radius: 3px 3px 3px 3px;
 }
 .store-stat{
-	margin-right:50px;
+	margin-right:17px;
 	display:inline-block;
 }
 .store-stat span{

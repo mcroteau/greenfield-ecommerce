@@ -69,15 +69,15 @@
 			<div id="admin-marker"></div>
 			
 			<ul id="admin-nav">
-				<li><g:link uri="/admin" class="${dashboardActive}">Dashboard</g:link></li>
-				<li><g:link uri="/product/list" class="${productsActive}">Products</g:link></li>
-				<li><g:link uri="/catalog/list" class="${catalogsActive}">Catalogs</g:link></li>
-				<li><g:link uri="/transaction/list" class="${ordersActive}">Orders</g:link></li>
-				<li><g:link uri="/page/list" class="${pagesActive}">Pages</g:link></li>
-				<li><g:link uri="/account/admin_list?admin=false" class="${accountsActive}">Accounts</g:link></li>
-				<li><g:link uri="/configuration/index" class="${importActive}">Import/Export</g:link></li>
-				<li><g:link uri="/layout/index" class="${layoutActive}">Store Layouts</g:link></li>
-				<li><g:link uri="/configuration/settings" class="${settingsActive}">Settings</g:link></li>
+				<li><g:link uri="/admin" class="${dashboardActive}"><g:message code="dashboard" /></g:link></li>
+				<li><g:link uri="/product/list" class="${productsActive}"><g:message code="products" /></g:link></li>
+				<li><g:link uri="/catalog/list" class="${catalogsActive}"><g:message code="catalogs" /></g:link></li>
+				<li><g:link uri="/transaction/list" class="${ordersActive}"><g:message code="orders" /></g:link></li>
+				<li><g:link uri="/page/list" class="${pagesActive}"><g:message code="pages" /></g:link></li>
+				<li><g:link uri="/account/admin_list?admin=false" class="${accountsActive}"><g:message code="accounts" /></g:link></li>
+				<li><g:link uri="/configuration/index" class="${importActive}"><g:message code="import.export" /></g:link></li>
+				<li><g:link uri="/layout/index" class="${layoutActive}"><g:message code="store.layouts" /></g:link></li>
+				<li><g:link uri="/configuration/settings" class="${settingsActive}"><g:message code="settings" /></g:link></li>
 			</ul>
 			
 		</div>
@@ -85,12 +85,12 @@
 		<div id="content-container">
 			
 			<div id="header">
-				<span class="header-info pull-left align-left">Welcome Back <strong><sec:username/></strong>!</span>
+				<span class="header-info pull-left align-left"><g:message code="welcome.back"/> <strong><sec:username/></strong>!</span>
 				
 				<span class="header-info pull-right align-right">
-					<g:link uri="/">Store Front</g:link>
+					<g:link uri="/"><g:message code="store.front"/></g:link>
 					&nbsp;|&nbsp;
-					<g:link controller="logout" action="index">Logout</g:link>
+					<g:link controller="logout" action="index"><g:message code="logout"/></g:link>
 				</span>
 					
 				<br class="clear"/>
@@ -113,7 +113,6 @@
 		<br class="clear"/>
 		
 	</div>
-
 
 </body>
 </html>

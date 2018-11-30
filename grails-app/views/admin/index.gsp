@@ -4,7 +4,7 @@
 <head>
   	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  	<meta name="layout" content="admin" />
-	<title>Greenfield  : Dashboard</title>
+	<title>Greenfield  : ${message(code:"dashboard")}</title>
 	
 	<script type="text/javascript" src="${resource(dir:'js/lib/mustache/mustache.min.js')}"></script>
 	
@@ -99,18 +99,18 @@
 	
 </head>
 <body>
-	
-	
+	 
 	<div id="modal">							
 		<div class="activity-stats">
 			<h4 class="secondary" id="activity-stats-title">{{title}}</h4>
 			<div id="activity-stats-content"></div>
 		</div>
-		<a href="javascript:" id="close-activity-stats" class="pull-right">Close</a>
+		<a href="javascript:" id="close-activity-stats" class="pull-right"><g:message code="close"/></a>
 		<br class="clear"/>
 	</div>
 	
-	
+
+
 	<div id="backdrop"></div>
 	
 	
@@ -125,31 +125,31 @@
 		
 		<div class="store-stat">
 			<span class="store-stat-value"><g:link controller="product" action="list">${storeStatistics.generalStats.products}</g:link></span>
-			<span class="store-stat-label secondary">Products</span>
+			<span class="store-stat-label secondary"><g:message code="products"/></span>
 		</div>
 
 		
 		<div class="store-stat">
 			<span class="store-stat-value"><g:link controller="product" action="outofstock">${storeStatistics.generalStats.outOfStock}</g:link></span>
-			<span class="store-stat-label secondary">Out of Stock</span>
+			<span class="store-stat-label secondary"><g:message code="out.of.stock"/></span>
 		</div>
 		
 		
 		<div class="store-stat">
 			<span class="store-stat-value"><g:link controller="catalog" action="list">${storeStatistics.generalStats.catalogs}</g:link></span>
-			<span class="store-stat-label secondary">Catalogs</span>
+			<span class="store-stat-label secondary"><g:message code="catalogs"/></span>
 		</div>
 		
 		
 		<div class="store-stat">
 			<span class="store-stat-value"><g:link controller="account" action="admin_list" params="${[admin:false]}">${storeStatistics.generalStats.customers}</g:link></span>
-			<span class="store-stat-label secondary">Customers</span>
+			<span class="store-stat-label secondary"><g:message code="customers"/></span>
 		</div>
 		
 		
 		<div class="store-stat">
 			<span class="store-stat-value"><g:link controller="shoppingCart" action="active">${storeStatistics.generalStats.abandonedCarts}</g:link></span>
-			<span class="store-stat-label secondary">Abandoned Carts</span>
+			<span class="store-stat-label secondary"><g:message code="abandoned.carts"/></span>
 		</div>
 		
 		
@@ -158,20 +158,20 @@
 	
 	
 	
-	<h1 class="dashboard pull-left">Store Overview</h1>
+	<h1 class="dashboard pull-left"><g:message code="store.overview"/></h1>
 
 	<div id="date-selectors" class="pull-right align-right" style="display:block">
 		<g:form controller="admin" action="index" method="get" class="range-form">
 			<span class="secondary">
-				Date Range :&nbsp;
+				<g:message code="date.range"/> :&nbsp;
 			</span>
 			<input type="text" name="startDate" id="start-date" class="form-control" value="${startDate}"/>
 			&nbsp;
-			<span class="secondary">to</span>
+			<span class="secondary"><g:message code="to"/></span>
 			&nbsp;
-			<input type="text"name="endDate" id="end-date" class="form-control" value="${endDate}"/>
-			<a href="javascript:" class="btn btn-default" id="refresh" title="Refresh"><span class="glyphicon glyphicon-refresh"></span></a>
-			<g:link controller="admin" action="index" params="[ allData : true ]" class="btn btn-default all-data">All Data</g:link>
+			<input type="text" name="endDate" id="end-date" class="form-control" value="${endDate}"/>
+			<a href="javascript:" class="btn btn-default" id="refresh" title="${message(code:'refresh')}"><span class="glyphicon glyphicon-refresh"></span></a>
+			<g:link controller="admin" action="index" params="[ allData : true ]" class="btn btn-default all-data"><g:message code="all.data"/></g:link>
 		</g:form>
 	</div>
 	
@@ -192,7 +192,7 @@
 						<g:else>
 							<span class="sales-stat-value">--</span>
 						</g:else>
-						<span class="sales-stat-label hint">TOTAL SALES</span>
+						<span class="sales-stat-label hint"><g:message code="total.sales"/></span>
 					</span>
 				</div>
 				
@@ -204,7 +204,7 @@
 						<g:else>
 							<span class="sales-stat-value">--</span>
 						</g:else>
-						<span class="sales-stat-label hint">TOTAL ORDERS</span>
+						<span class="sales-stat-label hint"><g:message code="total.orders"/></span>
 					</span>
 				</div>
 				
@@ -218,7 +218,7 @@
 						<g:else>
 							<span class="sales-stat-value">--</span>
 						</g:else>
-						<span class="sales-stat-label hint">AVERAGE ORDER</span>
+						<span class="sales-stat-label hint"><g:message code="average.order"/></span>
 					</span>
 				</div>
 				
@@ -228,7 +228,7 @@
 						<span class="hint">${storeStatistics.salesStats.checkoutCarts}/${storeStatistics.salesStats.shoppingCarts}</span>
 						<span class="sales-stat-value">${storeStatistics.salesStats.checkoutRate}</span>
 						<span class="sales-stat-percent secondary">%</span>
-						<span class="sales-stat-label hint">CHECKOUT RATE</span>
+						<span class="sales-stat-label hint"><g:message code="checkout.rate"/></span>
 					</span>
 				</div>
 				
@@ -236,7 +236,7 @@
 			
 			<div id="sales-chart-container" class="pull-left">
 				<g:if test="${storeStatistics.salesStats.chartData.size() > 0}">
-					<h3 class="secondary align-left">Sales</h3>
+					<h3 class="secondary align-left"><g:message code="sales"/></h3>
 					<div id="sales-chart"></div>
 				</g:if>
 				<g:else>
@@ -256,7 +256,7 @@
 			
 			<div class="activity-stats">
 				
-				<h4 class="secondary">Top viewed Products</h4>
+				<h4 class="secondary"><g:message code="top.viewed.products"/></h4>
 				
 				<div class="activity-stat-list">
 				
@@ -274,13 +274,13 @@
     	            	
 						<g:if test="${storeStatistics.productStats.size() > 5}">
 							<div class="view-all-container">
-								<a href="javascript:" class="view-all" data-type="products" data-title="TOP VIEWED PRODUCTS">View All</a>
+								<a href="javascript:" class="view-all" data-type="products" data-title="${message(code:'top.viewed.products')}"><g:message code="view.all"/></a>
 							</div>
 						</g:if>
 					</g:if>
 					<g:else>
 						<div style="margin:30px auto 40px auto" class="hint">
-							No Data Available
+							<g:message code="no.data.available"/>
 						</div>
 					</g:else>
 				</div>
@@ -289,7 +289,7 @@
 			
 			<div class="activity-stats">
 				
-				<h4 class="secondary">Top viewed Pages</h4>
+				<h4 class="secondary"><g:message code="top.viewed.pages"/></h4>
 				
 				<div class="activity-stat-list">
 				
@@ -307,13 +307,13 @@
     	            	
 						<g:if test="${storeStatistics.pageStats?.size() > 5}">
 							<div class="view-all-container">
-								<a href="javascript:" class="view-all" data-type="pages" data-title="TOP VIEWED PAGES">View All</a>
+								<a href="javascript:" class="view-all" data-type="pages" data-title="${message(code:'top.viewed.pages')}"><g:message code="view.all"/></a>
 							</div>
 						</g:if>
 					</g:if>
 					<g:else>
 						<div style="margin:30px auto 40px auto" class="hint">
-							No Data Available
+							<g:message code="no.data.available"/>
 						</div>
 					</g:else>
 					
@@ -323,7 +323,7 @@
 			
 			<div class="activity-stats last">
 				
-				<h4 class="secondary">Top Search Terms</h4>
+				<h4 class="secondary"><g:message code="top.search.terms"/></h4>
 				
 				<div class="activity-stat-list">
 					
@@ -341,13 +341,13 @@
     	            	
 						<g:if test="${storeStatistics.searchStats?.size() > 5}">
 							<div class="view-all-container">
-								<a href="javascript:" class="view-all" data-type="searches" data-title="TOP SEARCH TERMS">View All</a>
+								<a href="javascript:" class="view-all" data-type="searches" data-title="${message(code:'top.search.terms')}"><g:message code="view.all"/></a>
 							</div>
 						</g:if>
 					</g:if>
 					<g:else>
 						<div style="margin:30px auto 40px auto" class="hint">
-							No Data Available
+							<g:message code="no.data.available"/>
 						</div>
 					</g:else>
 					
@@ -359,7 +359,7 @@
 			
 			<div class="activity-stats">
 				
-				<h4 class="secondary">Top viewed Catalogs</h4>
+				<h4 class="secondary"><g:message code="top.viewed.catalogs"/></h4>
 				
 				<div class="activity-stat-list">
 					
@@ -377,13 +377,13 @@
 						
 						<g:if test="${storeStatistics.catalogStats?.size() > 5}">
 							<div class="view-all-container">
-								<a href="javascript:" class="view-all" data-type="catalogs" data-title="TOP VIEWED CATALOGS">View All</a>
+								<a href="javascript:" class="view-all" data-type="catalogs" data-title="${message(code:'top.viewed.catalogs')}"><g:message code="view.all"/></a>
 							</div>
 						</g:if>
 					</g:if>
 					<g:else>
 						<div style="margin:30px auto 40px auto" class="hint">
-							No Data Available
+							<g:message code="no.data.available"/>
 						</div>
 					</g:else>
 			
@@ -394,9 +394,11 @@
 			
 			
 			<div id="google-analytics-tip">
-				<blockquote class="secondary">Greenfield leverages Google Analytics for detailed website statistics.  If you haven’t already done so, create an account and save your Analytics code in <strong class="secondary">Settings -> Store Settings</strong> to take advantage of this feature 
+				<blockquote class="secondary">
+					<g:message code="greenfield.google.analytics"/>
 				
-					<a href="http://www.google.com/analytics/" target="_blank">Visit Google Analytics</a>
+				
+					<a href="http://www.google.com/analytics/" target="_blank"><g:message code="visit.google.analytics"/></a>
 				</blockquote>
 			
 				<br class="clear"/>
@@ -412,7 +414,7 @@
 	
 	
 	<div id="calculating" style="margin-top:100px;display:none;text-align:center">
-		<span class="secondary">Calculating, please wait&nbsp;&nbsp;</span>
+		<span class="secondary"><g:message code="calculating.please.wait"/>&nbsp;&nbsp;</span>
 		<img src="/${applicationService.getContextName()}/images/loading.gif" >
 	</div>
 	
@@ -420,7 +422,7 @@
 	<input type="hidden" id="endDateHidden" value="${endDate}"/>
 	
 	
-<script type="text/template" id="modal-template">		
+<script type="text/template" id="modal-template">
 {{#rows}}
 	<div class="activity-stat-row">
 		<span class="activity-stat-title">{{title}}</span>
