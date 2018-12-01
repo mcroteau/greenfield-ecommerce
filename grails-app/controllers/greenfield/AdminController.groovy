@@ -24,13 +24,17 @@ import grails.plugin.springsecurity.annotation.Secured
 
 @Mixin(BaseController)
 class AdminController {
-
-
+	
+	def currencyService
+	
 	//@Secured(['ROLE_ADMIN'])
 	@Secured(['permitAll'])
     def index() { 
 		authenticatedAdmin { adminAccount ->
 		
+			def currency = currencyService.getCurrency()
+			def currencySymbol = currencyService.getCurrencySymbol()
+			
 			def startDate 
 			def endDate
 			
@@ -90,7 +94,11 @@ class AdminController {
 				formattedEndDate = endDate.format('MM/dd/yyyy')
 			}
 			
-			[ adminAccount : adminAccount, storeStatistics: storeStatistics, startDate : formattedStartDate, endDate : formattedEndDate ]
+		
+			
+			[ adminAccount : adminAccount, storeStatistics: storeStatistics, startDate : formattedStartDate, endDate : formattedEndDate, currency: currency, currencySymbol: currencySymbol]
+	
+		
 		}
 	}
 	
@@ -288,7 +296,7 @@ class AdminController {
 		
 
 		stats.sales = df.format(sales)
-		stats.orderCount = df.format(orderCount)
+		stats.orderCount = orderCount
 		stats.averageOrder = averageOrder
 		
 		return stats

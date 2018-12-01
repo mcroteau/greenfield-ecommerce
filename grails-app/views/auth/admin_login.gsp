@@ -127,7 +127,7 @@ ${applicationService.getStoreName()} : Admin Login</title>
 				
 				<input type="hidden" name="targetUri" value="${targetUri}" />
 				
-				<button type="submit" class="btn btn-default btn-primary pull-right">Login Admin</button>
+				<button type="submit" class="btn btn-default btn-primary pull-right">Login</button>
 				
 				<br class="clear"/>
 				

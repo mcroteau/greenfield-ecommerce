@@ -3,6 +3,7 @@
 <%@ page import="org.greenfield.Product" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 <!DOCTYPE html>
 <html>
@@ -64,9 +65,9 @@
 						
 							<g:sortableColumn property="quantity" title="${message(code: 'product.quantity.label', default: 'Quantity')}" />
 						
-							<g:sortableColumn property="price" title="${message(code: 'product.price.label', default: '$ Price')}" />
+							<g:sortableColumn property="price" title="${message(code: 'product.price.label', default: "${currencyService.format('Price')}")}" />
 
-							<g:sortableColumn property="salesPrice" title="${message(code: 'product.salesPrice.label', default: '$ Sales Price')}" />
+							<g:sortableColumn property="salesPrice" title="${message(code: 'product.salesPrice.label', default: "${currencyService.format('Sales Price')}")}" />
 							
 							<th></th>
 						
@@ -96,11 +97,11 @@
 							
 							<td>${fieldValue(bean: productInstance, field: "quantity")}</td>
 							
-						
-							<td>$${applicationService.formatPrice(productInstance.price)}</td>
+							
+							<td>${currencyService.format(applicationService.formatPrice(productInstance.price))}</td>
 							
 						
-							<td>$${applicationService.formatPrice(productInstance.salesPrice)}</td>
+							<td>${currencyService.format(applicationService.formatPrice(productInstance.salesPrice))}</td>
 						
 						
 							<td><g:link controller="product" action="edit" params="[id: productInstance.id]" class="edit-product-${productInstance.id}">Edit</g:link></td>
@@ -115,8 +116,7 @@
 			</g:if>
 			<g:else>
 
-				<div class="alert alert-info">There are no products yet...<br/><br/>
-					<g:link controller="product" action="create" class="btn btn-primary">New Product</g:link>
+				<div class="alert alert-info">No products found...<br/><br/>
 				</div>
 			
 				<g:if test="${catalogCount == 0}">

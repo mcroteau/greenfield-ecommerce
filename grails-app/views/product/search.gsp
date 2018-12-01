@@ -1,6 +1,7 @@
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 ${raw(applicationService.getDefaultHeader("Search Results"))}
 
@@ -58,7 +59,7 @@ ${raw(applicationService.getDefaultHeader("Search Results"))}
 			</g:link>
 	
 			<g:link controller="product" action="details" id="${productInstance.id}">
-				<p class="product-price">$${applicationService.formatPrice(productInstance.price)}</p>
+				<p class="product-price">${currencyService.format(applicationService.formatPrice(productInstance.price))}</p>
 	        </g:link>	
 		</div>
 	</g:each>

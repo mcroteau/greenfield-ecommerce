@@ -2,6 +2,7 @@
 <%@ page import="org.greenfield.Catalog" %>
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 <!DOCTYPE html>
 <html>
@@ -93,7 +94,7 @@
 			
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Price $</span>
+					<span class="form-label full secondary">Price ${currencyService.getCurrencySymbol()}</span>
 					<span class="input-container">
 						<input name="price" type="text" class="form-control " style="width:150px" value="${productInstance?.price}" disabled="disabled"/>
 					</span>
@@ -104,7 +105,7 @@
 			
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Sale Price $</span>
+					<span class="form-label full secondary">Sale Price ${currencyService.getCurrencySymbol()}</span>
 					<span class="input-container">
 						<input name="salesPrice" type="text" class="form-control " style="width:150px" value="${productInstance?.salesPrice ? productInstance.salesPrice : '-'}" disabled="disabled"/>
 					</span>

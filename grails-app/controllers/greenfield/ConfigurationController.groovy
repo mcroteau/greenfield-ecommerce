@@ -33,6 +33,7 @@ class ConfigurationController {
 	
 	private final String SETTINGS_FILE = "settings.properties"
 	
+	private final String STORE_CURRENCY = "store.currency"
 	private final String STORE_NAME = "store.name"
 	private final String STORE_ADDRESS1 = "store.address1"
 	private final String STORE_ADDRESS2 = "store.address2"
@@ -93,6 +94,7 @@ class ConfigurationController {
 				prop.load(inputStream);
 				
 				def settings = [:]
+				settings["storeCurrency"] = prop.getProperty(STORE_CURRENCY);
 				settings["storeName"] = prop.getProperty(STORE_NAME);
 				settings["keywords"] = prop.getProperty(META_KEYWORDS);
 				settings["description"] = prop.getProperty(META_DESCRIPTION);
@@ -118,6 +120,7 @@ class ConfigurationController {
 
 		authenticatedAdmin{ adminAccount ->
 			
+			String storeCurrency = params.storeCurrency
 			String storeName = params.storeName
 			String keywords = params.keywords
 			String description = params.description
@@ -138,6 +141,7 @@ class ConfigurationController {
 			
 			try{
 			    
+				prop.setProperty(STORE_CURRENCY, storeCurrency);
 				prop.setProperty(STORE_NAME, storeName);
 				prop.setProperty(META_KEYWORDS, keywords);
 				prop.setProperty(META_DESCRIPTION, description);

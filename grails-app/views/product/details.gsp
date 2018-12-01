@@ -2,6 +2,7 @@
 <%@ page import="java.util.Map" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 <%
 	def catalogInstance = null
@@ -123,11 +124,11 @@ ${raw(applicationService.getProductHeader(catalogInstance, productInstance, "${p
 					
 				<g:if test="${productInstance.salesPrice}">
 					<span class="on-sale">Sale</span>
-					<span class="sales-price">$${applicationService.formatPrice(productInstance.price)}</span>
-					<h2 class="product_price" style="margin-top:0px;">$${applicationService.formatPrice(productInstance.salesPrice)}</h2>
+					<span class="sales-price">${currencyService.format(applicationService.formatPrice(productInstance.price))}</span>
+					<h2 class="product_price" style="margin-top:0px;">${currencyService.format(applicationService.formatPrice(productInstance.salesPrice))}</h2>
 				</g:if>
 				<g:else>
-					<h2 class="product_price" style="margin-top:0px;">$${applicationService.formatPrice(productInstance.price)}</h2>
+					<h2 class="product_price" style="margin-top:0px;">${currencyService.format(applicationService.formatPrice(productInstance.price))}</h2>
 				</g:else>
 				<div style="text-align:left; margin-top:20px;">
 				
@@ -140,7 +141,7 @@ ${raw(applicationService.getProductHeader(catalogInstance, productInstance, "${p
 										<option value="${variant.id}" data-image="${variant.imageUrl}">
 											${variant.name} 
 											<g:if test="${variant.price > 0}">
-												($${applicationService.formatPrice(variant.price)})
+												(${currencyService.format(applicationService.formatPrice(variant.price))})
 											</g:if>
 										</option>
 									</g:each>

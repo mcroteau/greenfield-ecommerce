@@ -38,22 +38,29 @@
 	
 	<form action="save_settings" class="form-horizontal">
 
-		<!--
 		<div class="form-row">
 			<span class="form-label twohundred">Base Currency
 				<br/>
-				<span class="information secondary">Stripe is currently supported in 26 countries.</span>
+				<span class="information secondary">Stripe is currently supported in 26 countries. The currency and country you select should match the country in which your business is located and used when setting up your Stripe account.</span>
 			</span>
+			
+			<%
+			def usd = settings?.storeCurrency == "USD" ? "selected" : ""
+			def gbp = settings?.storeCurrency == "GBP" ? "selected" : ""
+			def eur = settings?.storeCurrency == "EUR" ? "selected" : ""
+			def brl = settings?.storeCurrency == "BRL" ? "selected" : ""
+			%>
+			
 			<span class="input-container">
-				<select name="storeCurrency" class="form-control" style="width:200px;">
-					<option>$  USD - US Dollar</option>
-					<option>£  GBP - United Kingdom</option>
-					<option>€  EUR - France</option>
-					<option>€  EUR - Germany</option>
-					<option>€  EUR - The Netherlands</option>
+				<select name="storeCurrency" class="form-control" style="width:230px;">
+					<option value="USD" <%=usd%>>$  USD - US Dollar</option>
+					<option value="GBP" <%=gbp%>>£  GBP - United Kingdom</option>
+					<option value="EUR" <%=eur%>>€  EUR - France</option>
+					<option value="EUR" <%=eur%>>€  EUR - Germany</option>
+					<!--<option>€  EUR - The Netherlands</option>
 					<option>¥  YEN - Japan</option>
-					<option>$  HKD - Hong Kong</option>
-					<option>(R$ BRL - Brazil: By invite only)</option>
+					<option>$  HKD - Hong Kong</option>-->
+					<option value="BRL" <%=brl%>>(R$ BRL - Brazil: By invite only)</option>
 				</select>
 			</span>
 			
@@ -63,7 +70,6 @@
 			
 			<br class="clear"/>
 		</div>
-		-->
 	
 		<div class="form-row">
 			<span class="form-label twohundred">Company Name
@@ -152,5 +158,6 @@
 		</div>
 		
 	</form>
+	
 </body>
 </html>

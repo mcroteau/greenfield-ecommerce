@@ -30,6 +30,7 @@ class ProductController {
     static allowedMethods = [ save: "POST", update: "POST", delete: "POST", save_option: 'POST' ]
 	
     def applicationService
+	def currencyService
 	
 
 	def index() {
@@ -140,7 +141,7 @@ class ProductController {
 			params.max = Math.min(max ?: 10, 100)
 			params.sort = params.sort ? params.sort : "id"
 			params.order = params.order ? params.order : "asc"
-
+			
     		[productInstanceList: Product.list(params), productInstanceTotal: Product.count(), catalogCount: Catalog.count()]
 		}
     }

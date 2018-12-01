@@ -183,11 +183,21 @@
 			
 			<div id="sales-stats" class="pull-left">
 				
+				<%
+				def jsCurrencySymbol = currencySymbol
+				def appendSymbol
+				if(currencySymbol == "€"){
+					appendSymbol = currencySymbol
+					currencySymbol = ""
+				}
+				%>
+				
 				<div class="sales-stat">
 					<span class="stat">
-						<span class="sales-stat-dollar secondary">$</span>
+						<span class="sales-stat-dollar secondary">${currencySymbol}</span>
 						<g:if test="${storeStatistics.salesStats.sales != "0"}">
 							<span class="sales-stat-value">${storeStatistics.salesStats.sales}</span>
+							<span class="sales-stat-dollar secondary">${appendSymbol}</span>
 						</g:if>
 						<g:else>
 							<span class="sales-stat-value">--</span>
@@ -211,9 +221,10 @@
 				
 				<div class="sales-stat">
 					<span class="stat">
-						<span class="sales-stat-dollar secondary">$</span>
+						<span class="sales-stat-dollar secondary">${currencySymbol}</span>
 						<g:if test="${storeStatistics.salesStats.averageOrder != "0"}">
 							<span class="sales-stat-value">${storeStatistics.salesStats.averageOrder}</span>
+							<span class="sales-stat-dollar secondary">${appendSymbol}</span>
 						</g:if>
 						<g:else>
 							<span class="sales-stat-value">--</span>
@@ -624,11 +635,25 @@
     		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
 		
+		var appendSymbol = "${appendSymbol}"
+		var currencySymbol = "${jsCurrencySymbol}";
+		$('.dygraph-axis-label-y').each(function(index){
+			$(this).html($(this).html().replace(/\$/g, ''))
+			if(appendSymbol != ""){
+				console.log(appendSymbol)
+				$(this).append(appendSymbol)
+			}else{
+				$(this).prepend(currencySymbol)
+			}
+			
+		})
+		
 	});
-
+	
 	
 </script>		
-	
+
+
 	
 </body>
 </html>
