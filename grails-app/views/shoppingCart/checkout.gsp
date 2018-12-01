@@ -51,36 +51,36 @@ ${raw(applicationService.getScreenHeader("Checkout Success"))}
 					</td>
 					<td style="text-align:center">
                         <g:if test="${item.regularPrice != item.checkoutPrice}">
-							$${applicationService.formatPrice(item.checkoutPrice)}
-                            <span class="regular-price">$${applicationService.formatPrice(item.regularPrice)}</span>
+							${currencyService.format(applicationService.formatPrice(item.checkoutPrice))}
+                            <span class="regular-price">${currencyService.format(applicationService.formatPrice(item.regularPrice))}</span>
                         </g:if>
 						<g:else>
-							$${applicationService.formatPrice(item.checkoutPrice)}
+							${currencyService.format(applicationService.formatPrice(item.checkoutPrice))}
 						</g:else>
 					</td>
 					<td style="text-align:center">${item.quantity}</td>
 					<td id="extended_price" style="text-align:center">
-						$${applicationService.formatPrice(extendedPrice)}
+						${currencyService.format(applicationService.formatPrice(extendedPrice))}
 					</td>
 				</tr>
 			</g:each>
 			<tr>
 				<td colspan="4" style="text-align:right;">Subtotal</td>
 				<td style="text-align:center; ">
-					$${applicationService.formatPrice(transaction.subtotal)}
+					${currencyService.format(applicationService.formatPrice(transaction.subtotal))}
 				</td>
 			</tr>
 			<tr>
 				<td colspan="4" style="text-align:right; font-size:12px">Taxes (${applicationService.getTaxRate()}%)</td>
-				<td style="text-align:center; font-size:12px;">$${applicationService.formatPrice(transaction.taxes)}</td>
+				<td style="text-align:center; font-size:12px;">${currencyService.format(applicationService.formatPrice(transaction.taxes))}</td>
 			</tr>
 			<tr>
 				<td colspan="4" style="text-align:right;font-size:12px">Shipping</td>
-				<td  style="text-align:center;font-size:12px">$${applicationService.formatPrice(transaction.shipping)}</td>
+				<td  style="text-align:center;font-size:12px">${currencyService.format(applicationService.formatPrice(transaction.shipping))}</td>
 			</tr>
 			<tr>
 				<td colspan="4" style="text-align:right;font-weight:bold;">Total</td>
-				<td style="font-weight:bold; font-size:17px;text-align:center">$${applicationService.formatPrice(transaction.total)}</td>
+				<td style="font-weight:bold; font-size:17px;text-align:center">${currencyService.format(applicationService.formatPrice(transaction.total))}</td>
 			</tr>
 			
 		</tbody>
