@@ -38,6 +38,7 @@
 	
 	<form action="save_settings" class="form-horizontal">
 
+		<!--
 		<div class="form-row">
 			<span class="form-label twohundred">Base Currency
 				<br/>
@@ -62,7 +63,7 @@
 			
 			<br class="clear"/>
 		</div>
-	
+		-->
 	
 		<div class="form-row">
 			<span class="form-label twohundred">Company Name

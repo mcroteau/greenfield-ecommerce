@@ -1,5 +1,6 @@
 #Mon Mar 9 18:37:43 AKDT 2017
 app.context=greenfield
+store.currency=USD
 store.name=
 store.address1=
 store.address2=
