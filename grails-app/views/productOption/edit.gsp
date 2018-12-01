@@ -1,6 +1,7 @@
 <%@ page import="org.greenfield.Product" %>
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 <!DOCTYPE html>
 <html>
@@ -12,7 +13,7 @@
 		
 		<div class="content">
 		
-			<h2>Edit Product Option
+			<h2>Edit Product Option : ${productInstance.name}
 				<g:link controller="product" action="product_options" name="edit" class="btn btn-default pull-right" id="${productInstance.id}">Product Options</g:link>
 			</h2>
 			
@@ -69,7 +70,7 @@
 									</g:if>
 								</td>
 								<td>${variant.name}</td>
-								<td>$${applicationService.formatPrice(variant?.price)}</td>
+								<td>${currencyService.format(applicationService.formatPrice(variant?.price))}</td>
 								<td>
 									<g:link class="btn btn-default" action="edit_variant" id="${variant.id}">Edit</g:link>
 									<g:form action="remove_variant" method="post" id="${variant.id}" style="display:inline-block;">
@@ -114,7 +115,7 @@
 					
 				
 					<div class="form-row">
-						<span class="form-label minimum secondary">Price Adjustment 
+						<span class="form-label minimum secondary">Price Adjustment ${currencyService.getCurrencySymbol()}
 						</span>
 						<span class="input-container">
 							<g:field class="form-control" name="price" value="${price}" style="width:80px;"/>

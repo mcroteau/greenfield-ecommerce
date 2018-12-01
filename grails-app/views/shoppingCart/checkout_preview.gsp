@@ -2,6 +2,7 @@
 <%@ page import="grails.util.Environment" %>
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 	
 
 
@@ -81,7 +82,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 									<strong>options :&nbsp;</strong>
 									<g:each in="${item.shoppingCartItemOptions}" var="option">
 										<span class="option">${option.variant.name}
-											($${applicationService.formatPrice(option.variant.price)})
+											(${currencyService.format(applicationService.formatPrice(option.variant.price))})
 										</span>
 										<br/>
 									</g:each>
@@ -90,27 +91,27 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 						</td>
 						<td>
 						    <g:if test="${item.product.salesPrice}">
-								$${applicationService.formatPrice(item.product.salesPrice)}
-							    <span class="regular-price">$${applicationService.formatPrice(item.product.price)}</span>
+								${currencyService.format(applicationService.formatPrice(item.product.salesPrice))}
+							    <span class="regular-price">${currencyService.format(applicationService.formatPrice(item.product.price))}</span>
 							</g:if>
 							<g:else>
-								$${applicationService.formatPrice(item.product.price)}
+								${currencyService.format(applicationService.formatPrice(item.product.price))}
 							</g:else>
 						</td>
 						<td style="text-align:center">${item.quantity}</td>
 						<td id="extended_price" style="text-align:right;">
-							$${applicationService.formatPrice(extendedPrice)}
+							${currencyService.format(applicationService.formatPrice(extendedPrice))}
 						</td>
 						
 					</tr>
 				</g:each>
 				<tr>
 					<td colspan="4" style="text-align:right;">Subtotal</td>
-					<td style="text-align:right; ">$${applicationService.formatPrice(shoppingCart.subtotal)}</td>
+					<td style="text-align:right; ">${currencyService.format(applicationService.formatPrice(shoppingCart.subtotal))}</td>
 				</tr>
 				<tr>
 					<td colspan="4" style="text-align:right; font-size:12px">Taxes (${applicationService.getTaxRate()}%)</td>
-					<td style="text-align:right; font-size:12px;">$${applicationService.formatPrice(shoppingCart.taxes)}</td>
+					<td style="text-align:right; font-size:12px;">${currencyService.format(applicationService.formatPrice(shoppingCart.taxes))}</td>
 				</tr>
 				<tr>
 					<td colspan="4" style="text-align:right;font-size:12px">
@@ -123,7 +124,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 						</g:if>	
 					</td>
 					<td  style="text-align:right;font-size:12px">
-						$${applicationService.formatPrice(shoppingCart.shipping)}
+						${currencyService.format(applicationService.formatPrice(shoppingCart.shipping))}
 						<g:if test="${shoppingCart.shipmentId != 'BASE'}">
 							<g:link controller="shipping" action="select" id="${shoppingCart.id}" style="display:block; font-size:11px;">Change Shipping</g:link>
 						</g:if>
@@ -131,7 +132,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				</tr>
 				<tr>
 					<td colspan="4" style="text-align:right;font-weight:bold;">Total</td>
-					<td style="font-weight:bold; font-size:17px;text-align:right">$${applicationService.formatPrice(shoppingCart.total)}</td>
+					<td style="font-weight:bold; font-size:17px;text-align:right">${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</td>
 				</tr>
 			</tbody>
 		</table>

@@ -41,6 +41,7 @@ class ShoppingCartController {
 
 	def emailService
 	def applicationService
+	def currencyService
 	def springSecurityService
 
 
@@ -482,7 +483,7 @@ class ShoppingCartController {
 				
     			def chargeParams = [
     			    'amount': amountInCents, 
-    			    'currency': 'usd', 
+    			    'currency': currencyService.getCurrency().toLowerCase(), 
     			    'source': token, 
     			    'description': "Order Placed. Account -> ${account.id} : ${account.username}"
     			]

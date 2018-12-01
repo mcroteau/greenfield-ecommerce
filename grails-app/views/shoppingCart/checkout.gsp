@@ -1,6 +1,7 @@
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
 %>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 ${raw(applicationService.getScreenHeader("Checkout Success"))}
 
@@ -41,7 +42,7 @@ ${raw(applicationService.getScreenHeader("Checkout Success"))}
 								<strong>options :&nbsp;</strong>
 								<g:each in="${item.shoppingCartItemOptions}" var="option">
 									<span class="option">${option.variant.name}
-										($${applicationService.formatPrice(option.checkoutPrice)})
+										(${currencyService.format(applicationService.formatPrice(option.checkoutPrice))})
 									</span>
 									<br/>
 								</g:each>

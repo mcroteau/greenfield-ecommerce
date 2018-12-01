@@ -1,5 +1,6 @@
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 
 ${raw(applicationService.getCatalogHeader(catalogInstance, "Products", false, params))}
@@ -94,13 +95,13 @@ for (Object param : keys) {
 			<g:link controller="product" action="details" id="${productInstance.id}">
 				<g:if test="${productInstance.salesPrice}">
 					<div class="price-details">
-						<span class="sales-price">$${applicationService.formatPrice(productInstance.price)}</span>
-						<span class="product-price">$${applicationService.formatPrice(productInstance.salesPrice)}</span>
+						<span class="sales-price">${currencyService.format(applicationService.formatPrice(productInstance.price))}</span>
+						<span class="product-price">${currencyService.format(applicationService.formatPrice(productInstance.salesPrice))}</span>
 					</div>
 				</g:if>
 				<g:else>
 					<div class="price-details">
-						<span class="product-price">$${applicationService.formatPrice(productInstance.price)}</span>
+						<span class="product-price">${currencyService.format(applicationService.formatPrice(productInstance.price))}</span>
 						<span class="sales-price"></span>
 					</div>
 				</g:else>
