@@ -14,6 +14,8 @@
 	<script type="text/javascript" src="${resource(dir:'js/lib/ckeditor/4.4.0/ckeditor.js')}"></script>
 	<script type="text/javascript" src="${resource(dir:'js/lib/ckeditor/4.4.0/styles.js')}"></script>
 	
+	<link rel="stylesheet" href="${resource(dir:'css', file:'admin.css')}" />
+	
 </head>
 <body>
 

@@ -12,6 +12,9 @@
 	</style>
 		
 	<link rel="stylesheet" href="${resource(dir:'js/lib/ckeditor/4.4.0', file:'contents.css')}" />	
+	
+	<link rel="stylesheet" href="${resource(dir:'css', file:'admin.css')}" />
+	
 </head>
 <body>
 

@@ -5,15 +5,18 @@
 	<meta name="layout" content="admin">
 	<g:set var="entityName" value="${message(code: 'catalog.label', default: 'Catalog')}" />
 	<title>Greenfield : Settings</title>
+	<link rel="stylesheet" href="${resource(dir:'js/lib/ckeditor/4.4.0', file:'contents.css')}" />	
+	<script type="text/javascript" src="${resource(dir:'js/lib/ckeditor/4.4.0/ckeditor.js')}"></script>
+	<script type="text/javascript" src="${resource(dir:'js/lib/ckeditor/4.4.0/styles.js')}"></script>
+
 	<style type="text/css">
 		.section{
 			margin:10px 20px 30px 0px;
 		}
 	</style>
-		
-	<link rel="stylesheet" href="${resource(dir:'js/lib/ckeditor/4.4.0', file:'contents.css')}" />	
-	<script type="text/javascript" src="${resource(dir:'js/lib/ckeditor/4.4.0/ckeditor.js')}"></script>
-	<script type="text/javascript" src="${resource(dir:'js/lib/ckeditor/4.4.0/styles.js')}"></script>
+	
+	<link rel="stylesheet" href="${resource(dir:'css', file:'admin.css')}" />
+	
 </head>
 <body>
 
@@ -34,6 +37,21 @@
 	
 	
 	<form action="save_settings" class="form-horizontal">
+
+		<div class="form-row">
+			<span class="form-label twohundred">Country/Currency
+				<br/>
+				<span class="information secondary">Greenfield currently supports US $ Dollar and the European Euro</span>
+			</span>
+			<span class="input-container">
+				<select name="storeCurrency" class="form-control" style="width:200px;">
+					<option>USD - US Dollar</option>
+					<option>EUR - Euro</option>
+				</select>
+			</span>
+			
+			<br class="clear"/>
+		</div>
 	
 	
 		<div class="form-row">
