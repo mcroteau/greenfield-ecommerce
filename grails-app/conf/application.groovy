@@ -35,3 +35,5 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 grails.plugin.springsecurity.shiro.active = true
 grails.plugin.springsecurity.logout.postOnly = false
 grails.plugin.springsecurity.shiro.permissionDomainClassName = 'org.greenfield.Permission'
+//grails.plugin.springsecurity.successHandler.alwaysUseDefault = true
+//grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/admin'

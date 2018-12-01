@@ -39,15 +39,25 @@
 	<form action="save_settings" class="form-horizontal">
 
 		<div class="form-row">
-			<span class="form-label twohundred">Country/Currency
+			<span class="form-label twohundred">Base Currency
 				<br/>
-				<span class="information secondary">Greenfield currently supports US $ Dollar and the European Euro</span>
+				<span class="information secondary">Stripe is currently supported in 26 countries.</span>
 			</span>
 			<span class="input-container">
 				<select name="storeCurrency" class="form-control" style="width:200px;">
-					<option>USD - US Dollar</option>
-					<option>EUR - Euro</option>
+					<option>$  USD - US Dollar</option>
+					<option>£  GBP - United Kingdom</option>
+					<option>€  EUR - France</option>
+					<option>€  EUR - Germany</option>
+					<option>€  EUR - The Netherlands</option>
+					<option>¥  YEN - Japan</option>
+					<option>$  HKD - Hong Kong</option>
+					<option>(R$ BRL - Brazil: By invite only)</option>
 				</select>
+			</span>
+			
+			<span class="information pull-left">
+				<a href="https://stripe.com/br/pricing" target="_blank">Request an Invite (Brazil)</a>
 			</span>
 			
 			<br class="clear"/>

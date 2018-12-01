@@ -50,7 +50,15 @@
 		src: url("${resource(dir:'fonts/Roboto-Medium.ttf')}"); 
 	}
 
+	#seeking-developers-container{
+		width:200px;
+		left:1000px;
+		position:absolute;
+	}
 	
+	#seeking-developers{
+	}
+
 	.table{
 		border-collapse:collapse !important;
 	}
@@ -59,6 +67,10 @@
 
 </head>
 <body>
+	
+	<div id="seeking-developers-container" class="alert alert-info">
+		<g:message code="interested.contributing"/>
+	</div>
 	
 	<div id="greenfield-header"></div>
 	
