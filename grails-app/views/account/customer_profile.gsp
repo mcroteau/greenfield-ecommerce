@@ -96,6 +96,7 @@ ${raw(applicationService.getDefaultHeader("Account Info"))}
 							value="${accountInstance?.state?.country?.id}"
 							optionKey="id" 
 							optionValue="name"
+							class="form-control"
 							id="countrySelect"/>
 				</div>
 				
@@ -105,7 +106,8 @@ ${raw(applicationService.getDefaultHeader("Account Info"))}
 							from="${State.list()}"
 							value="${accountInstance?.state?.id}"
 							optionKey="id" 
-							optionValue="name" 
+							optionValue="name"
+							class="form-control" 
 							id="stateSelect"/>
 				</div>
 				
