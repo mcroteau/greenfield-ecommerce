@@ -175,10 +175,16 @@ class ShoppingCartController {
 		}else{
 			
 			if(session['shoppingCart']){
-				
+				println "here..."
 				def uuid = session['shoppingCart']
 				shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
 			
+				if(!shoppingCart){
+					shoppingCart = new ShoppingCart()
+					session['shoppingCart'] = shoppingCart.uuid
+					shoppingCart.status = ShoppingCartStatus.ACTIVE.description()
+					shoppingCart.save(flush:true)
+				}
 			}else{
 			
 				shoppingCart = new ShoppingCart()
