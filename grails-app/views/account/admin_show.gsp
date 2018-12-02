@@ -111,7 +111,27 @@
 						<br class="clear"/>
 					</div>
 				
+
 				
+				
+				
+					<div class="form-row">
+					  	<label for="country" class="form-label full">Country</label>
+						<span class="input-container">
+							<g:select name="country.id"
+									from="${countries}"
+									value="${accountInstance?.state?.country?.id}"
+									optionKey="id" 
+									optionValue="name"
+									class="form-control"
+									id="countrySelect"
+									disabled="disabled"/>
+						</span>
+						<br class="clear"/>
+					</div>
+
+
+
 
 					<div class="form-row">
 						<span class="form-label full">State</span>

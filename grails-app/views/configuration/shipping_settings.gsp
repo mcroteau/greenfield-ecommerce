@@ -171,78 +171,28 @@
 		
 	</form>
 	
+
+	<script type="text/javascript" src="${resource(dir:'js/country_states.js')}"></script>
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
 			
-			
-			function CountryStateHelper(){
-				
-				var $stateSelect = $('#stateSelect');
-				var $countrySelect = $('#countrySelect');
-			
-				var $easypost = $('#easypostEnabled');
-				var $easypostSettings = $('#easypostSettings');
-			
-				$easypost.click(toggleEasyPost);
-			
-				function toggleEasyPost(){
-					$easypostSettings.toggle();
-				}
-			
-				if(!$easypost.prop('checked')){
-					$easypostSettings.hide();
-				}
-			
-			
-				var baseUrl = "/${applicationService.getContextName()}/data/states?"
-
-				function init(state){
-					getStates($countrySelect.val()).then(renderStates).then(setState(state));
-					$countrySelect.change(getStatesAction)
-				}
-			
-			
-				function setState(state){
-					return function(){
-						//console.log(${shipping_settings?.state})
-						$stateSelect.val(state)
-					}
-				}
-			
-				function getStatesAction(event){
-					//console.log(event)
-					var country = $countrySelect.val()
-					getStates(country).then(renderStates);
-				}
-
-				function getStates(country){
-					var countryParam = "country=" + country;
-					var url = baseUrl + countryParam
-					return $.ajax({
-						url : url,
-						type : 'get',
-						dataType : 'json',
-						contentType : 'application/json'
-					})
-				}
-					
-				
-				function renderStates(data, response){
-					$stateSelect.find("option").remove()
-					//console.log($stateSelect)
-					//console.log(data)
-					$(data).each(function(index){
-						//console.log(index)
-						//console.log(this)
-						$stateSelect.append("<option value=\"" + this.id + "\">" + this.name + "</option>");
-					})
-				}
-				
+		
+			var $easypost = $('#easypostEnabled');
+			var $easypostSettings = $('#easypostSettings');
+		
+			$easypost.click(toggleEasyPost);
+		
+			function toggleEasyPost(){
+				$easypostSettings.toggle();
+			}
+		
+			if(!$easypost.prop('checked')){
+				$easypostSettings.hide();
 			}
 			
-			
-			CountryStateHelper.init(${shipping_settings?.state})
+				
+			countryStatesInit("${applicationService.getContextName()}", ${shipping_settings?.state})
 			
 		});
 	</script>

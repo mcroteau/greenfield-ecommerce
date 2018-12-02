@@ -1,6 +1,9 @@
 <%@ page import="org.greenfield.Account" %>
 <%@ page import="org.greenfield.common.RoleName" %>
 <%@ page import="org.greenfield.State" %>
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -117,7 +120,25 @@
 				</div>
 				
 				
-
+				
+				
+				<div class="form-row">
+				  	<label for="country" class="form-label full">Country</label>
+					<span class="input-container">
+						<g:select name="country.id"
+								from="${countries}"
+								value="${accountInstance?.state?.country?.id}"
+								optionKey="id" 
+								optionValue="name"
+								class="form-control"
+								id="countrySelect"/>
+					</span>
+					<br class="clear"/>
+				</div>
+				
+				
+				
+				
 				<div class="form-row">
 					<span class="form-label full">State</span>
 					<span class="input-container">	
@@ -126,7 +147,8 @@
 								value="${accountInstance?.state?.id}"
 								optionKey="id" 
 								optionValue="name" 
-								class="form-control"/>
+								class="form-control"
+								id="stateSelect"/>
 					</span>
 					<br class="clear"/>	
 				</div>
@@ -181,7 +203,17 @@
 	
 		</div>
 	
-	</div>
+	</div>	
+	
+	
+	<script type="text/javascript" src="${resource(dir:'js/country_states.js')}"></script>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//TODO:object orient this
+			countryStatesInit("${applicationService.getContextName()}", ${accountInstance?.state?.id})
+		})
+	</script>
 	
 	</body>
 </html>

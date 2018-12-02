@@ -90,7 +90,7 @@ ${raw(applicationService.getDefaultHeader("Account Info"))}
 				</div>
 				
 				<div class="form-group">
-				  	<label for="state" class="col-sm-4 control-label">Country</label>
+				  	<label for="country" class="col-sm-4 control-label">Country</label>
 					<g:select name="country.id"
 							from="${countries}"
 							value="${accountInstance?.state?.country?.id}"
@@ -130,52 +130,13 @@ ${raw(applicationService.getDefaultHeader("Account Info"))}
 			</g:form>
 		</div>
 		
+
+		<script type="text/javascript" src="${resource(dir:'js/country_states.js')}"></script>
 		
 		<script type="text/javascript">
 			$(document).ready(function(){
-		
-				var baseUrl = "/${applicationService.getContextName()}/data/states?"
-				
-				var $countrySelect = $("#countrySelect");
-				var $stateSelect = $("#stateSelect");
-					
-				getStates($countrySelect.val()).then(renderStates).then(setState);
-
-				$countrySelect.change(getStatesAction)
-				
-				function setState(event){
-					$stateSelect.val(${accountInstance?.state?.id})
-				}
-				
-				function getStatesAction(event){
-					//console.log(event)
-					var country = $countrySelect.val()
-					getStates(country).then(renderStates);
-				}
-
-				function getStates(country){
-					var countryParam = "country=" + country;
-					var url = baseUrl + countryParam
-					return $.ajax({
-						url : url,
-						type : 'get',
-						dataType : 'json',
-						contentType : 'application/json'
-					})
-				}
-						
-					
-				function renderStates(data, response){
-					$stateSelect.find("option").remove()
-					//console.log($stateSelect)
-					//console.log(data)
-					$(data).each(function(index){
-						//console.log(index)
-						//console.log(this)
-						$stateSelect.append("<option value=\"" + this.id + "\">" + this.name + "</option>");
-					})
-				}
-
+				//TODO:object orient this
+				countryStatesInit("${applicationService.getContextName()}", ${accountInstance?.state?.id})
 			})
 		</script>
 

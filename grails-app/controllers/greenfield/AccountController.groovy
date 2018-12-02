@@ -558,7 +558,7 @@ class AccountController {
 			if(params.admin == "true"){
 				request.admin = "true"
 			}			
-        	[accountInstance: new Account(params)]
+        	[accountInstance: new Account(params), countries: Country.list()]
 		}	
 	}	
 
@@ -572,7 +572,7 @@ class AccountController {
        		    redirect(action: "admin_list")
        		    return
        		}  		
-       		[accountInstance: accountInstance]
+       		[accountInstance: accountInstance, countries: Country.list()]
 		}	
 	}
 	
@@ -590,7 +590,7 @@ class AccountController {
 			def admin = false
 			if(accountInstance.hasAdminRole)admin = true
 			
-        	[accountInstance: accountInstance, admin : admin]
+        	[accountInstance: accountInstance, admin : admin, countries: Country.list()]
 		}
 	}
 	
