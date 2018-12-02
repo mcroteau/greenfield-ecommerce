@@ -2,8 +2,7 @@
 <%@ page import="grails.util.Environment" %>
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
-	
-
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>	
 
 ${raw(applicationService.getScreenHeader("Checkout"))}
 
@@ -81,7 +80,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 									<strong>options :&nbsp;</strong>
 									<g:each in="${item.shoppingCartItemOptions}" var="option">
 										<span class="option">${option.variant.name}
-											($${applicationService.formatPrice(option.variant.price)})
+											(${currencyService.format(applicationService.formatPrice(option.variant.price))})
 										</span>
 										<br/>
 									</g:each>
@@ -89,25 +88,25 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 							</g:if>
 						</td>
 						<td>
-						    $${applicationService.formatPrice(productTotal)}
+						    ${currencyService.format(applicationService.formatPrice(productTotal))}
 						    <g:if test="${item.product.salesPrice}">
-						        <span class="regular-price">$${applicationService.formatPrice(item.product.price)}</span>
+						        <span class="regular-price">${currencyService.format(applicationService.formatPrice(item.product.price))}</span>
 						    </g:if>
 						</td>
 						<td style="text-align:center">${item.quantity}</td>
 						<td id="extended_price" style="text-align:right;">
-							$${applicationService.formatPrice(extendedPrice)}
+							${currencyService.format(applicationService.formatPrice(extendedPrice))}
 						</td>
 						
 					</tr>
 				</g:each>
 				<tr>
 					<td colspan="4" style="text-align:right;">Subtotal</td>
-					<td style="text-align:right; ">$${applicationService.formatPrice(shoppingCart.subtotal)}</td>
+					<td style="text-align:right; ">${currencyService.format(applicationService.formatPrice(shoppingCart.subtotal))}</td>
 				</tr>
 				<tr>
 					<td colspan="4" style="text-align:right; font-size:12px">Taxes (${applicationService.getTaxRate()}%)</td>
-					<td style="text-align:right; font-size:12px;">$${applicationService.formatPrice(shoppingCart.taxes)}</td>
+					<td style="text-align:right; font-size:12px;">${currencyService.format(applicationService.formatPrice(shoppingCart.taxes))}</td>
 				</tr>
 				<tr>
 					<td colspan="4" style="text-align:right;font-size:12px">
@@ -120,7 +119,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 						</g:if>	
 					</td>
 					<td  style="text-align:right;font-size:12px">
-						$${applicationService.formatPrice(shoppingCart.shipping)}
+						${currencyService.format(applicationService.formatPrice(shoppingCart.shipping))}
 						<g:if test="${shoppingCart.shipmentId != 'BASE'}">
 							<g:link controller="shipping" action="select" id="${shoppingCart.id}" style="display:block; font-size:11px;">Change Shipping</g:link>
 						</g:if>
@@ -128,7 +127,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				</tr>
 				<tr>
 					<td colspan="4" style="text-align:right;font-weight:bold;">Total</td>
-					<td style="font-weight:bold; font-size:17px;text-align:right">$${applicationService.formatPrice(shoppingCart.total)}</td>
+					<td style="font-weight:bold; font-size:17px;text-align:right">${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -142,7 +141,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				
 				<h3>Shipping Address</h3>
 
-				<p class="secondary information">Please complete the form below to complete your order. Thank you.</p>
+				<p class="secondary information">Please complete the form below to complete your order.</p>
 				
 				<div class="clear"></div>
 
@@ -171,6 +170,21 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 					<label class="col-sm-4 control-label">City</label>
 					<input type="text" class="form-control shipping-info" name="city" value="${accountInstance?.city}" id="city"/>
 				</div>
+				
+
+				
+				<div class="form-group">
+				  	<label for="country" class="col-sm-4 control-label">Country</label>
+					<g:select name="country.id"
+							from="${countries}"
+							value="${accountInstance?.state?.country?.id}"
+							optionKey="id" 
+							optionValue="name"
+							class="form-control"
+							id="countrySelect"/>
+				</div>
+				
+				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">State</label>
 					<g:select name="state"
@@ -232,7 +246,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 			</form>
 			
 			<div class="form-group" style="position:relative; text-align:center;">
-				<button id="submit" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px; background:#3276B1 !important">Pay $${applicationService.formatPrice(shoppingCart.total)}</button>
+				<button id="submit" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px; background:#3276B1 !important">Pay ${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</button>
 				<br/>
 				<span class="pull-right" id="processing" style="display:none">
 					Processing checkout, please wait&nbsp;
@@ -248,7 +262,12 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 	</g:else>
 
 	<br class="clear"/>
-	
+
+		
+
+<script type="text/javascript" src="${resource(dir:'js/country_states.js')}"></script>
+		
+				
 <script type="text/javascript">
 			
 $(document).ready(function(){
@@ -374,6 +393,7 @@ $(document).ready(function(){
 	initialize()
 
 
+	countryStatesInit("${applicationService.getContextName()}", 1000)
 
 
 })

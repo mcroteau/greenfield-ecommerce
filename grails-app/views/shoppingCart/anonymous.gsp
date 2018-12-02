@@ -1,6 +1,6 @@
 <%@ page import="org.greenfield.ApplicationService" %>
-<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
-%>
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 ${raw(applicationService.getScreenHeader("Checkout Preview"))}
 
@@ -47,7 +47,7 @@ ${raw(applicationService.getScreenHeader("Checkout Preview"))}
 									<strong>options :&nbsp;</strong>
 									<g:each in="${item.shoppingCartItemOptions}" var="option">
 										<span class="option">${option.variant.name}
-											($${applicationService.formatPrice(option.variant.price)})
+											(${currencyService.format(applicationService.formatPrice(option.variant.price))})
 										</span>
 										<br/>
 									</g:each>
@@ -55,14 +55,14 @@ ${raw(applicationService.getScreenHeader("Checkout Preview"))}
 							</g:if>
 						</td>
 						<td style="text-align:center">
-							$${applicationService.formatPrice(productTotal)}
+							${currencyService.format(applicationService.formatPrice(productTotal))}
 						    <g:if test="${item.product.salesPrice}">
-						        <span class="regular-price">$${applicationService.formatPrice(item.product.price)}</span>
+						        <span class="regular-price">${currencyService.format(applicationService.formatPrice(item.product.price))}</span>
 						    </g:if>
 						</td>
 						<td style="text-align:center">${item.quantity}</td>
 						<td  style="text-align:center" id="extended_price">
-							$${applicationService.formatPrice(extendedPrice)}
+							${currencyService.format(applicationService.formatPrice(extendedPrice))}
 						</td>
 						<td>
 							<g:form controller="shoppingCart" action="remove_item" method="get" id="${shoppingCartInstance.id}">
@@ -75,7 +75,7 @@ ${raw(applicationService.getScreenHeader("Checkout Preview"))}
 				</g:each>
 				<tr>
 					<td colspan="4" style="text-align:right;">Subtotal</td>
-					<td style="text-align:center; ">$${applicationService.formatPrice(shoppingCartInstance.subtotal)}</td>
+					<td style="text-align:center; ">${currencyService.format(applicationService.formatPrice(shoppingCartInstance.subtotal))}</td>
 					<td></td>
 				</tr>
 			</tbody>

@@ -29,6 +29,7 @@ import org.greenfield.Transaction
 import org.greenfield.Permission
 import org.greenfield.Variant
 import org.greenfield.State
+import org.greenfield.Country
 
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -329,7 +330,7 @@ class ShoppingCartController {
 			e.printStackTrace()
 		}
 	
-		[ shoppingCart: shoppingCart ]
+		[ shoppingCart: shoppingCart, countries: Country.list() ]
 	}
 	
 	

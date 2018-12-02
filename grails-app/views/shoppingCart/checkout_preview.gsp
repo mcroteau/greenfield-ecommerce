@@ -264,7 +264,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 			</form>
 			
 			<div class="form-group" style="position:relative; text-align:center;">
-				<button id="submit" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px; background:#3276B1 !important">Pay $${applicationService.formatPrice(shoppingCart.total)}</button>
+				<button id="submit" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px; background:#3276B1 !important">Pay ${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</button>
 				<br/>
 				<span class="pull-right" id="processing" style="display:none">
 					Processing checkout, please wait&nbsp;

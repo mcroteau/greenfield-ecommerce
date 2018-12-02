@@ -19,22 +19,30 @@ public class CountryStateHelper{
 		[
 			"name" : "Germany",
 			"states": ["Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", "Bremen", "Hamburg", "Hessen", "Niedersachsen", 
-		"Mecklenburg-Vorpommern", "Nordrhein-Westfalen (NRW)", "Rheinland-Pfalz", "Saarland", "Sachsen", "Sachsen-Anhalt", 
-		"Schleswig-Holstein", "Thüringen"]			
+			"Mecklenburg-Vorpommern", "Nordrhein-Westfalen (NRW)", "Rheinland-Pfalz", "Saarland", "Sachsen", "Sachsen-Anhalt", 
+			"Schleswig-Holstein", "Thüringen"]			
 		],
 		[
 			"name": "France",
 			"states": ["Auvergne - Rhône-Alpes", "Bretagne (Brittany)", "Bourgogne - Franche-Comté", "Corse", 
-		"Centre - Val de Loire", "Grand Est", "Hauts de France", "Ile de France", "Nouvelle Aquitaine", "Normandie", 
-		"Occitanie (Midi-Pyrénées, Languedoc)", "Pays de la Loire", "Provence - Cote d'Azur"]
+			"Centre - Val de Loire", "Grand Est", "Hauts de France", "Ile de France", "Nouvelle Aquitaine", "Normandie", 
+			"Occitanie (Midi-Pyrénées, Languedoc)", "Pays de la Loire", "Provence - Cote d'Azur"]
 		],
 		[
-		"name": "Brazil",
-		"states": ["Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", 
-		"Goiás", "Maranhão", "Mato GrossoMato Grosso do Sul", "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", 
-		"Piaui", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", 
-		"Santa Catarina", "São Paulo", "Sergipe", "Tocantins"]
+			"name": "Brazil",
+			"states": ["Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", 
+			"Goiás", "Maranhão", "Mato GrossoMato Grosso do Sul", "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", 
+			"Piaui", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", 
+			"Santa Catarina", "São Paulo", "Sergipe", "Tocantins"]
+		],
+		[
+			"name": "India",
+			"states": ["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", 
+			"Haryana", "Himachal Pradesh", "Jammu & Kashmir", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", 
+			"Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", 
+			"Tamil Nadu", "Telangana", "Tripura", "Uttarakhand", "Uttar Pradesh", "West Bengal"]
 		]
+		
 	]
 
 }

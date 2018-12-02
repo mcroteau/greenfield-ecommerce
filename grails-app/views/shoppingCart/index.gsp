@@ -1,6 +1,5 @@
 <%@ page import="org.greenfield.ApplicationService" %>
-<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
-%>
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
 <% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 ${raw(applicationService.getScreenHeader("Checkout Preview"))}
@@ -61,7 +60,7 @@ ${raw(applicationService.getScreenHeader("Checkout Preview"))}
 							    <span class="regular-price">${currencyService.format(applicationService.formatPrice(item.product.price))}</span>
 							</g:if>
 							<g:else>
-								$${applicationService.formatPrice(item.product.price)}
+								${currencyService.format(applicationService.formatPrice(item.product.price))}
 							</g:else>
 						</td>
 						<td style="text-align:center">${item.quantity}</td>
