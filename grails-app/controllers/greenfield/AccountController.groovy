@@ -29,6 +29,7 @@ import org.greenfield.log.ProductViewLog
 import org.greenfield.log.PageViewLog
 import org.greenfield.log.CatalogViewLog
 import org.greenfield.log.SearchLog
+import org.greenfield.Country
 
 import javax.imageio.ImageIO
 import grails.plugin.springsecurity.annotation.Secured
@@ -49,7 +50,7 @@ class AccountController {
 	@Secured(['ROLE_CUSTOMER', 'ROLE_ADMIN'])
 	def customer_profile(){
 		authenticatedAccount { accountInstance ->
-			[accountInstance : accountInstance]
+			[accountInstance : accountInstance, countries: Country.list()]
 		}
 	}	
 	

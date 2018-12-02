@@ -17,6 +17,7 @@ import com.easypost.model.Shipment
 import com.easypost.exception.EasyPostException
 import grails.util.Environment
 
+import org.greenfield.Country
 import org.greenfield.State
 import org.greenfield.Upload
 import org.greenfield.Product
@@ -38,6 +39,7 @@ class ConfigurationController {
 	private final String STORE_ADDRESS1 = "store.address1"
 	private final String STORE_ADDRESS2 = "store.address2"
 	private final String STORE_CITY = "store.city"
+	private final String STORE_COUNTRY = "store.country"
 	private final String STORE_STATE = "store.state"
 	private final String STORE_ZIP = "store.zip"
 	private final String STORE_SHIPPING = "store.shipping"
@@ -386,6 +388,7 @@ class ConfigurationController {
 				shipping_settings["address1"] = prop.getProperty(STORE_ADDRESS1);
 				shipping_settings["address2"] = prop.getProperty(STORE_ADDRESS2);
 				shipping_settings["city"] = prop.getProperty(STORE_CITY);
+				shipping_settings["country"] = prop.getProperty(STORE_COUNTRY);
 				shipping_settings["state"] = prop.getProperty(STORE_STATE);
 				shipping_settings["zip"] = prop.getProperty(STORE_ZIP);
 				shipping_settings["shipping"] = prop.getProperty(STORE_SHIPPING);
@@ -396,7 +399,7 @@ class ConfigurationController {
 				shipping_settings["testApiKey"] = prop.getProperty(EASYPOST_TEST_API_KEY);
 				shipping_settings["liveApiKey"] = prop.getProperty(EASYPOST_LIVE_API_KEY);
 				
-				[ shipping_settings : shipping_settings ]
+				[ shipping_settings : shipping_settings, countries: Country.list() ]
 				
 			} catch (IOException e){
 			    log.debug"Exception occured while reading properties file :"+e
@@ -420,6 +423,7 @@ class ConfigurationController {
 			String address1 = params.address1
 			String address2 = params.address2
 			String city = params.city
+			String countryId = params.country
 			String stateId = params.state
 			String zip = params.zip
 			
@@ -428,6 +432,16 @@ class ConfigurationController {
 			
 			if(!easypostEnabled)easypostEnabled = false
 			
+			if(!countryId || !countryId.isInteger()){
+				flash.error = "Something went wrong, please try again"
+				redirect(action : 'shipping_settings')
+			}
+			
+			def country = Country.get(countryId)
+			if(!country){
+				flash.error = "Something went wrong"
+				redirect(action : 'shipping_settings')
+			}
 			
 			if(!stateId || !stateId.isInteger()){
 				flash.error = "Something went wrong, please try again"
@@ -465,6 +479,7 @@ class ConfigurationController {
 		    	addressMap.put("company_name", "testing")//TODO:remove
 		    	addressMap.put("street1", address1);
 		    	addressMap.put("street2", address2);
+		    	addressMap.put("country", country.name);
 		    	addressMap.put("state", state.name);
 				addressMap.put("city", city);
 				addressMap.put("zip", zip);
@@ -503,6 +518,7 @@ class ConfigurationController {
 				prop.setProperty(STORE_ADDRESS1, address1);
 				prop.setProperty(STORE_ADDRESS2, address2);
 				prop.setProperty(STORE_CITY, city);
+				prop.setProperty(STORE_COUNTRY, countryId);
 				prop.setProperty(STORE_STATE, stateId);
 				prop.setProperty(STORE_ZIP, zip);
 				

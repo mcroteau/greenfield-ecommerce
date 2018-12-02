@@ -17,9 +17,7 @@
 </style>
 
 <div id="wrapper">
-	<h3>Wait a minute, what are you doing here? <br/>
-	You're not supposed to be accessing this stuff. Nice try. <br/>
-	Let's get you back to where you belong.</h3>
+	<h3>You do not have access to the resource requested</h3>
 
 	<p><g:link controller="store" action="index">Back to the store</g:link></p>
 </div>

@@ -62,14 +62,19 @@
 					<option>$  HKD - Hong Kong</option>-->
 					<option value="BRL" <%=brl%>>(R$ BRL - Brazil: By invite only)</option>
 				</select>
+				<br/>
+				<span class="information secondary">Greenfield is configured to handle the country currencies listed.<br/> You can add more by editing CountryStatesHelper and CurrencyService</span>
+
+				<br/>
+				<span class="information">
+					<a href="https://stripe.com/br/pricing" target="_blank">Request an Invite (Brazil)</a>
+				</span>
+
+				<br class="clear"/>
 			</span>
 			
-			<span class="information pull-left">
-				<a href="https://stripe.com/br/pricing" target="_blank">Request an Invite (Brazil)</a>
-			</span>
-			
-			<br class="clear"/>
 		</div>
+				<br class="clear"/>
 	
 		<div class="form-row">
 			<span class="form-label twohundred">Company Name

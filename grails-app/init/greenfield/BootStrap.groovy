@@ -33,6 +33,7 @@ import org.greenfield.log.SearchLog
 import java.util.Random
 import groovy.io.FileType			
 			
+import org.greenfield.CountryStateHelper
 
 class BootStrap {
 
@@ -60,8 +61,7 @@ class BootStrap {
 		println "***********************************************"
 		println "*******            Bootstrap            *******"
 		println "***********************************************"
-		createCountries()
-		createStates()
+		createCountriesAndStates()
 		createLayout()
 		createPages()
 		createRoles()
@@ -236,7 +236,28 @@ class BootStrap {
     
 	
 	
-	def createCountries(){
+	def createCountriesAndStates(){
+		CountryStateHelper countryStateHelper = new CountryStateHelper()
+		countryStateHelper.countryStates.each(){ countryData ->
+			def country = new Country()
+			country.name = countryData.name
+			country.save(flush:true)
+			
+			countryData.states.each(){ stateData ->
+				def state = new State()
+				state.country = country
+				state.name = stateData
+				state.save(flush:true)
+			}
+		}
+
+		println "Countries : ${Country.count()}"
+		println "States : ${State.count()}"
+	}
+	
+	
+	
+	def createCountriesOLD(){
 		if(Country.count() == 0){
 			def usa = new Country()
 			usa.name = "United States"
@@ -247,7 +268,7 @@ class BootStrap {
 	
 	
 	
-	def createStates(){
+	def createStatesOLD(){
 	
 		if(State.count() == 0){
 			def usa = Country.findByName('United States')
@@ -292,7 +313,6 @@ class BootStrap {
 			cn.country = usa
 			cn.save(flush:true)
         	
-			
 			def dc = new State()
 			dc.name = 'Dist. Of Columbia'
 			dc.country = usa

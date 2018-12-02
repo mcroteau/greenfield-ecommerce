@@ -1,4 +1,8 @@
 <%@ page import="org.greenfield.State" %>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,6 +71,22 @@
 			</span>
 			<br class="clear"/>
 		</div>
+
+		
+		<div class="form-row">
+		  	<label class="form-label twohundred">Country</label>
+			<span class="input-container">
+				<g:select name="country"
+						from="${countries}"
+						value="${shipping_settings?.country}"
+						optionKey="id" 
+						optionValue="name"
+					    class="form-control"
+						id="countrySelect"/>
+			</span>
+			<br class="clear"/>
+		</div>
+		
 		
 		<div class="form-row">
 			<span class="form-label twohundred">State</span>
@@ -76,12 +96,13 @@
 			          value="${shipping_settings?.state}"
 			          optionKey="id" 
 					  optionValue="name"
-					  id="shipState"
+					  id="stateSelect"
 					  class="form-control"
 					  style="width:175px;"/>
 			</span>
 			<br class="clear"/>
 		</div>
+		
 		
 		<div class="form-row">
 			<span class="form-label twohundred">Zip</span>
@@ -96,7 +117,7 @@
 		<h4>Rate Settings</h4>
 		
 		<div class="form-row">
-			<span class="form-label twohundred">Flat Rate Shipping $
+			<span class="form-label twohundred">Flat Rate Shipping ${currencyService.getCurrencySymbol()}
 				<p class="information secondary">Used when EasyPost is not enabled.</p>
 			</span>
 			<span class="input-container">
@@ -113,7 +134,7 @@
 			<br class="clear"/>
 		</div>
 		
-		<p class="information secondary"><strong>EasyPost</strong> integrates USPS, UPS, DHL and FedEx with Greenfield for realtime shipping calculations and shipping labels.  You will need an account with EasyPost to take advantage of these features.  <a href="http://easypost.com" target="_blank">EasyPost's Website</a>.</p>
+		<p class="information secondary"><strong>EasyPost</strong> integrates USPS, UPS, DHL and FedEx with Greenfield for realtime shipping calculations and shipping labels.  You will need an account with EasyPost to take advantage of these features.  <a href="http://easypost.com" target="_blank">EasyPost Website</a>.</p>
 		
 		
 
@@ -153,18 +174,75 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
-			var $easypost = $('#easypostEnabled');
-			var $easypostSettings = $('#easypostSettings');
 			
-			$easypost.click(toggleEasyPost);
 			
-			function toggleEasyPost(){
-				$easypostSettings.toggle();
+			function CountryStateHelper(){
+				
+				var $stateSelect = $('#stateSelect');
+				var $countrySelect = $('#countrySelect');
+			
+				var $easypost = $('#easypostEnabled');
+				var $easypostSettings = $('#easypostSettings');
+			
+				$easypost.click(toggleEasyPost);
+			
+				function toggleEasyPost(){
+					$easypostSettings.toggle();
+				}
+			
+				if(!$easypost.prop('checked')){
+					$easypostSettings.hide();
+				}
+			
+			
+				var baseUrl = "/${applicationService.getContextName()}/data/states?"
+
+				function init(state){
+					getStates($countrySelect.val()).then(renderStates).then(setState(state));
+					$countrySelect.change(getStatesAction)
+				}
+			
+			
+				function setState(state){
+					return function(){
+						//console.log(${shipping_settings?.state})
+						$stateSelect.val(state)
+					}
+				}
+			
+				function getStatesAction(event){
+					//console.log(event)
+					var country = $countrySelect.val()
+					getStates(country).then(renderStates);
+				}
+
+				function getStates(country){
+					var countryParam = "country=" + country;
+					var url = baseUrl + countryParam
+					return $.ajax({
+						url : url,
+						type : 'get',
+						dataType : 'json',
+						contentType : 'application/json'
+					})
+				}
+					
+				
+				function renderStates(data, response){
+					$stateSelect.find("option").remove()
+					//console.log($stateSelect)
+					//console.log(data)
+					$(data).each(function(index){
+						//console.log(index)
+						//console.log(this)
+						$stateSelect.append("<option value=\"" + this.id + "\">" + this.name + "</option>");
+					})
+				}
+				
 			}
 			
-			if(!$easypost.prop('checked')){
-				$easypostSettings.hide();
-			}
+			
+			CountryStateHelper.init(${shipping_settings?.state})
 			
 		});
 	</script>
