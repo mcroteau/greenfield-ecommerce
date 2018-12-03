@@ -39,7 +39,55 @@
 	<form action="save_stripe_settings" class="form-horizontal">
 
 	
-		<p class="information secondary" style="margin-top:0px !important; margin-bottom:20px;">Stripe is a developer-friendly way to accept payments online.  You will need a Stripe account to accept payments with Greenfield. <a href="http://stripe.com" target="_blank">Stripe's Website</a>.</p>
+		<p class="information secondary" style="margin-top:0px !important; margin-bottom:20px;">Stripe is a developer-friendly way to accept payments online.  You will need a Stripe account to accept payments with Greenfield. <a href="http://stripe.com" target="_blank">Visit Stripe</a>.</p>
+		
+
+		<div class="form-row">
+			<div class="form-label twohundred pull-left" style="display:inline-block">Base Currency</div>
+			
+			<%
+			def usd = stripe_settings?.storeCurrency == "USD" ? "selected" : ""
+			def gbp = stripe_settings?.storeCurrency == "GBP" ? "selected" : ""
+			def eur = stripe_settings?.storeCurrency == "EUR" ? "selected" : ""
+			def brl = stripe_settings?.storeCurrency == "BRL" ? "selected" : ""
+			def inr = stripe_settings?.storeCurrency == "INR" ? "selected" : ""
+			def hkd = stripe_settings?.storeCurrency == "HKD" ? "selected" : ""
+			def jpy = stripe_settings?.storeCurrency == "JPY" ? "selected" : ""
+			%>
+			
+			<div class="input-container pull-left" style="width:500px;">
+				<select name="storeCurrency" class="form-control" style="width:230px;">
+					<option value="USD" <%=usd%>>$&nbsp;&nbsp;USD - US Dollar</option>
+					<option value="GBP" <%=gbp%>>£&nbsp;&nbsp;GBP - United Kingdom</option>
+					<option value="EUR" <%=eur%>>€&nbsp;&nbsp;EUR - Germany, France</option>
+					<!--<option>€  EUR - The Netherlands</option>-->
+					<!--<option value="EUR" <%=jpy%>>¥&nbsp;&nbsp;JPY - Japanese Yen</option>-->
+					<option value="BRL" <%=brl%>>(R$&nbsp;&nbsp;BRL - Brazil: Stripe by invite only)</option>
+					<!--<option value="INR" <%=inr%>>(₹ INR - India: By invite only)</option>-->
+				</select>
+				<br/>
+				
+				<br/>
+				<p class="information secondary">Greenfield is configured to handle the country currencies listed.<br/> You can add more by editing CountryStatesHelper, the CurrencyService and this view</p>
+				
+				<p class="information secondary">Stripe is currently supported in 26 countries.</p>
+				
+				<p class="information secondary">The currency and country you select should match the country in which your business is located and used when setting up your Stripe account unless you are setting up a site in another country</p>
+				
+				<p class="information">
+					<a href="https://stripe.com/br/pricing" target="_blank">Stripe: Request an Invite (Brazil)</a><br/>
+					<a href="https://stripe.com/global#signup-form" target="_blank">Stripe: Request an Invite (India : needs configuration)</a><br/>
+					<!--<a href="https://stripe.com/global#signup-form" target="_blank">Request an Invite (Mexico)</a>-->
+				</p>
+
+				<p class="information secondary">No matter what country you’re based in, you can use 
+					<a href="https://stripe.com/atlas" target="_blank">Atlas</a> to easily incorporate a U.S. company, set up a U.S. bank account, and start accepting payments with Stripe. <a href="https://stripe.com/atlas" target="_blank">Request an invite</a></p>
+		
+				<p class="information secondary">Greenfield, DataTundra, MGi Data Source or Mike Croteau is not liable for your configuration.</p>
+			</div>
+			<br class="clear"/>			
+		</div>
+		
 		
 
 		<h4>Development Settings</h4>

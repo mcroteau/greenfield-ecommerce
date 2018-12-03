@@ -96,7 +96,6 @@ class ConfigurationController {
 				prop.load(inputStream);
 				
 				def settings = [:]
-				settings["storeCurrency"] = prop.getProperty(STORE_CURRENCY);
 				settings["storeName"] = prop.getProperty(STORE_NAME);
 				settings["keywords"] = prop.getProperty(META_KEYWORDS);
 				settings["description"] = prop.getProperty(META_DESCRIPTION);
@@ -122,7 +121,6 @@ class ConfigurationController {
 
 		authenticatedAdmin{ adminAccount ->
 			
-			String storeCurrency = params.storeCurrency
 			String storeName = params.storeName
 			String keywords = params.keywords
 			String description = params.description
@@ -143,7 +141,6 @@ class ConfigurationController {
 			
 			try{
 			    
-				prop.setProperty(STORE_CURRENCY, storeCurrency);
 				prop.setProperty(STORE_NAME, storeName);
 				prop.setProperty(META_KEYWORDS, keywords);
 				prop.setProperty(META_DESCRIPTION, description);
@@ -301,7 +298,8 @@ class ConfigurationController {
 				
 				//def enabled =  prop.getProperty(STRIPE_ENABLED_KEY)
 				//if(enabled == "true")stripe_settings["enabled"] = "checked"
-				
+
+				stripe_settings["storeCurrency"] = prop.getProperty(STORE_CURRENCY);
 				stripe_settings["devApiKey"] = prop.getProperty(STRIPE_DEVELOPMENT_API_KEY)
 				stripe_settings["devPublishableKey"] = prop.getProperty(STRIPE_DEVELOPMENT_PUBLISHABLE_KEY)
 				stripe_settings["prodApiKey"] = prop.getProperty(STRIPE_PRODUCTION_API_KEY)
@@ -325,6 +323,7 @@ class ConfigurationController {
 		authenticatedAdmin{ adminAccount ->
 		
 			//String enabled = params.enabled
+			String storeCurrency = params.storeCurrency
 			String devApiKey = params.devApiKey
 			String devPublishableKey = params.devPublishableKey
 			String prodApiKey = params.prodApiKey
@@ -344,6 +343,7 @@ class ConfigurationController {
 			try{
 				
 				//prop.setProperty(STRIPE_ENABLED_KEY, enabled);
+				prop.setProperty(STORE_CURRENCY, storeCurrency);
 				prop.setProperty(STRIPE_DEVELOPMENT_API_KEY, devApiKey);
 				prop.setProperty(STRIPE_DEVELOPMENT_PUBLISHABLE_KEY, devPublishableKey);
 				prop.setProperty(STRIPE_PRODUCTION_API_KEY, prodApiKey);
