@@ -646,13 +646,15 @@ class ShoppingCartController {
 				toAddressMap.put("street1", customer.address1)
 				toAddressMap.put("street2", customer.address2)
 				toAddressMap.put("city", customer.city)
-				toAddressMap.put("state", customer.state.name)
+				toAddressMap.put("country", customer.country.name)
+				if(customer.state)toAddressMap.put("state", customer.state.name)
 				toAddressMap.put("zip", customer.zip)
 				toAddressMap.put("phone", customer.phone)
     	
 				Address toAddress = Address.create(toAddressMap)
 				Address verifiedToAddress = toAddress.verify()
 			
+				def country = Country.get(applicationService.getStoreCountry())
 				def state = State.get(applicationService.getStoreState())
 		
 				Map<String, Object> fromAddressMap = new HashMap<String, Object>()
@@ -660,7 +662,8 @@ class ShoppingCartController {
 				fromAddressMap.put('street1', applicationService.getStoreAddress1())
 				fromAddressMap.put('street2', applicationService.getStoreAddress2())
 				fromAddressMap.put('city', applicationService.getStoreCity());
-				fromAddressMap.put('state', state.name);
+				fromAddressMap.put('country', country.name);
+				if(state)fromAddressMap.put('state', state.name);
 				fromAddressMap.put('zip', applicationService.getStoreZip());
 
 				Address fromAddress = Address.create(fromAddressMap)

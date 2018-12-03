@@ -1093,6 +1093,13 @@ class ApplicationService {
 		return city
 	}
 	
+	def getStoreCountry(){
+		if(!properties)setProperties()
+		String country = properties.getProperty("store.country");
+		//println "++++++++ state : ${state} +++++++++++"	
+		return country
+	}
+	
 	def getStoreState(){
 		if(!properties)setProperties()
 		String state = properties.getProperty("store.state");
