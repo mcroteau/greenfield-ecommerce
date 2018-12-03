@@ -43,7 +43,7 @@
 	
 	
 	
-	<form action="save_shipping_settings" class="form-horizontal">
+	<form action="save_shipping_settings" class="form-horizontal" method="post">
 		
 		<h4>Store Address</h4>
 		

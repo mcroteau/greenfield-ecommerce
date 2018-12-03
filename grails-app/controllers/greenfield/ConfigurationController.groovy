@@ -433,27 +433,28 @@ class ConfigurationController {
 			if(!easypostEnabled)easypostEnabled = false
 			
 			if(!countryId || !countryId.isInteger()){
-				flash.error = "Something went wrong, please try again"
+				flash.error = "Something went wrong, please try again..."
 				redirect(action : 'shipping_settings')
+				return
 			}
 			
 			def country = Country.get(countryId)
 			if(!country){
 				flash.error = "Something went wrong"
 				redirect(action : 'shipping_settings')
+				return
 			}
 			
-			if(!stateId || !stateId.isInteger()){
-				flash.error = "Something went wrong, please try again"
-				redirect(action : 'shipping_settings')
-			}
+			def state
 			
-			def state = State.get(stateId)
-			if(!state){
-				flash.error = "Something went wrong"
-				redirect(action : 'shipping_settings')
+			if(stateId && stateId.isInteger()){
+				state = State.get(stateId)
+				if(!state){
+					flash.error = "Something went wrong with the state"
+					redirect(action : 'shipping_settings')
+					return
+				}
 			}
-			
 			
 			if(easypostEnabled == "true"){
 				if(testApiKey == ""){
@@ -480,7 +481,7 @@ class ConfigurationController {
 		    	addressMap.put("street1", address1);
 		    	addressMap.put("street2", address2);
 		    	addressMap.put("country", country.name);
-		    	addressMap.put("state", state.name);
+				if(state)addressMap.put("state", state.name);
 				addressMap.put("city", city);
 				addressMap.put("zip", zip);
     	
@@ -519,7 +520,7 @@ class ConfigurationController {
 				prop.setProperty(STORE_ADDRESS2, address2);
 				prop.setProperty(STORE_CITY, city);
 				prop.setProperty(STORE_COUNTRY, countryId);
-				prop.setProperty(STORE_STATE, stateId);
+				if(state)prop.setProperty(STORE_STATE, stateId);
 				prop.setProperty(STORE_ZIP, zip);
 				
 				

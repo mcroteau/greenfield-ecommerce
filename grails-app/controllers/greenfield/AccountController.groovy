@@ -10,12 +10,14 @@ import groovy.text.SimpleTemplateEngine
 import greenfield.common.BaseController
 import greenfield.common.ControllerConstants
 
+import grails.util.Environment
+/**
 import com.easypost.EasyPost
 import com.easypost.model.Address
 import com.easypost.model.Parcel
 import com.easypost.model.Shipment
 import com.easypost.exception.EasyPostException
-import grails.util.Environment
+**/
 
 import org.greenfield.Account
 import org.greenfield.Role
@@ -36,6 +38,10 @@ import grails.plugin.springsecurity.annotation.Secured
 
 import org.greenfield.SimpleCaptchaService
 
+import org.greenfield.api.ShipmentAddress
+import org.greenfield.api.EasyPostShipmentApi
+	
+	
 @Mixin(BaseController)
 class AccountController {
 
@@ -54,6 +60,8 @@ class AccountController {
 		}
 	}	
 	
+
+
 	@Secured(['ROLE_CUSTOMER', 'ROLE_ADMIN'])
 	def customer_update(){
 
@@ -70,6 +78,33 @@ class AccountController {
 			accountInstance.properties = params
 			accountInstance.addressVerified = false
 
+
+			def easypostEnabled = applicationService.getEasyPostEnabled()
+			
+			def shipmentApi 
+			if(easypostEnabled){
+				shipmentApi = new EasyPostShipmentApi(applicationService)
+			}
+			//if(shippoEnabled){
+				//shipmentApi = new ShippoShipmentApi()
+			//}
+			
+			def address = new ShipmentAddress()
+			address.street1 = accountInstance.address1
+			address.street2 = accountInstance.address2
+			address.city = accountInstance.city
+			address.state = accountInstance.state.name
+			address.country = accountInstance.country.name
+			address.zip = accountInstance.zip
+			
+			if(!shipmentApi.validAddress(address)){
+   				flash.error = "Address cannot be verified. Please update your address with valid information..."
+   				render(view: "customer_profile", model: [accountInstance: accountInstance, countries: Country.list()])
+   				return
+			}
+			accountInstance.addressVerified = true
+				
+			/**
 			def easypostEnabled = applicationService.getEasyPostEnabled()
 			if(easypostEnabled == "true"){
 				if(!addressVerified(accountInstance)){
@@ -79,6 +114,7 @@ class AccountController {
 				}
 				accountInstance.addressVerified = true
 			}
+			**/
 			
 			
    			if (!accountInstance.save(flush: true)) {
@@ -215,8 +251,8 @@ class AccountController {
 	}
 	
 
-		
-	def addressVerified(accountInstance){
+	/**TODO:remove
+	def addressVerifiedOLD(accountInstance){
 		try{
 		
 			def apiKey
@@ -244,6 +280,7 @@ class AccountController {
 			return false
 		}
 	}	
+	**/
 
 	
 	@Secured(['ROLE_ADMIN'])

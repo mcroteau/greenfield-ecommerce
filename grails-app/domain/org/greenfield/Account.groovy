@@ -36,6 +36,7 @@ class Account {
 	
 	String city
 	State state
+	Country country
 	String zip
 	
 	String phone
@@ -122,6 +123,7 @@ class Account {
 		address1(nullable:true)
 		address2(nullable:true)
 		city(nullable:true)
+		country(nullable:true)
 		state(nullable:true)
 		zip(nullable:true)
 		phone(nullable:true)
