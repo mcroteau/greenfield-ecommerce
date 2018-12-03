@@ -35,6 +35,10 @@ import grails.plugin.springsecurity.annotation.Secured
 
 import greenfield.common.ControllerConstants
 
+import org.greenfield.api.ShipmentAddress
+import org.greenfield.api.EasyPostShipmentApi
+
+
 @Mixin(BaseController)
 class ShoppingCartController {
 
@@ -623,9 +627,18 @@ class ShoppingCartController {
 		def easypostEnabled = applicationService.getEasyPostEnabled()
 
 		
-		if(easypostEnabled == "true" && 
-				params.set != "true" && 
-				shoppingCart.account){
+		if(easypostEnabled == "true" &&  params.set != "true" && shoppingCart.account){
+			
+			def shipmentApi 
+			if(easypostEnabled){
+				shipmentApi = new EasyPostShipmentApi(applicationService)
+			}
+			
+			
+			def storeAddress = getStoreAddress()
+			def customerAddress = getCustomerAddress(customer)
+			
+			
 			
 			
 			try{
@@ -641,53 +654,11 @@ class ShoppingCartController {
 				
 				//println "here... calculated packageSize " + packageSize
 				
-				Map<String, Object> toAddressMap = new HashMap<String, Object>();
-				toAddressMap.put("name", customer.name)
-				toAddressMap.put("street1", customer.address1)
-				toAddressMap.put("street2", customer.address2)
-				toAddressMap.put("city", customer.city)
-				toAddressMap.put("country", customer.country.name)
-				if(customer.state)toAddressMap.put("state", customer.state.name)
-				toAddressMap.put("zip", customer.zip)
-				toAddressMap.put("phone", customer.phone)
-    	
-				Address toAddress = Address.create(toAddressMap)
-				Address verifiedToAddress = toAddress.verify()
-			
-				def country = Country.get(applicationService.getStoreCountry())
-				def state = State.get(applicationService.getStoreState())
-		
-				Map<String, Object> fromAddressMap = new HashMap<String, Object>()
-				fromAddressMap.put('company', applicationService.getStoreName())
-				fromAddressMap.put('street1', applicationService.getStoreAddress1())
-				fromAddressMap.put('street2', applicationService.getStoreAddress2())
-				fromAddressMap.put('city', applicationService.getStoreCity());
-				fromAddressMap.put('country', country.name);
-				if(state)fromAddressMap.put('state', state.name);
-				fromAddressMap.put('zip', applicationService.getStoreZip());
 
-				Address fromAddress = Address.create(fromAddressMap)
-				Address verifiedFromAddress = fromAddress.verify()
 				
-				Map<String, Object> parcelMap = new HashMap<String, Object>();
-				
-				if(packageSize.height > 0 &&
-						packageSize.width > 0 &&
-						packageSize.length > 0 &&
-						packageSize.height < 100 &&
-						packageSize.width < 100 &&
-						packageSize.length < 100){
-					parcelMap.put("height", packageSize.height);
-					parcelMap.put("width", packageSize.width);
-					parcelMap.put("length", packageSize.length);
-				}
-				
-				if(packageSize.weight > 0){
-
-					parcelMap.put("weight", packageSize.weight);
-					Parcel parcel = Parcel.create(parcelMap);
-				
-
+					
+					/**
+					TODO:how to handle customs, see below
 					Map<String, Object> customsItemMap = new HashMap<String, Object>();
 					customsItemMap.put("description", "T-shirt");
 					customsItemMap.put("quantity", 1);
@@ -696,7 +667,7 @@ class ShoppingCartController {
 					customsItemMap.put("origin_country", "us");
 					customsItemMap.put("hs_tariff_number", "123456");
 					CustomsItem customsItem1 = CustomsItem.create(customsItemMap);
-
+					**/
 
 					Map<String, Object> shipmentMap = new HashMap<String, Object>();
 					shipmentMap.put("to_address", verifiedToAddress);
@@ -704,7 +675,8 @@ class ShoppingCartController {
 					shipmentMap.put("parcel", parcel);
 
 
-					shipmentMap.put("customs_info", customsItem1)
+					//TODO:how to handle customs?
+					//shipmentMap.put("customs_info", customsItem1)
 
 
 					//println "creating shipment using api..."
@@ -734,7 +706,7 @@ class ShoppingCartController {
 				}
 				
 			}catch (Exception e){
-				println e
+				println e.printStackTrace()
 				shoppingCart.shipping = applicationService.getShipping()
 				flash.message = "Something went wrong while trying to calcuate shipping cost.  Please make sure all information is correct"
 				forward(action : 'index')
@@ -757,6 +729,40 @@ class ShoppingCartController {
 		
 		shoppingCart.save(flush:true)
 	}
+	
+	
+	/**helper function using ShipmentAddress**/
+	def getCustomerAddress(customer){
+		def address = new ShipmentAddress()
+		address.name = customer.name
+		address.street1 = customer.address1
+		address.street2 = customer.address2
+		address.city = customer.city
+		address.country = customer.country.name
+		if(customer.state)address.state = customer.state.name
+		if(customer.phone)address.phone = customer.phone
+		address.zip = customer.zip
+		return address
+	}
+	
+	def getStoreAddress(){
+		def address = new ShipmentAddress()
+		address.company = applicationService.getStoreName()
+		address.street1 = applicationService.getStoreAddress1()
+		address.street2 = applicationService.getStoreAddress2()
+		address.city = applicationService.getStoreCity()
+	
+		def country = Country.get(applicationService.getStoreCountry()
+		def state = State.get(applicationService.getStoreState()
+		
+		address.country = country.name
+		if(state)address.state = state.name
+		address.zip = applicationService.getStoreZip()
+		
+		return address
+	}
+	
+	
 	
 	
 	def getLowestRate(shipment){
