@@ -633,77 +633,35 @@ class ShoppingCartController {
 			if(easypostEnabled){
 				shipmentApi = new EasyPostShipmentApi(applicationService)
 			}
-			
-			
+						
 			def storeAddress = getStoreAddress()
-			def customerAddress = getCustomerAddress(customer)
-			
-			
+			def toAddress = getCustomerAddress(customer)
 			
 			
 			try{
-			
-				def apiKey
-				
-				if(Environment.current == Environment.DEVELOPMENT)  apiKey = applicationService.getEasyPostTestApiKey()
-				if(Environment.current == Environment.PRODUCTION) apiKey = applicationService.getEasyPostLiveApiKey()
-		
-				EasyPost.apiKey = apiKey;
 				
 				def packageSize = calculatePackageSize(shoppingCart)
 				
-				//println "here... calculated packageSize " + packageSize
-				
-
-				
+				/** packageSize is a map
+					packageSize.length = length
+					packageSize.width = width
+					packageSize.height = height
+					packageSize.weight = weight
+				**/
 					
-					/**
-					TODO:how to handle customs, see below
-					Map<String, Object> customsItemMap = new HashMap<String, Object>();
-					customsItemMap.put("description", "T-shirt");
-					customsItemMap.put("quantity", 1);
-					customsItemMap.put("value", 10);
-					customsItemMap.put("weight", 5);
-					customsItemMap.put("origin_country", "us");
-					customsItemMap.put("hs_tariff_number", "123456");
-					CustomsItem customsItem1 = CustomsItem.create(customsItemMap);
-					**/
-
-					Map<String, Object> shipmentMap = new HashMap<String, Object>();
-					shipmentMap.put("to_address", verifiedToAddress);
-					shipmentMap.put("from_address", verifiedFromAddress);
-					shipmentMap.put("parcel", parcel);
-
-
-					//TODO:how to handle customs?
-					//shipmentMap.put("customs_info", customsItem1)
-
-
-					//println "creating shipment using api..."
-					Shipment shipment
-					try{
-						shipment = Shipment.create(shipmentMap);	
-					}catch(Exception e){
-						e.printStackTrace()
-					}
+				def shipmentRate = shipmentApi.calculateShippingRate(packageSize, toAddress, storeAddress)
 					
-					//println shipment
-					
-					if(shipment && shipment.rates.size() > 0){
-						def rate = getLowestRate(shipment)
-						shoppingCart.shipping = rate.rate
-						shoppingCart.shipmentId = rate.shipmentId
-						shoppingCart.shipmentDays = (rate.estDeliveryDays) ? rate.estDeliveryDays : 0
-						shoppingCart.shipmentCarrier = rate.carrier
-						shoppingCart.shipmentService = rate.service
-						shoppingCart.shipmentRateId = rate.id
-					}else{
-						shoppingCart.shipping = applicationService.getShipping()
-					}
-					
+				if(shipmentRate){
+					shoppingCart.shipping = shipmentRate.rate
+					shoppingCart.shipmentId = shipmentRate.shipmentId
+					shoppingCart.shipmentDays = shipmentRate.estDeliveryDays
+					shoppingCart.shipmentCarrier = shipmentRate.carrier
+					shoppingCart.shipmentService = shipmentRate.service
+					shoppingCart.shipmentRateId = shipmentRate.shipmentRateId
 				}else{
 					shoppingCart.shipping = applicationService.getShipping()
 				}
+					
 				
 			}catch (Exception e){
 				println e.printStackTrace()
@@ -752,8 +710,8 @@ class ShoppingCartController {
 		address.street2 = applicationService.getStoreAddress2()
 		address.city = applicationService.getStoreCity()
 	
-		def country = Country.get(applicationService.getStoreCountry()
-		def state = State.get(applicationService.getStoreState()
+		def country = Country.get(applicationService.getStoreCountry())
+		def state = State.get(applicationService.getStoreState())
 		
 		address.country = country.name
 		if(state)address.state = state.name
@@ -762,21 +720,6 @@ class ShoppingCartController {
 		return address
 	}
 	
-	
-	
-	
-	def getLowestRate(shipment){
-		def rate
-		shipment.rates.each { r ->
-			if(!rate){
-				rate = r
-			}
-			if(r.rate < rate?.rate){
-				rate = r
-			}
-		}
-		return rate
-	}
 	
 	
 	def calculatePackageSize(shoppingCart){

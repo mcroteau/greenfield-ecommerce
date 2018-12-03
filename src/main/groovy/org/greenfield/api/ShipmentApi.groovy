@@ -4,7 +4,7 @@ interface ShipmentApi {
 	
 	def validAddress(address)
 	
-	def calculateShipping(toAddress, fromAddress)
+	def calculateShipping(packageSize, toAddress, fromAddress)
 	
 	def getLabel(shipment)
 

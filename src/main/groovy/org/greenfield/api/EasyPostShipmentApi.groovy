@@ -7,6 +7,7 @@ import com.easypost.model.Shipment
 import com.easypost.exception.EasyPostException
 import grails.util.Environment
 
+import org.greenfield.api.ShipmentRate
 
 public class EasyPostShipmentApi implements ShipmentApi {
 	
@@ -58,8 +59,12 @@ public class EasyPostShipmentApi implements ShipmentApi {
 		}
 	}
 	
-	def calculateShipping(toAddress, fromAddress){
-
+	def calculateShipping(packageSize, toAddress, fromAddress){
+	
+		def apiKey = getApiKey()
+	
+		EasyPost.apiKey = apiKey;
+		
 		Address verifiedToAddress = getVerifiedAddress(toAddress)
 		Address verifiedFromAddress = getVerifiedAddress(fromAddress)
 		
@@ -107,6 +112,22 @@ public class EasyPostShipmentApi implements ShipmentApi {
 			Shipment shipment
 			try{
 				shipment = Shipment.create(shipmentMap);	
+				
+				if(shipment){
+					def rate = getLowestRate(shipment)
+					
+					def shipmentRate = new ShipmentRate()
+					shipmentRate.rate = rate.rate
+					shipmentRate.shipmentId = rate.shipmentId
+					shipmentRate.estDeliveryDays = (rate.estDeliveryDays) ? rate.estDeliveryDays : 0
+					shipmentRate.carrier = rate.carrier
+					shipmentRate.service = rate.service
+					shipmentRate.shipmentRateId = rate.id
+					
+					
+					return shipmentRate
+					
+				}
 			}catch(Exception e){
 				e.printStackTrace()
 			}
@@ -129,6 +150,21 @@ public class EasyPostShipmentApi implements ShipmentApi {
 		Address verifiedAddress = addressMap.verify()
 		
 		return verifiedAddress
+	}
+	
+	
+	
+	def getLowestRate(shipment){
+		def rate
+		shipment.rates.each { r ->
+			if(!rate){
+				rate = r
+			}
+			if(r.rate < rate?.rate){
+				rate = r
+			}
+		}
+		return rate
 	}
 	
 	
