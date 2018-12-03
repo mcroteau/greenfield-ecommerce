@@ -73,8 +73,8 @@ class AccountController {
 			def easypostEnabled = applicationService.getEasyPostEnabled()
 			if(easypostEnabled == "true"){
 				if(!addressVerified(accountInstance)){
-   					flash.error = "<strong>Address cannot be verified.</strong>  Please update your address with valid information..."
-   			    	render(view: "customer_profile", model: [accountInstance: accountInstance])
+   					flash.error = "Address cannot be verified. Please update your address with valid information..."
+   			    	render(view: "customer_profile", model: [accountInstance: accountInstance, countries: Country.list()])
    			    	return
 				}
 				accountInstance.addressVerified = true
@@ -229,8 +229,9 @@ class AccountController {
 	    	Map<String, Object> addressMap = new HashMap<String, Object>();
 	    	addressMap.put("street1", accountInstance.address1);
 	    	addressMap.put("street2", accountInstance.address2);
-	    	addressMap.put("state", accountInstance.state.name);
 			addressMap.put("city", accountInstance.city);
+	    	addressMap.put("country", accountInstance.state.country.name);
+	    	addressMap.put("state", accountInstance.state.name);
 			addressMap.put("zip", accountInstance.zip);
 			
     		Address address = Address.create(addressMap);

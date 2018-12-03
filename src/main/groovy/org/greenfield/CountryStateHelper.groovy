@@ -18,9 +18,10 @@ public class CountryStateHelper{
 		],
 		[
 			"name" : "Germany",
-			"states": ["Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", "Bremen", "Hamburg", "Hessen", "Niedersachsen", 
+			"states" : []
+			/**"states": ["Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", "Bremen", "Hamburg", "Hessen", "Niedersachsen", 
 			"Mecklenburg-Vorpommern", "Nordrhein-Westfalen (NRW)", "Rheinland-Pfalz", "Saarland", "Sachsen", "Sachsen-Anhalt", 
-			"Schleswig-Holstein", "Thüringen"]			
+			"Schleswig-Holstein", "Thüringen"]**/			
 		],
 		[
 			"name": "France",
