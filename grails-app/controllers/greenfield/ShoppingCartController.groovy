@@ -37,6 +37,7 @@ import greenfield.common.ControllerConstants
 
 import org.greenfield.api.ShipmentAddress
 import org.greenfield.api.EasyPostShipmentApi
+import org.greenfield.api.ShippingApiHelper
 
 
 @Mixin(BaseController)
@@ -624,57 +625,57 @@ class ShoppingCartController {
 
 		def shipping
 		def customer = shoppingCart.account
-		def easypostEnabled = applicationService.getEasyPostEnabled()
 
 		
-		if(easypostEnabled == "true" &&  params.set != "true" && shoppingCart.account){
+		if(shoppingCart?.account){
 			
 			def shipmentApi 
+			
+			def easypostEnabled = applicationService.getEasyPostEnabled()
 			if(easypostEnabled){
 				shipmentApi = new EasyPostShipmentApi(applicationService)
 			}
+			
+			
+			if(easypostEnabled){		
+							
+				def shoppingCartHelper = new ShippingApiHelper(applicationService)
+				def storeAddress = shippingApiHelper.getStoreAddress()
+				def toAddress = shippingApiHelper.getCustomerAddress(customer)
+				println shoppingCart
+				def package = shippingApiHelper.getPackage(shoppingCart)
+				
+				try{
+					
+					//def packageSize = calculatePackageSize(shoppingCart)
+					/**
+					def shipmentRate = shipmentApi.calculateShipping(package, toAddress, storeAddress)
 						
-			def storeAddress = getStoreAddress()
-			def toAddress = getCustomerAddress(customer)
-			
-			
-			try{
-				
-				def packageSize = calculatePackageSize(shoppingCart)
-				
-				/** packageSize is a map
-					packageSize.length = length
-					packageSize.width = width
-					packageSize.height = height
-					packageSize.weight = weight
-				**/
+					if(shipmentRate){
+						shoppingCart.shipping = shipmentRate.rate
+						shoppingCart.shipmentId = shipmentRate.shipmentId
+						shoppingCart.shipmentDays = shipmentRate.estDeliveryDays
+						shoppingCart.shipmentCarrier = shipmentRate.carrier
+						shoppingCart.shipmentService = shipmentRate.service
+						shoppingCart.shipmentRateId = shipmentRate.rateId
+					}else{
+						shoppingCart.shipping = applicationService.getShipping()
+					}
+						**/
 					
-				def shipmentRate = shipmentApi.calculateShippingRate(packageSize, toAddress, storeAddress)
-					
-				if(shipmentRate){
-					shoppingCart.shipping = shipmentRate.rate
-					shoppingCart.shipmentId = shipmentRate.shipmentId
-					shoppingCart.shipmentDays = shipmentRate.estDeliveryDays
-					shoppingCart.shipmentCarrier = shipmentRate.carrier
-					shoppingCart.shipmentService = shipmentRate.service
-					shoppingCart.shipmentRateId = shipmentRate.shipmentRateId
-				}else{
+				}catch (Exception e){
+					println e.printStackTrace()
 					shoppingCart.shipping = applicationService.getShipping()
+					flash.message = "Something went wrong while trying to calcuate shipping cost.  Please make sure all information is correct"
+					forward(action : 'index')
+					return
 				}
-					
-				
-			}catch (Exception e){
-				println e.printStackTrace()
+			}else{
 				shoppingCart.shipping = applicationService.getShipping()
-				flash.message = "Something went wrong while trying to calcuate shipping cost.  Please make sure all information is correct"
-				forward(action : 'index')
-				return
 			}
 			
 		}else{
-			if(params.set != "true"){
-				shoppingCart.shipping = applicationService.getShipping()
-			}
+			shoppingCart.shipping = applicationService.getShipping()
 		}
 		
 		
@@ -689,70 +690,6 @@ class ShoppingCartController {
 	}
 	
 	
-	/**helper function using ShipmentAddress**/
-	def getCustomerAddress(customer){
-		def address = new ShipmentAddress()
-		address.name = customer.name
-		address.street1 = customer.address1
-		address.street2 = customer.address2
-		address.city = customer.city
-		address.country = customer.country.name
-		if(customer.state)address.state = customer.state.name
-		if(customer.phone)address.phone = customer.phone
-		address.zip = customer.zip
-		return address
-	}
-	
-	def getStoreAddress(){
-		def address = new ShipmentAddress()
-		address.company = applicationService.getStoreName()
-		address.street1 = applicationService.getStoreAddress1()
-		address.street2 = applicationService.getStoreAddress2()
-		address.city = applicationService.getStoreCity()
-	
-		def country = Country.get(applicationService.getStoreCountry())
-		def state = State.get(applicationService.getStoreState())
-		
-		address.country = country.name
-		if(state)address.state = state.name
-		address.zip = applicationService.getStoreZip()
-		
-		return address
-	}
-	
-	
-	
-	def calculatePackageSize(shoppingCart){
-		def length = 0
-		def width = 0
-		def height = 0
-		def weight = 0
-		
-		shoppingCart.shoppingCartItems.each{ item ->
-			if(item.product.length > length){
-				length = item.product.length
-			}
-			if(item.product.width > width){
-				width = item.product.width
-			}
-			
-			for(int m = 0; m < item.quantity; m++){
-				height += item.product.height
-				weight += item.product.weight
-			}
-		}
-		
-		def packageSize = [:]
-		packageSize.length = length
-		packageSize.width = width
-		packageSize.height = height
-		packageSize.weight = weight
-		
-		return packageSize
-	}
-	
-
-
 
 	def addressComplete(accountInstance){
 		if(!accountInstance.name){

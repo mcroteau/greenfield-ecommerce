@@ -127,7 +127,7 @@
 		</div>
 		
 		<div class="form-row">
-			<span class="form-label twohundred">Enable <strong>EasyPost</strong> Integration</span>
+			<span class="form-label twohundred">Enable <strong>EasyPost</strong></span>
 			<span class="input-container">
 				<input type="checkbox" ${shipping_settings.easypostEnabled} name="easypostEnabled" id="easypostEnabled"/>
 			</span>

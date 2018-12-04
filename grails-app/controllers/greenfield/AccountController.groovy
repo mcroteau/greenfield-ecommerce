@@ -94,7 +94,7 @@ class AccountController {
 			address.street1 = accountInstance.address1
 			address.street2 = accountInstance.address2
 			address.city = accountInstance.city
-			address.state = accountInstance.state.name
+			address.state = accountInstance?.state?.name
 			println "here..."
 			address.country = accountInstance.country.name
 			address.zip = accountInstance.zip

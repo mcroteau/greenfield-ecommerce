@@ -14,7 +14,8 @@ public class CountryStateHelper{
 		],
 		[
 			"name": "United Kingdom",
-			"states":["Northern Ireland", "Scotland", "Wales"]
+			"states" : []
+			/**"states":["Northern Ireland", "Scotland", "Wales"]**/
 		],
 		[
 			"name" : "Germany",
@@ -25,16 +26,18 @@ public class CountryStateHelper{
 		],
 		[
 			"name": "France",
-			"states": ["Auvergne - Rhône-Alpes", "Bretagne (Brittany)", "Bourgogne - Franche-Comté", "Corse", 
+			"states" : []
+			/**"states": ["Auvergne - Rhône-Alpes", "Bretagne (Brittany)", "Bourgogne - Franche-Comté", "Corse", 
 			"Centre - Val de Loire", "Grand Est", "Hauts de France", "Ile de France", "Nouvelle Aquitaine", "Normandie", 
-			"Occitanie (Midi-Pyrénées, Languedoc)", "Pays de la Loire", "Provence - Cote d'Azur"]
+			"Occitanie (Midi-Pyrénées, Languedoc)", "Pays de la Loire", "Provence - Cote d'Azur"]**/
 		],
 		[
 			"name": "Brazil",
-			"states": ["Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", 
+			"states":[]
+			/**"states": ["Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", 
 			"Goiás", "Maranhão", "Mato GrossoMato Grosso do Sul", "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", 
 			"Piaui", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", 
-			"Santa Catarina", "São Paulo", "Sergipe", "Tocantins"]
+			"Santa Catarina", "São Paulo", "Sergipe", "Tocantins"]**/
 		]
 		/**TODO:wait until Stripe has on Global list,
 		[
