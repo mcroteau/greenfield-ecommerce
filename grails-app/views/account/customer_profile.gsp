@@ -93,7 +93,7 @@ ${raw(applicationService.getDefaultHeader("Account Info"))}
 				  	<label for="country" class="col-sm-4 control-label">Country</label>
 					<g:select name="country.id"
 							from="${countries}"
-							value="${accountInstance?.state?.country?.id}"
+							value="${accountInstance?.country?.id}"
 							optionKey="id" 
 							optionValue="name"
 							class="form-control"

@@ -85,7 +85,11 @@ ${raw(applicationService.getDefaultHeader("Select Shipping Option"))}
 			
 			<g:each in="${carrier.value}" var="option">
 				<div style="padding:15px; background:#fff; border:solid 1px #ddd; margin:10px 0px;">
+					<div class="pull-left">
 					${option.service} : <strong>$${applicationService.formatPrice(option.rate)}</strong>
+					<br/>
+					<span style="">Days: ${option.days}</span>
+					</div>
 					<g:link action="set" id="${shoppingCart.id}" params="[ optionId : option.id, rate : option.rate, carrier : carrier.key, service : option.service, days : option.days, rateId : option.rateId ]" class="btn btn-default btn-sm pull-right">Select</g:link>
 					<div class="clear"></div>
 				</div>

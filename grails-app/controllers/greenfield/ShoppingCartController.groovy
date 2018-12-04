@@ -637,7 +637,7 @@ class ShoppingCartController {
 			}
 			
 			println "about to check if shipping is set " + params
-			if(easypostEnabled && params.shippingSet != true){		
+			if(easypostEnabled && params.shippingSet != "true"){		
 							
 				println "shipping set ??? " + params.shippingSet
 							
@@ -671,7 +671,9 @@ class ShoppingCartController {
 					return
 				}
 			}else{
-				shoppingCart.shipping = applicationService.getShipping()
+				if(params.shippingSet != "true"){
+					shoppingCart.shipping = applicationService.getShipping()
+				}
 			}
 			
 		}

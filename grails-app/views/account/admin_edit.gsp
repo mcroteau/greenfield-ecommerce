@@ -127,7 +127,7 @@
 					<span class="input-container">
 						<g:select name="country.id"
 								from="${countries}"
-								value="${accountInstance?.state?.country?.id}"
+								value="${accountInstance?.country?.id}"
 								optionKey="id" 
 								optionValue="name"
 								class="form-control"

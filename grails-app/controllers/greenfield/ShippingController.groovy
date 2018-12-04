@@ -45,6 +45,8 @@ class ShippingController {
 					
 					println "saving shopping cart after setting new shipping selection..."
 					
+					println shoppingCart.shipping
+					
 					shoppingCart.save(flush:true)
 					
 					redirect(controller: 'shoppingCart', action: 'checkout_preview', id: id, params: [ shippingSet : true ])
