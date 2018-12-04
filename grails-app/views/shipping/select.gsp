@@ -103,7 +103,8 @@ ${raw(applicationService.getDefaultHeader("Select Shipping Option"))}
 		${shoppingCart.account.name}<br/>
 		${shoppingCart.account.address1}<br/>
 		${shoppingCart.account.address2}<br/>
-		${shoppingCart.account.city}, ${shoppingCart.account.state.name}<br/>
+		${shoppingCart.account.city}, ${shoppingCart.account.state?.name}<br/>
+		${shoppingCart.account.country?.name}<br/>
 		${shoppingCart.account.zip}		
 	</address>
 	

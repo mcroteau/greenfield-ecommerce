@@ -1,12 +1,16 @@
 package org.greenfield.api
 
-import or.greenfield.api.ShipmentAddress
+import org.greenfield.Country
+import org.greenfield.State
+
+import org.greenfield.api.ShipmentAddress
+
 
 public class ShippingApiHelper {
 	
 	def applicationService
 	ShippingApiHelper(applicationService){
-		println "constructor..."
+		println "ShippingApiHelper constructor..."
 		this.applicationService = applicationService
 	}
 	
@@ -46,11 +50,11 @@ public class ShippingApiHelper {
 	}
 	
 	
-	/** packageSize is a map
-		packageSize.length = length
-		packageSize.width = width
-		packageSize.height = height
-		packageSize.weight = weight
+	/** shipmentPackage is a map
+		shipmentPackage.length = length
+		shipmentPackage.width = width
+		shipmentPackage.height = height
+		shipmentPackage.weight = weight
 	**/
 	def getPackage(shoppingCart){
 		println "get package..."
@@ -73,13 +77,13 @@ public class ShippingApiHelper {
 			}
 		}
 		
-		def package = [:]
-		package.length = length
-		package.width = width
-		package.height = height
-		package.weight = weight
+		def shipmentPackage = [:]
+		shipmentPackage.length = length
+		shipmentPackage.width = width
+		shipmentPackage.height = height
+		shipmentPackage.weight = weight
 		
-		return package
+		return shipmentPackage
 	}
 	
 }

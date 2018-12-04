@@ -639,17 +639,17 @@ class ShoppingCartController {
 			
 			if(easypostEnabled){		
 							
-				def shoppingCartHelper = new ShippingApiHelper(applicationService)
+				def shippingApiHelper = new ShippingApiHelper(applicationService)
 				def storeAddress = shippingApiHelper.getStoreAddress()
 				def toAddress = shippingApiHelper.getCustomerAddress(customer)
 				println shoppingCart
-				def package = shippingApiHelper.getPackage(shoppingCart)
+				def shipmentPackage = shippingApiHelper.getPackage(shoppingCart)
 				
 				try{
 					
-					//def packageSize = calculatePackageSize(shoppingCart)
-					/**
-					def shipmentRate = shipmentApi.calculateShipping(package, toAddress, storeAddress)
+					def shipmentRate = shipmentApi.calculateShipping(shipmentPackage, toAddress, storeAddress)
+					
+					println "shipmentRate: " + shipmentRate	
 						
 					if(shipmentRate){
 						shoppingCart.shipping = shipmentRate.rate
@@ -661,8 +661,8 @@ class ShoppingCartController {
 					}else{
 						shoppingCart.shipping = applicationService.getShipping()
 					}
-						**/
 					
+					println "shopping cart shipping rate : " + shoppingCart.shipping
 				}catch (Exception e){
 					println e.printStackTrace()
 					shoppingCart.shipping = applicationService.getShipping()

@@ -68,8 +68,10 @@ class ShippingController {
 					
 					def shipmentApi = new EasyPostShipmentApi(applicationService)
 					def shippingApiHelper = new ShippingApiHelper(applicationService)
-					def packageSize = shippingApiHelper.getPackage(shoppingCart)
-					def carriers = shipmentApi.getCarriersList(packageSize)
+					def shipmentPackage = shippingApiHelper.getPackage(shoppingCart)
+					def storeAddress = shippingApiHelper.getStoreAddress()
+					def toAddress = shippingApiHelper.getCustomerAddress(customer)
+					def carriers = shipmentApi.getCarriersList(shipmentPackage, toAddress, storeAddress)
 					
 					[ shoppingCart : shoppingCart, carriers : carriers]
 					

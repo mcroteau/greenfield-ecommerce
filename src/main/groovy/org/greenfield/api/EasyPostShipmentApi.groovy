@@ -59,9 +59,14 @@ public class EasyPostShipmentApi implements ShipmentApi {
 		}
 	}
 	
-	def calculateShipping(package, toAddress, fromAddress){
+	def calculateShipping(packageSize, toAddress, fromAddress){
 	
+		println "here..."
+		println "to address"
+		
+		println toAddress
 		def apiKey = getApiKey()
+	
 		EasyPost.apiKey = apiKey;
 		
 		Address verifiedToAddress = getVerifiedAddress(toAddress)
@@ -69,34 +74,32 @@ public class EasyPostShipmentApi implements ShipmentApi {
 		
 		Map<String, Object> parcelMap = new HashMap<String, Object>();
 		
-		if(package.height > 0 &&
-				package.width > 0 &&
-				package.length > 0 &&
-				package.height < 100 &&
-				package.width < 100 &&
-				package.length < 100){
-			parcelMap.put("height", package.height);
-			parcelMap.put("width", package.width);
-			parcelMap.put("length", package.length);
+		if(packageSize.height > 0 &&
+				packageSize.width > 0 &&
+				packageSize.length > 0 &&
+				packageSize.height < 100 &&
+				packageSize.width < 100 &&
+				packageSize.length < 100){
+			parcelMap.put("height", packageSize.height);
+			parcelMap.put("width", packageSize.width);
+			parcelMap.put("length", packageSize.length);
 		}
 		
 		if(packageSize.weight > 0){
 
-			parcelMap.put("weight", package.weight);
+			parcelMap.put("weight", packageSize.weight);
 			Parcel parcel = Parcel.create(parcelMap);
 			
 			/**
-			TODO:how to handle customs, see below, what is tariff number?
-			shoppingCart.shoppingCartItems.each(){ item ->
+			TODO:how to handle customs, see below
 			Map<String, Object> customsItemMap = new HashMap<String, Object>();
-			customsItemMap.put("description", item.name + " : " item.description);
-			customsItemMap.put("quantity", item.quantity);
-			customsItemMap.put("value", item.price);
-			customsItemMap.put("weight", item.weight);
-			customsItemMap.put("origin_country", currencyService.getCurrency());
-			customsItemMap.put("hs_tariff_number", item.tariffNumber);
+			customsItemMap.put("description", "T-shirt");
+			customsItemMap.put("quantity", 1);
+			customsItemMap.put("value", 10);
+			customsItemMap.put("weight", 5);
+			customsItemMap.put("origin_country", "us");
+			customsItemMap.put("hs_tariff_number", "123456");
 			CustomsItem customsItem1 = CustomsItem.create(customsItemMap);
-			}
 			**/
 
 			Map<String, Object> shipmentMap = new HashMap<String, Object>();
@@ -105,7 +108,7 @@ public class EasyPostShipmentApi implements ShipmentApi {
 			shipmentMap.put("parcel", parcel);
 
 
-			//TODO:how to handle customs
+			//TODO:how to handle customs?
 			//shipmentMap.put("customs_info", customsItem1)
 
 
@@ -136,61 +139,93 @@ public class EasyPostShipmentApi implements ShipmentApi {
 	}
 	
 	
-	def getCarriersList(package, toAddress, companyAddress){
-	
+	def getCarriersList(packageSize, toAddress, fromAddress){
+		println "here..."
+		println "to address"
+		
+		println toAddress
 		def apiKey = getApiKey()
-		EasyPost.apiKey = apiKey;
 	
+		EasyPost.apiKey = apiKey;
 		
 		Address verifiedToAddress = getVerifiedAddress(toAddress)
 		Address verifiedFromAddress = getVerifiedAddress(fromAddress)
-	
+		
 		Map<String, Object> parcelMap = new HashMap<String, Object>();
-
+		
 		if(packageSize.height > 0 &&
 				packageSize.width > 0 &&
-				packageSize.length > 0){
+				packageSize.length > 0 &&
+				packageSize.height < 100 &&
+				packageSize.width < 100 &&
+				packageSize.length < 100){
 			parcelMap.put("height", packageSize.height);
 			parcelMap.put("width", packageSize.width);
 			parcelMap.put("length", packageSize.length);
 		}
 		
-	
 		if(packageSize.weight > 0){
+
 			parcelMap.put("weight", packageSize.weight);
-			
 			Parcel parcel = Parcel.create(parcelMap);
-	    	
+			
+			/**
+			TODO:how to handle customs, see below
+			Map<String, Object> customsItemMap = new HashMap<String, Object>();
+			customsItemMap.put("description", "T-shirt");
+			customsItemMap.put("quantity", 1);
+			customsItemMap.put("value", 10);
+			customsItemMap.put("weight", 5);
+			customsItemMap.put("origin_country", "us");
+			customsItemMap.put("hs_tariff_number", "123456");
+			CustomsItem customsItem1 = CustomsItem.create(customsItemMap);
+			**/
+
 			Map<String, Object> shipmentMap = new HashMap<String, Object>();
 			shipmentMap.put("to_address", verifiedToAddress);
 			shipmentMap.put("from_address", verifiedFromAddress);
 			shipmentMap.put("parcel", parcel);
-        	
-			Shipment shipment = Shipment.create(shipmentMap);
-			
-			def carriers = [:]
-			shipment.rates.each { rate ->
-				if(!carriers[rate.carrier]){
-					carriers[rate.carrier] = []
-				}
+
+
+			//TODO:how to handle customs?
+			//shipmentMap.put("customs_info", customsItem1)
+
+
+			//println "creating shipment using api..."
+			Shipment shipment
+			try{
+				shipment = Shipment.create(shipmentMap);	
 				
-				def option = [:]
-				option.id = rate.shipmentId
-				option.rate = rate.rate
-				option.service = rate.service
-				option.days = (rate.estDeliveryDays) ? rate.estDeliveryDays : 0
-				option.rateId = rate.id
+				if(shipment){
+					def carriers = [:]
+					shipment.rates.each { rate ->
+						if(!carriers[rate.carrier]){
+							carriers[rate.carrier] = []
+						}
 				
-				carriers[rate.carrier].add(option)
-			}
+						def option = [:]
+						option.id = rate.shipmentId
+						option.rate = rate.rate
+						option.service = rate.service
+						option.days = (rate.estDeliveryDays) ? rate.estDeliveryDays : 0
+						option.rateId = rate.id
+				
+						carriers[rate.carrier].add(option)
+					}
 			
 		
-			return carriers
+					return carriers
+					
+				}
+			}catch(Exception e){
+				e.printStackTrace()
+			}
+			
 			
 		}else{
 			return [:]
 		}
-	
+		
 	}
 	
 	
