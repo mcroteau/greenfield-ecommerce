@@ -26,6 +26,13 @@ Madame Duval
 FRANCE
 
 
+###Brazil
+Rua Visconde de Porto Seguro 1238
+Sao Paulo-SP                  
+04642-000                     
+BRAZIL   
+
+
 
 ###India
 

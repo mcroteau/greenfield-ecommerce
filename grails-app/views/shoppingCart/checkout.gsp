@@ -100,7 +100,15 @@ ${raw(applicationService.getScreenHeader("Checkout Success"))}
 			<g:if test="${transaction.shipAddress2}">
 				${transaction.shipAddress2}<br/>
 			</g:if>
-			${transaction.shipCity}, ${transaction?.shipState?.name}<br/>
+			${transaction.shipCity}, 
+			<g:if test="${transaction?.shipState}">
+				${transaction.shipState.name}
+				<br/>
+			</g:if>	
+			<g:if test="${transaction?.shipCountry}">
+				${transaction.shipCountry.name}
+				<br/>
+			</g:if>	
 			${transaction.shipZip}	
 			
 			<br/>

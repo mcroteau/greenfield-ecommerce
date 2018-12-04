@@ -180,7 +180,7 @@ class ShoppingCartController {
 		}else{
 			
 			if(session['shoppingCart']){
-				println "here..."
+				
 				def uuid = session['shoppingCart']
 				shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
 			
@@ -458,6 +458,7 @@ class ShoppingCartController {
 				transaction.shipAddress2 = account?.address2
 				transaction.shipCity = account?.city
 				transaction.shipState = account?.state
+				transaction.shipCountry = account?.country
 				transaction.shipZip = account?.zip
 
 				
@@ -636,10 +637,8 @@ class ShoppingCartController {
 				shipmentApi = new EasyPostShipmentApi(applicationService)
 			}
 			
-			println "about to check if shipping is set " + params
 			if(easypostEnabled && params.shippingSet != "true"){		
 							
-				println "shipping set ??? " + params.shippingSet
 							
 				def shippingApiHelper = new ShippingApiHelper(applicationService)
 				def storeAddress = shippingApiHelper.getStoreAddress()

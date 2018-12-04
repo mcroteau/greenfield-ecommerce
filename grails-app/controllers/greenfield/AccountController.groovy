@@ -78,7 +78,6 @@ class AccountController {
 			accountInstance.properties = params
 			accountInstance.addressVerified = false
 
-			println "here..."
 			def easypostEnabled = applicationService.getEasyPostEnabled()
 			
 			def shipmentApi 
@@ -89,13 +88,11 @@ class AccountController {
 				//shipmentApi = new ShippoShipmentApi()
 			//}
 			
-			println "here...."
 			def address = new ShipmentAddress()
 			address.street1 = accountInstance.address1
 			address.street2 = accountInstance.address2
 			address.city = accountInstance.city
 			address.state = accountInstance?.state?.name
-			println "here..."
 			address.country = accountInstance.country.name
 			address.zip = accountInstance.zip
 			

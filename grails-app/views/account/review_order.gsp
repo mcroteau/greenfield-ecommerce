@@ -165,8 +165,15 @@
 			<g:if test="${transactionInstance.shipAddress2}">
 				${transactionInstance.shipAddress2}<br/>
 			</g:if>
-			${transactionInstance?.shipCity},
-			${transactionInstance.shipState.name}<!--TODO: add country to transaction -->
+			${transactionInstance?.shipCity}
+			<g:if test="${transactionInstance.shipState}">
+				, ${transactionInstance?.shipState.name}
+			</g:if>
+			<g:if test="${transactionInstance.shipCountry}">
+				<br/>
+				${transactionInstance?.shipCountry.name}
+				
+			</g:if><br/>
 			${transactionInstance?.shipZip}<br/>
 			${transactionInstance?.account.email}
 			<g:if test="${transactionInstance.account.phone}">

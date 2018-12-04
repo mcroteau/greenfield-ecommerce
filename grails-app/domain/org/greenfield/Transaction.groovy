@@ -29,6 +29,7 @@ class Transaction {
 	String shipAddress2
 	String shipCity
 	State shipState
+	Country shipCountry
 	String shipZip
 	
 	/** TODO : CONSIDER REMOVING **/
@@ -66,6 +67,7 @@ class Transaction {
 		shipAddress2(nullable:true)
 		shipCity(nullable:true)
 		shipState(nullable:true)
+		shipCountry(nullable:true)
 		shipZip(nullable:false)
 		billName(nullable:true)
 		billAddress1(nullable:true)

@@ -100,7 +100,16 @@ ${raw(applicationService.getDefaultHeader("Order Details"))}
 			<g:if test="${transactionInstance.shipAddress2}">
 				${transactionInstance.shipAddress2}<br/>
 			</g:if>
-			${transactionInstance.shipCity}, ${transactionInstance.shipState.name}<br/>
+			${transactionInstance.shipCity} 
+
+			<g:if test="${transactionInstance.shipState}">
+				, ${transactionInstance.shipState.name}<br/>
+			</g:if>
+			
+			<g:if test="${transactionInstance.shipCountry}">
+				<br/>${transactionInstance.shipCountry.name}<br/>
+			</g:if>
+			
 			${transactionInstance.shipZip}		
 		</address>
 	</div>
