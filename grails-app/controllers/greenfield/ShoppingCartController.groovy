@@ -760,7 +760,7 @@ class ShoppingCartController {
 					optionsString += "<strong>options : </strong>"
 					it.shoppingCartItemOptions.each(){ option ->
 						optionsTotal += option.variant.price
-						optionsString += "${option.variant.name}"
+						optionsString += "${option?.variant?.name}"
 						optionsString += "(${currencyService.format(applicationService.formatPrice(option.variant.price))})<br/>"
 					}	
 				}
