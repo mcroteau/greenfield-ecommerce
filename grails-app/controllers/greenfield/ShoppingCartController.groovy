@@ -762,7 +762,7 @@ class ShoppingCartController {
 					it.shoppingCartItemOptions.each(){ option ->
 						optionsTotal += option.variant.price
 						optionsString += "${option.variant.name}"
-						optionsString += "(\$${applicationService.formatPrice(option.variant.price)})<br/>"
+						optionsString += "(${currencyService.format(applicationService.formatPrice(option.variant.price))})<br/>"
 					}	
 				}
 				optionsString += "</div>"
@@ -774,9 +774,9 @@ class ShoppingCartController {
 				orderDetails += "<tr>"
 				orderDetails += "<td style=\"text-align:center; padding:3px; border-bottom:dotted 1px #ddd\">${it.product.id}</td>"
 				orderDetails += "<td style=\"padding:3px; border-bottom:dotted 1px #ddd\">${it.product.name}${optionsString}</td>"
-				orderDetails += "<td style=\"text-align:center; padding:3px; border-bottom:dotted 1px #ddd\">\$${applicationService.formatPrice(productTotal)}</td>"
+				orderDetails += "<td style=\"text-align:center; padding:3px; border-bottom:dotted 1px #ddd\">${currencyService.format(applicationService.formatPrice(productTotal))}</td>"
 				orderDetails += "<td style=\"text-align:center; padding:3px; border-bottom:dotted 1px #ddd\">${it.quantity}</td>"
-				orderDetails += "<td style=\"text-align:center; padding:3px; border-bottom:dotted 1px #ddd\">\$${applicationService.formatPrice(extendedPrice)}</td>"
+				orderDetails += "<td style=\"text-align:center; padding:3px; border-bottom:dotted 1px #ddd\">${currencyService.format(applicationService.formatPrice(extendedPrice))}</td>"
 				orderDetails += "</tr>"
 			}
 			

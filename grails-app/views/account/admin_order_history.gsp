@@ -1,8 +1,9 @@
 
 <%@ page import="org.greenfield.Transaction" %>
 <%@ page import="org.greenfield.ApplicationService" %>
-<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
-%>
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -60,15 +61,15 @@
 					
 						<td><g:link controller="account" action="review_order" id="${transactionInstance.id}"><g:formatDate date="${transactionInstance.orderDate}" format="dd MMM yyyy hh:mm a" /></g:link></td>
 						
-						<td>$${applicationService.formatPrice(transactionInstance.subtotal)}</td>
+						<td>${currencyService.format(applicationService.formatPrice(transactionInstance.subtotal))}</td>
 					
-						<td>$${applicationService.formatPrice(transactionInstance.shipping)}</td>
+						<td>${currencyService.format(applicationService.formatPrice(transactionInstance.shipping))}</td>
 				
-						<td>$${applicationService.formatPrice(transactionInstance.taxes)}</td>
+						<td>${currencyService.format(applicationService.formatPrice(transactionInstance.taxes))}</td>
 		
 						<td>${transactionInstance.status}</td>
 				
-						<td>$${applicationService.formatPrice(transactionInstance.total)}</td>
+						<td>${currencyService.format(applicationService.formatPrice(transactionInstance.total))}</td>
 					
 						<td><g:link controller="account" action="review_order" params="[id: transactionInstance.id]" class="show-transaction-${transactionInstance.id}">Show </g:link></td>
 					

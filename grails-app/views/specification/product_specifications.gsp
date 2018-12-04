@@ -1,7 +1,7 @@
 <%@ page import="org.greenfield.Catalog" %>
 <%@ page import="org.greenfield.ApplicationService" %>
-<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
-%>
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 <!DOCTYPE html>
 <html>
@@ -80,7 +80,7 @@
                 
                 <g:if test="${lowestPriceProduct && highestPriceProduct}">
                     <div id="price-range" style="padding-top:10px;text-align:left;">
-                        <strong>Price Range : </strong>$${applicationService.formatPrice(lowestPriceProduct.price)} - $${applicationService.formatPrice(highestPriceProduct.price)}
+                        <strong>Price Range : </strong>${currencyService.format(applicationService.formatPrice(lowestPriceProduct.price))} - ${currencyService.format(applicationService.formatPrice(highestPriceProduct.price))}
                     </div>
                 </g:if>
             
@@ -98,7 +98,7 @@
                             <g:each in="${products}" var="product">
                                 <tr>
                                     <td style="text-align:left">${product.name}</td>
-                                    <td>$${applicationService.formatPrice(product.price)}</td>
+                                    <td>${currencyService.format(applicationService.formatPrice(product.price))}</td>
                                     <td>${product.quantity}</td>
                                     <td style="text-align:right;">
                                         <select class="product_specification" name="product_specification_${product.id}">

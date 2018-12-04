@@ -1,8 +1,7 @@
 
 <%@ page import="org.greenfield.ApplicationService" %>
 <%@ page import="org.greenfield.Product" %>
-<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
-%>
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
 <% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 <!DOCTYPE html>

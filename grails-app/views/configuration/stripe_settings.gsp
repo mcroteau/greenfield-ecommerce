@@ -63,7 +63,7 @@
 					<!--<option>€  EUR - The Netherlands</option>-->
 					<!--<option value="EUR" <%=jpy%>>¥&nbsp;&nbsp;JPY - Japanese Yen</option>-->
 					<option value="BRL" <%=brl%>>(R$&nbsp;&nbsp;BRL - Brazil: Stripe by invite only)</option>
-					<!--<option value="INR" <%=inr%>>(₹ INR - India: By invite only)</option>-->
+					<option value="INR" <%=inr%>>(₹ INR - India: Stripe by invite only)</option>
 				</select>
 				<br/>
 				

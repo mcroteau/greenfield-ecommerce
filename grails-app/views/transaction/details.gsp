@@ -1,6 +1,6 @@
 <%@ page import="org.greenfield.ApplicationService" %>
-<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
-%>
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 ${raw(applicationService.getDefaultHeader("Order Details"))}
 
@@ -8,7 +8,7 @@ ${raw(applicationService.getDefaultHeader("Order Details"))}
 	<h2>Order # : ${transactionInstance.id}
 	<g:link controller="account" class="btn btn-default pull-right" action="order_history">Order History</g:link>
 	</h2>
-	<h5>Order Total : $${applicationService.formatPrice(transactionInstance.total)}</h5>
+	<h5>Order Total : ${currencyService.format(applicationService.formatPrice(transactionInstance.total))}</h5>
 	<h5>Order Date : <g:formatDate format="hh:mm z - dd MMM yyyy " date="${transactionInstance.orderDate}"/></h5>
 	<h5>Order Status : ${transactionInstance.status}</h5>
 	
@@ -43,7 +43,7 @@ ${raw(applicationService.getDefaultHeader("Order Details"))}
 								<strong>options :&nbsp;</strong>
 								<g:each in="${item.shoppingCartItemOptions}" var="option">
 									<span class="option">${option.variant.name}
-										($${applicationService.formatPrice(option.checkoutPrice)})
+										(${currencyService.format(applicationService.formatPrice(option.checkoutPrice))})
 									</span>
 									<br/>
 								</g:each>
@@ -52,33 +52,33 @@ ${raw(applicationService.getDefaultHeader("Order Details"))}
 					</td>
 					<td style="text-align:center;">
                         <g:if test="${item.regularPrice != item.checkoutPrice}">
-							$${applicationService.formatPrice(item.checkoutPrice)}
-                            <span class="regular-price">$${applicationService.formatPrice(item.regularPrice)}</span>
+							${currencyService.format(applicationService.formatPrice(item.checkoutPrice))}
+                            <span class="regular-price">${currencyService.format(applicationService.formatPrice(item.regularPrice))}</span>
                         </g:if>
 						<g:else>
-							$${applicationService.formatPrice(item.checkoutPrice)}
+							${currencyService.format(applicationService.formatPrice(item.checkoutPrice))}
 						</g:else>
 					</td>
 					<td style="text-align:center;">${item.quantity}</td>
-					<td id="extended_price" style="text-align:center">$${applicationService.formatPrice(extendedPrice)}</td>
+					<td id="extended_price" style="text-align:center">${currencyService.format(applicationService.formatPrice(extendedPrice))}</td>
 				</tr>
 			</g:each>
 			
 			<tr>
 				<td colspan="4" style="text-align:right;">Subtotal</td>
-				<td style="text-align:center; ">$${applicationService.formatPrice(transactionInstance.subtotal)}</td>
+				<td style="text-align:center; ">${currencyService.format(applicationService.formatPrice(transactionInstance.subtotal))}</td>
 			</tr>
 			<tr>
 				<td colspan="4" style="text-align:right; font-size:12px">Taxes</td>
-				<td style="text-align:center; font-size:12px;">$${applicationService.formatPrice(transactionInstance.taxes)}</td>
+				<td style="text-align:center; font-size:12px;">${currencyService.format(applicationService.formatPrice(transactionInstance.taxes))}</td>
 			</tr>
 			<tr>
 				<td colspan="4" style="text-align:right;font-size:12px">Shipping</td>
-				<td  style="text-align:center;font-size:12px">$${applicationService.formatPrice(transactionInstance.shipping)}</td>
+				<td  style="text-align:center;font-size:12px">${currencyService.format(applicationService.formatPrice(transactionInstance.shipping))}</td>
 			</tr>
 			<tr>
 				<td colspan="4" style="text-align:right;font-weight:bold;">Total</td>
-				<td style="font-weight:bold; font-size:17px;text-align:center">$${applicationService.formatPrice(transactionInstance.total)}</td>
+				<td style="font-weight:bold; font-size:17px;text-align:center">${currencyService.format(applicationService.formatPrice(transactionInstance.total))}</td>
 			</tr>
 			
 		</tbody>

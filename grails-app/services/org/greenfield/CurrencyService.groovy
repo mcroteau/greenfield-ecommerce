@@ -72,9 +72,9 @@ class CurrencyService {
 				case "BRL":
 					currencySymbol = "R\$"
 					break
-				/**case "INR":
+				case "INR":
 					currencySymbol = "₹"
-					break**/
+					break
 				default : 
 					currencySymbol = "\$"
 					break

@@ -3,6 +3,7 @@
 <%@ page import="org.greenfield.ApplicationService" %>
 <%@ page import="org.greenfield.common.OrderStatus" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 <!DOCTYPE html>
 <html>
@@ -117,33 +118,33 @@
 								<strong>options :&nbsp;</strong>
 								<g:each in="${item.shoppingCartItemOptions}" var="option">
 									<span class="option">${option.variant.name}
-										($${applicationService.formatPrice(option.variant.price)})
+										(${currencyService.format(applicationService.formatPrice(option.variant.price))})
 									</span>
 									<br/>
 								</g:each>
 							</div>
 						</g:if>
 					</td>
-					<td style="text-align:center">$${applicationService.formatPrice(productTotal)}</td>
+					<td style="text-align:center">${currencyService.format(applicationService.formatPrice(productTotal))}</td>
 					<td style="text-align:center">${item.quantity}</td>
-					<td id="extended_price" style="text-align:center">$${applicationService.formatPrice(extendedPrice)}</td>
+					<td id="extended_price" style="text-align:center">${currencyService.format(applicationService.formatPrice(extendedPrice))}</td>
 				</tr>
 			</g:each>
 			<tr>
 				<td colspan="4" style="text-align:right;">Subtotal</td>
-				<td style="text-align:center; ">$${applicationService.formatPrice(transactionInstance.subtotal)}</td>
+				<td style="text-align:center; ">${currencyService.format(applicationService.formatPrice(transactionInstance.subtotal))}</td>
 			</tr>
 			<tr>
 				<td colspan="4" style="text-align:right; font-size:12px">Taxes</td>
-				<td style="text-align:center; font-size:12px;">$${applicationService.formatPrice(transactionInstance.taxes)}</td>
+				<td style="text-align:center; font-size:12px;">${currencyService.format(applicationService.formatPrice(transactionInstance.taxes))}</td>
 			</tr>
 			<tr>
 				<td colspan="4" style="text-align:right;font-size:12px">Shipping</td>
-				<td  style="text-align:center;font-size:12px">$${applicationService.formatPrice(transactionInstance.shipping)}</td>
+				<td  style="text-align:center;font-size:12px">${currencyService.format(applicationService.formatPrice(transactionInstance.shipping))}</td>
 			</tr>
 			<tr>
 				<td colspan="4" style="text-align:right;font-weight:bold;">Total</td>
-				<td style="font-weight:bold; font-size:17px;text-align:center">$${applicationService.formatPrice(transactionInstance.total)}</td>
+				<td style="font-weight:bold; font-size:17px;text-align:center">${currencyService.format(applicationService.formatPrice(transactionInstance.total))}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -165,7 +166,7 @@
 				${transactionInstance.shipAddress2}<br/>
 			</g:if>
 			${transactionInstance?.shipCity},
-			${transactionInstance.shipState.name}
+			${transactionInstance.shipState.name}<!--TODO: add country to transaction -->
 			${transactionInstance?.shipZip}<br/>
 			${transactionInstance?.account.email}
 			<g:if test="${transactionInstance.account.phone}">

@@ -1,6 +1,6 @@
 <%@ page import="org.greenfield.ApplicationService" %>
-<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
-%>
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 ${raw(applicationService.getDefaultHeader("Select Shipping Option"))}
 
@@ -86,7 +86,7 @@ ${raw(applicationService.getDefaultHeader("Select Shipping Option"))}
 			<g:each in="${carrier.value}" var="option">
 				<div style="padding:15px; background:#fff; border:solid 1px #ddd; margin:10px 0px;">
 					<div class="pull-left">
-					${option.service} : <strong>$${applicationService.formatPrice(option.rate)}</strong>
+					${option.service} : <strong>${currencyService.format(applicationService.formatPrice(option.rate))}</strong>
 					<br/>
 					<span style="">Days: ${option.days}</span>
 					</div>

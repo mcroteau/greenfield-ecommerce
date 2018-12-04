@@ -3,6 +3,7 @@
 <%@ page import="org.greenfield.ApplicationService" %>
 <%@ page import="org.greenfield.common.OrderStatus" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 <!DOCTYPE html>
 <html>
@@ -22,7 +23,8 @@
 	<g:form controller="transaction" action="refund" id="${transactionInstance.id}">
 		<div style="background:#efefef; border:solid 1px #ddd; padding:30px; margin-top:20px;width:400px;">
 			<h2>Confirm Refund</h2>
-			<p>Refunding the Order will refund the full amount of <strong>$${applicationService.formatPrice(transactionInstance.total)}</strong> to
+			<p>Refunding the Order will refund the full amount of :
+			<br> <strong>${currencyService.format(applicationService.formatPrice(transactionInstance.total))}</strong> to
 				<strong>${transactionInstance.account.username}'s</strong> credit card via Stripe.</p>
 			
 			<br/>

@@ -1,6 +1,6 @@
 <%@ page import="org.greenfield.ApplicationService" %>
-<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()
-%>
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
+<% def currencyService = grailsApplication.classLoader.loadClass('org.greenfield.CurrencyService').newInstance()%>
 
 ${raw(applicationService.getDefaultHeader("Order History"))}
 
@@ -25,9 +25,9 @@ ${raw(applicationService.getDefaultHeader("Order History"))}
 			<tr>
 				<td>${transaction.id}</td>
 				<td><g:link controller="transaction" action="details" id="${transaction.id}" ><g:formatDate format="dd MMM yyyy hh:mm z" date="${transaction.orderDate}"/></g:link></td>
-				<td>$${applicationService.formatPrice(transaction.shipping)}</td>
-				<td>$${applicationService.formatPrice(transaction.taxes)}</td>
-				<td>$${applicationService.formatPrice(transaction.total)}</td>
+				<td>${currencyService.format(applicationService.formatPrice(transaction.shipping))}</td>
+				<td>${currencyService.format(applicationService.formatPrice(transaction.taxes))}</td>
+				<td>${currencyService.format(applicationService.formatPrice(transaction.total))}</td>
 				<td>${transaction.status}</td>
 				<td><g:link controller="transaction" action="details" id="${transaction.id}" class="btn btn-default">Details</g:link></td>
 			</tr>

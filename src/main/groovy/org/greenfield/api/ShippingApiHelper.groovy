@@ -10,7 +10,6 @@ public class ShippingApiHelper {
 	
 	def applicationService
 	ShippingApiHelper(applicationService){
-		println "ShippingApiHelper constructor..."
 		this.applicationService = applicationService
 	}
 	
@@ -57,7 +56,6 @@ public class ShippingApiHelper {
 		shipmentPackage.weight = weight
 	**/
 	def getPackage(shoppingCart){
-		println "get package..."
 		def length = 0
 		def width = 0
 		def height = 0
