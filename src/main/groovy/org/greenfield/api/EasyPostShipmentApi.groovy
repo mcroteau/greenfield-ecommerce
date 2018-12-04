@@ -14,7 +14,6 @@ public class EasyPostShipmentApi implements ShipmentApi {
 	def applicationService
 	
 	EasyPostShipmentApi(applicationService){
-		println "here..."
 		this.applicationService = applicationService
 	}
 	
@@ -22,9 +21,6 @@ public class EasyPostShipmentApi implements ShipmentApi {
 		def apiKey
 		if(Environment.current == Environment.DEVELOPMENT)  apiKey = applicationService.getEasyPostTestApiKey()
 		if(Environment.current == Environment.PRODUCTION) apiKey = applicationService.getEasyPostLiveApiKey()
-		println "here..."
-		println apiKey
-		println "here..."
 		return apiKey
 	}
 	
@@ -49,8 +45,6 @@ public class EasyPostShipmentApi implements ShipmentApi {
     		Address validateAddress = Address.create(addressMap);
 			Address verifiedAddress = validateAddress.verify();
 			
-			println verifiedAddress
-			
 			return true
 			
 		}catch (Exception e){
@@ -59,12 +53,10 @@ public class EasyPostShipmentApi implements ShipmentApi {
 		}
 	}
 	
+	
+	
 	def calculateShipping(packageSize, toAddress, fromAddress){
 	
-		println "here..."
-		println "to address"
-		
-		println toAddress
 		def apiKey = getApiKey()
 	
 		EasyPost.apiKey = apiKey;
@@ -140,10 +132,7 @@ public class EasyPostShipmentApi implements ShipmentApi {
 	
 	
 	def getCarriersList(packageSize, toAddress, fromAddress){
-		println "here..."
-		println "to address"
-		
-		println toAddress
+
 		def apiKey = getApiKey()
 	
 		EasyPost.apiKey = apiKey;

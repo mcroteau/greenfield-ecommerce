@@ -43,9 +43,11 @@ class ShippingController {
 					shoppingCart.shipmentDays = params.days
 					shoppingCart.shipmentRateId = params.rateId
 					
+					println "saving shopping cart after setting new shipping selection..."
+					
 					shoppingCart.save(flush:true)
 					
-					redirect(controller: 'shoppingCart', action: 'checkout_preview', id: id, params: [ set : true ])
+					redirect(controller: 'shoppingCart', action: 'checkout_preview', id: id, params: [ shippingSet : true ])
 				}else{
 					flash.message = "Shipment Carrier, Service, Rate and Days invalide"
 					redirect(action : 'select', id : id)

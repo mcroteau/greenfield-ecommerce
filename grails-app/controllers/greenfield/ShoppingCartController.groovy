@@ -636,20 +636,20 @@ class ShoppingCartController {
 				shipmentApi = new EasyPostShipmentApi(applicationService)
 			}
 			
-			
-			if(easypostEnabled){		
+			println "about to check if shipping is set " + params
+			if(easypostEnabled && params.shippingSet != true){		
+							
+				println "shipping set ??? " + params.shippingSet
 							
 				def shippingApiHelper = new ShippingApiHelper(applicationService)
 				def storeAddress = shippingApiHelper.getStoreAddress()
 				def toAddress = shippingApiHelper.getCustomerAddress(customer)
-				println shoppingCart
 				def shipmentPackage = shippingApiHelper.getPackage(shoppingCart)
 				
 				try{
 					
 					def shipmentRate = shipmentApi.calculateShipping(shipmentPackage, toAddress, storeAddress)
 					
-					println "shipmentRate: " + shipmentRate	
 						
 					if(shipmentRate){
 						shoppingCart.shipping = shipmentRate.rate
@@ -674,8 +674,6 @@ class ShoppingCartController {
 				shoppingCart.shipping = applicationService.getShipping()
 			}
 			
-		}else{
-			shoppingCart.shipping = applicationService.getShipping()
 		}
 		
 		
