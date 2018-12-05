@@ -57,33 +57,41 @@ class CurrencyService {
 				currency = prop.getProperty(STORE_CURRENCY)
 			}
 			
-			
 			def currencySymbol
-			switch(currency){
-				case "USD" : 
-					currencySymbol = "\$"
-					break
-				case "GBP":
-					currencySymbol = "£"
-					break
-				case "EUR":
-					currencySymbol = "€"
-					break
-				case "BRL":
-					currencySymbol = "R\$"
-					break
-				case "INR":
-					currencySymbol = "₹"
-					break
-				default : 
-					currencySymbol = "\$"
-					break
-			}
 			
-			return currencySymbol
+			if(currency){
+				switch(currency){
+					case "USD" : 
+						currencySymbol = "\$"
+						break
+					case "GBP":
+						currencySymbol = "£"
+						break
+					case "EUR":
+						currencySymbol = "€"
+						break
+					case "HKD":
+						currencySymbol = "HK\$"
+						break
+					case "BRL":
+						currencySymbol = "R\$"
+						break
+					case "INR":
+						currencySymbol = "₹"
+						break
+					default : 
+						currencySymbol = "\$"
+						break
+				}
+				
+				return currencySymbol
+			}else{
+				return "currency isn't set..."
+			}
 			
 		}catch(Exception e){
 			e.printStackTrace()
+			return "currency isn't set..."
 		}
 	}
 	

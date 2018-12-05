@@ -1,26 +1,35 @@
 #Sample Shipping Addresses
 
+**easypost address in english verification works
+
 
 ###Germany
-
-Herrn                       
-Eberhard Wellhausen      
-Wittekindshof            
+     
 Schulstrasse 4           
 32547 Bad Oyenhausen     
 GERMANY    
 
 
-Flexible Automation GmbH
 Grüner Weg 6             
 61169 Friedberg          
 GERMANY
    
-
+   
+###The Netherlands
+Koninklijke TNT Post BV   [recipient name]
+Prinses Beatrixlaan 23    [street address (street name + house number / building number)]
+2595 AK  'S-Gravenhage    [postal code + town/locality. ]
+NETHERLANDS    
+   
+   
+Geschillencommissie Allerei          [recipient name]
+Surinamestraat 27                    [street address (street name + house number / building number)]
+2585 GJ  Den Haag                    [postal code + town/locality]
+NETHERLANDS   
+   
 
 ###France
-
-Madame Duval             
+            
 27 RUE PASTEUR        
 14390 CABOURG         
 FRANCE
@@ -33,15 +42,24 @@ Sao Paulo-SP
 BRAZIL   
 
 
+###Hong Kong
+
+Flat 25, 12/F, Acacia Building
+150 Kennedy Road
+WAN CHAI
+HONG KONG   
+
 
 ###India
 
-Steel Authority of India Ltd.
-Ispat Bhavan
-Lodhi Road
-NEW DELHI 
-110003
-INDIA
+{
+  "street1": "3067 PS Business Center Drive",
+  "street2": null,
+  "city": "New Delhi",
+  "state": null,
+  "zip": "110012",
+  "country": "IN",
+}
 
 
 

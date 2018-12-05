@@ -218,7 +218,7 @@
 						<input name="height" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.height}" />
 					</span>
 					
-					<span class="form-label secondary" style=>Width</span>
+					<span class="form-label secondary" style="">Width</span>
 					<span class="input-container">
 						<input name="width" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.width}" />
 					</span>

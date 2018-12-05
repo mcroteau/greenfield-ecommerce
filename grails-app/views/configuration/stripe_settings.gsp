@@ -52,16 +52,14 @@
 			def brl = stripe_settings?.storeCurrency == "BRL" ? "selected" : ""
 			def inr = stripe_settings?.storeCurrency == "INR" ? "selected" : ""
 			def hkd = stripe_settings?.storeCurrency == "HKD" ? "selected" : ""
-			def jpy = stripe_settings?.storeCurrency == "JPY" ? "selected" : ""
 			%>
 			
 			<div class="input-container pull-left" style="width:500px;">
 				<select name="storeCurrency" class="form-control" style="width:230px;">
 					<option value="USD" <%=usd%>>$&nbsp;&nbsp;USD - US Dollar</option>
 					<option value="GBP" <%=gbp%>>£&nbsp;&nbsp;GBP - United Kingdom</option>
-					<option value="EUR" <%=eur%>>€&nbsp;&nbsp;EUR - Germany, France</option>
-					<!--<option>€  EUR - The Netherlands</option>-->
-					<!--<option value="EUR" <%=jpy%>>¥&nbsp;&nbsp;JPY - Japanese Yen</option>-->
+					<option value="EUR" <%=eur%>>€&nbsp;&nbsp;EUR - Germany, France, The Netherlands</option>
+					<option value="INR" <%=hkd%>>HK$ HKD - Hong Kong</option>
 					<option value="BRL" <%=brl%>>(R$&nbsp;&nbsp;BRL - Brazil: Stripe by invite only)</option>
 					<option value="INR" <%=inr%>>(₹ INR - India: Stripe by invite only)</option>
 				</select>
@@ -76,7 +74,7 @@
 				
 				<p class="information">
 					<a href="https://stripe.com/br/pricing" target="_blank">Stripe: Request an Invite (Brazil)</a><br/>
-					<a href="https://stripe.com/global#signup-form" target="_blank">Stripe: Request an Invite (India : needs configuration)</a><br/>
+					<a href="https://stripe.com/global#signup-form" target="_blank">Stripe: Request an Invite (India)</a><br/>
 					<!--<a href="https://stripe.com/global#signup-form" target="_blank">Request an Invite (Mexico)</a>-->
 				</p>
 

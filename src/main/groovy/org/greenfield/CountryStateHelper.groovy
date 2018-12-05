@@ -18,6 +18,10 @@ public class CountryStateHelper{
 			/**"states":["Northern Ireland", "Scotland", "Wales"]**/
 		],
 		[
+			"name" : "The Netherlands",
+			"states" : []
+		],
+		[
 			"name" : "Germany",
 			"states" : []
 			/**"states": ["Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", "Bremen", "Hamburg", "Hessen", "Niedersachsen", 
@@ -38,6 +42,10 @@ public class CountryStateHelper{
 			"Goiás", "Maranhão", "Mato GrossoMato Grosso do Sul", "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", 
 			"Piaui", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", 
 			"Santa Catarina", "São Paulo", "Sergipe", "Tocantins"]**/
+		],
+		[
+			"name": "Hong Kong",
+			"states" : []
 		]
 		/**,
 		[

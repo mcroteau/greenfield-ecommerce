@@ -25,6 +25,8 @@ class ShoppingCart {
 	String shipmentCarrier
 	String shipmentService
 	String shipmentRateId
+	String shipmentCurrency
+	
 	
 	static hasMany = [ shoppingCartItems : ShoppingCartItem ]
 	
@@ -41,6 +43,7 @@ class ShoppingCart {
 		shipmentCarrier(nullable:true)
 		shipmentService(nullable:true)
 		shipmentRateId(nullable:true)
+		shipmentCurrency(nullable:true)
 		id generator: 'sequence', params:[sequence:'ID_SHOPPING_CART_SEQ']
     }
 	

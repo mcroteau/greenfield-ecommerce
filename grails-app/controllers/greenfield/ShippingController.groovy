@@ -34,7 +34,8 @@ class ShippingController {
 						params.carrier && 
 						params.service &&
 						params.days &&
-						params.rateId){
+						params.rateId &&
+						params.currency){
 					
 					shoppingCart.shipping = params.rate.toDouble()
 					shoppingCart.shipmentId = params.optionId
@@ -42,10 +43,11 @@ class ShippingController {
 					shoppingCart.shipmentService = params.service
 					shoppingCart.shipmentDays = params.days
 					shoppingCart.shipmentRateId = params.rateId
+					shoppingCart.shipmentCurrency = params.currency
 					
 					println "saving shopping cart after setting new shipping selection..."
 					
-					println shoppingCart.shipping
+					println shoppingCart.shipping + shoppingCart.shipmentCurrency
 					
 					shoppingCart.save(flush:true)
 					

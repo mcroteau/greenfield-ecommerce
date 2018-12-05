@@ -657,6 +657,7 @@ class ShoppingCartController {
 						shoppingCart.shipmentCarrier = shipmentRate.carrier
 						shoppingCart.shipmentService = shipmentRate.service
 						shoppingCart.shipmentRateId = shipmentRate.rateId
+						shoppingCart.shipmentCurrency = shipmentRate.currency
 					}else{
 						shoppingCart.shipping = applicationService.getShipping()
 					}
@@ -677,12 +678,15 @@ class ShoppingCartController {
 			
 		}
 		
+		println shoppingCart.shipmentCurrency
+		
 		
 		if(shoppingCart.shipping == applicationService.getShipping()){
 			shoppingCart.shipmentId = "BASE"
 			shoppingCart.shipmentDays = ""
 			shoppingCart.shipmentCarrier = ""
 			shoppingCart.shipmentService = ""
+			shoppingCart.shipmentCurrency = currencyService.getCurrency()
 		}
 		
 		shoppingCart.save(flush:true)

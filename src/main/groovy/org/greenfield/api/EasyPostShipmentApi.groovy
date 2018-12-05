@@ -119,6 +119,8 @@ public class EasyPostShipmentApi implements ShipmentApi {
 					shipmentRate.carrier = rate.carrier
 					shipmentRate.service = rate.service
 					shipmentRate.rateId = rate.id
+					println "get rate currency : " + rate.toString()
+					shipmentRate.currency = rate.currency
 					
 					
 					return shipmentRate
@@ -198,6 +200,8 @@ public class EasyPostShipmentApi implements ShipmentApi {
 						option.service = rate.service
 						option.days = (rate.estDeliveryDays) ? rate.estDeliveryDays : 0
 						option.rateId = rate.id
+						println "currency?: " + rate.toString()
+						option.currency = rate.currency
 				
 						carriers[rate.carrier].add(option)
 					}
