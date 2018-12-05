@@ -35,6 +35,7 @@ class ConfigurationController {
 	private final String SETTINGS_FILE = "settings.properties"
 	
 	private final String STORE_CURRENCY = "store.currency"
+	private final String STORE_COUNTRY_CODE = "store.country.code"
 	private final String STORE_NAME = "store.name"
 	private final String STORE_ADDRESS1 = "store.address1"
 	private final String STORE_ADDRESS2 = "store.address2"
@@ -300,6 +301,7 @@ class ConfigurationController {
 				//if(enabled == "true")stripe_settings["enabled"] = "checked"
 
 				stripe_settings["storeCurrency"] = prop.getProperty(STORE_CURRENCY);
+				stripe_settings["storeCountryCode"] = prop.getProperty(STORE_COUNTRY_CODE);
 				stripe_settings["devApiKey"] = prop.getProperty(STRIPE_DEVELOPMENT_API_KEY)
 				stripe_settings["devPublishableKey"] = prop.getProperty(STRIPE_DEVELOPMENT_PUBLISHABLE_KEY)
 				stripe_settings["prodApiKey"] = prop.getProperty(STRIPE_PRODUCTION_API_KEY)
@@ -324,6 +326,7 @@ class ConfigurationController {
 		
 			//String enabled = params.enabled
 			String storeCurrency = params.storeCurrency
+			String storeCountryCode = params.storeCountryCode
 			String devApiKey = params.devApiKey
 			String devPublishableKey = params.devPublishableKey
 			String prodApiKey = params.prodApiKey
@@ -344,6 +347,7 @@ class ConfigurationController {
 				
 				//prop.setProperty(STRIPE_ENABLED_KEY, enabled);
 				prop.setProperty(STORE_CURRENCY, storeCurrency);
+				prop.setProperty(STORE_COUNTRY_CODE, storeCountryCode);
 				prop.setProperty(STRIPE_DEVELOPMENT_API_KEY, devApiKey);
 				prop.setProperty(STRIPE_DEVELOPMENT_PUBLISHABLE_KEY, devPublishableKey);
 				prop.setProperty(STRIPE_PRODUCTION_API_KEY, prodApiKey);

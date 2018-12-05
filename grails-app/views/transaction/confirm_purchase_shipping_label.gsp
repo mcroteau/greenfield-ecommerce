@@ -21,9 +21,9 @@
 	
 	<div style="background:#efefef; border:solid 1px #ddd; padding:30px; margin-top:20px;width:400px;">
 		<h2>Confirm Purchase Shipping Label</h2>
-		<p>Continuing will purchase a shipping label from EasyPost.  You must have an active account
-		with payments enabled/configured.  The current charge per label is  <strong>$0.05</strong>.</p>
-		
+		<p>Continuing will purchase a shipping label.  You must have an active account with 
+		EasyPost or Shippo (not yet configured) with payments enabled/configured.  
+		The current charge per label is <strong>$0.05 USD</strong>.</p>
 		<br/>
 		
 		<g:link controller="transaction" action="show" id="${transactionInstance.id}" class="btn btn-default">Cancel</g:link>	

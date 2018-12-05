@@ -12,9 +12,11 @@ import org.greenfield.api.ShipmentRate
 public class EasyPostShipmentApi implements ShipmentApi {
 	
 	def applicationService
+	def currencyService
 	
-	EasyPostShipmentApi(applicationService){
+	EasyPostShipmentApi(applicationService, currencyService){
 		this.applicationService = applicationService
+		this.currencyService = currencyService
 	}
 	
 	def getApiKey(){
@@ -23,8 +25,6 @@ public class EasyPostShipmentApi implements ShipmentApi {
 		if(Environment.current == Environment.PRODUCTION) apiKey = applicationService.getEasyPostLiveApiKey()
 		return apiKey
 	}
-	
-	
 	
 	
 	def validAddress(address){
@@ -48,7 +48,7 @@ public class EasyPostShipmentApi implements ShipmentApi {
 			return true
 			
 		}catch (Exception e){
-			println e
+			println e.printStackTrace()
 			return false
 		}
 	}
@@ -167,7 +167,7 @@ public class EasyPostShipmentApi implements ShipmentApi {
 			customsItemMap.put("quantity", 1);
 			customsItemMap.put("value", 10);
 			customsItemMap.put("weight", 5);
-			customsItemMap.put("origin_country", "us");
+			customsItemMap.put("origin_country", currencyService.getCountryCode());
 			customsItemMap.put("hs_tariff_number", "123456");
 			CustomsItem customsItem1 = CustomsItem.create(customsItemMap);
 			**/
@@ -221,6 +221,39 @@ public class EasyPostShipmentApi implements ShipmentApi {
 		
 	}
 	
+	
+	def buyShippingLabel(shipmentId, shipmentRateId){
+
+		def apiKey = getApiKey()
+		EasyPost.apiKey = apiKey;
+		
+		Shipment shipment = Shipment.retrieve(transactionInstance.shoppingCart.shipmentId)
+		Rate rate = Rate.retrieve(transactionInstance.shoppingCart.shipmentRateId)
+		
+		/** TODO : allows to specify other label formats
+			formats: ZPL, PDF, EPL2, PNG
+			defaults to PNG
+	    	Map<String, Object> labelMap = new HashMap<String, Object>();
+			labelMap.put("file_format", "zpl")
+			shipment = shipment.label(labelMap)
+		**/
+		
+		//println "shipment : + " + shipment.toString()
+
+		shipment = shipment.buy(rate);
+		
+		if(!shipment){
+			throw new Exception("Something went wrong while purchasing label")
+		}
+		
+		def postage = [:]
+		
+		postage.id = shipment.postageLabel?.id
+		postage.labelUrl = shipment.postageLabel?.labelUrl
+		
+		return postage
+		
+	}
 	
 	
 	

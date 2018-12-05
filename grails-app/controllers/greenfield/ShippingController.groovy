@@ -22,6 +22,7 @@ import org.greenfield.api.ShippingApiHelper
 class ShippingController {
 
 	def applicationService
+	def currencyService
 	
 	@Secured(['ROLE_CUSTOMER','ROLE_ADMIN'])
 	def set(Long id){
@@ -72,7 +73,7 @@ class ShippingController {
 				
 					def customer = shoppingCart.account
 					
-					def shipmentApi = new EasyPostShipmentApi(applicationService)
+					def shipmentApi = new EasyPostShipmentApi(applicationService, currencyService)
 					def shippingApiHelper = new ShippingApiHelper(applicationService)
 					def shipmentPackage = shippingApiHelper.getPackage(shoppingCart)
 					def storeAddress = shippingApiHelper.getStoreAddress()

@@ -14,6 +14,7 @@ import com.easypost.model.Shipment
 import com.easypost.exception.EasyPostException
 import grails.util.Environment
 
+import org.greenfield.api.EasyPostShipmentApi
 
 import com.stripe.Stripe
 import com.stripe.model.Charge
@@ -28,6 +29,7 @@ class TransactionController {
 
 
 	def applicationService
+	def currencyService
 	
 
 	@Secured(['ROLE_ADMIN', 'ROLE_CUSTOMER'])
@@ -117,47 +119,24 @@ class TransactionController {
 				return
 			}
 			
+			
 			try{
-				
-				def apiKey
-				
-				if(Environment.current == Environment.DEVELOPMENT)  apiKey = applicationService.getEasyPostTestApiKey()
-				if(Environment.current == Environment.PRODUCTION) apiKey = applicationService.getEasyPostLiveApiKey()
-		
-				EasyPost.apiKey = apiKey;
+			
+				def shippingApi = new EasyPostShipmentApi(applicationService, currencyService)
 				
 				
-				Shipment shipment = Shipment.retrieve(transactionInstance.shoppingCart.shipmentId)
-				Rate rate = Rate.retrieve(transactionInstance.shoppingCart.shipmentRateId)
+				def shipmentId = transactionInstance.shoppingCart.shipmentId
+				def shipmentRateId = transactionInstance.shoppingCart.shipmentRateId
+				def postage = shippingApi.buyShippingLabel(shipmentId, shipmentRateId)
 				
-				/** TODO : allows to specify other label formats
-					formats: ZPL, PDF, EPL2, PNG
-					defaults to PNG
-			    	Map<String, Object> labelMap = new HashMap<String, Object>();
-					labelMap.put("file_format", "zpl")
-					shipment = shipment.label(labelMap)
-				**/
-				
-				//println "shipment : + " + shipment.toString()
-
-				shipment = shipment.buy(rate);
-				
-				
-				if(!shipment){
-					flash.message = "Problems retrieving shipping label.  Please try again"
-					redirect(action: 'show', id : id)
-					return
-				}
-				
-				if(!shipment.postageLabel?.id || 
-					!shipment.postageLabel?.labelUrl){
+				if(!postage){
 					flash.message = "Something went wrong while processing request to purchase Shipping Label"
 					redirect(action: 'show', id : id)
 					return
 				}
-	
-				transactionInstance.postageId = shipment.postageLabel.id
-				transactionInstance.postageUrl = shipment.postageLabel.labelUrl
+				
+				transactionInstance.postageId = postage.id
+				transactionInstance.postageUrl = postage.labelUrl
 				transactionInstance.save(flush:true)
 				
 				[ transactionInstance : transactionInstance ]

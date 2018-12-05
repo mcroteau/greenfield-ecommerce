@@ -113,4 +113,31 @@ class CurrencyService {
 	}
 	
 	
+	/**TODO:for a later date for international shipping**/
+	def getCountryCode(){
+		
+		if(!grailsApplication){
+			grailsApplication = Holders.grailsApplication
+		}
+		Properties prop = new Properties();
+		
+		try{
+		
+			File propertiesFile = grailsApplication.mainContext.getResource("settings/${SETTINGS_FILE}").file
+			FileInputStream inputStream = new FileInputStream(propertiesFile)
+			prop.load(inputStream);
+			
+			def countryCode = "us"
+			if(prop.getProperty(STORE_COUNTRY_CODE)){
+				countryCode = prop.getProperty(STORE_COUNTRY_CODE)
+			}
+			
+			return countryCode
+
+		}catch(Exception e){
+			e.printStackTrace()
+			return "country isn't set..."
+		}
+	}
+	
 }

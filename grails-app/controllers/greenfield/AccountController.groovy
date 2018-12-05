@@ -51,6 +51,7 @@ class AccountController {
 	def applicationService
 	def springSecurityService
 	def simpleCaptchaService
+	def currencyService
 
 
 	@Secured(['ROLE_CUSTOMER', 'ROLE_ADMIN'])
@@ -82,7 +83,7 @@ class AccountController {
 			
 			def shipmentApi 
 			if(easypostEnabled){
-				shipmentApi = new EasyPostShipmentApi(applicationService)
+				shipmentApi = new EasyPostShipmentApi(applicationService, currencyService)
 			}
 			//if(shippoEnabled){
 				//shipmentApi = new ShippoShipmentApi()

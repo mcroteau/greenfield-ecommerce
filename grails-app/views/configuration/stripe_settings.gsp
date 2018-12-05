@@ -55,11 +55,11 @@
 			%>
 			
 			<div class="input-container pull-left" style="width:500px;">
-				<select name="storeCurrency" class="form-control" style="width:230px;">
+				<select name="storeCurrency" class="form-control" style="width:323px;" id="currencySelect">
 					<option value="USD" <%=usd%>>$&nbsp;&nbsp;USD - US Dollar</option>
 					<option value="GBP" <%=gbp%>>£&nbsp;&nbsp;GBP - United Kingdom</option>
 					<option value="EUR" <%=eur%>>€&nbsp;&nbsp;EUR - Germany, France, The Netherlands</option>
-					<option value="INR" <%=hkd%>>HK$ HKD - Hong Kong</option>
+					<option value="HKD" <%=hkd%>>HK$ HKD - Hong Kong</option>
 					<option value="BRL" <%=brl%>>(R$&nbsp;&nbsp;BRL - Brazil: Stripe by invite only)</option>
 					<option value="INR" <%=inr%>>(₹ INR - India: Stripe by invite only)</option>
 				</select>
@@ -85,7 +85,18 @@
 			</div>
 			<br class="clear"/>			
 		</div>
+		<div class="form-row">
+			<div class="form-label twohundred pull-left" style="display:inline-block">Store Country</div>
 		
+			<div class="input-container pull-left" style="width:500px;">
+				<select name="storeCountryCode" class="form-control" style="width:230px;" id="countrySelect">
+				</select>
+				<br/>
+				<br/>
+				<p class="information secondary">Store country must match the currency selected. Used for shipping international shipping calculations</p>
+			</div>
+			<br class="clear"/>
+		</div>
 		
 
 		<h4>Development Settings</h4>
@@ -134,5 +145,64 @@
 		
 		
 	</form>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var countryCode = "${stripe_settings?.storeCountryCode}"
+			//console.log("here...", countryCode)
+			
+			var countriesCurrenciesMap = {
+				"USD" : [{ "code": "us", "name" : "United States" }],
+				"GBP" : [{ "code": "gb", "name" : "United Kingdom" }],
+				"EUR" : [
+						{ "code": "de", "name" : "Germany" },
+						{ "code": "fr", "name" : "France" },
+						{ "code": "nl", "name" : "The Netherlands" },
+				],
+				"BRL" : [{ "code": "br", "name" : "Brazil" }],
+				"INR" : [{ "code": "in", "name" : "India" }],
+				"HKD" : [{ "code": "hk", "name" : "Hong Kong" }]
+			}
+			
+			var countryCodeMap = {
+				"us" : { "code": "us", "name" : "United States" },
+				"gb" : { "code": "gb", "name" : "United Kingdom" },
+				"de" : { "code": "de", "name" : "Germany" },
+				"fr" : { "code": "fr", "name" : "France" },
+				"nl" : { "code": "nl", "name" : "The Netherlands" },
+				"br" : { "code": "br", "name" : "Brazil" },
+				"in" : { "code": "in", "name" : "India" },
+				"hk" : { "code": "hk", "name" : "Hong Kong" }
+			}
+			
+			var $countrySelect = $("#countrySelect"),
+				$currencySelect = $("#currencySelect")
+			
+			$currencySelect.change(updateCountrySelect)
+			
+			function updateCountrySelect(event){
+				$countrySelect.find("option").remove()
+				
+				var currency = $currencySelect.val()
+				//console.log(currency)
+				var countries = countriesCurrenciesMap[currency]
+				
+				$(countries).each(function(o, q){
+					//console.log(o, q)
+					$countrySelect.append("<option value=\"" + q.code + "\">" + q.name + "</option>");
+				})
+			}
+			
+			function setCountryCode(){
+				//console.log(countryCode)
+				var selected = countryCodeMap[countryCode]
+				$countrySelect.append("<option value=\"" + selected.code + "\">" + selected.name + "</option>");
+			}
+			
+			setCountryCode();
+			
+		})
+	</script>
+		
 </body>
 </html>

@@ -1,10 +1,12 @@
 #Mon Mar 9 18:37:43 AKDT 2017
 app.context=greenfield
 store.currency=USD
+store.country.code=us
 store.name=
 store.address1=
 store.address2=
 store.state=
+store.country=
 store.city=
 store.tax.rate=0
 store.zip=

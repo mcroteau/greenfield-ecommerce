@@ -634,7 +634,8 @@ class ShoppingCartController {
 			
 			def easypostEnabled = applicationService.getEasyPostEnabled()
 			if(easypostEnabled){
-				shipmentApi = new EasyPostShipmentApi(applicationService)
+				println "637 Shopping Cart Controller...."
+				shipmentApi = new EasyPostShipmentApi(applicationService, currencyService)
 			}
 			
 			if(easypostEnabled && params.shippingSet != "true"){		
