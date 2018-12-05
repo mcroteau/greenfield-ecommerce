@@ -45,10 +45,23 @@
 				<span class="information secondary">Important, required for page titles etc.</span>
 			</span>
 			<span class="input-container">
-				<input type="text" class="form-control threehundred" name="storeName" value="${settings?.storeName}"/>
+				<input type="text" class="form-control threehundred" name="storeName" value="${settings?.storeName}" style="width:370px;"/>
 			</span>
 			<br class="clear"/>
 		</div>
+		
+			
+		<div class="form-row">
+			<span class="form-label twohundred">Company Phone
+				<br/>
+				<span class="information secondary">Important, used for creating shipping labels</span>
+			</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="storePhone" value="${settings?.storePhone}" style="width:273px;"/>
+			</span>
+			<br class="clear"/>
+		</div>
+
 
 
 

@@ -22,8 +22,20 @@ public class EasyPostShipmentApi implements ShipmentApi {
 	
 	def getApiKey(){
 		def apiKey
-		if(Environment.current == Environment.DEVELOPMENT)  apiKey = applicationService.getEasyPostTestApiKey()
-		if(Environment.current == Environment.PRODUCTION) apiKey = applicationService.getEasyPostLiveApiKey()
+		if(Environment.current == Environment.DEVELOPMENT) {
+			 apiKey = applicationService.getEasyPostTestApiKey()
+			 if(!apiKey){
+				 throw new Exception("EasyPost development api key is not entered...")
+			 }
+		}
+		
+		if(Environment.current == Environment.PRODUCTION) {
+			apiKey = applicationService.getEasyPostLiveApiKey()
+			if(!apiKey){
+				throw new Exception("EasyPost live api key is not entered...")
+			}
+		}
+		
 		return apiKey
 	}
 	

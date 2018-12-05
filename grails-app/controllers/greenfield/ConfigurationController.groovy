@@ -24,6 +24,8 @@ import org.greenfield.Product
 import org.greenfield.Page
 
 import grails.plugin.springsecurity.annotation.Secured
+import org.greenfield.api.EasyPostShipmentApi
+import org.greenfield.api.ShipmentAddress
 
 
 @Mixin(BaseController)
@@ -31,6 +33,7 @@ class ConfigurationController {
 
 	def emailService
 	def applicationService
+	def currencyService
 	
 	private final String SETTINGS_FILE = "settings.properties"
 	
@@ -43,6 +46,7 @@ class ConfigurationController {
 	private final String STORE_COUNTRY = "store.country"
 	private final String STORE_STATE = "store.state"
 	private final String STORE_ZIP = "store.zip"
+	private final String STORE_PHONE = "store.phone"
 	private final String STORE_SHIPPING = "store.shipping"
 	private final String STORE_TAX_RATE = "store.tax.rate"
 	
@@ -98,6 +102,7 @@ class ConfigurationController {
 				
 				def settings = [:]
 				settings["storeName"] = prop.getProperty(STORE_NAME);
+				settings["storePhone"] = prop.getProperty(STORE_PHONE);
 				settings["keywords"] = prop.getProperty(META_KEYWORDS);
 				settings["description"] = prop.getProperty(META_DESCRIPTION);
 				settings["shipping"] = prop.getProperty(STORE_SHIPPING);
@@ -123,6 +128,7 @@ class ConfigurationController {
 		authenticatedAdmin{ adminAccount ->
 			
 			String storeName = params.storeName
+			String storePhone = params.storePhone
 			String keywords = params.keywords
 			String description = params.description
 			String taxRate = params.taxRate
@@ -143,6 +149,7 @@ class ConfigurationController {
 			try{
 			    
 				prop.setProperty(STORE_NAME, storeName);
+				prop.setProperty(STORE_PHONE, storePhone);
 				prop.setProperty(META_KEYWORDS, keywords);
 				prop.setProperty(META_DESCRIPTION, description);
 				prop.setProperty(STORE_TAX_RATE, taxRate);
@@ -395,6 +402,7 @@ class ConfigurationController {
 				shipping_settings["country"] = prop.getProperty(STORE_COUNTRY);
 				shipping_settings["state"] = prop.getProperty(STORE_STATE);
 				shipping_settings["zip"] = prop.getProperty(STORE_ZIP);
+				shipping_settings["storePhone"] = prop.getProperty(STORE_PHONE);
 				shipping_settings["shipping"] = prop.getProperty(STORE_SHIPPING);
 				
 				String easypostEnabled = prop.getProperty(EASYPOST_ENABLED);
@@ -430,6 +438,7 @@ class ConfigurationController {
 			String countryId = params.country
 			String stateId = params.state
 			String zip = params.zip
+			String phone = params.storePhone
 			
 			
 			if(easypostEnabled == "on")easypostEnabled = true
@@ -459,7 +468,8 @@ class ConfigurationController {
 					return
 				}
 			}
-			
+			def shipmentApi
+			def message = ""
 			if(easypostEnabled == "true"){
 				if(testApiKey == ""){
 					flash.error = "EasyPost Test API Key cannot be blank"
@@ -472,34 +482,43 @@ class ConfigurationController {
 					return
 				}
 				
-				def apiKey
-				
-				if(Environment.current == Environment.DEVELOPMENT)  apiKey = testApiKey
-				if(Environment.current == Environment.PRODUCTION) apiKey = liveApiKey
-				
-				EasyPost.apiKey = apiKey;
-				
-		    	Map<String, Object> addressMap = new HashMap<String, Object>();
-		    	addressMap.put("company", "testing")//TODO:remove
-		    	addressMap.put("company_name", "testing")//TODO:remove
-		    	addressMap.put("street1", address1);
-		    	addressMap.put("street2", address2);
-		    	addressMap.put("country", country.name);
-				if(state)addressMap.put("state", state.name);
-				addressMap.put("city", city);
-				addressMap.put("zip", zip);
-    	
+				shipmentApi = new EasyPostShipmentApi(applicationService, currencyService)
+			}
+			
+			if(shipmentApi){
+			
 				try{
-		    		Address address = Address.create(addressMap);
-					Address verifiedAddress = address.verify();
-				}catch (Exception e){
-					if(e.message.indexOf("401") >= 0){
-						flash.error = "The API entered is unauthorized by EasyPost."
-						redirect(action : 'shipping_settings')
-						return
+					
+					def address = new Address()
+			    	address.company = applicationService.getStoreName()
+					address.street1 = address1
+					address.street2 = address2
+					address.city = city
+					address.country = country.name
+					if(state)address.state = state.name
+					address.zip = zip
+					/**TODO:add**/
+					if(phone)address.phone = phone
+			    	
+					/**TODO: need to romanize?**/
+					/**address = new Address()
+					address.street1 = "पीएस बिजनेस सेंटर ड्राइव"
+					address.city = "नई दिल्ली"
+					address.country = "India"
+					address.zip = "110012"
+					**/
+					
+					
+					if(!shipmentApi.validAddress(address)){
+	   					flash.error = "Address cannot be verified. Please update your address with valid information..."
+	   					render(view: "shipping_settings" )
+	   					return
 					}
-		
-					flash.error = "Please make sure all EasyPost settings are correct and address is valid"
+			    	
+			    	message = "Successfully validated address "
+					
+				}catch(Exception e){
+					flash.message = e.printStackTrace()
 					redirect(action : 'shipping_settings')
 					return
 				}
@@ -526,6 +545,7 @@ class ConfigurationController {
 				prop.setProperty(STORE_COUNTRY, countryId);
 				if(state)prop.setProperty(STORE_STATE, stateId);
 				prop.setProperty(STORE_ZIP, zip);
+				prop.setProperty(STORE_PHONE, phone);
 				
 				
 				def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('settings')
@@ -535,11 +555,18 @@ class ConfigurationController {
 			    prop.store(new FileOutputStream(filePath), null);
     			applicationService.setProperties()
 				
-				flash.message = "Successfully saved Shipping settings"
+				if(message){
+					message = message + "and saved shipping settings."
+				}else{
+					message = "Successfully saved shipping settings."
+				}
+				
+				
+				flash.message = message
 				redirect(action : 'shipping_settings')
 				
 			} catch (IOException e){
-			    log.debug"exception occured while saving properties file :"+e
+			    log.debug"exception occured while saving properties file :" + e
 				flash.error = "Something went wrong... "
 				redirect(action : 'shipping_settings')
 				return

@@ -917,6 +917,17 @@ class ApplicationService {
 		return storeName ? storeName : ""	
 	}
 	
+	
+	def getStorePhone(){
+		if(!properties){
+			setProperties()
+		}
+		String storePhone = properties.getProperty("store.phone");
+		//println "++++++++ Store Name : ${storeName} +++++++++++"	
+		return storePhone ? storePhone : ""	
+	}
+	
+	
 	def getMetaKeywords(){
 		if(!properties)setProperties()
 		String keywords = properties.getProperty("meta.keywords");

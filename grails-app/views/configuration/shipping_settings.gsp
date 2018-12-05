@@ -45,6 +45,8 @@
 	
 	<form action="save_shipping_settings" class="form-horizontal" method="post">
 		
+		<p class="information secondary">Address below is used when EasyPost or another shipping api is enabled for realtime shipping calculations and printing shipping labels.</p>
+		
 		<h4>Store Address</h4>
 		
 		<div class="form-row">
@@ -111,9 +113,21 @@
 			</span>
 			<br class="clear"/>
 		</div>
+
 		
+			
+		<div class="form-row">
+			<span class="form-label twohundred">Phone
+				<br/>
+				<span class="information secondary">Same in Store Settings</span>
+			</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="storePhone" value="${shipping_settings?.storePhone}" style="width:273px;"/>
+			</span>
+			<br class="clear"/>
+		</div>
 		
-		
+		<br/>
 		<h4>Rate Settings</h4>
 		
 		<div class="form-row">
