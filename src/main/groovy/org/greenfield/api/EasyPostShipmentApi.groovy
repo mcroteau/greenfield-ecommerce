@@ -1,6 +1,7 @@
 package org.greenfield.api
 
 import com.easypost.EasyPost
+import com.easypost.model.Rate
 import com.easypost.model.Address
 import com.easypost.model.Parcel
 import com.easypost.model.Shipment
@@ -227,8 +228,8 @@ public class EasyPostShipmentApi implements ShipmentApi {
 		def apiKey = getApiKey()
 		EasyPost.apiKey = apiKey;
 		
-		Shipment shipment = Shipment.retrieve(transactionInstance.shoppingCart.shipmentId)
-		Rate rate = Rate.retrieve(transactionInstance.shoppingCart.shipmentRateId)
+		Shipment shipment = Shipment.retrieve(shipmentId)
+		Rate rate = Rate.retrieve(shipmentRateId)
 		
 		/** TODO : allows to specify other label formats
 			formats: ZPL, PDF, EPL2, PNG

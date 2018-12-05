@@ -81,7 +81,7 @@
 				<p class="information secondary">No matter what country you’re based in, you can use 
 					<a href="https://stripe.com/atlas" target="_blank">Atlas</a> to easily incorporate a U.S. company, set up a U.S. bank account, and start accepting payments with Stripe. <a href="https://stripe.com/atlas" target="_blank">Request an invite</a></p>
 		
-				<p class="information secondary">Greenfield, DataTundra, MGi Data Source or Mike Croteau is not liable for your configuration.</p>
+				<p class="information secondary">Greenfield, DataTundra, MGi Data Source or Mike Croteau are not liable for your configuration.</p>
 			</div>
 			<br class="clear"/>			
 		</div>
