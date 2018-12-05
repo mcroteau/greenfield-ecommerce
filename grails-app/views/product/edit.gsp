@@ -207,7 +207,7 @@
 				<div class="form-row">
 					
 					<span class="form-label full secondary">Length
-						<span class="information secondary" style="display:block">Length, Width &amp; Height are optional for rate calculation</span>
+						<span class="information secondary" style="display:block">Length, Width &amp; Height are optional for rate calculation (Inches)</span>
 					</span>
 					<span class="input-container">
 						<input name="length" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.length}" />
@@ -308,6 +308,19 @@
 						<input name="productNo" type="text" class="form-control threefifty"
 						style="width:150px;" 
 						value="${productInstance?.productNo}"/>
+					</span>
+					<br class="clear"/>
+				</div>
+				
+				
+				
+				
+				<div class="form-row">
+					<span class="form-label full secondary">Harmonized Code 
+						<span class="information secondary block">Optional, only used when customs information is needed when generating a shipping label</span>
+					</span>
+					<span class="input-container">
+						<input name="harmonizedCode" type="text" class="form-control threefifty" value="${productInstance?.harmonizedCode}" id="harmonizedCode" style="width:209px"/>
 					</span>
 					<br class="clear"/>
 				</div>

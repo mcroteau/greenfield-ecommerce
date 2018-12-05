@@ -30,6 +30,8 @@ class Product {
 
 	String productNo
 	
+	String harmonizedCode
+	
 	Layout layout
 	
 	static hasMany = [ catalogs: Catalog, additionalPhotos: AdditionalPhoto, productOptions: ProductOption, productSpecifications: ProductSpecification ]
@@ -57,6 +59,7 @@ class Product {
 		height(nullable:true)
 		weight(nullable:false)
 		productNo(nullable:true)
+		harmonizedCode(nullable:true)
 		id generator: 'sequence', params:[sequence:'ID_PRODUCT_PK_SEQ']
     }
 }
