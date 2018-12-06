@@ -26,37 +26,44 @@ class ShippingController {
 	
 	@Secured(['ROLE_CUSTOMER','ROLE_ADMIN'])
 	def set(Long id){
-		authenticatedAccount { customerAccount ->
-			def shoppingCart = ShoppingCart.get(id)
-			if(shoppingCart){
-				if(params.optionId && 
-					params.rate &&
-						params.rate.isDouble() &&
-						params.carrier && 
-						params.service &&
-						params.days &&
-						params.rateId &&
-						params.currency){
-					
-					shoppingCart.shipping = params.rate.toDouble()
-					shoppingCart.shipmentId = params.optionId
-					shoppingCart.shipmentCarrier = params.carrier
-					shoppingCart.shipmentService = params.service
-					shoppingCart.shipmentDays = params.days
-					shoppingCart.shipmentRateId = params.rateId
-					shoppingCart.shipmentCurrency = params.currency
-					
-					println "saving shopping cart after setting new shipping selection..."
-					
-					println shoppingCart.shipping + shoppingCart.shipmentCurrency
-					
-					shoppingCart.save(flush:true)
-					
-					redirect(controller: 'shoppingCart', action: 'checkout_preview', id: id, params: [ shippingSet : true ])
+		def shoppingCart = ShoppingCart.get(id)
+		if(shoppingCart){
+			if(params.optionId && 
+				params.rate &&
+					params.rate.isDouble() &&
+					params.carrier && 
+					params.service &&
+					params.days &&
+					params.rateId &&
+					params.currency){
+				
+				shoppingCart.shipping = params.rate.toDouble()
+				shoppingCart.shipmentId = params.optionId
+				shoppingCart.shipmentCarrier = params.carrier
+				shoppingCart.shipmentService = params.service
+				shoppingCart.shipmentDays = params.days
+				shoppingCart.shipmentRateId = params.rateId
+				shoppingCart.shipmentCurrency = params.currency
+				
+				println "saving shopping cart after setting new shipping selection..."
+				
+				println shoppingCart.shipping + shoppingCart.shipmentCurrency
+				
+				shoppingCart.save(flush:true)
+
+				def anonymous = params.anonymous ? params.anonymouse : ""
+
+				def accountInstance = session['accountInstance']
+				
+				if(anonymous){
+					redirect(controller: 'shoppingCart', action: 'anonymous_preview', params: [ shippingSet : true, accountInstance: accountInstance ])
 				}else{
-					flash.message = "Shipment Carrier, Service, Rate and Days invalide"
-					redirect(action : 'select', id : id)
+					redirect(controller: 'shoppingCart', action: 'checkout_preview', id: id, params: [ shippingSet : true  ])
 				}
+				
+			}else{
+				flash.message = "Shipment Carrier, Service, Rate and Days invalide"
+				redirect(action : 'select', id : id)
 			}
 		}
 	}
@@ -64,32 +71,30 @@ class ShippingController {
 	
 	@Secured(['ROLE_CUSTOMER','ROLE_ADMIN'])
 	def select(Long id){
-		authenticatedAccount { customerAccount ->
+		def shoppingCart = ShoppingCart.get(id)
+		
+		if(shoppingCart){
+			try{
 			
-			def shoppingCart = ShoppingCart.get(id)
-			
-			if(shoppingCart){
-				try{
+				def customer = shoppingCart.account
 				
-					def customer = shoppingCart.account
-					
-					def shipmentApi = new EasyPostShipmentApi(applicationService, currencyService)
-					def shippingApiHelper = new ShippingApiHelper(applicationService)
-					def shipmentPackage = shippingApiHelper.getPackage(shoppingCart)
-					def storeAddress = shippingApiHelper.getStoreAddress()
-					def toAddress = shippingApiHelper.getCustomerAddress(customer)
-					def carriers = shipmentApi.getCarriersList(shipmentPackage, toAddress, storeAddress)
-					
-					[ shoppingCart : shoppingCart, carriers : carriers]
-					
-					
-				}catch (Exception e){
-					println e
-					e.printStackTrace()
-					flash.message = "Something went wrong..."
-					forward(controller : 'shoppingCart', action : 'index')
-					return
-				}
+				def shipmentApi = new EasyPostShipmentApi(applicationService, currencyService)
+				def shippingApiHelper = new ShippingApiHelper(applicationService)
+				def shipmentPackage = shippingApiHelper.getPackage(shoppingCart)
+				def storeAddress = shippingApiHelper.getStoreAddress()
+				def toAddress = shippingApiHelper.getCustomerAddress(customer)
+				def carriers = shipmentApi.getCarriersList(shipmentPackage, toAddress, storeAddress)
+				def anonymous = params.anonymous ? params.anonymouse : ""
+				
+				[ shoppingCart : shoppingCart, carriers : carriers, anonymous: anonymous]
+				
+				
+			}catch (Exception e){
+				println e
+				e.printStackTrace()
+				flash.message = "Something went wrong..."
+				forward(controller : 'shoppingCart', action : 'index')
+				return
 			}
 		}
 	}

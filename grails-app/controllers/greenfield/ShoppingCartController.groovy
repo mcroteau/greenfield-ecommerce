@@ -355,8 +355,24 @@ class ShoppingCartController {
 			accountInstance.country = Country.get(params.country)
 			accountInstance.zip = params.zip
 			accountInstance.phone = params.phone
-		
-			calculateTotal(shoppingCart, accountInstance)
+			
+			def state = accountInstance.state ? accountInstance.state : ""
+			
+			if(!session['accountInstance']){
+				session['accountInstance'] = [
+					name : accountInstance.name,
+					email : accountInstance.email,
+					address1 : accountInstance.address1,
+					address2 : accountInstance.address2,
+					city : accountInstance.city,
+					state : state,
+					country : accountInstance.country,
+					zip : accountInstance.zip,
+					phone : accountInstance.phone
+				]
+			}
+			
+			calculateTotal(shoppingCart, session['accountInstance'])
 			
 		}catch(Exception e){
 			e.printStackTrace()
@@ -364,7 +380,7 @@ class ShoppingCartController {
 			redirect(action: "anonymous")
 		}
 	
-		[ shoppingCart: shoppingCart, accountInstance: accountInstance, countries: Country.list() ]
+		[ shoppingCart: shoppingCart, accountInstance: session['accountInstance'], countries: Country.list() ]
 	}
 	
 	
