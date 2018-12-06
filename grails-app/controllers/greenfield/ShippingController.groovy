@@ -69,7 +69,7 @@ class ShippingController {
 				
 				shoppingCart.save(flush:true)
 
-				def anonymous = params.anonymous ? params.anonymouse : ""
+				def anonymous = params.anonymous ? params.anonymous : ""
 
 				def accountInstance = session['accountInstance']
 				
