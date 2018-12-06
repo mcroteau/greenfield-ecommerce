@@ -108,7 +108,7 @@ ${raw(applicationService.getScreenHeader("Checkout Preview"))}
 				
 				<form name="anonymous_preview" action="/${applicationService.getContextName()}/shoppingCart/anonymous_preview" method="post" id="anonymousForm" class="form-horizontal">
 					
-					<h3>Shipping Address</h3>
+					<h3>Calculate Shipping</h3>
         	
 					<p class="secondary information">Please complete the form below to complete to calculate shipping and continue...</p>
 					
@@ -182,7 +182,7 @@ ${raw(applicationService.getScreenHeader("Checkout Preview"))}
 	
 		
 		<div>
-			<button name="submit" class="btn btn-primary pull-right btn-lg" id="checkoutBtn">Confirm Checkout</button>
+			<button name="submit" class="btn btn-primary pull-right btn-lg" id="checkoutBtn">Calculate Checkout</button>
 		</div>
 	</g:if>
 	<g:else>

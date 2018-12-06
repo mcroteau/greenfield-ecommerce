@@ -18,15 +18,27 @@ import org.greenfield.Country
 import org.greenfield.api.EasyPostShipmentApi
 import org.greenfield.api.ShippingApiHelper
 
+import org.greenfield.common.ShoppingCartStatus
+
 @Mixin(BaseController)
 class ShippingController {
 
 	def applicationService
 	def currencyService
 	
-	@Secured(['ROLE_CUSTOMER','ROLE_ADMIN'])
-	def set(Long id){
-		def shoppingCart = ShoppingCart.get(id)
+	@Secured(['permitAll'])
+	def set(){
+		
+		def shoppingCart
+		if(params.id){
+			shoppingCart = ShoppingCart.get(params.id)
+		}else if(session['shoppingCart']){
+			shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
+		}else{
+			flash.message = "Something went wrong... shopping cart not found."
+			redirect(controller: "store", action:"index")
+		}
+		
 		if(shoppingCart){
 			if(params.optionId && 
 				params.rate &&
@@ -57,8 +69,10 @@ class ShippingController {
 				
 				if(anonymous){
 					redirect(controller: 'shoppingCart', action: 'anonymous_preview', params: [ shippingSet : true, accountInstance: accountInstance ])
+					return
 				}else{
 					redirect(controller: 'shoppingCart', action: 'checkout_preview', id: id, params: [ shippingSet : true  ])
+					return
 				}
 				
 			}else{
@@ -69,14 +83,34 @@ class ShippingController {
 	}
 	
 	
-	@Secured(['ROLE_CUSTOMER','ROLE_ADMIN'])
-	def select(Long id){
-		def shoppingCart = ShoppingCart.get(id)
+	@Secured(['permitAll'])
+	def select(){
+		def anonymous = params?.anonymous ? params?.anonymous : ""
 		
-		if(shoppingCart){
+		def shoppingCart
+		if(params.id){
+			shoppingCart = ShoppingCart.get(params.id)
+		}else if(session['shoppingCart']){
+			def uuid = session['shoppingCart']
+			shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
+		}else{
+			flash.message = "Something went wrong... shopping cart not found."
+			redirect(controller: "store", action:"index")
+		}
+		
+		def customer
+		if(shoppingCart?.account){
+			customer = shoppingCart.account
+		}else if(session["accountInstance"]){
+			customer = session["accountInstance"]
+		}else{
+			flash.message = "Something went wrong... account information missing, session may have ended"
+			redirect(controller: "store", action:"index")
+		}
+		
+		
+		if(shoppingCart && customer){
 			try{
-			
-				def customer = shoppingCart.account
 				
 				def shipmentApi = new EasyPostShipmentApi(applicationService, currencyService)
 				def shippingApiHelper = new ShippingApiHelper(applicationService)
@@ -84,15 +118,14 @@ class ShippingController {
 				def storeAddress = shippingApiHelper.getStoreAddress()
 				def toAddress = shippingApiHelper.getCustomerAddress(customer)
 				def carriers = shipmentApi.getCarriersList(shipmentPackage, toAddress, storeAddress)
-				def anonymous = params.anonymous ? params.anonymouse : ""
 				
-				[ shoppingCart : shoppingCart, carriers : carriers, anonymous: anonymous]
+				[ shoppingCart : shoppingCart, accountInstance: customer, carriers : carriers, anonymous: anonymous]
 				
 				
 			}catch (Exception e){
 				println e
 				e.printStackTrace()
-				flash.message = "Something went wrong..."
+				flash.message = "Something went wrong..." + e
 				forward(controller : 'shoppingCart', action : 'index')
 				return
 			}

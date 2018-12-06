@@ -104,12 +104,31 @@ ${raw(applicationService.getDefaultHeader("Select Shipping Option"))}
 	<h3 style="margin-top:0px">Shipping Address</h3>
 
 	<address>
-		${shoppingCart.account.name}<br/>
-		${shoppingCart.account.address1}<br/>
-		${shoppingCart.account.address2}<br/>
-		${shoppingCart.account.city}, ${shoppingCart.account.state?.name}<br/>
-		${shoppingCart.account.country?.name}<br/>
-		${shoppingCart.account.zip}		
+		${accountInstance.name}<br/>
+		${accountInstance.address1}<br/>
+		${accountInstance.address2}<br/>
+		${accountInstance.city}, 
+		
+		<%
+		def state
+		if(accountInstance.state?.name){
+			state = accountInstance.state.name
+		}else{
+			state = accountInstance.state
+		}
+			
+		def country
+		if(accountInstance.country?.name){
+			country = accountInstance.country.name
+		}else{
+			country = accountInstance.country
+		}
+		%>
+		
+		${state}<br/>
+		${country}<br/>
+		
+		${accountInstance.zip}		
 	</address>
 	
 	<g:link controller="account" action="customer_profile" class="btn btn-default" style="margin:10px auto">Change Address</g:link>
