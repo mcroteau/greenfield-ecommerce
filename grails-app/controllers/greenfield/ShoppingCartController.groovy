@@ -332,7 +332,8 @@ class ShoppingCartController {
 		}
 	}
 	
-	
+
+	@Secured(['permitAll'])
 	def anonymous_preview(){
 		def uuid = session['shoppingCart']
 		def shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
@@ -384,9 +385,13 @@ class ShoppingCartController {
 	}
 	
 	
-	
+
+	@Secured(['permitAll'])
 	def checkout(){
 
+		println "checkout..." + params
+		
+		
 		def account
 		
 		if(springSecurityService.isLoggedIn()){
@@ -397,6 +402,7 @@ class ShoppingCartController {
 			
 			def existingAccount = Account.findByUsername(params.email)
 			
+			println "email : " + params.email
 			if(existingAccount){
 				account = Account.findByUsername(params.email)
 			}else{
@@ -405,34 +411,29 @@ class ShoppingCartController {
 				account.password = UUID.randomUUID().toString()
 				
 				if(!params.email){
-					flash.message = "Please enter a valid email address"
-					redirect(action:'anonymous_checkout_preview')
+					flash.message = "Please enter a valid email"
+					redirect(action:'anonymous')
 					return
 				}
         		
 				if(!params.name){
 					flash.message = "Please enter a valid name"
-					redirect(action:'anonymous_checkout_preview')
+					redirect(action:'anonymous')
 					return
 				}
         		
 				if(!params.address1){
-					flash.message = "Please enter a valid email address"
-					redirect(action:'anonymous_checkout_preview')
+					flash.message = "Please enter a valid address"
+					redirect(action:'anonymous')
 					return
 				}
         		
 				if(!params.city){
-					flash.message = "Please enter a valid email city"
-					redirect(action:'anonymous_checkout_preview')
+					flash.message = "Please enter a valid city"
+					redirect(action:'anonymous')
 					return
 				}
         		
-				if(!params.zip){
-					flash.message = "Please enter a valid zip code"
-					redirect(action:'anonymous_checkout_preview')
-					return
-				}
 			}
 			
 			account.name = params.name
@@ -440,7 +441,10 @@ class ShoppingCartController {
 			account.address1 = params.address1
 			account.address2 = params.address2
 			account.city = params.city
-			account.state = State.get(params.state)
+			if(params.state){
+				account.state = State.get(params.state)
+			}
+			account.country = Country.get(params.country)
 			account.zip = params.zip
 			account.phone = params.phone
 		
@@ -671,12 +675,12 @@ class ShoppingCartController {
 			def shipmentApi 
 			
 			def easypostEnabled = applicationService.getEasyPostEnabled()
-			if(easypostEnabled){
+			if(easypostEnabled == "true"){
 				println "637 Shopping Cart Controller...."
 				shipmentApi = new EasyPostShipmentApi(applicationService, currencyService)
 			}
 			
-			if(easypostEnabled && params.shippingSet != "true"){		
+			if(easypostEnabled == "true" && params.shippingSet != "true"){		
 							
 							
 				def shippingApiHelper = new ShippingApiHelper(applicationService)

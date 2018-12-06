@@ -82,7 +82,7 @@ class AccountController {
 			def easypostEnabled = applicationService.getEasyPostEnabled()
 			
 			def shipmentApi 
-			if(easypostEnabled){
+			if(easypostEnabled == "true"){
 				shipmentApi = new EasyPostShipmentApi(applicationService, currencyService)
 			}
 			//if(shippoEnabled){

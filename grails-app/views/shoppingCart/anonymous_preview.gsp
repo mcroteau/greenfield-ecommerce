@@ -315,7 +315,7 @@ $(document).ready(function(){
 
 
 	function initialize(){
-		$('.form-control').prop('disabled', true);
+		//$('.form-control').prop('disabled', true);
 		stripe = Stripe("${raw(publishableKey)}");
 		elements = stripe.elements()
 		card = elements.create('card', {

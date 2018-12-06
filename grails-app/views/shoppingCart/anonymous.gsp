@@ -103,13 +103,18 @@ ${raw(applicationService.getScreenHeader("Checkout Preview"))}
 		</table>
 		
 		
-		<g:if test="${shippingApiEnabled == true}">
 			<div id="information">
 				
 				<form name="anonymous_preview" action="/${applicationService.getContextName()}/shoppingCart/anonymous_preview" method="post" id="anonymousForm" class="form-horizontal">
 					
-					<h3>Calculate Shipping</h3>
-        	
+					
+					<g:if test="${shippingApiEnabled == 'true'}">
+						<h3>Calculate Shipping</h3>
+					</g:if>
+					<g:else>
+						<h3>Shipping Address</h3>
+					</g:else>
+			
 					<p class="secondary information">Please complete the form below to complete to calculate shipping and continue...</p>
 					
 					<div class="clear"></div>
@@ -178,7 +183,6 @@ ${raw(applicationService.getScreenHeader("Checkout Preview"))}
 					
 				</form>
 			</div>
-		</g:if>
 	
 		
 		<div>
