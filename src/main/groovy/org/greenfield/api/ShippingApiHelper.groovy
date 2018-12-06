@@ -17,12 +17,15 @@ public class ShippingApiHelper {
 	
 	/**helper function using ShipmentAddress**/
 	def getCustomerAddress(customer){
+		println customer
 		def address = new ShipmentAddress()
 		address.name = customer.name
 		address.street1 = customer.address1
 		address.street2 = customer.address2
 		address.city = customer.city
+		println "..."
 		address.country = customer.country.name
+		println "here..."
 		if(customer.state)address.state = customer.state.name
 		if(customer.phone)address.phone = customer.phone
 		address.zip = customer.zip

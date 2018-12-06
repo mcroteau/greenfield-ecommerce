@@ -121,7 +121,8 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 					<td  style="text-align:right;font-size:12px">
 						${shoppingCart.shipmentCurrency}&nbsp;${applicationService.formatPrice(shoppingCart.shipping)}
 						<g:if test="${shoppingCart.shipmentId != 'BASE'}">
-							<g:link controller="shipping" action="select" id="${shoppingCart.id}" style="display:block; font-size:11px;">Change Shipping</g:link>
+							<g:link controller="shipping" action="select" id="${shoppingCart.id}" params="[anonymous: 'true']"
+							style="display:block; font-size:11px;">Change Shipping</g:link>
 						</g:if>
 					</td>
 				</tr>
@@ -140,6 +141,8 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 			<form name="checkout" action="/${applicationService.getContextName()}/shoppingCart/checkout" method="post" id="checkout_form" class="form-horizontal">
 				
 				<h3>Shipping Address</h3>
+
+				<g:link controller="shoppingCart" action="anonymous" class="btn btn-default pull-right">Change Address</g:link>
 				
 				<div class="clear"></div>
 
@@ -312,6 +315,7 @@ $(document).ready(function(){
 
 
 	function initialize(){
+		$('.form-control').prop('disabled', true);
 		stripe = Stripe("${raw(publishableKey)}");
 		elements = stripe.elements()
 		card = elements.create('card', {

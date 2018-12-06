@@ -104,7 +104,6 @@ class ShoppingCartController {
 	@Secured(['permitAll'])
 	def anonymous(){
 		def uuid = session['shoppingCart']
-		def accountInstance = session['account']
 		
 		def shippingApiEnabled = false
 		def easypostEnabled = applicationService.getEasyPostEnabled()
@@ -114,7 +113,7 @@ class ShoppingCartController {
 			
 		def shoppingCartInstance = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
 		calculateShoppingCartSubtotal(shoppingCartInstance)
-		[ shoppingCartInstance : shoppingCartInstance, accountInstance: accountInstance, shippingApiEnabled: shippingApiEnabled, countries: Country.list() ]
+		[ shoppingCartInstance : shoppingCartInstance, shippingApiEnabled: shippingApiEnabled, countries: Country.list() ]
 	}
 	
 
@@ -337,7 +336,7 @@ class ShoppingCartController {
 	def anonymous_preview(){
 		def uuid = session['shoppingCart']
 		def shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
-		
+		def accountInstance = new Account()
 		try{
 
 			if(!shoppingCart){
@@ -345,29 +344,27 @@ class ShoppingCartController {
 				redirect(action:'anonymous')
 			}
 			
-			def account = new Account()
-			account.name = params.name
-			account.email = params.email
-			account.address1 = params.address1
-			account.address2 = params.address2
-			account.city = params.city
+			accountInstance.name = params.name
+			accountInstance.email = params.email
+			accountInstance.address1 = params.address1
+			accountInstance.address2 = params.address2
+			accountInstance.city = params.city
 			if(params.state){
-				println params.state
-				account.state = State.get(params.state)
+				accountInstance.state = State.get(params.state)
 			}
-			println "country : " + params.country
-			account.country = Country.get(params.country)
-			account.zip = params.zip
-			account.phone = params.phone
+			accountInstance.country = Country.get(params.country)
+			accountInstance.zip = params.zip
+			accountInstance.phone = params.phone
 		
-			calculateTotal(shoppingCart, account)
+			calculateTotal(shoppingCart, accountInstance)
+			
 		}catch(Exception e){
 			e.printStackTrace()
 			flash.message = "Something went wrong " + e
 			redirect(action: "anonymous")
 		}
 	
-		[ shoppingCart: shoppingCart, countries: Country.list() ]
+		[ shoppingCart: shoppingCart, accountInstance: accountInstance, countries: Country.list() ]
 	}
 	
 	
@@ -625,6 +622,7 @@ class ShoppingCartController {
 			
 			def subtotal = calculateSubTotal(shoppingCart)
 			
+			println "account : " + account.name
 			calculateShipping(shoppingCart, account)
 			
 			def taxRate = applicationService.getTaxRate()
@@ -651,8 +649,6 @@ class ShoppingCartController {
 	def calculateShipping(shoppingCart, account){
 
 		def shipping
-		def customer = shoppingCart.account
-
 		
 		if(account){
 			
@@ -669,7 +665,7 @@ class ShoppingCartController {
 							
 				def shippingApiHelper = new ShippingApiHelper(applicationService)
 				def storeAddress = shippingApiHelper.getStoreAddress()
-				def toAddress = shippingApiHelper.getCustomerAddress(customer)
+				def toAddress = shippingApiHelper.getCustomerAddress(account)
 				def shipmentPackage = shippingApiHelper.getPackage(shoppingCart)
 				
 				println "649 " + shipmentPackage
