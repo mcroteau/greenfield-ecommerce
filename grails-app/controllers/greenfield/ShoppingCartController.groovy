@@ -646,6 +646,7 @@ class ShoppingCartController {
 				def toAddress = shippingApiHelper.getCustomerAddress(customer)
 				def shipmentPackage = shippingApiHelper.getPackage(shoppingCart)
 				
+				println "649 " + shipmentPackage
 				try{
 					
 					def shipmentRate = shipmentApi.calculateShipping(shipmentPackage, toAddress, storeAddress)
@@ -664,10 +665,11 @@ class ShoppingCartController {
 					}
 					
 					println "shopping cart shipping rate : " + shoppingCart.shipping
+					
 				}catch (Exception e){
 					println e.printStackTrace()
 					shoppingCart.shipping = applicationService.getShipping()
-					flash.message = "Something went wrong while trying to calcuate shipping cost.  Please make sure all information is correct"
+					flash.message = "Something went wrong while trying to calcuate shipping cost.  Please make sure all information is correct. " + e
 					forward(action : 'index')
 					return
 				}
@@ -705,9 +707,10 @@ class ShoppingCartController {
 		if(!accountInstance.city){
 			return false
 		}	
+		/**TODO: zip not needed for Hong Kong
 		if(!accountInstance.zip){
 			return false
-		}	
+		}**/	
 		return true	
 	}
 

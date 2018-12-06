@@ -58,7 +58,7 @@
 				<select name="storeCurrency" class="form-control" style="width:323px;" id="currencySelect">
 					<option value="USD" <%=usd%>>$&nbsp;&nbsp;USD - US Dollar</option>
 					<option value="GBP" <%=gbp%>>£&nbsp;&nbsp;GBP - United Kingdom</option>
-					<option value="EUR" <%=eur%>>€&nbsp;&nbsp;EUR - Germany, France, The Netherlands</option>
+					<option value="EUR" <%=eur%>>€&nbsp;&nbsp;EUR - Germany, France, Netherlands</option>
 					<option value="HKD" <%=hkd%>>HK$ HKD - Hong Kong</option>
 					<option value="BRL" <%=brl%>>(R$&nbsp;&nbsp;BRL - Brazil: Stripe by invite only)</option>
 					<option value="INR" <%=inr%>>(₹ INR - India: Stripe by invite only)</option>
@@ -157,7 +157,7 @@
 				"EUR" : [
 						{ "code": "de", "name" : "Germany" },
 						{ "code": "fr", "name" : "France" },
-						{ "code": "nl", "name" : "The Netherlands" },
+						{ "code": "nl", "name" : "Netherlands" },
 				],
 				"BRL" : [{ "code": "br", "name" : "Brazil" }],
 				"INR" : [{ "code": "in", "name" : "India" }],
@@ -169,7 +169,7 @@
 				"gb" : { "code": "gb", "name" : "United Kingdom" },
 				"de" : { "code": "de", "name" : "Germany" },
 				"fr" : { "code": "fr", "name" : "France" },
-				"nl" : { "code": "nl", "name" : "The Netherlands" },
+				"nl" : { "code": "nl", "name" : "Netherlands" },
 				"br" : { "code": "br", "name" : "Brazil" },
 				"in" : { "code": "in", "name" : "India" },
 				"hk" : { "code": "hk", "name" : "Hong Kong" }

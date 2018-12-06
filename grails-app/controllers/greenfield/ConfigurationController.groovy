@@ -48,6 +48,19 @@ class ConfigurationController {
 	private final String STORE_ZIP = "store.zip"
 	private final String STORE_PHONE = "store.phone"
 	private final String STORE_SHIPPING = "store.shipping"
+	
+	/**TODO:
+	private final String CUSTOMS_CONTENTS_TYPE = "customs.contents.type"
+	private final String CUSTOMS_CONTENTS_EXPLANATION = "customs.contents.explanation"
+	private final String CUSTOMS_RESTRICTION_TYPE = "customs.restriction.type"
+	private final String CUSTOMS_RESTRICTION_COMMENTS = "customs.restriction.comments"
+	private final String CUSTOMS_CERTIFY = "customs.certify"
+	private final String CUSTOMS_SIGNER = "customs.signer"
+	private final String CUSTOMS_NON_DELIVERY_OPTION = "customs.non.delivery.option"
+	private final String CUSTOMS_EEL_PFC = "customs.eel.pfc"
+	**/
+	
+	
 	private final String STORE_TAX_RATE = "store.tax.rate"
 	
 	private final String META_KEYWORDS = "meta.keywords"
@@ -440,6 +453,17 @@ class ConfigurationController {
 			String zip = params.zip
 			String phone = params.storePhone
 			
+			/** TODO: ?
+			String customsContentType = params.customsContentType
+			String customsContentsExplanation = params.customsContentsExplanation
+			String customsRestrictionType = params.customsRestrictionType
+			String customsRestrictionComments = params.customsRestrictionComments
+			String customsCertify = params.customsCertify
+			String customsSigner = params.customsSigner
+			String customsNonDeliveryOption = params.customsNonDeliveryOption
+			String customsEelPfc = params.customsEelPfc
+			**/
+			
 			
 			if(easypostEnabled == "on")easypostEnabled = true
 			
@@ -546,6 +570,30 @@ class ConfigurationController {
 				if(state)prop.setProperty(STORE_STATE, stateId);
 				prop.setProperty(STORE_ZIP, zip);
 				prop.setProperty(STORE_PHONE, phone);
+				
+				
+				/**
+				
+				contents_type = The type of item you are sending. You pass one of the following: 'merchandise', 'returned_goods', 'documents', 'gift', 'sample', 'other'.
+				contents_explanation = If you specify ‘other’ in the ‘contents_type’ attribute, you must supply a brief description in this attribute.
+				restriction_type = Describes if your shipment requires any special treatment / quarantine when entering the country. You pass one of the following: 'none', 'other', 'quarantine', 'sanitary_phytosanitary_inspection'.
+				restriction_comments = If you specify ‘other’ in the “restriction_type attribute”, you must supply a brief description of what is required.
+				customs_certify = This is a boolean value (true, false) that takes the place of the signature on the physical customs form. This is how you indicate that the information you have provided is accurate.
+				customs_signer = This is the name of the person who is certifying that the information provided on the customs form is accurate. Use a name of the person in your organization who is responsible for this.
+				non_delivery_option = In case the shipment cannot be delivered, this option tells the carrier what you want to happen to the package. You can pass either: 'abandon', 'return'. The value defaults to 'return'. If you pass ‘abandon’, you will not receive the package back if it cannot be delivered.
+				eel_pfc = When shipping outside the US, you need to provide either an Exemption and Exclusion Legend (EEL) code or a Proof of Filing Citation (PFC). Which you need is based on the value of the goods being shipped.
+				
+				
+				prop.setProperty(CUSTOMS_CONTENTS_TYPE, customsContentType)
+				prop.setProperty(CUSTOMS_CONTENTS_EXPLANATION, customsContentsExplanation)
+				prop.setProperty(CUSTOMS_RESTRICTION_TYPE, customsRestrictionType)
+				prop.setProperty(CUSTOMS_RESTRICTION_COMMENTS, customsRestrictionComments)
+				prop.setProperty(CUSTOMS_CERTIFY, customsCertify)
+				prop.setProperty(CUSTOMS_SIGNER, customsSigner)
+				prop.setProperty(CUSTOMS_NON_DELIVERY_OPTION, customsNonDeliveryOption)
+				prop.setProperty(CUSTOMS_EEL_PFC, customsEelPfc)
+				
+				**/
 				
 				
 				def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('settings')

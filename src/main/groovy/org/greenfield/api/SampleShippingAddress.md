@@ -49,6 +49,12 @@ Flat 25, 12/F, Acacia Building
 WAN CHAI
 HONG KONG   
 
+Flat D, 6/F, Golden Industrial Center, Block 4,
+182-190 Tai Lin Pai Road,
+Kwai Chung                  
+NEW TERRITORIES             
+HONG KONG
+   
 
 ###India
 

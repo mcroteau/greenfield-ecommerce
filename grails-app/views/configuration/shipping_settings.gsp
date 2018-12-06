@@ -143,7 +143,7 @@
 		<div class="form-row">
 			<span class="form-label twohundred">Enable <strong>EasyPost</strong></span>
 			<span class="input-container">
-				<input type="checkbox" ${shipping_settings.easypostEnabled} name="easypostEnabled" id="easypostEnabled"/>
+				<input type="checkbox" ${shipping_settings?.easypostEnabled} name="easypostEnabled" id="easypostEnabled"/>
 			</span>
 			<br class="clear"/>
 		</div>
@@ -176,12 +176,150 @@
 			<br/>
 		</div>
 		
+		
+		
+		<style type="text/css">
+			.customs-input-container{
+				width:400px;
+			}
+		</style>
+		<!--
+		
+		<div class="form-row">
+			
+			<span class="form-label twohundred">Enable <strong>International Shipping</strong>
+			
+			</span>
+			<span class="input-container pull-left" style="width:400px;">
+				<input type="checkbox" ${shipping_settings.internationalEnabled} name="internationalEnabled" id="internationalEnabled"/>
+				<p class="alert alert-danger">This is important for shipments that go outside of your origin country (Store Address). If you do not set this, the shipping api will not work correctly and you may be suspended from creating shipments</p>
+			</span>
+			<br class="clear"/>
+		</div>
+		
+		
+		<div id="customsSettings">
+			<h4>International Customs Settings</h4>
+			
+			
+			<div class="form-row">
+				<span class="form-label twohundred">Contents Type<br/>
+					<span class="information secondary">The type of items you are sending.</span>
+				</span>
+				<span class="input-container customs-input-container">
+					<select type="text" class="form-control twohundred" name="customsContentsType" value="${shipping_settings.customsContentsType}" id="customsContentsType">
+						<option value="merchandise">Merchandise</option>
+						<option value="documents">Documents</option>
+						<option value="other">Other</option>
+					</select>
+				</span>
+				<br class="clear"/>
+			</div>
+			
+			<div class="form-row">
+				<span class="form-label twohundred">Contents Explanation
+				<br/>
+					<span class="information secondary">If you specify ‘other’ in the "Contents Type" attribute, you must supply a brief description in this attribute.</span>
+				
+				</span>
+				<span class="input-container customs-input-container">
+					<textarea class="form-control customs-info threehundred" name="customsContentsExplanation">${shipping_settings.customsContentsExplanation}</textarea>
+					<br/>
+				</span>
+				<br class="clear"/>
+			</div>
+			
+			<div class="form-row">
+				<span class="form-label twohundred">Restriction Type</span>
+				<span class="input-container customs-input-container">
+					<select type="text" class="form-control twohundred" name="customsRestrictionType" value="${shipping_settings.customsContentsType}" id="customsRestrictionType">
+						<option value="none">None</option>
+						<option value="other">Other</option>
+						<option value="quarantine">Quarantine</option>
+						<option value="sanitary_phytosanitary_inspection">Sanitary Phytosanitary Inspection</option>
+					</select>
+					<br/>
+					<span class="information secondary">Describes if your shipment requires any special treatment / quarantine when entering the country.</span>
+				</span>
+				<br class="clear"/>
+			</div>
+			
+			<div class="form-row">
+				<span class="form-label twohundred">Restriction Comments
+					<br/>
+					<span class="information secondary">If you specify "Other" in the “Restriction Type”, you must supply a brief description of what is required.</span>
+				</span>
+				<span class="input-container customs-input-container">
+					<textarea class="form-control customs-info threehundred" name="customsRestrictionComments">${shipping_settings.customsRestrictionComments}</textarea>
+					<br/>
+				</span>
+				<br class="clear"/>
+			</div>
+		
+			<div class="form-row">
+				<span class="form-label twohundred">Customs Certify<br/>
+					<span class="information secondary">This takes the place of the signature on the physical customs form. This is how you indicate that the information you have provided is accurate.</span>
+				</span>
+				<span class="input-container customs-input-container">
+					<input type="checkbox" ${shipping_settings.customsCertify} name="customsCertify" id="customsCertify"/>
+				</span>
+				<br class="clear"/>
+			</div>
+
+		
+			<div class="form-row">
+				<span class="form-label twohundred">Customs Signer<br/>
+					<span class="information secondary">This is the name of the person who is certifying that the information provided on the customs form is accurate. Use a name of the person in your organization who is responsible for this.</span>
+				</span>
+				<span class="input-container customs-input-container">
+					<input type="text" class="form-control threehundred" name="customsSigner" id="customsSigner" value="${shipping_settings.customsSigner}"/>
+				</span>
+				<br class="clear"/>
+			</div>
+			
+			
+			<div class="form-row">
+				<span class="form-label twohundred">Non Delivery Option<br/>
+				<span class="information secondary">In case the shipment cannot be delivered, this option tells the carrier what you want to happen to the package. You can select either: "Abandon", "Return".  If you select "Abandon", you will not receive the package back if it cannot be delivered.</span>
+				</span>
+				<span class="input-container customs-input-container">
+					<select type="text" class="form-control twohundred" name="customsNonDeliveryOption" value="${shipping_settings.customsNonDeliveryOption}" id="customsNonDeliveryOption">
+						<option value="return" selected>Return</option>
+						<option value="abandoned">Abandoned</option>
+					</select>
+					<br/>
+				</span>
+				<br class="clear"/>
+			</div>
+			
+
+			<div class="form-row">
+				<span class="form-label twohundred">Exemption &amp; Exclusion Legend (EEL) or<br/>Proof of Filing Citation (PFC)
+					<span class="information secondary">When shipping outside the US, you need to provide either an Exemption and Exclusion Legend (EEL) code or a Proof of Filing Citation (PFC). Which you need is based on the value of the goods being shipped.</span>
+				</span>
+				<span class="input-container customs-input-container">
+					<input type="text" class="form-control threehundred" name="customsEelPfc" id="customsEelPfc" value="${shipping_settings.customsEelPfc}"/>
+				</span>
+				<br class="clear"/>
+			</div>
+			
+			
+		</div>
+			
+		-->
+			
 			
 		<div class="buttons-container">
 			<span class="form-label twohundred">&nbsp;</span>
 			<g:link controller="configuration" action="index" class="btn btn-default">Cancel</g:link>
 			<g:submitButton value="Save Settings" name="submit" class="btn btn-primary"/>
 		</div>
+		
+		
+		
+
+		
+		
 		
 	</form>
 	

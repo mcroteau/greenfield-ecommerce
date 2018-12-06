@@ -18,7 +18,7 @@ public class CountryStateHelper{
 			/**"states":["Northern Ireland", "Scotland", "Wales"]**/
 		],
 		[
-			"name" : "The Netherlands",
+			"name" : "Netherlands",
 			"states" : []
 		],
 		[

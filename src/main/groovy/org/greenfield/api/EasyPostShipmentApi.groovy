@@ -70,12 +70,19 @@ public class EasyPostShipmentApi implements ShipmentApi {
 	
 	def calculateShipping(packageSize, toAddress, fromAddress){
 	
+		if(toAddress.country != fromAddress.country){
+			throw new Exception("International shipping is not supported.")
+		}
+		
 		def apiKey = getApiKey()
 	
 		EasyPost.apiKey = apiKey;
 		
 		Address verifiedToAddress = getVerifiedAddress(toAddress)
 		Address verifiedFromAddress = getVerifiedAddress(fromAddress)
+		
+		println "84" + verifiedToAddress
+		println "85" + verifiedFromAddress
 		
 		Map<String, Object> parcelMap = new HashMap<String, Object>();
 		
@@ -94,6 +101,8 @@ public class EasyPostShipmentApi implements ShipmentApi {
 
 			parcelMap.put("weight", packageSize.weight);
 			Parcel parcel = Parcel.create(parcelMap);
+			
+			println "parcel : " + parcel
 			
 			/**
 			TODO:how to handle customs, see below
@@ -118,30 +127,29 @@ public class EasyPostShipmentApi implements ShipmentApi {
 
 
 			//println "creating shipment using api..."
-			Shipment shipment
-			try{
-				shipment = Shipment.create(shipmentMap);	
+			Shipment shipment = Shipment.create(shipmentMap);	
 				
-				if(shipment){
-					def rate = getLowestRate(shipment)
-					
-					def shipmentRate = new ShipmentRate()
-					shipmentRate.rate = rate.rate
-					shipmentRate.shipmentId = rate.shipmentId
-					shipmentRate.estDeliveryDays = (rate.estDeliveryDays) ? rate.estDeliveryDays : 0
-					shipmentRate.carrier = rate.carrier
-					shipmentRate.service = rate.service
-					shipmentRate.rateId = rate.id
-					println "get rate currency : " + rate.toString()
-					shipmentRate.currency = rate.currency
-					
-					
-					return shipmentRate
-					
-				}
-			}catch(Exception e){
-				e.printStackTrace()
+			if(shipment){
+				println "shipment: " + shipment
+				def rate = getLowestRate(shipment)
+				
+				def shipmentRate = new ShipmentRate()
+				shipmentRate.rate = rate.rate
+				shipmentRate.shipmentId = rate.shipmentId
+				shipmentRate.estDeliveryDays = (rate.estDeliveryDays) ? rate.estDeliveryDays : 0
+				shipmentRate.carrier = rate.carrier
+				shipmentRate.service = rate.service
+				shipmentRate.rateId = rate.id
+				println "get rate currency : " + rate.toString()
+				shipmentRate.currency = rate.currency
+				
+				
+				return shipmentRate
+				
 			}
+			
+			throw new Exception("Something went wrong while creating the shipment. Addresses might not be supported...")
+				
 		}
 	}
 	
@@ -271,6 +279,7 @@ public class EasyPostShipmentApi implements ShipmentApi {
 	
 	
 	def getVerifiedAddress(address){
+		println "281 getVerifiedAddress"
 		Map<String, Object> addressMap = new HashMap<String, Object>();
 		if(address.name)addressMap.put("name", address.name)
 		if(address.company)addressMap.put("company", address.company)
@@ -279,8 +288,8 @@ public class EasyPostShipmentApi implements ShipmentApi {
 		addressMap.put("city", address.city)
 		addressMap.put("country", address.country)
 		if(addressMap.state)addressMap.put("state", address.state)
-		addressMap.put("zip", address.zip)
-		addressMap.put("phone", address.phone)
+		if(addressMap.zip)addressMap.put("zip", address.zip)
+		if(addressMap.phone)addressMap.put("phone", address.phone)
 
 		Address verifyAddress = Address.create(addressMap)
 		Address verifiedAddress = verifyAddress.verify()
@@ -292,6 +301,10 @@ public class EasyPostShipmentApi implements ShipmentApi {
 	
 	def getLowestRate(shipment){
 		def rate
+		println "rates : " + shipment.rates
+		if(!shipment.rates){
+			throw new Exception("Apologies for the inconvenience. No carriers found.")
+		}
 		shipment.rates.each { r ->
 			if(!rate){
 				rate = r
