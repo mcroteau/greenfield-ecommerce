@@ -87,7 +87,7 @@ ${raw(applicationService.getScreenHeader("Checkout Preview"))}
 		<div>
 			<g:form controller="shoppingCart" action="checkout_preview" id="${shoppingCartInstance?.id}">
 				<input type="hidden" name="id" value="${shoppingCartInstance?.id}"/> 
-				<g:submitButton name="submit"  value="Checkout" class="btn btn-primary pull-right" id="checkout-btn"/>
+				<g:submitButton name="submit"  value="Confirm Checkout" class="btn btn-primary pull-right bt-lg" id="checkout-btn"/>
 			</g:form>
 		</div>
 	</g:if>

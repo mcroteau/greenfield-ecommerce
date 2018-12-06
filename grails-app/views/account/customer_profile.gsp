@@ -137,7 +137,6 @@ ${raw(applicationService.getDefaultHeader("Account Info"))}
 		
 		<script type="text/javascript">
 			$(document).ready(function(){
-				//TODO:object orient this
 				countryStatesInit("${applicationService.getContextName()}", ${accountInstance?.state?.id})
 			})
 		</script>

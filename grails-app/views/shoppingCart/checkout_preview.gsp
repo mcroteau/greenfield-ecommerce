@@ -1,4 +1,5 @@
 <%@ page import="org.greenfield.State" %>
+<%@ page import="org.greenfield.Country %>
 <%@ page import="grails.util.Environment" %>
 <%@ page import="org.greenfield.ApplicationService" %>
 <% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
@@ -168,13 +169,26 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 					<input type="text" class="form-control shipping-info" name="shipCity" value="${accountInstance?.city}" id="shipCity" disabled="true"/>
 				</div>
 				<div class="form-group">
+					<label class="col-sm-4 control-label">Country</label>
+					<g:select name="shipCountry"
+					          from="${countries}"
+					          value="${accountInstance?.country?.id}"
+					          optionKey="id" 
+							  optionValue="name"
+							  id="countrySelect"
+							  disabled="true"
+							  class="form-control"
+							  style="width:150px;"/>
+				</div>
+				
+				<div class="form-group" id="stateSelectRow">
 					<label class="col-sm-4 control-label">State</label>
 					<g:select name="shipState"
 					          from="${State.list()}"
 					          value="${accountInstance?.state?.id}"
 					          optionKey="id" 
 							  optionValue="name"
-							  id="shipState"
+							  id="stateSelect"
 							  disabled="true"
 							  class="form-control"
 							  style="width:150px;"/>
@@ -278,6 +292,8 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 	<g:else>
 		<h2>Shopping Cart is empty...</h2>
 	</g:else>
+
+<script type="text/javascript" src="${resource(dir:'js/country_states.js')}"></script>
 	
 <script type="text/javascript">
 			
@@ -395,6 +411,10 @@ $(document).ready(function(){
 	}
 	$sameas.click()
 	**/
+	
+
+	countryStatesInit("${applicationService.getContextName()}", ${accountInstance?.state?.id})
+
 
 })
 </script>			

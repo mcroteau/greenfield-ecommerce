@@ -221,7 +221,6 @@ public class EasyPostShipmentApi implements ShipmentApi {
 						option.service = rate.service
 						option.days = (rate.estDeliveryDays) ? rate.estDeliveryDays : 0
 						option.rateId = rate.id
-						println "currency?: " + rate.toString()
 						option.currency = rate.currency
 				
 						carriers[rate.carrier].add(option)
@@ -288,7 +287,7 @@ public class EasyPostShipmentApi implements ShipmentApi {
 		addressMap.put("city", address.city)
 		addressMap.put("country", address.country)
 		if(addressMap.state)addressMap.put("state", address.state)
-		if(addressMap.zip)addressMap.put("zip", address.zip)
+		addressMap.put("zip", address.zip)
 		if(addressMap.phone)addressMap.put("phone", address.phone)
 
 		Address verifyAddress = Address.create(addressMap)

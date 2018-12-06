@@ -119,7 +119,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 						</g:if>	
 					</td>
 					<td  style="text-align:right;font-size:12px">
-						${currencyService.format(applicationService.formatPrice(shoppingCart.shipping))}
+						${shoppingCart.shipmentCurrency}&nbsp;${applicationService.formatPrice(shoppingCart.shipping)}
 						<g:if test="${shoppingCart.shipmentId != 'BASE'}">
 							<g:link controller="shipping" action="select" id="${shoppingCart.id}" style="display:block; font-size:11px;">Change Shipping</g:link>
 						</g:if>
@@ -140,8 +140,6 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 			<form name="checkout" action="/${applicationService.getContextName()}/shoppingCart/checkout" method="post" id="checkout_form" class="form-horizontal">
 				
 				<h3>Shipping Address</h3>
-
-				<p class="secondary information">Please complete the form below to complete your order.</p>
 				
 				<div class="clear"></div>
 
@@ -175,9 +173,9 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				
 				<div class="form-group">
 				  	<label for="country" class="col-sm-4 control-label">Country</label>
-					<g:select name="country.id"
+					<g:select name="country"
 							from="${countries}"
-							value="${accountInstance?.country?.id}"
+							value="${accountInstance?.country}"
 							optionKey="id" 
 							optionValue="name"
 							class="form-control"
@@ -189,7 +187,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 					<label class="col-sm-4 control-label">State</label>
 					<g:select name="state"
 					          from="${State.list()}"
-					          value="${accountInstance?.state?.id}"
+					          value="${accountInstance?.state}"
 					          optionKey="id" 
 							  optionValue="name"
 							  id="state"

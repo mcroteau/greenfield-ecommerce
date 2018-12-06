@@ -1,9 +1,11 @@
 
 var baseUrl = ""
+var $stateSelectRow = $("#stateSelectRow");
 var $stateSelect = $('#stateSelect');
 var $countrySelect = $('#countrySelect');
 
 function countryStatesInit(contextName, state){
+	$stateSelect.find("option").remove()
 	baseUrl = "/" + contextName + "/data/states?"
 	getStates($countrySelect.val()).then(renderStates).then(setState(state));
 	$countrySelect.change(getStatesAction)
@@ -45,4 +47,5 @@ function renderStates(data, response){
 		//console.log(this)
 		$stateSelect.append("<option value=\"" + this.id + "\">" + this.name + "</option>");
 	})
+	if($stateSelect.val() == null || $stateSelect.val() == "")$stateSelectRow.hide()
 }

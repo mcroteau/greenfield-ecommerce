@@ -104,9 +104,17 @@ class ShoppingCartController {
 	@Secured(['permitAll'])
 	def anonymous(){
 		def uuid = session['shoppingCart']
+		def accountInstance = session['account']
+		
+		def shippingApiEnabled = false
+		def easypostEnabled = applicationService.getEasyPostEnabled()
+		if(easypostEnabled == "true"){
+			shippingApiEnabled = true
+		}
+			
 		def shoppingCartInstance = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
 		calculateShoppingCartSubtotal(shoppingCartInstance)
-		[ shoppingCartInstance : shoppingCartInstance ]
+		[ shoppingCartInstance : shoppingCartInstance, accountInstance: accountInstance, shippingApiEnabled: shippingApiEnabled, countries: Country.list() ]
 	}
 	
 
@@ -316,7 +324,7 @@ class ShoppingCartController {
 			
 			if(shoppingCart && shoppingCart.status == ShoppingCartStatus.ACTIVE.description()){
 				calculateTotal(shoppingCart)
-				[shoppingCart : shoppingCart, accountInstance: accountInstance]
+				[shoppingCart : shoppingCart, accountInstance: accountInstance, countries: Country.list()]
 			}else{
 				flash.message = "Shopping Cart is empty..."
 				forward(controller:'store', action:'index')
@@ -330,15 +338,33 @@ class ShoppingCartController {
 		def uuid = session['shoppingCart']
 		def shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
 		
-		if(!shoppingCart){
-			flash.message = "Shopping cart is not found or the cart is empty. Please double check the item you added."
-			redirect(action:'anonymous')
-		}
-		
 		try{
-			calculateTotal(shoppingCart)
+
+			if(!shoppingCart){
+				flash.message = "Shopping cart is not found or the cart is empty. Please double check the item you added."
+				redirect(action:'anonymous')
+			}
+			
+			def account = new Account()
+			account.name = params.name
+			account.email = params.email
+			account.address1 = params.address1
+			account.address2 = params.address2
+			account.city = params.city
+			if(params.state){
+				println params.state
+				account.state = State.get(params.state)
+			}
+			println "country : " + params.country
+			account.country = Country.get(params.country)
+			account.zip = params.zip
+			account.phone = params.phone
+		
+			calculateTotal(shoppingCart, account)
 		}catch(Exception e){
 			e.printStackTrace()
+			flash.message = "Something went wrong " + e
+			redirect(action: "anonymous")
 		}
 	
 		[ shoppingCart: shoppingCart, countries: Country.list() ]
@@ -590,7 +616,7 @@ class ShoppingCartController {
 	}
 	
 	
-	def calculateTotal(shoppingCart){
+	def calculateTotal(shoppingCart, account){
 		
 		//println "calculate total..."
 
@@ -599,7 +625,7 @@ class ShoppingCartController {
 			
 			def subtotal = calculateSubTotal(shoppingCart)
 			
-			calculateShipping(shoppingCart)
+			calculateShipping(shoppingCart, account)
 			
 			def taxRate = applicationService.getTaxRate()
 			def taxPercent = taxRate/100
@@ -622,13 +648,13 @@ class ShoppingCartController {
 	}
 	
 	
-	def calculateShipping(shoppingCart){
+	def calculateShipping(shoppingCart, account){
 
 		def shipping
 		def customer = shoppingCart.account
 
 		
-		if(shoppingCart?.account){
+		if(account){
 			
 			def shipmentApi 
 			

@@ -183,3 +183,10 @@ body, html{
 #footer a{
 }
 
+.btn-primary{
+	background:#2b6fa9 !important;
+}
+
+.btn-primary:hover;{
+	background:#23659e !important;
+}

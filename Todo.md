@@ -9,6 +9,7 @@ add ip address to search?
 fix email settings save bug
 add phone to company settings
 consider uncommenting
+move order confirmation to order maintenance screen
 
 
 ** BEFORE MERGE **/

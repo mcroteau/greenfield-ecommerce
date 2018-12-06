@@ -25,7 +25,7 @@ public class ShippingApiHelper {
 		address.country = customer.country.name
 		if(customer.state)address.state = customer.state.name
 		if(customer.phone)address.phone = customer.phone
-		if(customer.zip)address.zip = customer.zip
+		address.zip = customer.zip
 		return address
 	}
 	
@@ -43,7 +43,7 @@ public class ShippingApiHelper {
 		
 		address.country = country.name
 		if(state)address.state = state.name
-		if(applicationService.getStoreZip())address.zip = applicationService.getStoreZip()
+		address.zip = applicationService.getStoreZip()
 		
 		return address
 	}
