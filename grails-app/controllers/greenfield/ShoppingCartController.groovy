@@ -209,7 +209,6 @@ class ShoppingCartController {
 		
 
 		if(!shoppingCart){
-			println "Shopping cart didnt save..."
 			flash.message = "Something went wrong while adding your product to shopping cart. Please try again..."
 			redirect(controller:'product', action:'details', id: productInstance.id)
 			return
@@ -337,15 +336,21 @@ class ShoppingCartController {
 	def anonymous_preview(){
 		def uuid = session['shoppingCart']
 		def shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
-		def accountInstance = new Account()
+		def accountInstance = session['accountInstance']
+		
+		if(!accountInstance){
+			accountInstance = [:]
+			flash.message = "Please complete address information below for shipping"
+			redirect(action: "anonymous")
+		}
 		try{
 
 			if(!shoppingCart){
 				flash.message = "Shopping cart is not found or the cart is empty. Please double check the item you added."
 				redirect(action:'anonymous')
 			}
-			
-			
+
+			if(params.email && accountInstance.email != params.email){
 				accountInstance.name = params.name
 				accountInstance.email = params.email
 				accountInstance.address1 = params.address1
@@ -359,16 +364,11 @@ class ShoppingCartController {
 				accountInstance.phone = params.phone
 				
 				def state = accountInstance.state ? accountInstance.state : ""
+				setAccountInstanceSession(accountInstance, state)
+			}
+
 				
-				if(!session['accountInstance']){
-					setAccountInstanceSession(accountInstance, state)
-				}else if(session['accountInstance']){
-					if(accountInstance.email != session['accountInstance'].email){
-						setAccountInstanceSession(accountInstance, state)
-					}
-				}
-				
-			calculateTotal(shoppingCart, session['accountInstance'])
+			calculateTotal(shoppingCart, accountInstance)
 			
 		}catch(Exception e){
 			e.printStackTrace()
@@ -397,9 +397,6 @@ class ShoppingCartController {
 	@Secured(['permitAll'])
 	def checkout(){
 
-		println "checkout..." + params
-		
-		
 		def account
 		
 		if(springSecurityService.isLoggedIn()){
@@ -410,7 +407,6 @@ class ShoppingCartController {
 			
 			def existingAccount = Account.findByUsername(params.email)
 			
-			println "email : " + params.email
 			if(existingAccount){
 				account = Account.findByUsername(params.email)
 			}else{
@@ -450,7 +446,6 @@ class ShoppingCartController {
 			account.address2 = params.address2
 			account.city = params.city
 			if(params.state){
-				println "shopping cart controller : 445 : " + params.state
 				account.state = State.get(params.state)
 			}
 			account.country = Country.get(params.country)
@@ -594,7 +589,6 @@ class ShoppingCartController {
 			
 			if(item.shoppingCartItemOptions?.size() > 0){
 				item.shoppingCartItemOptions.each(){ option ->
-					println "option price : " + option.variant.name + ": " + option.variant.price
 					option.checkoutPrice = option.variant.price
 					option.save(flush:true)
 				}
@@ -651,7 +645,6 @@ class ShoppingCartController {
 			
 			def subtotal = calculateSubTotal(shoppingCart)
 			
-			println "account : " + account.name
 			calculateShipping(shoppingCart, account)
 			
 			def taxRate = applicationService.getTaxRate()
@@ -685,7 +678,7 @@ class ShoppingCartController {
 			
 			def easypostEnabled = applicationService.getEasyPostEnabled()
 			if(easypostEnabled == "true"){
-				println "637 Shopping Cart Controller...."
+				
 				shipmentApi = new EasyPostShipmentApi(applicationService, currencyService)
 			}
 			
@@ -697,7 +690,6 @@ class ShoppingCartController {
 				def toAddress = shippingApiHelper.getCustomerAddress(account)
 				def shipmentPackage = shippingApiHelper.getPackage(shoppingCart)
 				
-				println "649 " + shipmentPackage
 				try{
 					
 					def shipmentRate = shipmentApi.calculateShipping(shipmentPackage, toAddress, storeAddress)
@@ -715,7 +707,6 @@ class ShoppingCartController {
 						shoppingCart.shipping = applicationService.getShipping()
 					}
 					
-					println "shopping cart shipping rate : " + shoppingCart.shipping
 					
 				}catch (Exception e){
 					println e.printStackTrace()
@@ -731,8 +722,6 @@ class ShoppingCartController {
 			}
 			
 		}
-		
-		println shoppingCart.shipmentCurrency
 		
 		
 		if(shoppingCart.shipping == applicationService.getShipping()){

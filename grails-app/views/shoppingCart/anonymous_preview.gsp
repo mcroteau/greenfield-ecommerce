@@ -197,14 +197,14 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 					stateValue = accountInstance?.state?.id
 				}
 				%>
-				<div class="form-group">
+				<div class="form-group" id="stateSelectRow">
 					<label class="col-sm-4 control-label">State</label>
 					<g:select name="state"
 					          from="${State.list()}"
 					          value="${stateValue}"
 					          optionKey="id" 
 							  optionValue="name"
-							  id="state"
+							  id="stateSelect"
 							  class="form-control"
 							  style="width:150px;"/>
 					
@@ -416,8 +416,8 @@ $(document).ready(function(){
 
 	$inputs.prop('disabled', true);
 	
-	if("${stateValue}" != ""){
-		$('#stateSelect').find("option").remove()
+	if("${stateValue}" == ""){
+		$('#stateSelectRow').hide()
 	}
 
 })
