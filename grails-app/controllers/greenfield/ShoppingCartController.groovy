@@ -322,7 +322,7 @@ class ShoppingCartController {
 			}
 			
 			if(shoppingCart && shoppingCart.status == ShoppingCartStatus.ACTIVE.description()){
-				calculateTotal(shoppingCart)
+				calculateTotal(shoppingCart, shoppingCart.account)
 				[shoppingCart : shoppingCart, accountInstance: accountInstance, countries: Country.list()]
 			}else{
 				flash.message = "Shopping Cart is empty..."
@@ -360,17 +360,11 @@ class ShoppingCartController {
 			def state = accountInstance.state ? accountInstance.state : ""
 			
 			if(!session['accountInstance']){
-				session['accountInstance'] = [
-					name : accountInstance.name,
-					email : accountInstance.email,
-					address1 : accountInstance.address1,
-					address2 : accountInstance.address2,
-					city : accountInstance.city,
-					state : state,
-					country : accountInstance.country,
-					zip : accountInstance.zip,
-					phone : accountInstance.phone
-				]
+				setAccountInstanceSession(accountInstance, state)
+			}else if(session['accountInstance']){
+				if(accountInstance.email != session['accountInstance'].email){
+					setAccountInstanceSession(accountInstance, state)
+				}
 			}
 			
 			calculateTotal(shoppingCart, session['accountInstance'])
@@ -385,6 +379,19 @@ class ShoppingCartController {
 	}
 	
 	
+	def setAccountInstanceSession(accountInstance, state){
+		session['accountInstance'] = [
+			name : accountInstance.name,
+			email : accountInstance.email,
+			address1 : accountInstance.address1,
+			address2 : accountInstance.address2,
+			city : accountInstance.city,
+			state : state,
+			country : accountInstance.country,
+			zip : accountInstance.zip,
+			phone : accountInstance.phone
+		]
+	}
 
 	@Secured(['permitAll'])
 	def checkout(){
@@ -442,6 +449,7 @@ class ShoppingCartController {
 			account.address2 = params.address2
 			account.city = params.city
 			if(params.state){
+				println "shopping cart controller : 445 : " + params.state
 				account.state = State.get(params.state)
 			}
 			account.country = Country.get(params.country)

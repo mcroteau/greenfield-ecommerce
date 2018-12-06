@@ -150,26 +150,31 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Name <em>(first &amp; last)</em></label>
 					<input type="text" class="form-control shipping-info" name="name" value="${accountInstance?.name}" id="name"/>
+					<input type="hidden" name="name" value="${accountInstance?.name}" id="name"/>
 				</div>
 				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Email</label>
-					<input type="text" class="form-control shipping-info" name="email" value="${accountInstance?.email}" id="email"/>
+					<input type="text" class="form-control shipping-info" name="email" value="${accountInstance?.email}" id="email"/>	
+					<input type="hidden" name="email" value="${accountInstance?.email}" id="email"/>
 				</div>
 				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Shipping Address</label>
 					<input type="text" class="form-control shipping-info" name="address1" value="${accountInstance?.address1}" id="address1"/>
+					<input type="hidden" name="address1" value="${accountInstance?.address1}" id="address1"/>
 				</div>
 				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Shipping Address Continued</label>
 					<input type="text" class="form-control shipping-info" name="address2" value="${accountInstance?.address2}" id="address2"/>
+					<input type="hidden" ame="address2" value="${accountInstance?.address2}" id="address2"/>
 				</div>
 				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">City</label>
 					<input type="text" class="form-control shipping-info" name="city" value="${accountInstance?.city}" id="city"/>
+					<input type="hidden" name="city" value="${accountInstance?.city}" id="city"/>
 				</div>
 				
 
@@ -183,6 +188,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 							optionValue="name"
 							class="form-control"
 							id="countrySelect"/>
+					<input type="hidden" name="country" value="${accountInstance?.country}" id="country"/>
 				</div>
 				
 				
@@ -196,15 +202,20 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 							  id="state"
 							  class="form-control"
 							  style="width:150px;"/>
+					<input type="hidden" name="state" value="${accountInstance?.state}" id="state"/>
 				</div>
+				
+				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Zip</label>
 					<input type="text" class="form-control shipping-info" name="zip" id="zip" value="${accountInstance?.zip}"/>
+					<input type="hidden" name="zip" id="zip" value="${accountInstance?.zip}"/>
 				</div>
 
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Phone</label>
 					<input type="text" class="form-control shipping-info" name="phone" id="phone" value="${accountInstance?.phone}"/>
+					<input type="hidden" name="phone" id="phone" value="${accountInstance?.phone}"/>
 				</div>
 
 				
@@ -276,7 +287,8 @@ $(document).ready(function(){
 	var $submitBtn    = $('#submit'),
 		$tokenInput   = $('#stripeToken'),
 		$checkoutForm = $('#checkout_form'),
-		$processing   = $('#processing');
+		$processing   = $('#processing'),
+		$inputs       = $('.form-control');
 
 	var $email    = $('#email'),
 		$name     = $('#name'),
@@ -315,7 +327,7 @@ $(document).ready(function(){
 
 
 	function initialize(){
-		//$('.form-control').prop('disabled', true);
+		$inputs.prop('disabled', true);
 		stripe = Stripe("${raw(publishableKey)}");
 		elements = stripe.elements()
 		card = elements.create('card', {

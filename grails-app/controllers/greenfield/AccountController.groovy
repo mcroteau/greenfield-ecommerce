@@ -97,12 +97,14 @@ class AccountController {
 			address.country = accountInstance.country.name
 			address.zip = accountInstance.zip
 			
-			if(!shipmentApi.validAddress(address)){
-   				flash.error = "Address cannot be verified. Please update your address with valid information..."
-   				render(view: "customer_profile", model: [accountInstance: accountInstance, countries: Country.list()])
-   				return
+			if(shipmentApi){
+				if(!shipmentApi.validAddress(address)){
+   					flash.error = "Address cannot be verified. Please update your address with valid information..."
+   					render(view: "customer_profile", model: [accountInstance: accountInstance, countries: Country.list()])
+   					return
+				}
+				accountInstance.addressVerified = true
 			}
-			accountInstance.addressVerified = true
 				
 			/**
 			def easypostEnabled = applicationService.getEasyPostEnabled()
