@@ -183,26 +183,32 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				  	<label for="country" class="col-sm-4 control-label">Country</label>
 					<g:select name="country"
 							from="${countries}"
-							value="${accountInstance?.country}"
+							value="${accountInstance?.country?.id}"
 							optionKey="id" 
 							optionValue="name"
 							class="form-control"
 							id="countrySelect"/>
-					<input type="hidden" name="country" value="${accountInstance?.country}" id="country"/>
+					<input type="hidden" name="country" value="${accountInstance?.country?.id}" id="country"/>
 				</div>
 				
-				
+				<%
+				def stateValue = null
+				if(accountInstance.state != ""){
+					stateValue = accountInstance?.state?.id
+				}
+				%>
 				<div class="form-group">
 					<label class="col-sm-4 control-label">State</label>
 					<g:select name="state"
 					          from="${State.list()}"
-					          value="${accountInstance?.state}"
+					          value="${stateValue}"
 					          optionKey="id" 
 							  optionValue="name"
 							  id="state"
 							  class="form-control"
 							  style="width:150px;"/>
-					<input type="hidden" name="state" value="${accountInstance?.state}" id="state"/>
+					
+					<input type="hidden" name="state" value="${stateValue}" id="state"/>
 				</div>
 				
 				
@@ -327,7 +333,6 @@ $(document).ready(function(){
 
 
 	function initialize(){
-		$inputs.prop('disabled', true);
 		stripe = Stripe("${raw(publishableKey)}");
 		elements = stripe.elements()
 		card = elements.create('card', {
@@ -409,6 +414,11 @@ $(document).ready(function(){
 
 	countryStatesInit("${applicationService.getContextName()}", 1000)
 
+	$inputs.prop('disabled', true);
+	
+	if("${stateValue}" != ""){
+		$('#stateSelect').find("option").remove()
+	}
 
 })
 </script>			

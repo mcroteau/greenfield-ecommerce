@@ -345,28 +345,29 @@ class ShoppingCartController {
 				redirect(action:'anonymous')
 			}
 			
-			accountInstance.name = params.name
-			accountInstance.email = params.email
-			accountInstance.address1 = params.address1
-			accountInstance.address2 = params.address2
-			accountInstance.city = params.city
-			if(params.state){
-				accountInstance.state = State.get(params.state)
-			}
-			accountInstance.country = Country.get(params.country)
-			accountInstance.zip = params.zip
-			accountInstance.phone = params.phone
 			
-			def state = accountInstance.state ? accountInstance.state : ""
-			
-			if(!session['accountInstance']){
-				setAccountInstanceSession(accountInstance, state)
-			}else if(session['accountInstance']){
-				if(accountInstance.email != session['accountInstance'].email){
-					setAccountInstanceSession(accountInstance, state)
+				accountInstance.name = params.name
+				accountInstance.email = params.email
+				accountInstance.address1 = params.address1
+				accountInstance.address2 = params.address2
+				accountInstance.city = params.city
+				if(params.state){
+					accountInstance.state = State.get(params.state)
 				}
-			}
-			
+				accountInstance.country = Country.get(params.country)
+				accountInstance.zip = params.zip
+				accountInstance.phone = params.phone
+				
+				def state = accountInstance.state ? accountInstance.state : ""
+				
+				if(!session['accountInstance']){
+					setAccountInstanceSession(accountInstance, state)
+				}else if(session['accountInstance']){
+					if(accountInstance.email != session['accountInstance'].email){
+						setAccountInstanceSession(accountInstance, state)
+					}
+				}
+				
 			calculateTotal(shoppingCart, session['accountInstance'])
 			
 		}catch(Exception e){
