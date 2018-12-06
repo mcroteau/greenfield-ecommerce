@@ -90,7 +90,7 @@ ${raw(applicationService.getDefaultHeader("Select Shipping Option"))}
 					<br/>
 					<span style="">Days: ${option.days}</span>
 					</div>
-					<g:link action="set" id="${shoppingCart.id}" params="[ optionId : option.id, rate : option.rate, carrier : carrier.key, service : option.service, days : option.days, rateId : option.rateId, currency: option.currency ]" class="btn btn-default btn-sm pull-right">Select</g:link>
+					<g:link action="set" params="[ anonymous: anonymous, optionId : option.id, rate : option.rate, carrier : carrier.key, service : option.service, days : option.days, rateId : option.rateId, currency: option.currency ]" class="btn btn-default btn-sm pull-right">Select</g:link>
 					<div class="clear"></div>
 				</div>
 			</g:each>

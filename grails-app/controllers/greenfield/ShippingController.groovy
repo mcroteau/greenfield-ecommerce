@@ -29,15 +29,19 @@ class ShippingController {
 	@Secured(['permitAll'])
 	def set(){
 		
+		def id
 		def shoppingCart
 		if(params.id){
 			shoppingCart = ShoppingCart.get(params.id)
 		}else if(session['shoppingCart']){
+			def uuid = session['shoppingCart']
 			shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
 		}else{
 			flash.message = "Something went wrong... shopping cart not found."
 			redirect(controller: "store", action:"index")
 		}
+		
+		
 		
 		if(shoppingCart){
 			if(params.optionId && 
@@ -49,6 +53,8 @@ class ShippingController {
 					params.rateId &&
 					params.currency){
 				
+				id = shoppingCart.id
+						
 				shoppingCart.shipping = params.rate.toDouble()
 				shoppingCart.shipmentId = params.optionId
 				shoppingCart.shipmentCarrier = params.carrier
@@ -67,7 +73,7 @@ class ShippingController {
 
 				def accountInstance = session['accountInstance']
 				
-				if(anonymous){
+				if(anonymous == "true"){
 					redirect(controller: 'shoppingCart', action: 'anonymous_preview', params: [ shippingSet : true, accountInstance: accountInstance ])
 					return
 				}else{
@@ -88,10 +94,11 @@ class ShippingController {
 		def anonymous = params?.anonymous ? params?.anonymous : ""
 		
 		def shoppingCart
+		def uuid
 		if(params.id){
 			shoppingCart = ShoppingCart.get(params.id)
 		}else if(session['shoppingCart']){
-			def uuid = session['shoppingCart']
+			uuid = session['shoppingCart']
 			shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
 		}else{
 			flash.message = "Something went wrong... shopping cart not found."
