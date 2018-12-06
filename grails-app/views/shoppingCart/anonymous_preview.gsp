@@ -141,12 +141,40 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 			<form name="checkout" action="/${applicationService.getContextName()}/shoppingCart/checkout" method="post" id="checkout_form" class="form-horizontal">
 				
 				<h3>Shipping Address</h3>
-
-				<g:link controller="shoppingCart" action="anonymous" class="btn btn-default pull-right">Change Address</g:link>
+				
+				
+				<input type="hidden" name="name" value="${accountInstance?.name}" id="name"/>
+				<input type="hidden" name="email" value="${accountInstance?.email}" id="email"/>
+				<input type="hidden" name="address1" value="${accountInstance?.address1}" id="address1"/>
+				<input type="hidden" ame="address2" value="${accountInstance?.address2}" id="address2"/>
+				<input type="hidden" name="city" value="${accountInstance?.city}" id="city"/>
+				<input type="hidden" name="country" value="${accountInstance?.country?.id}" id="country"/>
+				<input type="hidden" name="state" value="${stateValue}" id="state"/>
+				<input type="hidden" name="zip" id="zip" value="${accountInstance?.zip}"/>
+				<input type="hidden" name="phone" id="phone" value="${accountInstance?.phone}"/>
+				
 				
 				<div class="clear"></div>
-
 				
+				<address>
+					${accountInstance.name}<br/>
+					${accountInstance.address1}<br/>
+					<g:if test="${accountInstance.address2}">
+					${accountInstance.address2}<br/>
+					</g:if>
+					${accountInstance.city}<br/>
+					${accountInstance.country.name}, 
+					<g:if test="${accountInstance.state}">
+						${accountInstance.state.name},
+					</g:if>
+					${accountInstance.zip}<br/>
+					<strong>phone</strong> ${accountInstance.phone}<br/>
+					<strong>email</strong> ${accountInstance.email}<br/>
+				</address>
+				
+				<g:link controller="shoppingCart" action="anonymous" class="btn btn-default pull-right">Change Address</g:link>
+				
+				<!--
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Name <em>(first &amp; last)</em></label>
 					<input type="text" class="form-control shipping-info" name="name" value="${accountInstance?.name}" id="name"/>
@@ -155,8 +183,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Email</label>
-					<input type="text" class="form-control shipping-info" name="email" value="${accountInstance?.email}" id="email"/>	
-					<input type="hidden" name="email" value="${accountInstance?.email}" id="email"/>
+					<input type="text" class="form-control shipping-info" name="email" value="${accountInstance?.email}" id="email"/>		<input type="hidden" name="email" value="${accountInstance?.email}" id="email"/>
 				</div>
 				
 				<div class="form-group">
@@ -193,15 +220,17 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				
 				<%
 				def stateValue = null
-				if(accountInstance.state != ""){
+				if(accountInstance.state){
+					
 					stateValue = accountInstance?.state?.id
 				}
 				%>
+				${accountInstance?.state?.id}
 				<div class="form-group" id="stateSelectRow">
 					<label class="col-sm-4 control-label">State</label>
-					<g:select name="state"
+					<g:select name="state.id"
 					          from="${State.list()}"
-					          value="${stateValue}"
+					          value="${accountInstance?.state?.id}"
 					          optionKey="id" 
 							  optionValue="name"
 							  id="stateSelect"
@@ -223,7 +252,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 					<input type="text" class="form-control shipping-info" name="phone" id="phone" value="${accountInstance?.phone}"/>
 					<input type="hidden" name="phone" id="phone" value="${accountInstance?.phone}"/>
 				</div>
-
+				-->
 				
 				<style type="text/css">
 					h3 em{ 
@@ -416,9 +445,15 @@ $(document).ready(function(){
 
 	$inputs.prop('disabled', true);
 	
-	if("${stateValue}" == ""){
+	var stateValue = "${accountInstance?.state?.id}"
+	console.log(stateValue);
+	
+	if(stateValue == "" || stateValue == "null"){
 		$('#stateSelectRow').hide()
+	}else{
+		$stateSelect.val(${accountInstance.state.id})	
 	}
+	
 
 })
 </script>			

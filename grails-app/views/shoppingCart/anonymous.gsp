@@ -186,7 +186,7 @@ ${raw(applicationService.getScreenHeader("Checkout Preview"))}
 	
 		
 		<div>
-			<button name="submit" class="btn btn-primary pull-right btn-lg" id="checkoutBtn">Calculate Checkout</button>
+			<button name="submit" class="btn btn-primary pull-right btn-lg" id="checkoutBtn">Continue Checkout</button>
 		</div>
 	</g:if>
 	<g:else>

@@ -1,7 +1,5 @@
 test india
 test hong kong
-move label creation to api class
-add customs check if different country
 error if no harmonized number
 hide show state if no states
 add shipping calculations to anonymous checkout
@@ -10,6 +8,10 @@ fix email settings save bug
 add phone to company settings
 consider uncommenting
 move order confirmation to order maintenance screen
+
+
+add customs check if different country
+move label creation to api class
 
 
 ** BEFORE MERGE **/
