@@ -63,7 +63,7 @@
 </tr>
 <tr>
 	<td>select</td>
-	<td>id=state.id</td>
+	<td>id=stateSelect</td>
 	<td>label=Florida</td>
 </tr>
 <tr>

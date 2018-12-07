@@ -315,7 +315,7 @@ class ShoppingCartController {
 			def easypostEnabled = applicationService.getEasyPostEnabled()
 			if(easypostEnabled == "true"){
 				if(!accountInstance.addressVerified){
-					flash.message = "Please update your address to continue with checkout process"
+					flash.message = "We need to verify your address, please confirm"
 					redirect(controller:'account', action:'customer_profile')
 				}
 			}
@@ -587,8 +587,9 @@ class ShoppingCartController {
 				
 				adjustInventory(shoppingCart)
 				setCheckoutPrices(shoppingCart)
+				session["shoppingCart"] = null
+				
 				sendNewOrderEmail(account, transaction)
-				session['shoppingCart'] = null
 				
 				
 				[ transaction : transaction ]

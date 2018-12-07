@@ -1,6 +1,6 @@
 
 var baseUrl = ""
-var $stateSelectRow = $("#stateSelectRow");
+var $stateSelectRow = $('#stateSelectRow');
 var $stateSelect = $('#stateSelect');
 var $countrySelect = $('#countrySelect');
 

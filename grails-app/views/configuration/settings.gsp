@@ -52,9 +52,9 @@
 		
 			
 		<div class="form-row">
-			<span class="form-label twohundred">Company Phone
+			<span class="form-label twohundred">Phone
 				<br/>
-				<span class="information secondary">Important, used for creating shipping labels</span>
+				<span class="information secondary">Used when creating shipping labels</span>
 			</span>
 			<span class="input-container">
 				<input type="text" class="form-control" name="storePhone" value="${settings?.storePhone}" style="width:273px;"/>

@@ -270,6 +270,11 @@ class ApplicationService {
 		if(layoutId != 0){
 			layout = Layout.get(Integer.parseInt(layoutId))
 		}
+		
+		if(!layout){
+			layout = Layout.findByDefaultLayout(true)
+		}
+		
 		return layout
 	}
 	

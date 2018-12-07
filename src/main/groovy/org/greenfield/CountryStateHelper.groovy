@@ -46,8 +46,7 @@ public class CountryStateHelper{
 		[
 			"name": "Hong Kong",
 			"states" : []
-		]
-		/**,
+		],
 		[
 			"name": "India",
 			"states": []
@@ -55,7 +54,7 @@ public class CountryStateHelper{
 			"Haryana", "Himachal Pradesh", "Jammu & Kashmir", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", 
 			"Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", 
 			"Tamil Nadu", "Telangana", "Tripura", "Uttarakhand", "Uttar Pradesh", "West Bengal"]**/
-		//]**/
+		]
 		
 	]
 

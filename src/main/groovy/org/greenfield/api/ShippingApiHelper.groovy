@@ -78,6 +78,7 @@ public class ShippingApiHelper {
 		
 			for(int m = 0; m < item.quantity; m++){
 				height += item.product.height
+				/**TODO** how to handle products without weight**/
 				weight += item.product.weight
 			}
 		}

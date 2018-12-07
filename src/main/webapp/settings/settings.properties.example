@@ -10,6 +10,7 @@ store.country=
 store.city=
 store.tax.rate=0
 store.zip=
+store.phone=
 store.shipping=13
 easypost.test.apiKey=
 easypost.live.apiKey=
