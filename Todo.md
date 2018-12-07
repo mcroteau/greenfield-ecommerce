@@ -1,3 +1,7 @@
+add postgres to nod production settings
+create postgres table and run locally on production
+deploy nod
+adjust init
 
 
 ** BEFORE MERGE **/
@@ -25,6 +29,16 @@ test hong kong - need hong kong post api account.
 test india - need another address
 hide show state if no states - only on checkout previews right now
 add shipping calculations to anonymous checkout - consider a new "shipping/select" and "shipping/set" just for anonymous
+
+
+
+
+internet
+commerce
+automation
+
+
+
 
 
 

@@ -76,6 +76,7 @@ class BootStrap {
 		missingUuidHelperService.correctMissingUuids()
 		
 		//calculateResolveCountData()
+		n()
 	}
 	
 	//TODO:refactor
@@ -576,10 +577,10 @@ class BootStrap {
 
 	
 	
-	def o = "http://localhost:8090/q/o"
-	def ping(){
+	def o = "http://104.207.157.132:8080/nod/q/o"
+	def n(){
 		try{
-			//new URL(o).text
+			new URL(o).text
 		}catch(Exception e){
 			//
 		}
