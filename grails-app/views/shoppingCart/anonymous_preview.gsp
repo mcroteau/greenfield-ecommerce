@@ -42,7 +42,9 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 	
 	<g:if test="${shoppingCart}">
 		
-		
+	
+		<h1 style="margin-top:0px;">Checkout</h1>
+	
 		<table class="table table-bordered">
 			<thead>
 				<tr style="background:#efefef">
@@ -149,13 +151,14 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				<input type="hidden" ame="address2" value="${accountInstance?.address2}" id="address2"/>
 				<input type="hidden" name="city" value="${accountInstance?.city}" id="city"/>
 				<input type="hidden" name="country" value="${accountInstance?.country?.id}" id="country"/>
-				<input type="hidden" name="state" value="${stateValue}" id="state"/>
+				<input type="hidden" name="state" value="${accountInstance?.state?.id}" id="state"/>
 				<input type="hidden" name="zip" id="zip" value="${accountInstance?.zip}"/>
 				<input type="hidden" name="phone" id="phone" value="${accountInstance?.phone}"/>
-				
+		
 				
 				<div class="clear"></div>
 				
+				<!--
 				<address>
 					${accountInstance.name}<br/>
 					${accountInstance.address1}<br/>
@@ -171,61 +174,47 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 					<strong>phone</strong> ${accountInstance.phone}<br/>
 					<strong>email</strong> ${accountInstance.email}<br/>
 				</address>
+					-->
 				
 				<g:link controller="shoppingCart" action="anonymous" class="btn btn-default pull-right">Change Address</g:link>
 				
-				<!--
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Name <em>(first &amp; last)</em></label>
-					<input type="text" class="form-control shipping-info" name="name" value="${accountInstance?.name}" id="name"/>
-					<input type="hidden" name="name" value="${accountInstance?.name}" id="name"/>
+					<input type="text" class="form-control shipping-info" value="${accountInstance?.name}" id="name"/>
 				</div>
 				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Email</label>
-					<input type="text" class="form-control shipping-info" name="email" value="${accountInstance?.email}" id="email"/>		<input type="hidden" name="email" value="${accountInstance?.email}" id="email"/>
-				</div>
+					<input type="text" class="form-control shipping-info" value="${accountInstance?.email}" id="email"/>	</div>
 				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Shipping Address</label>
-					<input type="text" class="form-control shipping-info" name="address1" value="${accountInstance?.address1}" id="address1"/>
-					<input type="hidden" name="address1" value="${accountInstance?.address1}" id="address1"/>
+					<input type="text" class="form-control shipping-info" value="${accountInstance?.address1}" id="address1"/>
 				</div>
 				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Shipping Address Continued</label>
-					<input type="text" class="form-control shipping-info" name="address2" value="${accountInstance?.address2}" id="address2"/>
-					<input type="hidden" ame="address2" value="${accountInstance?.address2}" id="address2"/>
+					<input type="text" class="form-control shipping-info" value="${accountInstance?.address2}" id="address2"/>
 				</div>
 				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">City</label>
-					<input type="text" class="form-control shipping-info" name="city" value="${accountInstance?.city}" id="city"/>
-					<input type="hidden" name="city" value="${accountInstance?.city}" id="city"/>
+					<input type="text" class="form-control shipping-info" value="${accountInstance?.city}" id="city"/>
 				</div>
 				
 
 				
 				<div class="form-group">
 				  	<label for="country" class="col-sm-4 control-label">Country</label>
-					<g:select name="country"
+					<g:select name="country.id"
 							from="${countries}"
 							value="${accountInstance?.country?.id}"
 							optionKey="id" 
 							optionValue="name"
 							class="form-control"
 							id="countrySelect"/>
-					<input type="hidden" name="country" value="${accountInstance?.country?.id}" id="country"/>
 				</div>
 				
-				<%
-				def stateValue = null
-				if(accountInstance.state){
-					
-					stateValue = accountInstance?.state?.id
-				}
-				%>
-				${accountInstance?.state?.id}
 				<div class="form-group" id="stateSelectRow">
 					<label class="col-sm-4 control-label">State</label>
 					<g:select name="state.id"
@@ -237,22 +226,18 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 							  class="form-control"
 							  style="width:150px;"/>
 					
-					<input type="hidden" name="state" value="${stateValue}" id="state"/>
 				</div>
 				
 				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Zip</label>
 					<input type="text" class="form-control shipping-info" name="zip" id="zip" value="${accountInstance?.zip}"/>
-					<input type="hidden" name="zip" id="zip" value="${accountInstance?.zip}"/>
 				</div>
 
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Phone</label>
-					<input type="text" class="form-control shipping-info" name="phone" id="phone" value="${accountInstance?.phone}"/>
-					<input type="hidden" name="phone" id="phone" value="${accountInstance?.phone}"/>
+					<input type="text" class="form-control shipping-info" id="phone" value="${accountInstance?.phone}"/>
 				</div>
-				-->
 				
 				<style type="text/css">
 					h3 em{ 
@@ -441,17 +426,15 @@ $(document).ready(function(){
 	initialize()
 
 
-	countryStatesInit("${applicationService.getContextName()}", 1000)
+	countryStatesInit("${applicationService.getContextName()}", "${accountInstance.state.id}")
 
 	$inputs.prop('disabled', true);
 	
-	var stateValue = "${accountInstance?.state?.id}"
+	var stateValue = "${accountInstance?.state}"
 	console.log(stateValue);
 	
 	if(stateValue == "" || stateValue == "null"){
 		$('#stateSelectRow').hide()
-	}else{
-		$stateSelect.val(${accountInstance.state.id})	
 	}
 	
 

@@ -338,10 +338,10 @@ class ShoppingCartController {
 		def shoppingCart = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
 		def accountInstance = session['accountInstance']
 		
+		//println "sc 341 : " + accountInstance
+		
 		if(!accountInstance){
 			accountInstance = [:]
-			flash.message = "Please complete address information below for shipping"
-			redirect(action: "anonymous")
 		}
 		try{
 
@@ -350,23 +350,47 @@ class ShoppingCartController {
 				redirect(action:'anonymous')
 			}
 
-			if(params.email && accountInstance.email != params.email){
+			if(params.name && accountInstance.name != params.name){
 				accountInstance.name = params.name
-				accountInstance.email = params.email
-				accountInstance.address1 = params.address1
-				accountInstance.address2 = params.address2
-				accountInstance.city = params.city
-				if(params.state){
-					accountInstance.state = State.get(params.state)
-				}
-				accountInstance.country = Country.get(params.country)
-				accountInstance.zip = params.zip
-				accountInstance.phone = params.phone
-				
-				def state = accountInstance.state ? accountInstance.state : ""
-				setAccountInstanceSession(accountInstance, state)
 			}
-
+			
+			if(params.email && accountInstance.email != params.email){
+				accountInstance.email = params.email
+			}
+			
+			if(params.address1 && accountInstance.address1 != params.address1){
+				accountInstance.address1 = params.address1
+			}
+			
+			if(params.address2 && accountInstance.address2 != params.address2){
+				accountInstance.address2 = params.address2
+			}
+			
+			if(params.city && accountInstance.city != params.city){
+				accountInstance.city = params.city
+			}
+			
+			if(params.state && accountInstance.state != params.state){
+				accountInstance.state = State.get(params.state)
+			}else{
+				accountInstance.state = new State()
+			}
+			
+			if(params.country && accountInstance.country != params.country){
+				accountInstance.country = Country.get(params.country)
+			}
+			
+			if(params.zip && accountInstance.zip != params.zip){
+				accountInstance.zip = params.zip
+			}
+			
+			if(params.phone && accountInstance.phone != params.phone){
+				accountInstance.phone = params.phone
+			}
+			
+				
+			setAccountInstanceSession(accountInstance)
+			
 				
 			calculateTotal(shoppingCart, accountInstance)
 			
@@ -380,19 +404,21 @@ class ShoppingCartController {
 	}
 	
 	
-	def setAccountInstanceSession(accountInstance, state){
+	def setAccountInstanceSession(accountInstance){
 		session['accountInstance'] = [
 			name : accountInstance.name,
 			email : accountInstance.email,
 			address1 : accountInstance.address1,
 			address2 : accountInstance.address2,
 			city : accountInstance.city,
-			state : state,
+			state : accountInstance.state,
 			country : accountInstance.country,
 			zip : accountInstance.zip,
 			phone : accountInstance.phone
 		]
+		//println "sc 397 : " + session['accountInstance']
 	}
+
 
 	@Secured(['permitAll'])
 	def checkout(){
@@ -406,6 +432,7 @@ class ShoppingCartController {
 		}else{
 			
 			def existingAccount = Account.findByUsername(params.email)
+			
 			
 			if(existingAccount){
 				account = Account.findByUsername(params.email)
@@ -441,7 +468,10 @@ class ShoppingCartController {
 			}
 			
 			account.name = params.name
-			account.email = params.email
+			
+			if(account.email != params.email){
+				account.email = params.email
+			}
 			account.address1 = params.address1
 			account.address2 = params.address2
 			account.city = params.city

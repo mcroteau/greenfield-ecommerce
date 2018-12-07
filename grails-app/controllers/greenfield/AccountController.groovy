@@ -121,7 +121,7 @@ class AccountController {
 			
    			if (!accountInstance.save(flush: true)) {
    				flash.message = "Something went wrong when updating account, please try again..."
-   			    render(view: "customer_profile", model: [accountInstance: accountInstance])
+   			    render(view: "customer_profile", model: [accountInstance: accountInstance, countries: Country.list()])
    			    return
    			}
    			

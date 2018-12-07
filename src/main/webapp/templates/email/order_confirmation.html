@@ -71,7 +71,12 @@
 						<%if(transaction.shipAddress2){%>
 							${transaction.shipAddress2}<br/>
 						<%}%>
-						${transaction.shipCity}, ${transaction.shipState.name}<br/>
+						${transaction.shipCity}, 
+						
+						<%if(transaction.shipState){%>
+							${transaction.shipState.name}<br/>
+						<%}%>
+						${transaction.shipCountry.name}<br/>
 						${transaction.shipZip}
 						<br/>
 						${transaction.account.email}

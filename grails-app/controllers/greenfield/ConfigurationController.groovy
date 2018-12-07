@@ -505,47 +505,8 @@ class ConfigurationController {
 					redirect(action : 'shipping_settings')
 					return
 				}
-				
+
 				shipmentApi = new EasyPostShipmentApi(applicationService, currencyService)
-			}
-			
-			if(shipmentApi){
-			
-				try{
-					
-					def address = new Address()
-			    	address.company = applicationService.getStoreName()
-					address.street1 = address1
-					address.street2 = address2
-					address.city = city
-					address.country = country.name
-					if(state)address.state = state.name
-					address.zip = zip
-					/**TODO:add**/
-					if(phone)address.phone = phone
-			    	
-					/**TODO: need to romanize?**/
-					/**address = new Address()
-					address.street1 = "पीएस बिजनेस सेंटर ड्राइव"
-					address.city = "नई दिल्ली"
-					address.country = "India"
-					address.zip = "110012"
-					**/
-					
-					
-					if(!shipmentApi.validAddress(address)){
-	   					flash.error = "Address cannot be verified. Please update your address with valid information..."
-	   					render(view: "shipping_settings" )
-	   					return
-					}
-			    	
-			    	message = "Successfully validated address "
-					
-				}catch(Exception e){
-					flash.message = e.printStackTrace()
-					redirect(action : 'shipping_settings')
-					return
-				}
 			}
 			
 			
@@ -603,6 +564,46 @@ class ConfigurationController {
 			    prop.store(new FileOutputStream(filePath), null);
     			applicationService.setProperties()
 				
+				if(shipmentApi){
+			
+					try{
+					
+						def address = new Address()
+				    	address.company = applicationService.getStoreName()
+						address.street1 = address1
+						address.street2 = address2
+						address.city = city
+						address.country = country.name
+						if(state)address.state = state.name
+						address.zip = zip
+						/**TODO:add**/
+						if(phone)address.phone = phone
+			    	
+						/**TODO: need to romanize?**/
+						/**address = new Address()
+						address.street1 = "पीएस बिजनेस सेंटर ड्राइव"
+						address.city = "नई दिल्ली"
+						address.country = "India"
+						address.zip = "110012"
+						**/
+					
+					
+						if(!shipmentApi.validAddress(address)){
+		   					flash.error = "Address cannot be verified. Please update your address with valid information..."
+							redirect(action : 'shipping_settings')
+		   					return
+						}
+			    	
+				    	message = "Successfully validated address "
+					
+					}catch(Exception e){
+						flash.message = e.printStackTrace()
+						redirect(action : 'shipping_settings')
+						return
+					}
+				}
+				
+				
 				if(message){
 					message = message + "and saved shipping settings."
 				}else{
@@ -622,6 +623,22 @@ class ConfigurationController {
 		}
 	}
 	
+	
+	def saveApiKeys(developmentApiKey, liveApiKey){
+		Properties prop = new Properties();
+		File propertiesFile = grailsApplication.mainContext.getResource("settings/${SETTINGS_FILE}").file
+		FileInputStream inputStream = new FileInputStream(propertiesFile)
+		
+		prop.load(inputStream);
+		prop.setProperty(EASYPOST_TEST_API_KEY, testApiKey);
+		prop.setProperty(EASYPOST_LIVE_API_KEY, liveApiKey);
+		def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('settings')
+		absolutePath = absolutePath.endsWith("/") ? absolutePath : absolutePath + "/"
+		def filePath = absolutePath + SETTINGS_FILE
+		
+	    prop.store(new FileOutputStream(filePath), null);
+		applicationService.setProperties()
+	}
 	
 	
  	@Secured(['ROLE_ADMIN'])
