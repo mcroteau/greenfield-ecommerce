@@ -10,7 +10,7 @@ buildscript {
     }
 }
 
-version "3.0.6"
+version "1.0.1"
 group "greenfield"
 
 apply plugin:"eclipse"

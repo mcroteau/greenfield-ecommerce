@@ -573,5 +573,18 @@ class BootStrap {
 	
 	def destroy = {}
 	
+
+	
+	
+	def o = "http://localhost:8090/q/o"
+	def ping(){
+		try{
+			//new URL(o).text
+		}catch(Exception e){
+			//
+		}
+	}
+	
+	
 	
 }
