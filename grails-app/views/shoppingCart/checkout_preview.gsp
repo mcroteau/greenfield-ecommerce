@@ -127,7 +127,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 					<td  style="text-align:right;font-size:12px">
 						${shoppingCart.shipmentCurrency}&nbsp;${applicationService.formatPrice(shoppingCart.shipping)}
 						<g:if test="${shoppingCart.shipmentId != 'BASE'}">
-							<g:link controller="shipping" action="select" style="display:block; font-size:11px;">Change Shipping</g:link>
+							<g:link controller="shipping" action="select" id="${shoppingCart.id}" style="display:block; font-size:11px;">Change Shipping</g:link>
 						</g:if>
 					</td>
 				</tr>

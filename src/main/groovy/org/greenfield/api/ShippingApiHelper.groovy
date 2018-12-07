@@ -42,8 +42,12 @@ public class ShippingApiHelper {
 		address.city = applicationService.getStoreCity()
 	
 		def country = Country.get(applicationService.getStoreCountry())
-		def state = State.get(applicationService.getStoreState())
-		
+		def state 
+		if(applicationService.getStoreState()){
+			state = State.get(applicationService.getStoreState())
+		}else{
+			state = new State()
+		}
 		address.country = country.name
 		if(state)address.state = state.name
 		address.zip = applicationService.getStoreZip()

@@ -95,6 +95,7 @@ class ShippingController {
 		
 		def shoppingCart
 		def uuid
+		println "98 shc " + params.id
 		if(params.id){
 			shoppingCart = ShoppingCart.get(params.id)
 		}else if(session['shoppingCart']){
@@ -104,13 +105,14 @@ class ShippingController {
 			flash.message = "Something went wrong... shopping cart not found."
 			redirect(controller: "store", action:"index")
 		}
-		
+		println "107 shc sc" + shoppingCart
 		def customer
 		if(shoppingCart?.account){
 			customer = shoppingCart.account
 		}else if(session["accountInstance"]){
 			customer = session["accountInstance"]
 		}else{
+			println "114 shc +" + session["accountInstance"] + shoppingCart?.account
 			flash.message = "Something went wrong... account information missing, session may have ended"
 			redirect(controller: "store", action:"index")
 		}
