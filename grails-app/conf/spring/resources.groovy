@@ -1,8 +1,8 @@
 // Place your Spring DSL code here
-import org.greenfield.exception.NotifyException
+import org.greenfield.exception.BaseException
 
 beans = {
-	exceptionHandler(NotifyException) {
+	exceptionHandler(org.greenfield.exception.BaseException) {
 	    exceptionMappings = ['java.lang.Exception': '/error']
 	}
 }

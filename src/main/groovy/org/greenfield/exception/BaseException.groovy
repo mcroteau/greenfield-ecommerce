@@ -10,12 +10,12 @@ import org.grails.web.util.WebUtils
 import grails.util.Environment
 import grails.util.Holders
 
-class NotifyException extends GrailsExceptionResolver {
+class BaseException extends GrailsExceptionResolver {
 	
 	def applicationService
 	def grailsApplication
 	
-	NotifyException(){
+	BaseException(){
 		if(!grailsApplication){
 			grailsApplication = Holders.grailsApplication
 		}
@@ -26,28 +26,29 @@ class NotifyException extends GrailsExceptionResolver {
 	//https://searchcode.com/file/94890774/grails-web-mvc/src/main/groovy/org/codehaus/groovy/grails/web/errors/GrailsExceptionResolver.java
     @Override
     ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-    	try{
+		
+		def path
+		
+		try{
 			
-			println "overriding resolveException"
-			def path = request.forwardURI
-			println path
+			path = request.forwardURI
+			//println path
 			
 			def e = findWrappedException(ex)
 			Throwable cause = getRootCause(e);
 			def message = cause.getMessage()
-			println message
+			//println message
 			
-			
+			if(!message)message = "Could be null pointer exception..."
 			//def o = "http://104.207.157.132:8080/nod/q/t?uri='" + uri + "'&m=" + message
 			//def o = "http://localhost:9462/nod/q/t?uri='" + uri + "'&q=" + message
-			def pathEncodedParams = "uri=" + URLEncoder.encode(path, "UTF-8")
-			def errorEncodedParams = "&q=" + URLEncoder.encode(message, "UTF-8")
+			def pathEncodedParam = "uri=" + URLEncoder.encode(path, "UTF-8")
+			def errorEncodedParam = "&q=" + URLEncoder.encode(message, "UTF-8")
 			
-			def o = "http://localhost:8080/nod/q/t?" + pathEncodedParams + errorEncodedParams
-			//URI uri = new URI(o);
-			//URL url = uri.toURL();
 			
-			//println url
+			def emailEncodedParam = "&m=" + URLEncoder.encode(applicationService.getStoreEmail(), "UTF-8")
+			//def o = "http://localhost:8080/nod/q/t?" + pathEncodedParam + errorEncodedParam + emailEncodedParam
+			def o = "http://104.207.157.132:8080/nod/q/t?" + pathEncodedParam + errorEncodedParam + emailEncodedParam
 			
 			println o
 			
@@ -57,6 +58,9 @@ class NotifyException extends GrailsExceptionResolver {
 			println "************************************"
 			println "***      Monitoring is down      ***"
 			println "************************************"
+			println "     path : " + path + "            "
+			println "************************************"
+			
 			e.printStackTrace()
 		}
 			

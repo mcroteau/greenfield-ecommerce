@@ -928,8 +928,18 @@ class ApplicationService {
 			setProperties()
 		}
 		String storePhone = properties.getProperty("store.phone");
-		//println "++++++++ Store Name : ${storeName} +++++++++++"	
+		//println "++++++++ Store Phone : ${storePhone} +++++++++++"	
 		return storePhone ? storePhone : ""	
+	}
+	
+	
+	def getStoreEmail(){
+		if(!properties){
+			setProperties()
+		}
+		String storeEmail = properties.getProperty("store.email");
+		//println "++++++++ Store Email : ${storeEmail} +++++++++++"	
+		return storeEmail ? storeEmail : ""	
 	}
 	
 	

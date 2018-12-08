@@ -47,6 +47,7 @@ class ConfigurationController {
 	private final String STORE_STATE = "store.state"
 	private final String STORE_ZIP = "store.zip"
 	private final String STORE_PHONE = "store.phone"
+	private final String STORE_EMAIL = "store.email"
 	private final String STORE_SHIPPING = "store.shipping"
 	
 	/**TODO:
@@ -116,9 +117,10 @@ class ConfigurationController {
 				def settings = [:]
 				settings["storeName"] = prop.getProperty(STORE_NAME);
 				settings["storePhone"] = prop.getProperty(STORE_PHONE);
+				settings["storeEmail"] = prop.getProperty(STORE_EMAIL);
 				settings["keywords"] = prop.getProperty(META_KEYWORDS);
 				settings["description"] = prop.getProperty(META_DESCRIPTION);
-				settings["shipping"] = prop.getProperty(STORE_SHIPPING);
+				//settings["shipping"] = prop.getProperty(STORE_SHIPPING);
 				settings["taxRate"] = prop.getProperty(STORE_TAX_RATE);
 				settings["googleAnalytics"] = prop.getProperty(GOOGLE_ANALYTICS);
 
@@ -129,7 +131,7 @@ class ConfigurationController {
 				
 			} catch (IOException e){
 			    log.debug"Exception occured while reading properties file :"+e
-			}
+			} //TODO:add excpetion handler for IOException
 		}
 	}
 	
@@ -142,10 +144,11 @@ class ConfigurationController {
 			
 			String storeName = params.storeName
 			String storePhone = params.storePhone
+			String storeEmail = params.storeEmail
 			String keywords = params.keywords
 			String description = params.description
 			String taxRate = params.taxRate
-			String shipping = params.shipping
+			//String shipping = params.shipping
 			String googleAnalytics = params.googleAnalytics
 			String socialMediaEnabled = params.socialMediaEnabled
 			
@@ -163,10 +166,11 @@ class ConfigurationController {
 			    
 				prop.setProperty(STORE_NAME, storeName);
 				prop.setProperty(STORE_PHONE, storePhone);
+				prop.setProperty(STORE_EMAIL, storeEmail);
 				prop.setProperty(META_KEYWORDS, keywords);
 				prop.setProperty(META_DESCRIPTION, description);
 				prop.setProperty(STORE_TAX_RATE, taxRate);
-				prop.setProperty(STORE_SHIPPING, shipping);
+				//prop.setProperty(STORE_SHIPPING, shipping);
 				prop.setProperty(GOOGLE_ANALYTICS, googleAnalytics);
 				prop.setProperty(SOCIAL_MEDIA_ENABLED, socialMediaEnabled);
 				

@@ -36,7 +36,7 @@
 	
 	
 	
-	<form action="save_settings" class="form-horizontal">
+	<form action="save_settings" class="form-horizontal" method="post">
 		
 			
 		<div class="form-row">
@@ -61,6 +61,19 @@
 			</span>
 			<br class="clear"/>
 		</div>
+		
+			
+		<div class="form-row">
+			<span class="form-label twohundred">Company Email
+				<br/>
+				<span class="information secondary"></span>
+			</span>
+			<span class="input-container">
+				<input type="text" class="form-control" name="storeEmail" value="${settings?.storeEmail}" style="width:273px;"/>
+			</span>
+			<br class="clear"/>
+		</div>
+
 
 
 
@@ -76,7 +89,7 @@
 		</div>
 
 
-
+		<!--removing from store settings
 		<div class="form-row">
 			<span class="form-label twohundred">Shipping $
 			</span>
@@ -85,7 +98,7 @@
 			</span>
 			<br class="clear"/>
 		</div>
-
+			-->
 
 
 		<div class="form-row">
