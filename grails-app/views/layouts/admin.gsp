@@ -1,3 +1,5 @@
+<%@ page import="grails.util.Environment" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -25,6 +27,7 @@
 	
 	
 <style type="text/css">	
+		
 	@font-face { 
 		font-family: Roboto-Regular; 
 		src: url("${resource(dir:'fonts/Roboto-Regular.ttf')}"); 
@@ -67,6 +70,13 @@
 
 </head>
 <body>
+	
+	<%if(Environment.current == Environment.DEVELOPMENT){%>
+		<div id="developmentMode" class="alert alert-warning" style="line-height:1.0; padding:7px 0px 7px 0px; position:fixed; top:1px; left:13px; width:962px;">
+			Development Mode...
+		</div>
+		<br/>
+	<%}%>
 	
 	<div id="seeking-developers-container" class="alert alert-info">
 		<g:message code="interested.contributing"/>

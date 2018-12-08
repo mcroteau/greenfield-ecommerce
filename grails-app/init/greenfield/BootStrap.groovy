@@ -71,7 +71,7 @@ class BootStrap {
 
 		//Development Data
 		if(Environment.current == Environment.DEVELOPMENT) {
-			//createDevelopmentData()//TODO:refactor
+			createDevelopmentData()//TODO:refactor
 			//createDevelopmentDataSimple()//TODO:refactor
 		}
 		
