@@ -2,6 +2,9 @@ add postgres to nod production settings
 create postgres table and run locally on production
 deploy nod
 adjust init
+add email to store settings
+add issue monitoring to application 
+fix account/customer_profile
 
 
 ** BEFORE MERGE **/

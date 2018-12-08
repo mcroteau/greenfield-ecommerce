@@ -70,8 +70,10 @@ class BootStrap {
 		println 'Accounts : ' + Account.count()
 
 		//Development Data
-		//createDevelopmentData()//TODO:refactor
+		if(Environment.current == Environment.DEVELOPMENT) {
+			createDevelopmentData()//TODO:refactor
 		//createDevelopmentDataSimple()//TODO:refactor
+		}
 		
 		missingUuidHelperService.correctMissingUuids()
 		

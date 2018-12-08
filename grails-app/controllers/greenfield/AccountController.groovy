@@ -57,7 +57,8 @@ class AccountController {
 	@Secured(['ROLE_CUSTOMER', 'ROLE_ADMIN'])
 	def customer_profile(){
 		authenticatedAccount { accountInstance ->
-			[accountInstance : accountInstance, countries: Country.list()]
+			//applicationService.getStoreName()
+			[accountInstance : accountInstances, countries: Country.list()]
 		}
 	}	
 	
