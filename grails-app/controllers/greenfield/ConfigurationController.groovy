@@ -120,7 +120,6 @@ class ConfigurationController {
 				settings["storeEmail"] = prop.getProperty(STORE_EMAIL);
 				settings["keywords"] = prop.getProperty(META_KEYWORDS);
 				settings["description"] = prop.getProperty(META_DESCRIPTION);
-				//settings["shipping"] = prop.getProperty(STORE_SHIPPING);
 				settings["taxRate"] = prop.getProperty(STORE_TAX_RATE);
 				settings["googleAnalytics"] = prop.getProperty(GOOGLE_ANALYTICS);
 
@@ -148,7 +147,6 @@ class ConfigurationController {
 			String keywords = params.keywords
 			String description = params.description
 			String taxRate = params.taxRate
-			//String shipping = params.shipping
 			String googleAnalytics = params.googleAnalytics
 			String socialMediaEnabled = params.socialMediaEnabled
 			
@@ -170,7 +168,6 @@ class ConfigurationController {
 				prop.setProperty(META_KEYWORDS, keywords);
 				prop.setProperty(META_DESCRIPTION, description);
 				prop.setProperty(STORE_TAX_RATE, taxRate);
-				//prop.setProperty(STORE_SHIPPING, shipping);
 				prop.setProperty(GOOGLE_ANALYTICS, googleAnalytics);
 				prop.setProperty(SOCIAL_MEDIA_ENABLED, socialMediaEnabled);
 				

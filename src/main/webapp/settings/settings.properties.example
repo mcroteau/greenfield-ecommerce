@@ -11,6 +11,7 @@ store.city=
 store.tax.rate=0
 store.zip=
 store.phone=
+store.email=
 store.shipping=13
 easypost.test.apiKey=
 easypost.live.apiKey=
