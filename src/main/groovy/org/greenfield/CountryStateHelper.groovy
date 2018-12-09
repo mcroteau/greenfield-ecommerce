@@ -36,6 +36,10 @@ public class CountryStateHelper{
 			"Occitanie (Midi-Pyrénées, Languedoc)", "Pays de la Loire", "Provence - Cote d'Azur"]**/
 		],
 		[
+			"name" : "Ireland",
+			"states" : []
+		],
+		[
 			"name": "Brazil",
 			"states": []
 			/**"states": ["Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", 

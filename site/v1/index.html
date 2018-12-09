@@ -9,6 +9,7 @@
 		
 	<link rel="stylesheet" href="bootstrap-buttons.min.css" />
 	<link rel="stylesheet" href="app.css" />
+	<link rel="stylesheet" href="flags.min.css" />
 
 	<script async defer src="https://buttons.github.io/buttons.js"></script>
 
@@ -72,32 +73,99 @@
 			
 			<ul id="navigation">
 				<li><a href="index.html">Home</a></li>
-				<li><a href="index.html#demo">Demo</a></li>
-				<li><a href="index.html#screenshots">Screenshots</a></li>
-				<li><a href="index.html#run-it">Get Started</a></li>
+				<!--<li><a href="index.html#demo">Demo</a></li>-->
+				<!--<li><a href="index.html#screenshots">Screenshots</a></li>-->
 				<li><a href="index.html#features">Features</a></li>
+				<li><a href="index.html#run-it">Get Started (5 mins)</a></li>
 				<!--<li><a href="index.html#started">Getting Started</a></li>-->
 				<li><a href="tutorials/index.html">Tutorials</a></li>
 				<li><a href="index.html#support">Support</a></li>
 			</ul>
 			
 		</div>		
+		
+		<style type="text/css">
+			.where-row{
+				float:left;
+				margin-right:20px;
+			}
+		</style>
+			
+		
+		<div id="what" class="section" style="margin-bottom:50px !important;">
+			<h1>What Currencies Does Greenfield support?</h1>
+			
+			<div class="where-row">
+				<div class="where">
+					<img src="blank.gif" class="flag flag-us" alt="United States" />
+					<span class="where-country">United States</span>
+				</div>
+				
+				<div class="where">
+					<img src="blank.gif" class="flag flag-gb" alt="United States" />
+					<span class="where-country">United Kingdom</span>
+				</div>
+				
+				<div class="where">
+					<img src="blank.gif" class="flag flag-nl" alt="United States" />
+					<span class="where-country">Netherlands</span>
+				</div>
+			</div>
+		
+		
+			<div class="where-row">
+				<div class="where">
+					<img src="blank.gif" class="flag flag-de" alt="United States" />
+					<span class="where-country">Germany</span>
+				</div>
+				
+				<div class="where">
+					<img src="blank.gif" class="flag flag-fr" alt="United States" />
+					<span class="where-country">France</span>
+				</div>
+				
+				<div class="where">
+					<img src="blank.gif" class="flag flag-br" alt="United States" />
+					<span class="where-country">Brazil</span>
+				</div>
+			</div>
+			
+			
+			<div class="where-row">
+				<div class="where">
+					<img src="blank.gif" class="flag flag-in" alt="United States" />
+					<span class="where-country">India</span>
+				</div>
+				
+				<div class="where">
+					<img src="blank.gif" class="flag flag-hk" alt="United States" />
+					<span class="where-country">Hong Kong</span>
+				</div>
+			</div>
+			
+			<br class="clear"/>
+			
+			<p>The application needs translation support but can handle currencies from these areas.</p>
+		</div>
+		
+		
 	
+	<!--
        	<div id="demo" class="section" style="margin-bottom:50px !important;">
             <h1>Demo</h1>
             <p>Login <strong class="highlight">admin:admin </strong></p>
             <p><a href="http://104.156.252.167:8080/greenfield/admin" target="_blank">http://104.156.252.167:8080/greenfield/admin</a></p>
             <p>Go to <a href="http://104.156.252.167:8080/greenfield/admin" target="_blank">admin</a> after login</p>
         </div>
-
+	-->
 
 		
 		<div id="what" class="section" style="margin-bottom:50px !important;">
 			<h1>What is Greenfield</h1>
-			<p>Greenfield is a lightweight open source eCommerce application focused on quick and easy setup. Greenfield is built on Grails, a full stack web application framework for the JVM. <a href="http://www.grails.org" target="_blank">Lean more about Grails</a></p>
+			<p>Greenfield is a lightweight open source eCommerce application focused on quick and easy setup. Greenfield is built on Grails a J2EE framework, a full stack web application framework for the JVM. Grails leverages the best in breeds for the Java echo-system including Spring, Hibernate and Gradle. &nbsp;<a href="http://www.grails.org" target="_blank">Lean more about Grails</a></p>
 		</div>
 		
-		
+		<!--
 		<div id="screenshots" class="section">
 			<h1>Greenfield Screenshots</h1>
 			
@@ -149,23 +217,8 @@
 			
 			<div class="clear"></div>
 		</div>
+		-->	
 			
-
-		<div id="run-it" style="text-align:left;" class="section">
-			<h1>Get Started</h1>
-			<p>Want to check Greenfield out, run it in development mode</p>
-			<ol>
-				<li>Install <strong class="highlight">Grails 3.3.4</strong> or higher</li>
-				<li>Install <strong class="highlight">Java JDK 1.8</strong> or higher</strong></li>
-				<li>Install <strong class="highlight">Git</strong></li>
-				<li>Clone the repository, <strong class="highlight">git clone https://github.com/opengreenfield/greenfield.git</strong></li>
-				<li>Cd into project directory and run <strong class="highlight">grails run-app</strong></li>
-				<li>Browse to <strong class="highlight">http://localhost:8080/greenfield/admin</strong></li>
-				<li>Username: <strong class="highlight">admin</strong>, password: <strong class="highlight">admin</strong></li>
-				<li>See it with mock data, uncomment <strong class="highlight">createDevelopmentData()</strong> in <strong class="highlight">grails-app/init/BootStrap.groovy</strong> before running it</li>
-			</ol>
-		</div>
-
 		<div id="features" class="section">
 			<h1>Greenfield Features</h1>
 						
@@ -173,7 +226,12 @@
 				
 				
 				<div class="features-section">
-					
+
+
+					<div class="feature">
+						<p><strong>Multi Currency</strong></p>
+						<p>Greenfield currently supports United States, United Kindom, Netherlands, Germany, France, Brazil, Infia currencies.</p>
+					</div>
 					<div class="feature">
 						<p><strong>Simple HTML Based Layout Engine</strong></p>
 						<p>No need to learn another markup language. Greenfield serves up dynamic content via custom tags within simple html &amp; css.</p>
@@ -224,6 +282,24 @@
 				</div>
 				
 				<div class="clear"></div>
+			</div>
+			
+			
+
+
+			<div id="run-it" style="text-align:left;" class="section">
+				<h1>Get Started</h1>
+				<p>Want to check Greenfield out, run it in development mode</p>
+				<ol>
+					<li>Install <strong class="highlight">Grails 3.3.4</strong> or higher</li>
+					<li>Install <strong class="highlight">Java JDK 1.8</strong> or higher</strong></li>
+					<li>Install <strong class="highlight">Git</strong></li>
+					<li>Clone the repository, <strong class="highlight">git clone https://github.com/opengreenfield/greenfield.git</strong></li>
+					<li>Cd into project directory and run <strong class="highlight">grails run-app</strong></li>
+					<li>Browse to <strong class="highlight">http://localhost:8080/greenfield/admin</strong></li>
+					<li>Username: <strong class="highlight">admin</strong>, password: <strong class="highlight">admin</strong></li>
+					<li>See it with mock data, uncomment <strong class="highlight">createDevelopmentData()</strong> in <strong class="highlight">grails-app/init/BootStrap.groovy</strong> before running it</li>
+				</ol>
 			</div>
 			
 			
