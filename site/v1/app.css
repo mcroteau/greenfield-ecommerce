@@ -192,3 +192,13 @@ strong.highlight{
 	display:inline-block;
     margin:0px 10px !important;
 }
+#greenfield-logo{
+	width:500px;
+	margin-bottom:10px;
+}
+#greenfield-logo img{
+	display:block;
+}
+#greenfield-logo span{
+	margin-left:50px;
+}
