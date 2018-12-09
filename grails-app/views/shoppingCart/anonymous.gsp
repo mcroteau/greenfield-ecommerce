@@ -185,8 +185,13 @@ ${raw(applicationService.getScreenHeader("Checkout Preview"))}
 			</div>
 	
 		
-		<div>
+		<div class="form-group" style="position:relative; text-align:center;">
 			<button name="submit" class="btn btn-primary pull-right btn-lg" id="checkoutBtn">Continue Checkout</button>
+
+			<span class="pull-right" id="processing" style="display:none; margin-right:20px;padding-top:7px;">
+				Calculating shipping, please wait&nbsp;
+				<img src="/${applicationService.getContextName()}/images/loading.gif" >
+			</span>
 		</div>
 	</g:if>
 	<g:else>
@@ -214,10 +219,12 @@ $(document).ready(function(){
 		$zip      = $('#zip')
 		$phone    = $('#phone');
 
+	var $processing = $("#processing");
 
 	$submitBtn.click(process_checkout);
 	function process_checkout(){
 		if(validForm()){
+			$processing.show()
 			$checkoutForm.submit();
 		}
 	}

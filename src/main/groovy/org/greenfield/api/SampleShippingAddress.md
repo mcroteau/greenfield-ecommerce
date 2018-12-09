@@ -3,6 +3,24 @@
 **easypost address in english verification works
 
 
+
+###New Zealand
+
+Mrs Brown          [recipient]
+Flat 2             [apartment number]
+173 Park Road      [house number + street name]
+Johnsonville       [suburb (only in some addresses)]
+Wellington 6004    [city + postal code]
+NEW ZEALAND        [country]
+
+
+Delhi-Cious Authentic Indian Cuisine
+102 Wadestown Rd, 
+Wadestown, 
+Wellington 6012, New Zealand
+
+
+
 ###Germany
      
 Schulstrasse 4           
@@ -97,7 +115,18 @@ HONG KONG
 }
 
 
+###Canada
 
+JOHN JONES
+MARKETING DEPARTMENT
+10-123 1/2 MAIN STREET NW    [10 is a unit number, such as a suite or apartment number.]
+MONTREAL QC  H3Z 2Y7         [MONTREAL is the city;  QC is the province abbreviation;  H3Z 2Y7 is the postal code.]
+CANADA  
+
+OK Tire
+1655 20 Ave, 
+Prince George, 
+BC V2L 4B7, Canada
 
 
 

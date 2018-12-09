@@ -18,6 +18,17 @@ public class CountryStateHelper{
 			/**"states":["Northern Ireland", "Scotland", "Wales"]**/
 		],
 		[
+			"name": "New Zealand",
+			"states" : []
+		],
+		[
+			"name" : "Canada",
+			"states": [ "Nunavut", "Alberta", "Saskatchewan", "Yukon", "Manitoba", 
+			"British Columbia", "Ontario", "Quebec", "Prince Edward Island", 
+			"Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", 
+			"New Brunswick"]
+		],
+		[
 			"name" : "Netherlands",
 			"states" : []
 		],
@@ -40,6 +51,10 @@ public class CountryStateHelper{
 			"states" : []
 		],
 		[
+			"name": "Hong Kong",
+			"states" : []
+		],		
+		[
 			"name": "Brazil",
 			"states": []
 			/**"states": ["Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", 
@@ -48,18 +63,13 @@ public class CountryStateHelper{
 			"Santa Catarina", "São Paulo", "Sergipe", "Tocantins"]**/
 		],
 		[
-			"name": "Hong Kong",
-			"states" : []
-		],
-		[
 			"name": "India",
 			"states": []
 			/**"states": ["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", 
 			"Haryana", "Himachal Pradesh", "Jammu & Kashmir", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", 
 			"Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", 
 			"Tamil Nadu", "Telangana", "Tripura", "Uttarakhand", "Uttar Pradesh", "West Bengal"]**/
-		]
-		
+		]		
 	]
 
 }

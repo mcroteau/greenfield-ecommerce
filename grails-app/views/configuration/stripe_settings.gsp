@@ -48,6 +48,8 @@
 			<%
 			def usd = stripe_settings?.storeCurrency == "USD" ? "selected" : ""
 			def gbp = stripe_settings?.storeCurrency == "GBP" ? "selected" : ""
+			def nzd = stripe_settings?.storeCurrency == "NZD" ? "selected" : ""
+			def cad = stripe_settings?.storeCurrency == "CAD" ? "selected" : ""
 			def eur = stripe_settings?.storeCurrency == "EUR" ? "selected" : ""
 			def brl = stripe_settings?.storeCurrency == "BRL" ? "selected" : ""
 			def inr = stripe_settings?.storeCurrency == "INR" ? "selected" : ""
@@ -58,6 +60,8 @@
 				<select name="storeCurrency" class="form-control" style="width:423px;" id="currencySelect">
 					<option value="USD" <%=usd%>>$&nbsp;&nbsp;USD - United States</option>
 					<option value="GBP" <%=gbp%>>£&nbsp;&nbsp;GBP - United Kingdom</option>
+					<option value="NZD" <%=nzd%>>$&nbsp;&nbsp;NZD - New Zealand</option>
+					<option value="CAD" <%=cad%>>C $&nbsp;&nbsp;CAD - Canada</option>
 					<option value="EUR" <%=eur%>>€&nbsp;&nbsp;EUR - Germany, France, Netherlands, Ireland</option>
 					<option value="HKD" <%=hkd%>>HK$ HKD - Hong Kong</option>
 					<option value="BRL" <%=brl%>>(R$&nbsp;&nbsp;BRL - Brazil: Stripe by invite only)</option>
@@ -154,6 +158,8 @@
 			var countriesCurrenciesMap = {
 				"USD" : [{ "code": "us", "name" : "United States" }],
 				"GBP" : [{ "code": "gb", "name" : "United Kingdom" }],
+				"NZD" : [{ "code": "nz", "name" : "New Zealand" }],
+				"CAD" : [{ "code": "ca", "name" : "Canada" }],
 				"EUR" : [
 						{ "code": "de", "name" : "Germany" },
 						{ "code": "fr", "name" : "France" },
@@ -168,6 +174,8 @@
 			var countryCodeMap = {
 				"us" : { "code": "us", "name" : "United States" },
 				"gb" : { "code": "gb", "name" : "United Kingdom" },
+				"nz" : { "code": "nz", "name" : "New Zealand" },
+				"ca" : { "code": "ca", "name" : "Canada" },
 				"de" : { "code": "de", "name" : "Germany" },
 				"fr" : { "code": "fr", "name" : "France" },
 				"nl" : { "code": "nl", "name" : "Netherlands" },

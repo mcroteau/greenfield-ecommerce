@@ -67,6 +67,12 @@ class CurrencyService {
 					case "GBP":
 						currencySymbol = "£"
 						break
+					case "NZD" : 
+						currencySymbol = "\$"
+						break
+					case "CAD" : 
+						currencySymbol = "C \$"
+						break
 					case "EUR":
 						currencySymbol = "€"
 						break
@@ -80,7 +86,7 @@ class CurrencyService {
 						currencySymbol = "₹"
 						break
 					default : 
-						currencySymbol = "\$"
+						currencySymbol = "Needs Configuration"
 						break
 				}
 				
