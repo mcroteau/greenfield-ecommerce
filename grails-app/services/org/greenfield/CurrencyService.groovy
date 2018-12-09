@@ -86,7 +86,7 @@ class CurrencyService {
 						currencySymbol = "₹"
 						break
 					default : 
-						currencySymbol = "\$"
+						currencySymbol = "Needs Configuration"
 						break
 				}
 				
