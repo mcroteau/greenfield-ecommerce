@@ -3,6 +3,10 @@ test notifyexception on views
 add email to store settings
 add issue monitoring to application 
 fix account/customer_profile
+uncomment n
+consider adding Ireland
+consider adding Canada
+consider adding New Zealand
 
 
 ** BEFORE MERGE **/
