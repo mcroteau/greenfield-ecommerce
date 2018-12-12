@@ -1,12 +1,4 @@
-adjust init
-test notifyexception on views
-add email to store settings
-add issue monitoring to application 
-fix account/customer_profile
-uncomment n
-consider adding Ireland
-consider adding Canada
-consider adding New Zealand
+translate for portuguese
 
 
 ** BEFORE MERGE **/
@@ -34,6 +26,19 @@ test hong kong - need hong kong post api account.
 test india - need another address
 hide show state if no states - only on checkout previews right now
 add shipping calculations to anonymous checkout - consider a new "shipping/select" and "shipping/set" just for anonymous
+
+
+adjust init
+test notifyexception on views
+add email to store settings
+add issue monitoring to application 
+fix account/customer_profile
+uncomment n
+consider adding Ireland
+consider adding Canada
+consider adding New Zealand
+
+
 
 
 

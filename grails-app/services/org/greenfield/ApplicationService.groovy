@@ -1140,11 +1140,17 @@ class ApplicationService {
 		return zip
 	}
 	
+	def getBrainTreeEnabled(){
+		if(!properties)setProperties()
+		String enabled = properties.getProperty("braintree.enabled");
+		//println "++++++++ braintree enabled : ${enabled} +++++++++++"	
+		return enabled		
+	}
 	
 	def getEasyPostEnabled(){
 		if(!properties)setProperties()
 		String enabled = properties.getProperty("easypost.enabled");
-		//println "++++++++ enabled : ${enabled} +++++++++++"	
+		//println "++++++++ easypost enabled : ${enabled} +++++++++++"	
 		return enabled		
 	}
 	

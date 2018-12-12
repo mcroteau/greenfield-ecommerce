@@ -19,9 +19,9 @@ class AccountsActiveInterceptorSpec extends Specification {
 
     void "Test accountsActive interceptor matching"() {
         when:"A request matches the interceptor"
-            withRequest(controller:"accountsActive")
+            withRequest(controller:"account", action:"admin_list")
 
         then:"The interceptor does match"
-            interceptor.doesMatch()
+		    interceptor.doesMatch()
     }
 }
