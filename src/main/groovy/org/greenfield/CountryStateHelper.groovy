@@ -2,6 +2,10 @@ package org.greenfield
 
 public class CountryStateHelper{
 
+	/**
+		TODO: add country/state maintenance
+		"expanded" relates to brain tree, brain tree does not support India or Brazil at all yet.
+	**/
 	def countryStates = [ 
 		[ 
 			"name" : "United States",
@@ -69,6 +73,11 @@ public class CountryStateHelper{
 			"Haryana", "Himachal Pradesh", "Jammu & Kashmir", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", 
 			"Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", 
 			"Tamil Nadu", "Telangana", "Tripura", "Uttarakhand", "Uttar Pradesh", "West Bengal"]**/
+		],
+		[
+			"name" : "Greece",
+			"expanded" : true,
+			"states": []
 		]		
 	]
 

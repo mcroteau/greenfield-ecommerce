@@ -130,6 +130,18 @@ BC V2L 4B7, Canada
 
 
 
+###Denmark
+Kastanievej 15                  [street address]
+DK-8660 SKANDERBORG             [country code + postal code + city/town/locality.  The "DK-" is an optional country code.]
+DENMARK                         [country]
+
+Post Denmark                    [recipient]
+International Post and Jetpost  [recipient]
+Tietgensgade 37                 [street address]
+DK-1566 COPENHAGEN V            [country code + postal code + city/town/locality.  The "DK-" is an optional country code.]
+DENMARK      
+
+
 
 
 

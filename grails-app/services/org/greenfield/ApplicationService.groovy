@@ -1140,7 +1140,7 @@ class ApplicationService {
 		return zip
 	}
 	
-	def getBrainTreeEnabled(){
+	def getBraintreeEnabled(){
 		if(!properties)setProperties()
 		String enabled = properties.getProperty("braintree.enabled");
 		//println "++++++++ braintree enabled : ${enabled} +++++++++++"	

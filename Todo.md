@@ -1,4 +1,23 @@
 translate for portuguese
+integrate braintree for payment processing
+- United Kingdom
+- Greece
+- Swizerland
+- Denmark
+- Sweden
+- Germany
+- France
+- Ireland
+integrate shippo
+
+
+
+
+We need your help on the basics, organic growth
+How can we influence nations to adopt a basic income before we do? not before ai replaces workforces
+
+If cars are going to be fully autonomous, why do they need to be sexy?
+
 
 
 ** BEFORE MERGE **/

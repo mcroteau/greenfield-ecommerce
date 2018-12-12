@@ -30,7 +30,7 @@
 	<ul class="nav nav-tabs" style="margin-bottom:30px;">
 		<li class="active"><g:link uri="/configuration/settings" class="btn btn-default">Store Settings</g:link></li>
 		<li class="inactive"><g:link uri="/configuration/email_settings" class="btn btn-default">Email Settings</g:link></li>
-		<li class="inactive"><g:link uri="/configuration/stripe_settings" class="btn btn-default">Stripe/Payment Settings</g:link></li>
+		<li class="inactive"><g:link uri="/configuration/payment_settings" class="btn btn-default">Payment Settings</g:link></li>
 		<li class="inactive"><g:link uri="/configuration/shipping_settings" class="btn btn-default">Shipping Settings</g:link></li>
 	</ul>
 	

@@ -32,6 +32,7 @@ stripe.development.publishableKey=pk_test_KYVCbdaOAuezlE7sF7cn2hnK
 stripe.production.apiKey=
 stripe.production.publishableKey=
 social.media.enabled=true
+braintree.enabled=true
 checkout.screen.layout=0
 checkout.success.layout=0
 checkout.preview.layout=0

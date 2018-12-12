@@ -304,11 +304,9 @@ class ConfigurationController {
 	
 	
 	
-	
  	@Secured(['ROLE_ADMIN'])
-	def stripe_settings(){
-		authenticatedAdmin{ adminAccount ->
-			
+	def payment_settings(){
+		authenticatedAdmin { adminAccount ->
 			Properties prop = new Properties();
 			try{
 		
@@ -316,32 +314,30 @@ class ConfigurationController {
 				FileInputStream inputStream = new FileInputStream(propertiesFile)
 				prop.load(inputStream);
 				
-				def stripe_settings = [:]
+				def payment_settings = [:]
 				
-				//def enabled =  prop.getProperty(STRIPE_ENABLED_KEY)
-				//if(enabled == "true")stripe_settings["enabled"] = "checked"
-
-				stripe_settings["storeCurrency"] = prop.getProperty(STORE_CURRENCY);
-				stripe_settings["storeCountryCode"] = prop.getProperty(STORE_COUNTRY_CODE);
-				stripe_settings["devApiKey"] = prop.getProperty(STRIPE_DEVELOPMENT_API_KEY)
-				stripe_settings["devPublishableKey"] = prop.getProperty(STRIPE_DEVELOPMENT_PUBLISHABLE_KEY)
-				stripe_settings["prodApiKey"] = prop.getProperty(STRIPE_PRODUCTION_API_KEY)
-				stripe_settings["prodPublishableKey"] = prop.getProperty(STRIPE_PRODUCTION_PUBLISHABLE_KEY)
+				payment_settings["storeCurrency"] = prop.getProperty(STORE_CURRENCY);
+				payment_settings["storeCountryCode"] = prop.getProperty(STORE_COUNTRY_CODE);
+				payment_settings["devApiKey"] = prop.getProperty(STRIPE_DEVELOPMENT_API_KEY)
+				payment_settings["devPublishableKey"] = prop.getProperty(STRIPE_DEVELOPMENT_PUBLISHABLE_KEY)
+				payment_settings["prodApiKey"] = prop.getProperty(STRIPE_PRODUCTION_API_KEY)
+				payment_settings["prodPublishableKey"] = prop.getProperty(STRIPE_PRODUCTION_PUBLISHABLE_KEY)
 				
 				
-				
-				[ stripe_settings : stripe_settings ]
+				[ payment_settings : payment_settings ]
 				
 			} catch (IOException e){
-			    log.debug"Exception occured while reading properties file :"+e
+			    log.debug"Exception occured while reading properties file :" + e
+				flash.message = "Something went wrong... "  + e
 			}
 		}
 	}
 	
 	
 	
+	
  	@Secured(['ROLE_ADMIN'])
-	def save_stripe_settings(){
+	def save_payment_settings(){
 
 		authenticatedAdmin{ adminAccount ->
 		
@@ -383,13 +379,13 @@ class ConfigurationController {
 
 				applicationService.setProperties()
 				
-				flash.message = "Successfully saved Stripe/Payment settings"
-				redirect(action : 'stripe_settings')
+				flash.message = "Successfully saved Payment settings"
+				redirect(action : 'payment_settings')
 				
 			} catch (IOException e){
 			    log.debug"exception occured while saving properties file :"+e
 				flash.message = "Something went wrong... "
-				redirect(action : 'stripe_settings')
+				redirect(action : 'payment_settings')
 				return
 			}
 		}

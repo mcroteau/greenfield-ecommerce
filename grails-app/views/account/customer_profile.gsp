@@ -60,7 +60,7 @@ ${raw(applicationService.getDefaultHeader("Account Info"))}
 				
 				<div class="form-group">
 				  	<label for="username" class="col-sm-4 control-label">Username</label>
-					${accountInstance?.username}
+					<span style="margin-top:5px;display:inline-block;padding:2px 7px; background:#efefef;border:solid 1px #ddd;">${accountInstance?.username}</span>
 				</div>
 				
 				<div class="form-group">

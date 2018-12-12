@@ -48,6 +48,7 @@ class BootStrap {
 	
 	def springSecurityService
 	def missingUuidHelperService
+	def applicationService
 	
 	//TODO:move these constants to reusable, check ConfigurationController, LayoutController and ApplicationService
 	private final String SETTINGS_FILE = "settings.properties"
@@ -242,20 +243,32 @@ class BootStrap {
 	def createCountriesAndStates(){
 		CountryStateHelper countryStateHelper = new CountryStateHelper()
 		countryStateHelper.countryStates.each(){ countryData ->
-			def country = new Country()
-			country.name = countryData.name
-			country.save(flush:true)
 			
-			countryData.states.each(){ stateData ->
-				def state = new State()
-				state.country = country
-				state.name = stateData
-				state.save(flush:true)
+			if(countryData.expanded){ 
+				if(applicationService.getBraintreeEnabled() == "true"){
+					createCountryAndStates(countryData)
+				}
+			}else{
+				createCountryAndStates(countryData)
 			}
 		}
 
 		println "Countries : ${Country.count()}"
 		println "States : ${State.count()}"
+	}
+	
+	
+	def createCountryAndStates(countryData){
+		def country = new Country()
+		country.name = countryData.name
+		country.save(flush:true)
+		
+		countryData.states.each(){ stateData ->
+			def state = new State()
+			state.country = country
+			state.name = stateData
+			state.save(flush:true)
+		}
 	}
 	
 	
