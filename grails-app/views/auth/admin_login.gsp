@@ -101,7 +101,7 @@ ${applicationService.getStoreName()} : Admin Login</title>
 			<!-- first attempt g:form controller="login" action="authenticate">-->
 			<form action="/${applicationService.getContextName()}/login/authenticate" method="POST" id="loginForm" autocomplete="off">
 			
-				<input type="hidden" name="postUrl" value="admin"/>
+				<input type="hidden" name="postUrl" value="http://localhost:8080/${applicationService.getContextName()}/admin"/>
 			
 				<div class="form-group">
 				  	<label for="username">Username</label>
@@ -124,8 +124,6 @@ ${applicationService.getStoreName()} : Admin Login</title>
 				<div class="form-group">
 				  	<label><g:link controller="account" action="customer_forgot">Forgot password?</g:link></label>
 				</div>
-				
-				<input type="hidden" name="targetUri" value="${targetUri}" />
 				
 				<button type="submit" class="btn btn-default btn-primary pull-right">Login</button>
 				
