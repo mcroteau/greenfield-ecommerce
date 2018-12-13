@@ -16,10 +16,10 @@ class ImportActiveInterceptorSpec extends Specification {
     def cleanup() {
 
     }
-
+	/**~/(index|uploads|import_products_view)/**/
     void "Test importActive interceptor matching"() {
         when:"A request matches the interceptor"
-            withRequest(controller:"importActive")
+            withRequest(controller:"configuration", action: "index")
 
         then:"The interceptor does match"
             interceptor.doesMatch()

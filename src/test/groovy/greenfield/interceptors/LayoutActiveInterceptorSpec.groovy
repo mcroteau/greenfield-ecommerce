@@ -16,10 +16,10 @@ class LayoutActiveInterceptorSpec extends Specification {
     def cleanup() {
 
     }
-
+	/**~/(index|tags|how)/**/
     void "Test layoutActive interceptor matching"() {
         when:"A request matches the interceptor"
-            withRequest(controller:"layoutActive")
+            withRequest(controller:"layout", action: "index")
 
         then:"The interceptor does match"
             interceptor.doesMatch()
