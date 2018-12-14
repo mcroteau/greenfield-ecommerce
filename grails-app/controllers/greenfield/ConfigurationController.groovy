@@ -84,6 +84,11 @@ class ConfigurationController {
 	private final String STRIPE_PRODUCTION_API_KEY = "stripe.production.apiKey"
 	private final String STRIPE_PRODUCTION_PUBLISHABLE_KEY = "stripe.production.publishableKey"
 	
+	private final String BRAINTREE_MERCHANT_ID = "braintree.merchantId"
+	private final String BRAINTREE_TOKENIZED_KEY = "braintree.tokenizedKey"
+	private final String BRAINTREE_PUBLIC_KEY = "braintree.publicKey"
+	private final String BRAINTREE_PRIVATE_KEY = "braintree.privateKey"
+	
 	private final String EASYPOST_ENABLED = "easypost.enabled"
 	private final String EASYPOST_TEST_API_KEY = "easypost.test.apiKey"
 	private final String EASYPOST_LIVE_API_KEY = "easypost.live.apiKey"
@@ -318,10 +323,16 @@ class ConfigurationController {
 				
 				payment_settings["storeCurrency"] = prop.getProperty(STORE_CURRENCY);
 				payment_settings["storeCountryCode"] = prop.getProperty(STORE_COUNTRY_CODE);
-				payment_settings["devApiKey"] = prop.getProperty(STRIPE_DEVELOPMENT_API_KEY)
-				payment_settings["devPublishableKey"] = prop.getProperty(STRIPE_DEVELOPMENT_PUBLISHABLE_KEY)
-				payment_settings["prodApiKey"] = prop.getProperty(STRIPE_PRODUCTION_API_KEY)
-				payment_settings["prodPublishableKey"] = prop.getProperty(STRIPE_PRODUCTION_PUBLISHABLE_KEY)
+				payment_settings["stripeDevApiKey"] = prop.getProperty(STRIPE_DEVELOPMENT_API_KEY)
+				payment_settings["stripeDevPublishableKey"] = prop.getProperty(STRIPE_DEVELOPMENT_PUBLISHABLE_KEY)
+				payment_settings["stripeProdApiKey"] = prop.getProperty(STRIPE_PRODUCTION_API_KEY)
+				payment_settings["stripeProdPublishableKey"] = prop.getProperty(STRIPE_PRODUCTION_PUBLISHABLE_KEY)
+				
+				
+				payment_settings["braintreeMerchantId"] = prop.getProperty(BRAINTREE_MERCHANT_ID)
+				payment_settings["braintreeTokenizedKey"] = prop.getProperty(BRAINTREE_TOKENIZED_KEY)
+				payment_settings["braintreePublicKey"] = prop.getProperty(BRAINTREE_PUBLIC_KEY)
+				payment_settings["braintreePrivateKey"] = prop.getProperty(BRAINTREE_PRIVATE_KEY)
 				
 				
 				[ payment_settings : payment_settings ]
@@ -342,12 +353,18 @@ class ConfigurationController {
 		authenticatedAdmin{ adminAccount ->
 		
 			//String enabled = params.enabled
+			println params.storeCurrency
 			String storeCurrency = params.storeCurrency
 			String storeCountryCode = params.storeCountryCode
-			String devApiKey = params.devApiKey
-			String devPublishableKey = params.devPublishableKey
-			String prodApiKey = params.prodApiKey
-			String prodPublishableKey = params.prodPublishableKey
+			String stripeDevApiKey = params.stripeDevApiKey
+			String stripeDevPublishableKey = params.stripeDevPublishableKey
+			String stripeProdApiKey = params.stripeProdApiKey
+			String stripeProdPublishableKey = params.stripeProdPublishableKey
+			
+			String braintreeMerchantId = params.braintreeMerchantId
+			String braintreeTokenizedKey = params.braintreeTokenizedKey
+			String braintreePublicKey = params.braintreePublicKey
+			String braintreePrivateKey = params.braintreePrivateKey
 			
 			
 			//if(enabled == "on")enabled = true
@@ -365,10 +382,15 @@ class ConfigurationController {
 				//prop.setProperty(STRIPE_ENABLED_KEY, enabled);
 				prop.setProperty(STORE_CURRENCY, storeCurrency);
 				prop.setProperty(STORE_COUNTRY_CODE, storeCountryCode);
-				prop.setProperty(STRIPE_DEVELOPMENT_API_KEY, devApiKey);
-				prop.setProperty(STRIPE_DEVELOPMENT_PUBLISHABLE_KEY, devPublishableKey);
-				prop.setProperty(STRIPE_PRODUCTION_API_KEY, prodApiKey);
-				prop.setProperty(STRIPE_PRODUCTION_PUBLISHABLE_KEY, prodPublishableKey)
+				prop.setProperty(STRIPE_DEVELOPMENT_API_KEY, stripeDevApiKey);
+				prop.setProperty(STRIPE_DEVELOPMENT_PUBLISHABLE_KEY, stripeDevPublishableKey);
+				prop.setProperty(STRIPE_PRODUCTION_API_KEY, stripeProdApiKey);
+				prop.setProperty(STRIPE_PRODUCTION_PUBLISHABLE_KEY, stripeProdPublishableKey);
+
+				prop.setProperty(BRAINTREE_MERCHANT_ID, braintreeMerchantId);
+				prop.setProperty(BRAINTREE_TOKENIZED_KEY, braintreeTokenizedKey);
+				prop.setProperty(BRAINTREE_PUBLIC_KEY, braintreePublicKey);
+				prop.setProperty(BRAINTREE_PRIVATE_KEY, braintreePrivateKey);
 				
 				
 				def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('settings')

@@ -36,6 +36,7 @@ dependencies {
     //compile files("lib/easypost-java-2.1.2.jar")
     compile files("lib/easypost-api-client-3.4.0.jar")
     compile files("lib/stripe-java-4.9.0.jar")
+    compile files("lib/braintree-java-2.89.0")
 	//compile files("lib/postgresql-42.1.1.jar")
     /*************************************************************/
 

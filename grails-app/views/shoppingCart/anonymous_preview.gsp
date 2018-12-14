@@ -11,7 +11,13 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 	<!--
 	<script src="https://js.stripe.com/v2/"></script>
 	-->
-	<script src="https://js.stripe.com/v3/"></script>
+	
+	
+	<%if(applicationService.getBraintreeEnabled() == "true"){%>
+		<script src="https://js.braintreegateway.com/web/dropin/1.14.1/js/dropin.min.js"></script>
+	<%}else{%>
+		<script src="https://js.stripe.com/v3/"></script>
+	<%}%>
 
 	<style type="text/css">
 		.form-group label{
@@ -250,6 +256,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				
 				
 				<input type="hidden" name="stripeToken" value="" id="stripeToken"/>
+				<input type="hidden" name="braintreeNonce" value="" id="braintreeNonce">
 	   			<input type="hidden" name="total" value="${total}"/> 
 				<input type="hidden" name="id" value="${shoppingCart?.id}"/> 
 		
@@ -269,23 +276,59 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 						margin:0px 10px;
 					}
 				</style>
+				
+				<%if(applicationService.getBraintreeEnabled() == "true"){%>
+				<%}else{%>
+				<%}%>
+				
+				
+				
+				<%if(applicationService.getBraintreeEnabled() == "true"){%>
+					<div class="form-group">
+						<div id="credit-card-information-braintree" class="form-control" style=""></div>
+					</div>
+				<%}else{%>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">Credit Card with Zip Code</label>
+						<div id="credit-card-information" class="form-control" style="width:300px; height:43px; padding-top:12px;"></div>
+					</div>
+				<%}%>
+				
 
-				<div class="form-group">
-					<label class="col-sm-4 control-label">Credit Card with Zip Code</label>
-					<div id="credit-card-information" class="form-control" style="width:300px; height:43px; padding-top:12px;"></div>
-				</div>
+				
+				
 				
 			</form>
 			
-			<div class="form-group" style="position:relative; text-align:center;">
-				<button id="submit" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px; background:#3276B1 !important">Pay ${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</button>
-				<br/>
-				<span class="pull-right" id="processing" style="display:none">
-					Processing checkout, please wait&nbsp;
-					<img src="/${applicationService.getContextName()}/images/loading.gif" >
-				</span>
+			<style type="text/css">
+				.submit-payment-btn{
+					margin:20px 20px; 
+					background:#3276B1 !important
+				}
+			</style>
 				
-			</div>
+			<%if(applicationService.getBraintreeEnabled() == "true"){%>
+				
+				<div class="form-group" style="position:relative; text-align:center;">
+					<button id="submit-braintree" class="btn btn-primary btn-lg pull-right submit-payment-btn">Pay ${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</button>
+					<br/>
+					<span class="pull-right" id="processing" style="display:none">
+						Processing checkout, please wait&nbsp;
+						<img src="/${applicationService.getContextName()}/images/loading.gif" >
+					</span>
+					
+				</div>
+			<%}else{%> 
+				<div class="form-group" style="position:relative; text-align:center;">
+					<button id="submit-stripe" class="btn btn-primary btn-lg pull-right submit-payment-btn">Pay ${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</button>
+					<br/>
+					<span class="pull-right" id="processing" style="display:none">
+						Processing checkout, please wait&nbsp;
+						<img src="/${applicationService.getContextName()}/images/loading.gif" >
+					</span>
+					
+				</div>
+			<%}%>
 			
 		</div>
 	</g:if>
@@ -304,8 +347,10 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 			
 $(document).ready(function(){
 
-	var $submitBtn    = $('#submit'),
-		$tokenInput   = $('#stripeToken'),
+	var $submitStripeBtn    = $('#submit-stripe'),
+		$submitBraintreeBtn = $('#submit-braintree');
+	
+	var	$tokenInput   = $('#stripeToken'),
 		$checkoutForm = $('#checkout_form'),
 		$processing   = $('#processing'),
 		$inputs       = $('.form-control');
@@ -328,6 +373,18 @@ $(document).ready(function(){
 		<g:set var="publishableKey" value="${applicationService.getStripeLivePublishableKey()}"/>
 	</g:if>
 	
+
+	<g:set var="braintreePublicKey" value="${applicationService.getBraintreePublicKey()}"/>
+	
+	
+	braintree.dropin.create({ 
+		container: "#credit-card-information-braintree",
+		authoriziation : "${braintreePublicKey}" 
+	}, oncreatebraintree);
+	
+	function oncreatebraintree(){
+		console.log("....")
+	}
 	
 	<g:if test="${publishableKey == ""}">
 		alert("Error\nThis site has not been properly configured with Stripe Account information.  Please make sure you have created a Stripe Account and successfully entered API Keys in the Greenfield Stripe Settings area");
@@ -343,10 +400,20 @@ $(document).ready(function(){
 	var processingHtml = "Processing checkout, please wait&nbsp;<img src=\"/${applicationService.getContextName()}/images/loading.gif\"/>"
 
 
-	$submitBtn.click(process_checkout);
+	$submitStripeBtn.click(process_checkout);
 
 
 	function initialize(){
+		
+		
+		<%if(applicationService.getBraintreeEnabled() == "true"){%>
+		<%}else{%>
+			initializeStripe()
+		<%}%>
+
+	}
+	
+	function initializeStripe(){
 		stripe = Stripe("${raw(publishableKey)}");
 		elements = stripe.elements()
 		card = elements.create('card', {
@@ -372,7 +439,9 @@ $(document).ready(function(){
 	  		}
 		});
 	}
-	
+
+
+
 
 	function validForm(){
 		
@@ -415,10 +484,16 @@ $(document).ready(function(){
 		
 		if(validForm()){
 			$processing.show()
-			stripe.createToken(card).then(function(result) {
-				$tokenInput.val(result.token.id)
-				$checkoutForm.submit();
-			});
+			
+			
+			<%if(applicationService.getBraintreeEnabled() == "true"){%>
+			<%}else{%>
+				stripe.createToken(card).then(function(result) {
+					$tokenInput.val(result.token.id)
+					$checkoutForm.submit();
+				});
+			<%}%>
+			
 		}
 	}
 

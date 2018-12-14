@@ -1036,6 +1036,38 @@ class ApplicationService {
 	
 	
 	
+	/******** BRAINTREE SETTINGS ********/
+
+	
+	def getBraintreeMerchantId(){
+		if(!properties)setProperties()
+		String merchantId = properties.getProperty("braintree.merchantId");
+		//println "++++++++ apiKey : ${apiKey} +++++++++++"	
+		return merchantId
+	}
+	
+	def getBraintreeTokenizedKey(){
+		if(!properties)setProperties()
+		String tokenizedKey = properties.getProperty("braintree.tokenizedKey");
+		//println "++++++++ apiKey : ${apiKey} +++++++++++"	
+		return tokenizedKey
+	}
+	
+	def getBraintreePublicKey(){
+		if(!properties)setProperties()
+		String publicKey = properties.getProperty("braintree.publicKey");
+		//println "++++++++ apiKey : ${apiKey} +++++++++++"	
+		return publicKey
+	}
+	
+	def getBraintreePrivateKey(){
+		if(!properties)setProperties()
+		String privateKey = properties.getProperty("braintree.privateKey");
+		//println "++++++++ apiKey : ${apiKey} +++++++++++"	
+		return privateKey
+	}
+	
+	
 	/******** MAIL SETTINGS ********/
 	
 	def getAdminEmailAddress(){

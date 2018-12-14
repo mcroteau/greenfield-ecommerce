@@ -47,7 +47,17 @@
 	
 	<form action="save_payment_settings" class="form-horizontal">
 
-		
+		<%
+		def usd = payment_settings?.storeCurrency == "USD" ? "selected" : ""
+		def gbp = payment_settings?.storeCurrency == "GBP" ? "selected" : ""
+		def nzd = payment_settings?.storeCurrency == "NZD" ? "selected" : ""
+		def cad = payment_settings?.storeCurrency == "CAD" ? "selected" : ""
+		def eur = payment_settings?.storeCurrency == "EUR" ? "selected" : ""
+		def brl = payment_settings?.storeCurrency == "BRL" ? "selected" : ""
+		def inr = payment_settings?.storeCurrency == "INR" ? "selected" : ""
+		def hkd = payment_settings?.storeCurrency == "HKD" ? "selected" : ""
+		%>
+	
 		<div id="stripePaymentSettings">
 	
 			<div class="form-row">
@@ -63,18 +73,7 @@
 			
 			<div class="form-row">
 				<div class="form-label twohundred pull-left" style="display:inline-block">Base Currency</div>
-				
-				<%
-				def usd = payment_settings?.storeCurrency == "USD" ? "selected" : ""
-				def gbp = payment_settings?.storeCurrency == "GBP" ? "selected" : ""
-				def nzd = payment_settings?.storeCurrency == "NZD" ? "selected" : ""
-				def cad = payment_settings?.storeCurrency == "CAD" ? "selected" : ""
-				def eur = payment_settings?.storeCurrency == "EUR" ? "selected" : ""
-				def brl = payment_settings?.storeCurrency == "BRL" ? "selected" : ""
-				def inr = payment_settings?.storeCurrency == "INR" ? "selected" : ""
-				def hkd = payment_settings?.storeCurrency == "HKD" ? "selected" : ""
-				%>
-				
+								
 				<div class="input-container pull-left" style="width:500px;">
 					<select name="storeCurrency" class="form-control" style="width:423px;" id="currencySelectStripe">
 						<option value="USD" <%=usd%>>$&nbsp;&nbsp;USD - United States</option>
@@ -108,6 +107,8 @@
 				</div>
 				<br class="clear"/>			
 			</div>
+			
+			
 			<div class="form-row">
 				<div class="form-label twohundred pull-left" style="display:inline-block">Store Country</div>
 			
@@ -125,9 +126,9 @@
 			<h4>Development Settings</h4>
 		
 			<div class="form-row">
-				<span class="form-label twohundred">Development API Key/Secret Key</span>
+				<span class="form-label twohundred">Development Secret Key</span>
 				<span class="input-container">
-					<input type="text" class="form-control threehundred" name="devApiKey" value="${payment_settings.devApiKey}"/>
+					<input type="text" class="form-control threehundred" name="stripeDevApiKey" value="${payment_settings.stripeDevApiKey}"/>
 				</span>
 				<br class="clear"/>
 			</div>
@@ -135,7 +136,7 @@
 			<div class="form-row">
 				<span class="form-label twohundred">Development Publishable Key</span>
 				<span class="input-container">
-					<input type="text" class="form-control threehundred" name="devPublishableKey" value="${payment_settings.devPublishableKey}"/>
+					<input type="text" class="form-control threehundred" name="stripeDevPublishableKey" value="${payment_settings.stripeDevPublishableKey}"/>
 				</span>
 				<br class="clear"/>
 			</div>
@@ -144,9 +145,9 @@
 			<h4>Live/Production Settings</h4>
 			
 			<div class="form-row">
-				<span class="form-label twohundred">Live API Key/Secret Key</span>
+				<span class="form-label twohundred">Live Secret Key</span>
 				<span class="input-container">
-					<input type="text" class="form-control threehundred" name="prodApiKey" value="${payment_settings.prodApiKey}"/>
+					<input type="text" class="form-control threehundred" name="stripeProdApiKey" value="${payment_settings.stripeProdApiKey}"/>
 				</span>
 				<br class="clear"/>
 			</div>
@@ -154,7 +155,7 @@
 			<div class="form-row">
 				<span class="form-label twohundred">Live Publishable Key</span>
 				<span class="input-container">
-					<input type="text" class="form-control threehundred" name="prodPublishableKey" value="${payment_settings.prodPublishableKey}"/>
+					<input type="text" class="form-control threehundred" name="stripeProdPublishableKey" value="${payment_settings.stripeProdPublishableKey}"/>
 				</span>
 				<br class="clear"/>
 			</div>		
@@ -176,11 +177,95 @@
 				<div class="form-label twohundred pull-left" style="display:inline-block">Current Configuration</div>
 				
 				<div class="pull-left" style="display:inline-block; width:500px; margin-left:20px;">
-					<a href="http://www.braintreepayments.com" alt="Visit Braintree : Payments API Gateway" style="border:none;text-decoration:none"><img src="${resource(dir:'images/app', file:'braintree-logo.png')}" style="height:40%; width:40%;outline:none"/></a>
+					<a href="http://www.braintreepayments.com" alt="Visit Braintree : Payments API Gateway" style="border:none;text-decoration:none"><img src="${resource(dir:'images/app', file:'braintree-logo.png')}" style="height:30%; width:30%;outline:none"/></a>
 		
-					<p class="information secondary" style="margin-top:0px !important;">Braintree is a developer-friendly way to accept payments online.  To continue, you will need a Stripe account to accept payments with Greenfield. <a href="http://braintreepayments.com" target="_blank">Visit Braintree</a>.</p>
+					<p class="information secondary" style="margin-top:0px !important;">Braintree is a developer-friendly way to accept payments online.  To continue, you will need a Braintree account to accept payments with Greenfield. <a href="http://braintreepayments.com" target="_blank">Visit Braintree</a>.</p>
 				</div>
 				<br class="clear">
+			</div>
+			
+
+			
+			<div class="form-row">
+				<div class="form-label twohundred pull-left" style="display:inline-block">Base Currency</div>
+
+				
+				<div class="input-container pull-left" style="width:500px;">
+					<select name="storeCurrency" class="form-control" style="width:423px;" id="currencySelectBraintree">
+						<option value="USD" <%=usd%>>$&nbsp;&nbsp;USD - United States</option>
+						<option value="GBP" <%=gbp%>>£&nbsp;&nbsp;GBP - United Kingdom</option>
+						<option value="NZD" <%=nzd%>>$&nbsp;&nbsp;NZD - New Zealand</option>
+						<option value="CAD" <%=cad%>>C $&nbsp;&nbsp;CAD - Canada</option>
+						<option value="EUR" <%=eur%>>€&nbsp;&nbsp;EUR - Germany, France, Netherlands, Ireland, Greece</option>
+						<option value="HKD" <%=hkd%>>HK$ HKD - Hong Kong</option>
+						<option value="BRL" <%=brl%>>(R$&nbsp;&nbsp;BRL - Brazil: Stripe by invite only)</option>
+						<option value="INR" <%=inr%>>(₹ INR - India: Stripe by invite only)</option>
+					</select>
+					<br/>
+					
+					<br/>
+					<p class="information secondary">Braintree serves most of Europe. Listed are the countries tested for using shipping apis</p>
+					
+					<p class="information secondary">The currency and country you select should match the country in which your business is located and used when setting up your Braintree account unless you are setting up a site in another country</p>
+					
+					<p class="information secondary">Greenfield, DataTundra, MGi Data Source or Mike Croteau are not liable for your configuration.</p>
+				</div>
+				<br class="clear"/>			
+			</div>
+			
+			
+			<div class="form-row">
+				<div class="form-label twohundred pull-left" style="display:inline-block">Store Country</div>
+			
+				<div class="input-container pull-left" style="width:500px;">
+					<select name="storeCountryCode" class="form-control" style="width:230px;" id="countrySelectBraintree">
+					</select>
+					<br/>
+					<br/>
+					<p class="information secondary">Store country must match the currency selected. Used for shipping international shipping calculations</p>
+				</div>
+				<br class="clear"/>
+			</div>
+			
+
+
+			
+			<div class="form-row">
+				<span class="form-label twohundred">Merchant Id</span>
+				<span class="input-container">
+					<input type="text" class="form-control threehundred" name="braintreeMerchantId" value="${payment_settings.braintreeMerchantId}"/>
+				</span>
+				<br class="clear"/>
+			</div>
+			
+			<div class="form-row">
+				<span class="form-label twohundred">Tokenized Key</span>
+				<span class="input-container">
+					<input type="text" class="form-control threehundred" name="braintreeTokenizedKey" value="${payment_settings.braintreeTokenizedKey}"/>
+				</span>
+				<br class="clear"/>
+			</div>
+			
+			<div class="form-row">
+				<span class="form-label twohundred">Public Key</span>
+				<span class="input-container">
+					<input type="text" class="form-control threehundred" name="braintreePublicKey" value="${payment_settings.braintreePublicKey}"/>
+				</span>
+				<br class="clear"/>
+			</div>
+			
+			<div class="form-row">
+				<span class="form-label twohundred">Private</span>
+				<span class="input-container">
+					<input type="text" class="form-control threehundred" name="braintreePrivateKey" value="${payment_settings.braintreePrivateKey}"/>
+				</span>
+				<br class="clear"/>
+			</div>		
+			
+			
+			<div class="buttons-container">
+				<g:link controller="configuration" action="index" class="btn btn-default">Cancel</g:link>
+				<g:submitButton value="Save Settings" name="submit" class="btn btn-primary"/>
 			</div>
 			
 		</div>
@@ -259,7 +344,7 @@
 			var $countrySelectStripe = $("#countrySelectStripe"),
 				$currencySelectStripe = $("#currencySelectStripe"),
 				$countrySelectBraintree = $("#countrySelectBraintree"),
-				$currencySelectBraintree = $("currencySelectBraintree");
+				$currencySelectBraintree = $("#currencySelectBraintree");
 			
 			$currencySelectStripe.change(updateCountrySelect(currenciesMapStripe, $countrySelectStripe, $currencySelectStripe))
 			$currencySelectBraintree.change(updateCountrySelect(currenciesMapBraintree, $countrySelectBraintree, $currencySelectBraintree))
@@ -280,19 +365,23 @@
 			}
 			
 			function setCountryCode($countrySelect, countryCodeMap){
-				console.log($countrySelect,countryCodeMap)
 				var selected = countryCodeMap[countryCode]
 				$countrySelect.append("<option value=\"" + selected.code + "\">" + selected.name + "</option>");
 			}
 			
+			
 			<%if(applicationService.getBraintreeEnabled() == "true"){%>
 				setCountryCode($countrySelectBraintree, countryMapBraintree);
+				//setCurrencyCode($currencySelectBraintree, currenciesMapBraintree);
 				$stripePaymentSettings.hide()
 				$braintreePaymentSettings.show()
+				$currencySelectStripe.prop("disabled", true)
 			<%}else{%>
 				setCountryCode($countrySelectStripe, countryMapStripe);
+				//setCurrencyCode($currencySelectStripe, currenciesMapStripe);
 				$stripePaymentSettings.show()
 				$braintreePaymentSettings.hide()
+				$currencySelectBraintree.prop("disabled", true)
 			<%}%>
 		})
 	</script>
