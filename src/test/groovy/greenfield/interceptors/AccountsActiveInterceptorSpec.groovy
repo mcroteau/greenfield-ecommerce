@@ -10,13 +10,8 @@ import spock.lang.Specification
 @TestFor(AccountsActiveInterceptor)
 class AccountsActiveInterceptorSpec extends Specification {
 
-    def setup() {
-    }
-
-    def cleanup() {
-
-    }
-
+	/**~/(admin_list|admin_create|admin_edit|admin_show)/**/
+	
     void "Test accountsActive interceptor matching"() {
         when:"A request matches the interceptor"
             withRequest(controller:"account", action:"admin_list")

@@ -17,9 +17,10 @@ class SettingsActiveInterceptorSpec extends Specification {
 
     }
 
+	/**~/(settings|email_settings|stripe_settings|shipping_settings)/**/
     void "Test settingsActive interceptor matching"() {
         when:"A request matches the interceptor"
-            withRequest(controller:"settingsActive")
+            withRequest(controller:"configuration", action:"settings")
 
         then:"The interceptor does match"
             interceptor.doesMatch()

@@ -16,10 +16,11 @@ class PagesActiveInterceptorSpec extends Specification {
     def cleanup() {
 
     }
-
+	
+	/**~/(list|create|edit|show)/**/
     void "Test pagesActive interceptor matching"() {
         when:"A request matches the interceptor"
-            withRequest(controller:"pagesActive")
+            withRequest(controller:"page", action: "list")
 
         then:"The interceptor does match"
             interceptor.doesMatch()
