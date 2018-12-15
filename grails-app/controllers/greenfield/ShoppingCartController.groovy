@@ -39,6 +39,7 @@ import org.greenfield.api.ShipmentAddress
 import org.greenfield.api.EasyPostShipmentApi
 import org.greenfield.api.ShippingApiHelper
 
+import com.braintreegateway.BraintreeGateway
 
 @Mixin(BaseController)
 class ShoppingCartController {
@@ -348,6 +349,7 @@ class ShoppingCartController {
 			if(!shoppingCart){
 				flash.message = "Shopping cart is not found or the cart is empty. Please double check the item you added."
 				redirect(action:'anonymous')
+				return
 			}
 
 			if(params.name && accountInstance.name != params.name){
@@ -388,10 +390,31 @@ class ShoppingCartController {
 				accountInstance.phone = params.phone
 			}
 			
-				
-			setAccountInstanceSession(accountInstance)
+			/**
+			def braintreeGateway = new BraintreeGateway(
+            mapping.get("BT_ENVIRONMENT"),
+            mapping.get("BT_MERCHANT_ID"),
+            mapping.get("BT_PUBLIC_KEY"),
+            mapping.get("BT_PRIVATE_KEY")
+        );	
+			**/
 			
+			if(applicationService.getBraintreeEnabled() == "true"){
 				
+				def environment = "sandbox"
+				if(Environment.current == Environment.PRODUCTION)environment = "production"
+				
+				def merchantId = applicationService.getBraintreeMerchantId()
+				def publicKey = applicationService.getBraintreePublicKey()
+				def privateKey = applicationService.getBraintreePrivateKey()
+				
+				println merchantId + " : " + publicKey + " : " + privateKey
+				
+				def gateway = new BraintreeGateway(environment, merchantId, publicKey, privateKey)
+				def clientToken = gateway.clientToken().generate();
+				request.clientToken = clientToken
+			}
+			setAccountInstanceSession(accountInstance)
 			calculateTotal(shoppingCart, accountInstance)
 			
 		}catch(Exception e){

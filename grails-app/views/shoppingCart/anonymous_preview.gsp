@@ -11,13 +11,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 	<!--
 	<script src="https://js.stripe.com/v2/"></script>
 	-->
-	
-	
-	<%if(applicationService.getBraintreeEnabled() == "true"){%>
-		<script src="https://js.braintreegateway.com/web/dropin/1.14.1/js/dropin.min.js"></script>
-	<%}else{%>
-		<script src="https://js.stripe.com/v3/"></script>
-	<%}%>
+	<script src="https://js.stripe.com/v3/"></script>
 
 	<style type="text/css">
 		.form-group label{
@@ -37,17 +31,27 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 			padding-bottom:7px;
 			border-bottom:dashed 3px #ddd;
 		}
+		h3 em{ 
+			font-size:12px;
+			margin-left:7px;
+			display:inline-block;
+		}
+		#processing{
+			display:inline-block; 
+			text-align:right; 
+			margin-right:20px;
+		}
+		#processing img{
+			margin:0px 10px;
+		}
 	</style>
-	
+
 	
 	<g:if test="${flash.message}">
 		<div class="alert alert-warning" id="">${flash.message}</div>		
 	</g:if>
 	
 	
-	
-	<g:if test="${shoppingCart}">
-		
 	
 		<h1 style="margin-top:0px;">Checkout</h1>
 	
@@ -154,7 +158,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				<input type="hidden" name="name" value="${accountInstance?.name}" id="name"/>
 				<input type="hidden" name="email" value="${accountInstance?.email}" id="email"/>
 				<input type="hidden" name="address1" value="${accountInstance?.address1}" id="address1"/>
-				<input type="hidden" ame="address2" value="${accountInstance?.address2}" id="address2"/>
+				<input type="hidden" name="address2" value="${accountInstance?.address2}" id="address2"/>
 				<input type="hidden" name="city" value="${accountInstance?.city}" id="city"/>
 				<input type="hidden" name="country" value="${accountInstance?.country?.id}" id="country"/>
 				<input type="hidden" name="state" value="${accountInstance?.state?.id}" id="state"/>
@@ -245,18 +249,130 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 					<input type="text" class="form-control shipping-info" id="phone" value="${accountInstance?.phone}"/>
 				</div>
 				
-				<style type="text/css">
-					h3 em{ 
-						font-size:12px;
-						margin-left:7px;
-						display:inline-block;
-					}
-				</style>
+
 				
 				
+<%if(applicationService.getBraintreeEnabled() == "true"){%>
+	
+	
+
+				<input type="hidden" name="total" value="${total}"/> 
+				<input type="hidden" name="id" value="${shoppingCart?.id}"/> 
+				<input type="hidden" name="braintreeNonce" value="" id="braintreeNonce"/> 
+				
+				<br/>
+				
+				<h3 style="margin-top:20px !important; margin-bottom:0px;">Credit Card Information</h3>
+				
+				<div id="braintree-credit-card-div"></div>
+				
+				<div class="form-group" style="position:relative; text-align:center;">
+					<button id="submit" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px; background:#3276B1 !important">Pay ${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</button>
+					<br/>
+					<span class="pull-right" id="processing" style="display:none">
+						Processing checkout, please wait&nbsp;
+						<img src="/${applicationService.getContextName()}/images/loading.gif" >
+					</span>
+				
+				</div>
+				
+			</form>
+				
+	
+		</div>
+
+		
+<script src="https://js.braintreegateway.com/web/dropin/1.14.1/js/dropin.min.js"></script>	
+	
+<script type="text/javascript">
+$(document).ready(function(){
+	var $submitBtn = $("#submit-btn")
+	var $braintreeCreditCardDiv = $("#braintree-credit-card-div")
+	var $braintreeNonce = $("#braintreeNonce");
+	var $inputs = $('.form-control');
+	
+	var client_token = [['${clientToken}']];
+	var braintreeInstance = {}
+	
+	braintree.dropin.create({
+	  	authorization: client_token,
+	  	container: '#braintree-credit-card-div',
+        paypal: {
+          flow: 'vault'
+        }
+	}, function (error, instance) {
+		console.log(error, instance)
+		braintreeInstance = instance;
+		instance.requestPaymentMethod(function (err, payload) {
+			console.log("here...", err, payload)
+			//$braintreeNonce.val(payload.nonce)
+		});
+	});
+	
+	console.log("m", braintree)
+	braintree.paymentRequest.create({
+	  client: braintreeInstance
+	}, function (err, instance) {
+	  if (err) {
+	    // Handle errors from creating payment request instance
+	  }
+
+	  button.addEventListener('click', function (event) {
+	    var amount = '100.00';
+
+	    instance.tokenize({
+	      details: {
+	        total: {
+	          label: 'Total',
+	          amount: {
+	            currency: 'USD',
+	            value: amount
+	          }
+	        }
+	      }
+	    }, function (err, payload) {
+	      if (err) {
+	        // Handle errors from processing payment request
+	      	console.log("again ? ", error)
+		  }
+
+	      // Send payload.nonce to your server
+	    });
+	  });
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	$submitBtn.click(retrieveNonceSubmitForm)
+	
+	function retrieveNonceSubmitForm(){
+		braintreeInstance.requestPaymentMethod(function (err, payload) {
+			console.log("here...", payload)
+			//$braintreeNonce.val(payload.nonce)
+			$braintreeNonce.val(payload.nonce)
+		});
+	}
+	
+	
+	
+
+	$inputs.prop('disabled', true);
+})	
+</script>
+	
+	
+<%}else{%>
+
+	<!-- BEGINNING OF STRIPE INTEGRATION -->
 				
 				<input type="hidden" name="stripeToken" value="" id="stripeToken"/>
-				<input type="hidden" name="braintreeNonce" value="" id="braintreeNonce">
 	   			<input type="hidden" name="total" value="${total}"/> 
 				<input type="hidden" name="id" value="${shoppingCart?.id}"/> 
 		
@@ -265,76 +381,25 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				
 				<h3 style="margin-top:20px !important;">Credit Card Information</h3>
 
-			
-				<style type="text/css">
-					#processing{
-						display:inline-block; 
-						text-align:right; 
-						margin-right:20px;
-					}
-					#processing img{
-						margin:0px 10px;
-					}
-				</style>
-				
-				<%if(applicationService.getBraintreeEnabled() == "true"){%>
-				<%}else{%>
-				<%}%>
-				
-				
-				
-				<%if(applicationService.getBraintreeEnabled() == "true"){%>
-					<div class="form-group">
-						<div id="credit-card-information-braintree" class="form-control" style=""></div>
-					</div>
-				<%}else{%>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">Credit Card with Zip Code</label>
-						<div id="credit-card-information" class="form-control" style="width:300px; height:43px; padding-top:12px;"></div>
-					</div>
-				<%}%>
-				
 
-				
-				
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Credit Card with Zip Code</label>
+					<div id="credit-card-information" class="form-control" style="width:300px; height:43px; padding-top:12px;"></div>
+				</div>
 				
 			</form>
 			
-			<style type="text/css">
-				.submit-payment-btn{
-					margin:20px 20px; 
-					background:#3276B1 !important
-				}
-			</style>
+			<div class="form-group" style="position:relative; text-align:center;">
+				<button id="submit" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px; background:#3276B1 !important">Pay ${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</button>
+				<br/>
+				<span class="pull-right" id="processing" style="display:none">
+					Processing checkout, please wait&nbsp;
+					<img src="/${applicationService.getContextName()}/images/loading.gif" >
+				</span>
 				
-			<%if(applicationService.getBraintreeEnabled() == "true"){%>
-				
-				<div class="form-group" style="position:relative; text-align:center;">
-					<button id="submit-braintree" class="btn btn-primary btn-lg pull-right submit-payment-btn">Pay ${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</button>
-					<br/>
-					<span class="pull-right" id="processing" style="display:none">
-						Processing checkout, please wait&nbsp;
-						<img src="/${applicationService.getContextName()}/images/loading.gif" >
-					</span>
-					
-				</div>
-			<%}else{%> 
-				<div class="form-group" style="position:relative; text-align:center;">
-					<button id="submit-stripe" class="btn btn-primary btn-lg pull-right submit-payment-btn">Pay ${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</button>
-					<br/>
-					<span class="pull-right" id="processing" style="display:none">
-						Processing checkout, please wait&nbsp;
-						<img src="/${applicationService.getContextName()}/images/loading.gif" >
-					</span>
-					
-				</div>
-			<%}%>
+			</div>
 			
 		</div>
-	</g:if>
-	<g:else>
-		<h2>Shopping Cart is empty...</h2>
-	</g:else>
 
 	<br class="clear"/>
 
@@ -347,10 +412,8 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 			
 $(document).ready(function(){
 
-	var $submitStripeBtn    = $('#submit-stripe'),
-		$submitBraintreeBtn = $('#submit-braintree');
-	
-	var	$tokenInput   = $('#stripeToken'),
+	var $submitBtn    = $('#submit'),
+		$tokenInput   = $('#stripeToken'),
 		$checkoutForm = $('#checkout_form'),
 		$processing   = $('#processing'),
 		$inputs       = $('.form-control');
@@ -373,18 +436,6 @@ $(document).ready(function(){
 		<g:set var="publishableKey" value="${applicationService.getStripeLivePublishableKey()}"/>
 	</g:if>
 	
-
-	<g:set var="braintreePublicKey" value="${applicationService.getBraintreePublicKey()}"/>
-	
-	
-	braintree.dropin.create({ 
-		container: "#credit-card-information-braintree",
-		authoriziation : "${braintreePublicKey}" 
-	}, oncreatebraintree);
-	
-	function oncreatebraintree(){
-		console.log("....")
-	}
 	
 	<g:if test="${publishableKey == ""}">
 		alert("Error\nThis site has not been properly configured with Stripe Account information.  Please make sure you have created a Stripe Account and successfully entered API Keys in the Greenfield Stripe Settings area");
@@ -400,20 +451,10 @@ $(document).ready(function(){
 	var processingHtml = "Processing checkout, please wait&nbsp;<img src=\"/${applicationService.getContextName()}/images/loading.gif\"/>"
 
 
-	$submitStripeBtn.click(process_checkout);
+	$submitBtn.click(process_checkout);
 
 
 	function initialize(){
-		
-		
-		<%if(applicationService.getBraintreeEnabled() == "true"){%>
-		<%}else{%>
-			initializeStripe()
-		<%}%>
-
-	}
-	
-	function initializeStripe(){
 		stripe = Stripe("${raw(publishableKey)}");
 		elements = stripe.elements()
 		card = elements.create('card', {
@@ -439,9 +480,7 @@ $(document).ready(function(){
 	  		}
 		});
 	}
-
-
-
+	
 
 	function validForm(){
 		
@@ -484,22 +523,15 @@ $(document).ready(function(){
 		
 		if(validForm()){
 			$processing.show()
-			
-			
-			<%if(applicationService.getBraintreeEnabled() == "true"){%>
-			<%}else{%>
-				stripe.createToken(card).then(function(result) {
-					$tokenInput.val(result.token.id)
-					$checkoutForm.submit();
-				});
-			<%}%>
-			
+			stripe.createToken(card).then(function(result) {
+				$tokenInput.val(result.token.id)
+				$checkoutForm.submit();
+			});
 		}
 	}
 
 	
 	initialize()
-
 
 	countryStatesInit("${applicationService.getContextName()}", "${accountInstance.state.id}")
 
@@ -514,7 +546,16 @@ $(document).ready(function(){
 	
 
 })
-</script>			
+</script>
+
+			
+<%}%>				
+<!-- END OF STRIPE INTEGRATION -->
+
+
+
+
+
 
 
 ${raw(applicationService.getScreenFooter("Checkout"))}	
