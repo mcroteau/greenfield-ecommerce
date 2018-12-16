@@ -32,14 +32,16 @@
 
 		<div id="list-product" class="content scaffold-list" role="main">
 			
-			<h2 class="floatleft">Products</h2>
+			<h2 class="floatleft">
+				<g:message code="products"/>
+			</h2>
 			
 			
 			<div style="float:right; width:470px; ">
-				<g:link controller="product" action="create" class="btn btn-primary pull-right">New Product</g:link>
+				<g:link controller="product" action="create" class="btn btn-primary pull-right"><g:message code="new.product"/></g:link>
 				<g:form action="admin_search" class="form-horizontal">
-					<g:submitButton name="submit" value="Search" id="search" class="btn btn-info"/>
-					<input type="text" name="query" value="" id="searchbox" class="form-control" style="width:250px;" placeholder="search by name and description"/>
+					<g:submitButton name="submit" value="${message(code:'search')}" id="search" class="btn btn-info"/>
+					<input type="text" name="query" value="" id="searchbox" class="form-control" style="width:250px;" placeholder="${message(code:'search.by.name')}"/>
 				</g:form>
 			</div>
 			
@@ -57,16 +59,16 @@
 						<tr>
 							<th style="width:65px;"></th>
 					
-							<g:sortableColumn property="id" title="Id" />
+							<g:sortableColumn property="id" title="${message(code:'id')}" />
 						
 						
-							<g:sortableColumn property="name" title="${message(code: 'product.name.label', default: 'Name')}" />
+							<g:sortableColumn property="name" title="${message(code: 'name', default: 'Name')}" />
 						
-							<g:sortableColumn property="quantity" title="${message(code: 'product.quantity.label', default: 'Quantity')}" />
+							<g:sortableColumn property="quantity" title="${message(code: 'quantity', default: 'Quantity')}" />
 						
-							<g:sortableColumn property="price" title="${message(code: 'product.price.label', default: "${currencyService.format('Price')}")}" />
+							<g:sortableColumn property="price" title="${message(code: 'price', default: "${currencyService.format('Price')}")}" />
 
-							<g:sortableColumn property="salesPrice" title="${message(code: 'product.salesPrice.label', default: "${currencyService.format('Sales Price')}")}" />
+							<g:sortableColumn property="salesPrice" title="${message(code: 'sales.price', default: "${currencyService.format('Sales Price')}")}" />
 							
 							<th></th>
 						
@@ -103,7 +105,7 @@
 							<td>${currencyService.format(applicationService.formatPrice(productInstance.salesPrice))}</td>
 						
 						
-							<td><g:link controller="product" action="edit" params="[id: productInstance.id]" class="edit-product-${productInstance.id}">Edit</g:link></td>
+							<td><g:link controller="product" action="edit" params="[id: productInstance.id]" class="edit-product-${productInstance.id}"><g:message code="edit"/></g:link></td>
 						</tr>
 					</g:each>
 					</tbody>
@@ -111,17 +113,23 @@
 				<div class="btn-group">
 					<g:paginate total="${productInstanceTotal}" />
 				</div>
-				<g:link controller="product" action="outofstock" class="pull-right">Out of Stock</g:link>
+				<g:link controller="product" action="outofstock" class="pull-right"><g:message code="out.of.stock"/></g:link>
 			</g:if>
 			<g:else>
 
-				<div class="alert alert-info">No products found...<br/><br/>
+				<div class="alert alert-info"><g:message code="no.products.found"/><br/><br/>
 				</div>
 			
 				<g:if test="${catalogCount == 0}">
 
-					<div class="alert alert-info"><strong>There are no catalogs yet</strong><br/>You need to create a catalog before creating products.<br/><br/>
-						<g:link controller="catalog" action="create" class="btn btn-primary">Create Catalog</g:link>
+					<div class="alert alert-info">
+						<strong><g:message code="no.catalogs.products"/></strong>
+						<br/>
+						<g:message code="create.catalog.products"/>
+					
+						<br/><br/>
+					
+						<g:link controller="catalog" action="create" class="btn btn-primary"><g:message code="create.catalog"/></g:link>
 					</div>
 					
 				</g:if>

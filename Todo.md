@@ -1,12 +1,13 @@
-adjust init
+add internationalization in admin section
+add blog with categories and moderation
+add ratings to application
+
+
+
 test notifyexception on views
-add email to store settings
-add issue monitoring to application 
-fix account/customer_profile
-uncomment n
-consider adding Ireland
-consider adding Canada
-consider adding New Zealand
+
+
+
 
 
 ** BEFORE MERGE **/
@@ -42,6 +43,8 @@ internet
 commerce
 automation
 
+
+provide an easy way to allow commerce b2b, b2c for anyone with internet access
 
 
 
