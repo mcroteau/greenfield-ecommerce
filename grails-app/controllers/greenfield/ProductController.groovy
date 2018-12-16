@@ -224,115 +224,128 @@ class ProductController {
     def save() {
 		authenticatedAdmin { adminAccount ->
 		    
-			resolveSalesPrice(params)
-			
-			def productInstance = new Product(params)
-			
-//			println "product sale price : " + productInstance.salesPrice
-
-			def catalogIdsArray = []
-			def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
-			
-			
-	    	if(!productInstance.validate()){
-				println "**************************"
-				println "***      INVALID       ***"
-				println "**************************"
+			try{
 				
-				flash.message = "Information is invalid, please make sure name is unique"
-				render(view:"create",  model: [productInstance: productInstance, catalogIdSelectionList: catalogIdSelectionList])
-				return
+				resolveSalesPrice(params)
+				
+				def productInstance = new Product(params)
+				
+				productInstance.price = new BigDecimal(params.price)
+				if(params.salesPrice && params.salesPrice != "-"){
+					productInstance.salesPrice = new BigDecimal(params.salesPrice)
+				}
+				
+//				println "product sale price : " + productInstance.salesPrice
+            	
+				def catalogIdsArray = []
+				def catalogIdSelectionList = getCatalogIdSelectionList(catalogIdsArray)
+				
+				
+	    		if(!productInstance.validate()){
+					println "**************************"
+					println "***      INVALID       ***"
+					println "**************************"
+					
+					flash.message = "Information is invalid, please make sure name is unique"
+					render(view:"create",  model: [productInstance: productInstance, catalogIdSelectionList: catalogIdSelectionList])
+					return
+				}	
+					
+				def imageFile = request.getFile('image')
+				
+				BufferedImage originalImage = null;
+				def fullFileName = imageFile.getOriginalFilename()
+				
+				String[] nameSplit = fullFileName.toString().split("\\.")
+				def fileName = nameSplit[0]
+				
+				fileName = fileName.replaceAll("[^\\w\\s]","")
+				fileName = fileName.replaceAll(" ", "_")
+				
+				def productName = productInstance.name
+				
+				productName = productName.replaceAll("[^\\w\\s]",""); 
+				productName = productName.replaceAll(" ", "_")
+		    	
+				try {
+	        	
+					
+					originalImage = ImageIO.read(imageFile.getInputStream());
+		 		   	
+					if(originalImage){
+					
+		 		    	int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+            	
+						
+						//def baseUrl = "images/products/${productName}/"
+						def baseUrl = "images/"
+						
+						def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('images')
+						absolutePath = absolutePath.endsWith("/") ? absolutePath : absolutePath + "/"
+						//def baseDirectory = "${absolutePath}products/${productName}/"
+						def baseDirectory = "${absolutePath}"
+						
+						
+						new File(baseDirectory).mkdirs();
+						
+						productInstance.detailsImageUrl = "${baseUrl}${fileName}_details.jpg"
+ 						BufferedImage detailsImageJpg = resizeImage(originalImage, type, 250, 300);
+					
+						def detailsImageLocation = "${baseDirectory}${fileName}_details.jpg"
+						ImageIO.write(detailsImageJpg, "jpg", new File(detailsImageLocation));
+						
+						
+						def imageUrl = "${baseUrl}${fileName}.jpg"
+						productInstance.imageUrl = imageUrl
+				
+						def imageLocation = "${baseDirectory}${fileName}.jpg"
+						ImageIO.write(originalImage, "jpg",new File(imageLocation));
+					
+					}
+					
+					
+		    	} catch (IOException e) {
+		    		e.printStackTrace();
+		    	}
+				
+		    	if (!productInstance.save(flush: true)) {
+		    	    render(view: "create", model: [productInstance: productInstance, catalogIdSelectionList: catalogIdSelectionList])
+		    	    return
+		    	}
+		    	
+		    	
+				if(!params.catalogIds){
+					flash.error = "<strong>No Catalogs Defined</strong><br/> You must select a catalog in order to make the product visible from a catalog menu. <br/>Please specify at least <strong>1 catalog</strong> before continuing."
+    	    	    redirect(action: "edit", id: productInstance.id )
+    	    	    return
+				}
+				
+				def catalogSelectedIdsArray = params.catalogIds.split(',').collect{it as int}
+				
+				if(!catalogSelectedIdsArray){
+					flash.error = "Something went wrong while processing update. Please try again."
+    	    	    redirect(action: "edit", id: productInstance.id )
+					return
+				}    	  
+				
+				productInstance.catalogs = null
+				catalogSelectedIdsArray.each{ catalogId ->
+					def catalog = Catalog.get(catalogId)
+					if(catalog){
+						productInstance.addToCatalogs(catalog)
+						productInstance.save(flush:true)
+					}
+				}
+				
+		    	
+		    	flash.message = "Successfully created product"
+		    	redirect(action: "edit", id: productInstance.id)	
+			
+			}catch(Exception e){
+				e.printStackTrace()
+				flash.message = "Something went wrong while trying to save your product..."
+				redirect(action:"create", model: [productInstance: productInstance])
 			}	
-				
-			def imageFile = request.getFile('image')
-			
-			BufferedImage originalImage = null;
-			def fullFileName = imageFile.getOriginalFilename()
-			
-			String[] nameSplit = fullFileName.toString().split("\\.")
-			def fileName = nameSplit[0]
-			
-			fileName = fileName.replaceAll("[^\\w\\s]","")
-			fileName = fileName.replaceAll(" ", "_")
-			
-			def productName = productInstance.name
-			
-			productName = productName.replaceAll("[^\\w\\s]",""); 
-			productName = productName.replaceAll(" ", "_")
-		    
-			try {
-	
-				
-				originalImage = ImageIO.read(imageFile.getInputStream());
-		 	   	
-				if(originalImage){
-				
-		 	    	int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
- 
-					
-					//def baseUrl = "images/products/${productName}/"
-					def baseUrl = "images/"
-					
-					def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('images')
-					absolutePath = absolutePath.endsWith("/") ? absolutePath : absolutePath + "/"
-					//def baseDirectory = "${absolutePath}products/${productName}/"
-					def baseDirectory = "${absolutePath}"
-					
-					
-					new File(baseDirectory).mkdirs();
-					
-					productInstance.detailsImageUrl = "${baseUrl}${fileName}_details.jpg"
- 					BufferedImage detailsImageJpg = resizeImage(originalImage, type, 250, 300);
-				
-					def detailsImageLocation = "${baseDirectory}${fileName}_details.jpg"
-					ImageIO.write(detailsImageJpg, "jpg", new File(detailsImageLocation));
-					
-					
-					def imageUrl = "${baseUrl}${fileName}.jpg"
-					productInstance.imageUrl = imageUrl
-			
-					def imageLocation = "${baseDirectory}${fileName}.jpg"
-					ImageIO.write(originalImage, "jpg",new File(imageLocation));
-				
-				}
-				
-				
-		    } catch (IOException e) {
-		    	e.printStackTrace();
-		    }
-			
-		    if (!productInstance.save(flush: true)) {
-		        render(view: "create", model: [productInstance: productInstance, catalogIdSelectionList: catalogIdSelectionList])
-		        return
-		    }
-		
-		
-			if(!params.catalogIds){
-				flash.error = "<strong>No Catalogs Defined</strong><br/> You must select a catalog in order to make the product visible from a catalog menu. <br/>Please specify at least <strong>1 catalog</strong> before continuing."
-    	        redirect(action: "edit", id: productInstance.id )
-    	        return
-			}
-			
-			def catalogSelectedIdsArray = params.catalogIds.split(',').collect{it as int}
-			
-			if(!catalogSelectedIdsArray){
-				flash.error = "Something went wrong while processing update. Please try again."
-    	        redirect(action: "edit", id: productInstance.id )
-				return
-			}    	  
-			
-			productInstance.catalogs = null
-			catalogSelectedIdsArray.each{ catalogId ->
-				def catalog = Catalog.get(catalogId)
-				if(catalog){
-					productInstance.addToCatalogs(catalog)
-					productInstance.save(flush:true)
-				}
-			}
-			
-		
-		    flash.message = "Successfully created product"
-		    redirect(action: "show", id: productInstance.id)		
 		}	
     }
 
@@ -407,113 +420,120 @@ class ProductController {
 	@Secured(['ROLE_ADMIN'])
     def update(Long id, Long version) {
 		authenticatedAdminProduct { adminAccount, productInstance ->
+			
+			try{
 
-
-			def productCatalogIdsArray = []
-			if(productInstance?.catalogs){
-				productCatalogIdsArray = productInstance?.catalogs.collect { it.id }
-			}
-			def catalogIdSelectionList = getCatalogIdSelectionList(productCatalogIdsArray)
-			
-			
-			if(!params.catalogIds){
-				flash.error = "<strong>No Catalogs Defined</strong><br/> You must select a catalog in order to make the product visible from a catalog menu. <br/>Please specify at least <strong>1 catalog</strong> before continuing."
-    	        render(view: "edit", model: [productInstance: productInstance, catalogIdSelectionList: catalogIdSelectionList ])
-    	        return
-			}
-			
-			def catalogIdsArray = params.catalogIds.split(',').collect{it as int}
-			
-			if(!catalogIdsArray){
-				flash.error = "Something went wrong while processing update. Please try again."
-				render(view: "edit", model: [productInstance: productInstance])
-				return
-			}    	  
-            
-            
-			productInstance.catalogs = null
-			catalogIdsArray.each{ catalogId ->
-				def catalog = Catalog.get(catalogId)
-				if(catalog){
-					productInstance.addToCatalogs(catalog)
-					productInstance.save(flush:true)
+				def productCatalogIdsArray = []
+				if(productInstance?.catalogs){
+					productCatalogIdsArray = productInstance?.catalogs.collect { it.id }
 				}
-			}
-
-			
-			def imageFile = request.getFile('image')
-			BufferedImage originalImage = null;
-			def fullFileName = imageFile.getOriginalFilename()
-			
-			String[] nameSplit = fullFileName.toString().split("\\.")
-			def fileName = nameSplit[0]
-			
-			fileName = fileName.replaceAll("[^\\w\\s]","")
-			fileName = fileName.replaceAll(" ", "_")
-			
-			def productName = productInstance.name
-			
-			productName = productName.replaceAll("[^\\w\\s]",""); 
-			productName = productName.replaceAll(" ", "_")
-			
-			
-			try {
-	
-				originalImage = ImageIO.read(imageFile.getInputStream());
-		 	   	
-				if(originalImage){
+				def catalogIdSelectionList = getCatalogIdSelectionList(productCatalogIdsArray)
 				
-		 	    	int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
-
-					//def baseUrl = "images/products/${productName}/"
-					def baseUrl = "images/"
-					
-					def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('images')
-					absolutePath = absolutePath.endsWith("/") ? absolutePath : absolutePath + "/"
-					//def baseDirectory = "${absolutePath}products/${productName}/"
-					def baseDirectory = "${absolutePath}"
-					
-					
-					new File(baseDirectory).mkdirs();
-					
-					productInstance.detailsImageUrl = "${baseUrl}${fileName}_details.jpg"
- 					BufferedImage detailsImageJpg = resizeImage(originalImage, type, 250, 300);
 				
-					def detailsImageLocation = "${baseDirectory}${fileName}_details.jpg"
-					ImageIO.write(detailsImageJpg, "jpg", new File(detailsImageLocation));
-					
-					
-					def imageUrl = "${baseUrl}${fileName}.jpg"
-					productInstance.imageUrl = imageUrl
-			
-					def imageLocation = "${baseDirectory}${fileName}.jpg"
-					ImageIO.write(originalImage, "jpg",new File(imageLocation));
-				
+				if(!params.catalogIds){
+					flash.error = "<strong>No Catalogs Defined</strong><br/> You must select a catalog in order to make the product visible from a catalog menu. <br/>Please specify at least <strong>1 catalog</strong> before continuing."
+    	    	    render(view: "edit", model: [productInstance: productInstance, catalogIdSelectionList: catalogIdSelectionList ])
+    	    	    return
 				}
 				
+				def catalogIdsArray = params.catalogIds.split(',').collect{it as int}
 				
-		    } catch (IOException e) {
-		    	e.printStackTrace();
-		    }
-			
-			resolveSalesPrice(params)
-
-			productInstance.properties = params
-			productInstance.price = new BigDecimal(params.price)
-			
-			if(params.salesPrice){
-				productInstance.salesPrice = new BigDecimal(params.salesPrice)
+				if(!catalogIdsArray){
+					flash.error = "Something went wrong while processing update. Please try again."
+					render(view: "edit", model: [productInstance: productInstance])
+					return
+				}    	  
+            	
+            	
+				productInstance.catalogs = null
+				catalogIdsArray.each{ catalogId ->
+					def catalog = Catalog.get(catalogId)
+					if(catalog){
+						productInstance.addToCatalogs(catalog)
+						productInstance.save(flush:true)
+					}
+				}
+            	
+				
+				def imageFile = request.getFile('image')
+				BufferedImage originalImage = null;
+				def fullFileName = imageFile.getOriginalFilename()
+				
+				String[] nameSplit = fullFileName.toString().split("\\.")
+				def fileName = nameSplit[0]
+				
+				fileName = fileName.replaceAll("[^\\w\\s]","")
+				fileName = fileName.replaceAll(" ", "_")
+				
+				def productName = productInstance.name
+				
+				productName = productName.replaceAll("[^\\w\\s]",""); 
+				productName = productName.replaceAll(" ", "_")
+				
+				
+				try {
+	        	
+					originalImage = ImageIO.read(imageFile.getInputStream());
+		 		   	
+					if(originalImage){
+					
+		 		    	int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+            	
+						//def baseUrl = "images/products/${productName}/"
+						def baseUrl = "images/"
+						
+						def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('images')
+						absolutePath = absolutePath.endsWith("/") ? absolutePath : absolutePath + "/"
+						//def baseDirectory = "${absolutePath}products/${productName}/"
+						def baseDirectory = "${absolutePath}"
+						
+						
+						new File(baseDirectory).mkdirs();
+						
+						productInstance.detailsImageUrl = "${baseUrl}${fileName}_details.jpg"
+ 						BufferedImage detailsImageJpg = resizeImage(originalImage, type, 250, 300);
+					
+						def detailsImageLocation = "${baseDirectory}${fileName}_details.jpg"
+						ImageIO.write(detailsImageJpg, "jpg", new File(detailsImageLocation));
+						
+						
+						def imageUrl = "${baseUrl}${fileName}.jpg"
+						productInstance.imageUrl = imageUrl
+				
+						def imageLocation = "${baseDirectory}${fileName}.jpg"
+						ImageIO.write(originalImage, "jpg",new File(imageLocation));
+					
+					}
+					
+					
+		    	} catch (IOException e) {
+		    		e.printStackTrace();
+		    	}
+				
+				resolveSalesPrice(params)
+            	
+				productInstance.properties = params
+				productInstance.price = new BigDecimal(params.price)
+				
+				if(params.salesPrice && params.salesPrice != "-"){
+					productInstance.salesPrice = new BigDecimal(params.salesPrice)
+				}
+		    	
+				
+    	    	if (!productInstance.save(flush: true)) {
+					flash.message = "Something went wrong while trying to update. Please try again."
+    	    	    render(view: "edit", model: [productInstance: productInstance])
+    	    	    return
+    	    	}
+    	    	
+    	    	flash.message = "Successfully updated product..."
+    	    	redirect(action: "edit", id: productInstance.id)
+				
+			}catch(Exception e){
+				e.printStackTrace()
+				flash.message = "Something went wrong..."
+				redirect(action:"edit", id: productInstance.id)
 			}
-		
-			
-    	    if (!productInstance.save(flush: true)) {
-				flash.message = "Something went wrong while trying to update. Please try again."
-    	        render(view: "edit", model: [productInstance: productInstance])
-    	        return
-    	    }
-    	
-    	    flash.message = "Successfully updated product..."
-    	    redirect(action: "edit", id: productInstance.id)
     	}
 	}
 
@@ -538,7 +558,7 @@ class ProductController {
        		    redirect(action: "list")
        		}catch (DataIntegrityViolationException e) {
        		    flash.message = "Something went wrong when trying to delete.  The item you are trying to delete might exist in a Order or shopping cart.  Please try again or disable product"
-       		    redirect(action: "show", id: id)
+       		    redirect(action: "edit", id: id)
         	}
 		}
     }
