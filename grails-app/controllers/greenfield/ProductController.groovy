@@ -335,19 +335,7 @@ class ProductController {
 		    redirect(action: "show", id: productInstance.id)		
 		}	
     }
-	
-	
 
-    
-	@Secured(['ROLE_ADMIN'])
-	def show(Long id) {
-		authenticatedAdminProduct { adminAccount, productInstance ->
-			def layouts = Layout.list()
-    	    [productInstance: productInstance, layouts: layouts]
-		}
-    }
-	
-	
 	
 
 
@@ -420,9 +408,7 @@ class ProductController {
     def update(Long id, Long version) {
 		authenticatedAdminProduct { adminAccount, productInstance ->
 
-			println "price : " + params.price
-			
-			
+
 			def productCatalogIdsArray = []
 			if(productInstance?.catalogs){
 				productCatalogIdsArray = productInstance?.catalogs.collect { it.id }
@@ -512,16 +498,13 @@ class ProductController {
 			
 			resolveSalesPrice(params)
 
-			println "pc1 : " + params.price
 			productInstance.properties = params
 			productInstance.price = new BigDecimal(params.price)
 			
 			if(params.salesPrice){
 				productInstance.salesPrice = new BigDecimal(params.salesPrice)
 			}
-			
-			println "pc2 : " + productInstance.price
-			
+		
 			
     	    if (!productInstance.save(flush: true)) {
 				flash.message = "Something went wrong while trying to update. Please try again."
