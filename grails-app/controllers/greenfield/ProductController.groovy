@@ -420,6 +420,9 @@ class ProductController {
     def update(Long id, Long version) {
 		authenticatedAdminProduct { adminAccount, productInstance ->
 
+			println "price : " + params.price
+			
+			
 			def productCatalogIdsArray = []
 			if(productInstance?.catalogs){
 				productCatalogIdsArray = productInstance?.catalogs.collect { it.id }
@@ -508,9 +511,16 @@ class ProductController {
 		    }
 			
 			resolveSalesPrice(params)
-			
+
+			println "pc1 : " + params.price
 			productInstance.properties = params
+			productInstance.price = new BigDecimal(params.price)
 			
+			if(params.salesPrice){
+				productInstance.salesPrice = new BigDecimal(params.salesPrice)
+			}
+			
+			println "pc2 : " + productInstance.price
 			
 			
     	    if (!productInstance.save(flush: true)) {
@@ -519,8 +529,8 @@ class ProductController {
     	        return
     	    }
     	
-    	    flash.message = "Successfully updated product"
-    	    redirect(action: "show", id: productInstance.id)
+    	    flash.message = "Successfully updated product..."
+    	    redirect(action: "edit", id: productInstance.id)
     	}
 	}
 

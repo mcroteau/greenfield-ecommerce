@@ -36,7 +36,7 @@
 		<div class="form-container" >
 			
 			<h2><g:message code="create.product"/>
-				<g:link controller="product" action="list" class="btn btn-default pull-right"><g:message code="back"/></g:link>
+				<g:link controller="product" action="list" class="btn btn-default pull-right"><g:message code="back.to.list"/></g:link>
 				<br class="clear"/>
 			</h2>
 			

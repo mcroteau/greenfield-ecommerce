@@ -37,7 +37,7 @@
 			</h2>
 			
 			
-			<div style="float:right; width:470px; ">
+			<div style="float:right; width:570px; ">
 				<g:link controller="product" action="create" class="btn btn-primary pull-right"><g:message code="new.product"/></g:link>
 				<g:form action="admin_search" class="form-horizontal">
 					<g:submitButton name="submit" value="${message(code:'search')}" id="search" class="btn btn-info"/>
