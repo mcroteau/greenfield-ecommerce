@@ -150,7 +150,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 		
 		<div id="information">
 			
-			<form name="checkout" action="/${applicationService.getContextName()}/shoppingCart/checkout" method="post" id="checkout_form" class="form-horizontal">
+			<form name="checkout" action="/${applicationService.getContextName()}/shoppingCart/checkout" method="post" id="checkoutForm" class="form-horizontal">
 				
 				<h3>Shipping Address</h3>
 				
@@ -186,7 +186,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				</address>
 					-->
 				
-				<g:link controller="shoppingCart" action="anonymous" class="btn btn-default pull-right">Change Address</g:link>
+				<g:link controller="shoppingCart" action="anonymous" class="btn btn-default pull-right" params="[change: true]">Change Address</g:link>
 				
 				<div class="form-group">
 					<label class="col-sm-4 control-label">Name <em>(first &amp; last)</em></label>
@@ -258,26 +258,27 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 
 				<input type="hidden" name="total" value="${total}"/> 
 				<input type="hidden" name="id" value="${shoppingCart?.id}"/> 
-				<input type="hidden" name="braintreeNonce" value="" id="braintreeNonce"/> 
+				<input type="hidden" name="nonce" value="" id="nonce"/> 
 				
 				<br/>
 				
 				<h3 style="margin-top:20px !important; margin-bottom:0px;">Credit Card Information</h3>
 				
-				<div id="braintree-credit-card-div"></div>
+				<div id="braintreeCreditCardDiv"></div>
 				
-				<div class="form-group" style="position:relative; text-align:center;">
-					<button id="submit" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px; background:#3276B1 !important">Pay ${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</button>
-					<br/>
-					<span class="pull-right" id="processing" style="display:none">
-						Processing checkout, please wait&nbsp;
-						<img src="/${applicationService.getContextName()}/images/loading.gif" >
-					</span>
-				
-				</div>
 				
 			</form>
-				
+			
+			
+			<div class="form-group" style="position:relative; text-align:center;">
+				<button id="submitBtn" class="btn btn-primary btn-lg pull-right" style="margin:20px 20px; /**background:#3276B1**/ !important">Pay ${currencyService.format(applicationService.formatPrice(shoppingCart.total))}</button>
+				<br/>
+				<span class="pull-right" id="processing" style="display:none">
+					Processing checkout, please wait&nbsp;
+					<img src="/${applicationService.getContextName()}/images/loading.gif" >
+				</span>
+			
+			</div>
 	
 		</div>
 
@@ -286,84 +287,37 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 	
 <script type="text/javascript">
 $(document).ready(function(){
-	var $submitBtn = $("#submit-btn")
-	var $braintreeCreditCardDiv = $("#braintree-credit-card-div")
-	var $braintreeNonce = $("#braintreeNonce");
-	var $inputs = $('.form-control');
-	
-	var client_token = [['${clientToken}']];
+
+	var clientToken = [['${clientToken}']];
 	var braintreeInstance = {}
-	
-	braintree.dropin.create({
-	  	authorization: client_token,
-	  	container: '#braintree-credit-card-div',
-        paypal: {
-          flow: 'vault'
-        }
-	}, function (error, instance) {
-		console.log(error, instance)
-		braintreeInstance = instance;
-		instance.requestPaymentMethod(function (err, payload) {
-			console.log("here...", err, payload)
-			//$braintreeNonce.val(payload.nonce)
-		});
-	});
-	
-	console.log("m", braintree)
-	braintree.paymentRequest.create({
-	  client: braintreeInstance
-	}, function (err, instance) {
-	  if (err) {
-	    // Handle errors from creating payment request instance
-	  }
 
-	  button.addEventListener('click', function (event) {
-	    var amount = '100.00';
-
-	    instance.tokenize({
-	      details: {
-	        total: {
-	          label: 'Total',
-	          amount: {
-	            currency: 'USD',
-	            value: amount
-	          }
-	        }
-	      }
-	    }, function (err, payload) {
-	      if (err) {
-	        // Handle errors from processing payment request
-	      	console.log("again ? ", error)
-		  }
-
-	      // Send payload.nonce to your server
-	    });
-	  });
-	});
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	$submitBtn.click(retrieveNonceSubmitForm)
-	
-	function retrieveNonceSubmitForm(){
-		braintreeInstance.requestPaymentMethod(function (err, payload) {
-			console.log("here...", payload)
-			//$braintreeNonce.val(payload.nonce)
-			$braintreeNonce.val(payload.nonce)
-		});
-	}
-	
-	
-	
+	var $submitBtn = $("#submitBtn");
+	var $braintreeCreditCardDiv = $("#braintreeCreditCardDiv");
+	var $braintreeNonce = $("#nonce");
+	var $checkoutForm = $("#checkoutForm");
+	var $inputs = $('.form-control');	
 
 	$inputs.prop('disabled', true);
+	
+	braintree.dropin.create({
+	  	authorization: clientToken,
+	  	container: '#braintreeCreditCardDiv'
+	}, function (error, instance) {
+		//console.log(error, instance)
+		braintreeInstance = instance;
+	});
+	
+	$submitBtn.click(function(){
+		braintreeInstance.requestPaymentMethod(processCheckout);
+	});
+	
+	
+	function processCheckout(err, payload) {
+		$braintreeNonce.val(payload.nonce)
+		$checkoutForm.submit()
+	}
+	
+
 })	
 </script>
 	
@@ -414,7 +368,7 @@ $(document).ready(function(){
 
 	var $submitBtn    = $('#submit'),
 		$tokenInput   = $('#stripeToken'),
-		$checkoutForm = $('#checkout_form'),
+		$checkoutForm = $('#checkoutForm'),
 		$processing   = $('#processing'),
 		$inputs       = $('.form-control');
 

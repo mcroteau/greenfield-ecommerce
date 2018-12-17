@@ -38,8 +38,8 @@ import grails.plugin.springsecurity.annotation.Secured
 
 import org.greenfield.SimpleCaptchaService
 
-import org.greenfield.api.ShipmentAddress
-import org.greenfield.api.EasyPostShipmentApi
+import org.greenfield.api.mail.ShipmentAddress
+import org.greenfield.api.mail.EasyPostShipmentApi
 	
 	
 @Mixin(BaseController)

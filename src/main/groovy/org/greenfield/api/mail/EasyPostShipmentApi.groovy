@@ -1,4 +1,4 @@
-package org.greenfield.api
+package org.greenfield.api.mail
 
 import com.easypost.EasyPost
 import com.easypost.model.Rate
@@ -8,7 +8,7 @@ import com.easypost.model.Shipment
 import com.easypost.exception.EasyPostException
 import grails.util.Environment
 
-import org.greenfield.api.ShipmentRate
+import org.greenfield.api.mail.ShipmentRate
 
 public class EasyPostShipmentApi implements ShipmentApi {
 	

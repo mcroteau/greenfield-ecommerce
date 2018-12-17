@@ -509,8 +509,8 @@ public class DevelopmentData {
 						def additionalPhoto = new AdditionalPhoto()
 						additionalPhoto.product = product
 						additionalPhoto.name = catalogName + " Photo " + k
-						additionalPhoto.imageUrl = "images/additional-photo" + k + ".png"
-						additionalPhoto.detailsImageUrl = "images/details-additional-photo" + k + ".png"
+						additionalPhoto.imageUrl = "images/app/no-image.jpg"
+						additionalPhoto.detailsImageUrl = "images/app/no-image.jpg"
 					
 						additionalPhoto.save(flush:true)
 						product.addToAdditionalPhotos(additionalPhoto)

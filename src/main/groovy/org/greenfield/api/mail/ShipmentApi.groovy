@@ -1,4 +1,4 @@
-package org.greenfield.api
+package org.greenfield.api.mail
 
 interface ShipmentApi {
 	

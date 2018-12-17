@@ -270,7 +270,7 @@ $(document).ready(function(){
 
 
 
-	countryStatesInit("${applicationService.getContextName()}", ${accountInstance?.state})
+	countryStatesInit("${applicationService.getContextName()}", ${accountInstance?.state?.id})
 
 
 })

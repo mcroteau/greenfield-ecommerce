@@ -35,11 +35,15 @@ import grails.plugin.springsecurity.annotation.Secured
 
 import greenfield.common.ControllerConstants
 
-import org.greenfield.api.ShipmentAddress
-import org.greenfield.api.EasyPostShipmentApi
-import org.greenfield.api.ShippingApiHelper
+import org.greenfield.api.mail.ShipmentAddress
+import org.greenfield.api.mail.EasyPostShipmentApi
+import org.greenfield.api.mail.ShippingApiHelper
 
 import com.braintreegateway.BraintreeGateway
+
+import org.greenfield.api.payment.StripePaymentsProcessor
+import org.greenfield.api.payment.BraintreePaymentsProcessor
+
 
 @Mixin(BaseController)
 class ShoppingCartController {
@@ -111,10 +115,13 @@ class ShoppingCartController {
 		if(easypostEnabled == "true"){
 			shippingApiEnabled = true
 		}
+		
+		def accountInstance = [:]
+		if(session["accountInstance"] && params.change != "true")accountInstance = session["accountInstance"]
 			
 		def shoppingCartInstance = ShoppingCart.findByUuidAndStatus(uuid, ShoppingCartStatus.ACTIVE.description())
 		calculateShoppingCartSubtotal(shoppingCartInstance)
-		[ shoppingCartInstance : shoppingCartInstance, shippingApiEnabled: shippingApiEnabled, countries: Country.list() ]
+		[ shoppingCartInstance : shoppingCartInstance, shippingApiEnabled: shippingApiEnabled, accountInstance: accountInstance, countries: Country.list() ]
 	}
 	
 
@@ -541,6 +548,11 @@ class ShoppingCartController {
 
     			def total = shoppingCart.total
 				def token = params.stripeToken
+				if(applicationService.getBraintreeEnabled() == "true"){
+					token = params.nonce
+				}
+				
+				println "sc 552 : token -> " + token
 				
     			transaction.orderDate = new Date()
 				
@@ -579,6 +591,7 @@ class ShoppingCartController {
 				shoppingCart.status = ShoppingCartStatus.TRANSACTION.description()
 				shoppingCart.save(flush:true)
 				
+				/**
     			//TODO: Stripe charge logic
     			def apiKey
 				
@@ -602,6 +615,17 @@ class ShoppingCartController {
     			]
 
 				def charge = Charge.create(chargeParams)
+				**/
+				
+				def paymentsProcessor = new StripePaymentsProcessor(applicationService, currencyService)
+				if(applicationService.getBraintreeEnabled() == "true"){
+					paymentsProcessor = new BraintreePaymentsProcessor(applicationService, currencyService)
+				}
+				/** Token is the same as a nonce **/
+				def charge = paymentsProcessor.charge(total, token)
+				
+				
+				
     	    	transaction.chargeId = charge.id
 				transaction.save(flush:true)
 
@@ -610,21 +634,31 @@ class ShoppingCartController {
 				
 				adjustInventory(shoppingCart)
 				setCheckoutPrices(shoppingCart)
-				session["shoppingCart"] = null
 				
 				sendNewOrderEmail(account, transaction)
 				
+				session["shoppingCart"] = null
 				
 				[ transaction : transaction ]
 			
 			}catch(Exception e){
 				e.printStackTrace()
-				flash.message = "Something went wrong, make sure everything is completed and credit card information is correct"
-				redirect(action:'checkout_preview', params : [id : shoppingCart.id ])
+				
+				def action = 'checkout_preview'
+				if(shoppingCart.uuid == session["shoppingCart"]){
+					action = 'anonymous_preview'
+				}
+				session["shoppingCart"] = shoppingCart.uuid
+				shoppingCart.status = ShoppingCartStatus.ACTIVE.description()
+				shoppingCart.save(flush:true)
+				
+				flash.message = "Something went wrong, please make sure all information is correct. If issue continues contact support"
+
+				redirect(action: action, params : [id : shoppingCart.id ])
 			}
 			
 		}else{
-			flash.message = "Shopping Cart is empty..."
+			flash.message = ""
 			redirect(controller:'store', action:'index')
 		}
 		

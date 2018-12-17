@@ -15,8 +15,8 @@ import org.greenfield.ShoppingCart
 import org.greenfield.State
 import org.greenfield.Country
 
-import org.greenfield.api.EasyPostShipmentApi
-import org.greenfield.api.ShippingApiHelper
+import org.greenfield.api.mail.EasyPostShipmentApi
+import org.greenfield.api.mail.ShippingApiHelper
 
 import org.greenfield.common.ShoppingCartStatus
 

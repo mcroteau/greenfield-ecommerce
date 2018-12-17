@@ -24,8 +24,8 @@ import org.greenfield.Product
 import org.greenfield.Page
 
 import grails.plugin.springsecurity.annotation.Secured
-import org.greenfield.api.EasyPostShipmentApi
-import org.greenfield.api.ShipmentAddress
+import org.greenfield.api.mail.EasyPostShipmentApi
+import org.greenfield.api.mail.ShipmentAddress
 
 
 @Mixin(BaseController)

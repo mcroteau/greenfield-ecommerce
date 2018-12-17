@@ -1,9 +1,9 @@
-package org.greenfield.api
+package org.greenfield.api.mail
 
 import org.greenfield.Country
 import org.greenfield.State
 
-import org.greenfield.api.ShipmentAddress
+import org.greenfield.api.mail.ShipmentAddress
 
 
 public class ShippingApiHelper {

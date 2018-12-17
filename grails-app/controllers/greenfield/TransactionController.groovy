@@ -14,7 +14,7 @@ import com.easypost.model.Shipment
 import com.easypost.exception.EasyPostException
 import grails.util.Environment
 
-import org.greenfield.api.EasyPostShipmentApi
+import org.greenfield.api.mail.EasyPostShipmentApi
 
 import com.stripe.Stripe
 import com.stripe.model.Charge
