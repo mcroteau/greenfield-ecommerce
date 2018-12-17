@@ -8,21 +8,23 @@
 <html>
 <head>
 	<meta name="layout" content="admin">
-	<g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}" />
-	<title>Create Product</title>
+	<title>Greenfield : Create Product</title>
 </head>
 <body>
-	
 	
 	<div id="catalog-selection-backdrop"></div>
 	
 	<div id="catalog-selection-modal">
-		<h3>Product Catalogs</h3>
-		<p class="information secondary">Selecting a Subcatalog will automatically select all parent Catalogs up to the top level Catalog.</p>
+		
+		<h3><g:message code="product.catalogs"/></h3>
+		
+		<p class="information secondary"><g:message code="selecting.subcatalog"/></p>
+		
 		<div id="catalog-selection-container">
 			${raw(catalogIdSelectionList)}
 		</div>
-		<a href="javascript:" class="btn btn-default pull-right" style="margin-top:15px;" id="close-catalogs-select-modal">Accept &amp; Close</a>
+		
+		<a href="javascript:" class="btn btn-default pull-right" style="margin-top:15px;" id="close-catalogs-select-modal"><g:message code="accept.close"/></a>
 		<br class="clear"/>
 	</div>
 	
@@ -33,8 +35,8 @@
 				
 		<div class="form-container" >
 			
-			<h2>Create Product
-				<g:link controller="product" action="list" class="btn btn-default pull-right">Back</g:link>
+			<h2><g:message code="create.product"/>
+				<g:link controller="product" action="list" class="btn btn-default pull-right"><g:message code="back.to.list"/></g:link>
 				<br class="clear"/>
 			</h2>
 			
@@ -61,8 +63,8 @@
 				
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Name 
-						<span class="information secondary block">Name must be unique</span>
+					<span class="form-label full secondary"><g:message code="name"/> 
+						<span class="information secondary block"><g:message code="name.unique"/></span>
 					</span>
 					<span class="input-container">
 						<input name="name" type="text" class="form-control threefifty" value="${productInstance?.name}" id="name"/>
@@ -74,8 +76,8 @@
 			
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Catalogs<br/>
-						<a href="javascript:" id="catalog-selection-modal-link">Add/Remove Catalogs</a>
+					<span class="form-label full secondary"><g:message code="catalogs"/><br/>
+						<a href="javascript:" id="catalog-selection-modal-link"><g:message code='add.remove.catalogs'/></a>
 					</span>
 					<span class="input-container threefifty" id="selected-catalogs-span">
 						<g:each in="${productInstance?.catalogs}" var="catalog">
@@ -90,7 +92,7 @@
 			
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Price ${currencyService.getCurrencySymbol()}</span>
+					<span class="form-label full secondary"><g:message code="price"/> ${currencyService.getCurrencySymbol()}</span>
 					<span class="input-container">
 						<input name="price" type="text" class="form-control " style="width:150px" value="${productInstance?.price}" id="price"/>
 					</span>
@@ -102,11 +104,11 @@
 		
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Sale Price ${currencyService.getCurrencySymbol()}</span>
+					<span class="form-label full secondary"><g:message code="sales.price"/> ${currencyService.getCurrencySymbol()}</span>
 					<span class="input-container">
 						<input name="salesPrice" type="text" class="form-control " style="width:150px; float:left;" value="${productInstance?.salesPrice ? productInstance.salesPrice : '-'}" id="salesPrice"/>
 
-						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:150px;">Leave blank or enter same price for no sale price</span>
+						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:150px;"><g:message code="leave.blank"/></span>
 					</span>
 					<br class="clear"/>
 				</div>
@@ -115,14 +117,14 @@
 			
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Quantity</span>
+					<span class="form-label full secondary"><g:message code="quantity"/></span>
 					<span class="input-container">
 						<%
 							def quantity =  productInstance?.quantity
 							if(quantity == 0)quantity = 1
 						%>
 						<input name="quantity" type="text" class="form-control" style="width:75px;float:left" value="${quantity}" id="quantity"/>
-						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:150px;">Quantity of 0 will categorize product as “out of stock”</span>
+						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:150px;"><g:message code="quantity.zero"/></span>
 					</span>
 					<br class="clear"/>
 				</div>
@@ -139,7 +141,7 @@
 				
 				
 				<div class="form-row">
-					<span class="form-label full hint">Main Image</span>
+					<span class="form-label full hint"><g:message code="main.image"/></span>
 					<span class="input-container">
 						<input type="file" name="image" id="image" />
 					</span>
@@ -149,12 +151,12 @@
 			
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Weight
-						<span class="information secondary" style="display:block">* Important : Weight is in ounces</span>
+					<span class="form-label full secondary"><g:message code="weight"/>
+						<span class="information secondary" style="display:block">* <g:message code="weight.ounces"/></span>
 					</span>
 					<span class="input-container">
 						<input name="weight" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.weight}"/>
-						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:300px;">Weight is in ounces & is required at a minimum to calculate shipping realtime via <a href="http://www.easypost.com" target="_blank">EasyPost</a>. </span>
+						<span class="information secondary" style="float:left; display:inline-block; margin-left:15px;width:300px;"><g:message code="weight.calculations"/> <a href="http://www.easypost.com" target="_blank">EasyPost</a>. </span>
 					</span>
 					<br class="clear"/>
 				</div>
@@ -165,19 +167,19 @@
 				
 				<div class="form-row">
 					
-					<span class="form-label full secondary">Length
-						<span class="information secondary" style="display:block">Length, Width &amp; Height are optional for rate calculation (Inches)</span>
+					<span class="form-label full secondary"><g:message code="length"/>
+						<span class="information secondary" style="display:block"><g:message code="length.width.height"/></span>
 					</span>
 					<span class="input-container">
 						<input name="length" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.length}" />
 					</span>
 					
-					<span class="form-label secondary" style="float:left">Height</span>
+					<span class="form-label secondary" style="float:left"><g:message code="height"/></span>
 					<span class="input-container">
 						<input name="height" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.height}" />
 					</span>
 					
-					<span class="form-label secondary" style="">Width</span>
+					<span class="form-label secondary" style=""><g:message code="width"/></span>
 					<span class="input-container">
 						<input name="width" type="text" class="form-control" style="width:75px;float:left" value="${productInstance?.width}" />
 					</span>
@@ -188,8 +190,8 @@
 				
 				
 				<div class="form-row">
-					<span class="form-label full hint">Description
-						<span class="information secondary" style="display:block">Accepts HTML as well as plain text</span>	
+					<span class="form-label full hint"><g:message code="description"/>
+						<span class="information secondary" style="display:block"><g:message code="accepts.html"/></span>	
 					</span>
 					
 					<span class="input-container">
@@ -201,8 +203,8 @@
 				
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Product No. 
-						<span class="information secondary block">Optional identifier used else where</span>
+					<span class="form-label full secondary"><g:message code="product.item"/> # 
+						<span class="information secondary block"><g:message code="product.optional"/></span>
 					</span>
 					<span class="input-container">
 						<input name="productNo" type="text" class="form-control threefifty" value="${productInstance?.productNo}" id="productNo" style="width:150px"/>
@@ -213,8 +215,8 @@
 				
 				
 				<div class="form-row">
-					<span class="form-label full secondary">Harmonized Code 
-						<span class="information secondary block">Optional, only used when customs information is needed when generating a shipping label</span>
+					<span class="form-label full secondary"><g:message code="harmonized.code"/>
+						<span class="information secondary block"><g:message code="product.optional.harmonized"/></span>
 					</span>
 					<span class="input-container">
 						<input name="harmonizedCode" type="text" class="form-control threefifty" value="${productInstance?.harmonizedCode}" id="harmonizedCode" style="width:209px"/>
@@ -226,14 +228,14 @@
 				  
 				  
 	 			<div class="form-row">
-	 				<span class="form-label full secondary">Layout</span>
+	 				<span class="form-label full secondary"><g:message code="layout"/></span>
 	 				<span class="input-container">
 						<g:select name="layout.id"
 								from="${layouts}"
 								value="${productInstance?.layout?.id}"
 								optionKey="id" 
 								optionValue="name" 
-								class="form-control"/>
+								class="form-control threehundred"/>
 	 				</span>
 	 				<br class="clear"/>
 	 			</div>
@@ -250,7 +252,10 @@
 		
 	</div>
 
-
+<script type="text/javascript">
+	var BUTTON_TEXT = "${message(code:'add.catalogs')}";
+	var MESSAGE = "${message(code:'no.catalogs.selected')}"
+</script>
 <script type="text/javascript" src="${resource(dir:'js/product_catalogs.js')}"></script>
 		
 <script type="text/javascript">

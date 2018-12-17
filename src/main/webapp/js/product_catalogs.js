@@ -1,3 +1,5 @@
+
+
 $(document).ready(function(){
 
 	var $modal = $('#catalog-selection-modal'),
@@ -11,9 +13,9 @@ $(document).ready(function(){
 		$catalogCheckboxes = $catalogSelectionDiv.find('.catalog_checkbox');
 	
 
-	var NO_CATALOGS_SELECTED = "<span class=\"information secondary\" style=\"display:block\">No Catalogs selected.  Please select a Catalog to continue</span>"	
+	var NO_CATALOGS_SELECTED = "<span class=\"information secondary\" style=\"display:block\">" + MESSAGE + "</span>"	
 	
-	var ADD_CATALOGS_BUTTON = "<a href=\"javascript:\" id=\"add-catalogs-btn\" class=\"btn btn-default\">Add Catalogs</a>" 	
+	var ADD_CATALOGS_BUTTON = "<a href=\"javascript:\" id=\"add-catalogs-btn\" class=\"btn btn-default\">" + BUTTON_TEXT + "</a>" 	
 	
 	
 	if(catalogIds.length == 0){

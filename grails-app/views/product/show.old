@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta name="layout" content="admin">
-	<title>Greenfield : Edit Product</title>
+	<title>Greenfield : <g:message code="show.product"/></title>
 </head>
 <body>
 	
@@ -63,10 +63,9 @@
 				</g:if>
 				
 			</div>
-			
-			
-			
-			<h2><g:message code="edit.product"/>
+		
+		
+			<h2><g:message code="show.product"/>
 				<g:link controller="product" action="list" class="btn btn-default pull-right"><g:message code="back.to.list"/></g:link>
 				<br class="clear"/>
 			</h2>
@@ -74,7 +73,6 @@
 			<br class="clear"/>
 			
 
-			
 
 
 			<g:uploadForm method="post" >
@@ -362,9 +360,8 @@
 				<div class="buttons-container">	
 					<g:set var="sure" value="${message(code:'are.you.sure')}"/>
 	
-					<g:actionSubmit controller="product" action="delete" value="${message(code:'delete')}" formnovalidate="" onclick="return confirm('${sure}');"  class="btn btn-danger" />
-					
-					<g:actionSubmit action="update" name="update" class="btn btn-primary" value="${message(code:'update.product')}"/>
+					back to list
+					edit
 				</div>
 				
 			</g:uploadForm>
@@ -374,18 +371,7 @@
 	</div>
 
 <script type="text/javascript">
-	var BUTTON_TEXT = "${message(code:'add.catalogs')}";
-	var MESSAGE = "${message(code:'no.catalogs.selected')}"
-</script>	
-<script type="text/javascript" src="${resource(dir:'js/product_catalogs.js')}"></script>
-		
-<script type="text/javascript">
 	
-	var catalogIds = [];
-	<g:if test="${catalogIdsArray}">
-		catalogIds = ${catalogIdsArray};
-	</g:if>
-	var catalogIdsString = catalogIds.join();
 
 </script>	
 	

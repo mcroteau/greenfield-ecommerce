@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-	<title><g:layoutTitle default="Greenfield : Administration" /></title>
+	<title><g:layoutTitle default="Greenfield : ${message(code: "administration")}" /></title>
 
 
 	<link rel="stylesheet" href="${resource(dir:'bootstrap/3.1.1/css', file:'bootstrap.min.css')}" />
@@ -72,8 +72,8 @@
 <body>
 	
 	<%if(Environment.current == Environment.DEVELOPMENT){%>
-		<div id="developmentMode" class="alert alert-success" style="font-size:0.8em;line-height:1.0; padding:7px 0px 7px 0px; position:absolute; top:1px; left:13px; width:962px;">
-			Development Mode...
+		<div id="developmentMode" class="alert alert-success" style="line-height:0.8; line-height:1.0; padding:7px 0px 7px 0px; position:absolute; top:1px; left:13px; width:962px;">
+			<g:message code="development.mode"/>
 		</div>
 		<br/>
 	<%}%>

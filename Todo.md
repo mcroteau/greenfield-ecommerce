@@ -1,22 +1,11 @@
-translate for portuguese
-integrate braintree for payment processing
-- United Kingdom
-- Greece
-- Swizerland
-- Denmark
-- Sweden
-- Germany
-- France
-- Ireland
-integrate shippo
+add internationalization in admin section
+add blog with categories and moderation
+add ratings to application
 
 
 
+test notifyexception on views
 
-We need your help on the basics, organic growth
-How can we influence nations to adopt a basic income before we do? not before ai replaces workforces
-
-If cars are going to be fully autonomous, why do they need to be sexy?
 
 
 
@@ -66,6 +55,8 @@ internet
 commerce
 automation
 
+
+provide an easy way to allow commerce b2b, b2c for anyone with internet access
 
 
 
