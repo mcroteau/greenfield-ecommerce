@@ -5,7 +5,7 @@ interface PaymentProcessor {
 	/** 
 		@return
 	**/
-	def charge(amount, token)
+	def charge(amount, token, account)
 	
 	/**
 		@return 

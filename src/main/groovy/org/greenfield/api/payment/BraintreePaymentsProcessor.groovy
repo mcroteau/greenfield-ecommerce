@@ -21,7 +21,7 @@ class BraintreePaymentsProcessor implements PaymentProcessor {
 	}
 
 
-	def charge(amount, nonce){
+	def charge(amount, nonce, account){
 		try{
 			println "btp -> " + amount
 			def total = new BigDecimal(amount)

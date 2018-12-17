@@ -618,11 +618,12 @@ class ShoppingCartController {
 				**/
 				
 				def paymentsProcessor = new StripePaymentsProcessor(applicationService, currencyService)
+				println "sc 621 : " + applicationService.getBraintreeEnabled()
 				if(applicationService.getBraintreeEnabled() == "true"){
 					paymentsProcessor = new BraintreePaymentsProcessor(applicationService, currencyService)
 				}
 				/** Token is the same as a nonce **/
-				def charge = paymentsProcessor.charge(total, token)
+				def charge = paymentsProcessor.charge(total, token, account)
 				
 				
 				
