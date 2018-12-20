@@ -84,6 +84,7 @@ class ConfigurationController {
 	private final String STRIPE_PRODUCTION_API_KEY = "stripe.production.apiKey"
 	private final String STRIPE_PRODUCTION_PUBLISHABLE_KEY = "stripe.production.publishableKey"
 	
+	private final String BRAINTREE_ENABLED = "braintree.enabled"
 	private final String BRAINTREE_MERCHANT_ID = "braintree.merchantId"
 	private final String BRAINTREE_TOKENIZED_KEY = "braintree.tokenizedKey"
 	private final String BRAINTREE_PUBLIC_KEY = "braintree.publicKey"
@@ -413,6 +414,67 @@ class ConfigurationController {
 		}
 	}
 	
+	
+	
+ 	@Secured(['ROLE_ADMIN'])
+	def select_gateway(){
+		Properties prop = new Properties();
+		try{
+		
+			File propertiesFile = grailsApplication.mainContext.getResource("settings/${SETTINGS_FILE}").file
+			FileInputStream inputStream = new FileInputStream(propertiesFile)
+			prop.load(inputStream);
+			
+			def gateway_settings = [:]
+			gateway_settings["braintreeEnabled"] = prop.getProperty(BRAINTREE_ENABLED);
+			
+			[ gateway_settings : gateway_settings ]
+			
+		} catch (IOException e){
+		    log.debug"Exception occured while reading properties file :" + e
+			flash.message = "Something went wrong... "  + e
+		}
+	}
+	
+	
+	
+ 	@Secured(['ROLE_ADMIN'])
+	def update_gateway(){
+		
+		String braintreeEnabled = params.enabled
+		
+		//if(enabled == "on")enabled = true
+		//if(!enabled)enabled = false
+		
+		
+		Properties prop = new Properties();
+		File propertiesFile = grailsApplication.mainContext.getResource("settings/${SETTINGS_FILE}").file
+		FileInputStream inputStream = new FileInputStream(propertiesFile)
+		
+		prop.load(inputStream);
+		
+		try{
+			
+			prop.setProperty(BRAINTREE_ENABLED, braintreeEnabled);
+			
+			def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('settings')
+			absolutePath = absolutePath.endsWith("/") ? absolutePath : absolutePath + "/"
+			def filePath = absolutePath + SETTINGS_FILE
+			
+		    prop.store(new FileOutputStream(filePath), null);
+
+			applicationService.setProperties()
+			
+			flash.message = "Successfully set Payment Gateway"
+			redirect(action : 'select_gateway')
+			
+		} catch (IOException e){
+		    log.debug"exception occured while saving properties file :"+e
+			flash.message = "Something went wrong... "
+			redirect(action : 'select_gateway')
+			return
+		}
+	}
 	
 	
 	

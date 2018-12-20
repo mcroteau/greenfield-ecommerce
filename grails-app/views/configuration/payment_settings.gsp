@@ -5,7 +5,7 @@
 <head>
 	<meta name="layout" content="admin">
 	<g:set var="entityName" value="${message(code: 'catalog.label', default: 'Catalog')}" />
-	<title>Greenfield : Stripe Settings</title>
+	<title>Greenfield : Payment Settings</title>
 	<style type="text/css">
 		.section{
 			margin:10px 20px 30px 0px;
@@ -270,6 +270,29 @@
 			
 		</div>
 		
+		<style type="text/css">
+			#select-gateway{
+				text-align:right;
+			}
+			#select-gateway a{
+				opacity:0.3;
+			}
+			#select-gateway a:hover{
+				opacity:0.92 !important;
+				text-decoration:none;
+			}
+
+			#select-gateway img{
+				outline:none;
+			}
+		</style>
+			
+		<div id="select-gateway">
+			<g:link action="select_gateway">
+				<span id="select-gateway-text">Set Payment Gateway</span>
+				<img src="${resource(dir:'images/app', file:'gear.png')}"/>
+			</g:link>
+		</div>
 		
 	</form>
 	
