@@ -768,6 +768,10 @@ float:left;
 	background:#efefef;
 }
 
+.nav-tabs>li{
+	margin-bottom:-2px;
+}
+
 
 
 
