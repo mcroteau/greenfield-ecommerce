@@ -26,6 +26,7 @@
 		.gateway-select-container:hover{
 			cursor:pointer;
 			background:#FBFFFF;
+			opacity:0.70;
 			border:dashed 3px #a1a1a1;
 		}
 		
@@ -156,7 +157,6 @@
 
 		<g:if test="${flash.message}">
 			<div class="alert alert-info" role="status" style="margin-top:40px;">${flash.message}
-			<br/>
 			<br/>
 			<br/>
 			<g:link controller="configuration" action="payment_settings">Return to Payment Settings</g:link>
