@@ -31,7 +31,7 @@ dependencies {
     compile "javax.mail:mail:1.4"
     //compile "com.stripe:stripe-java:1.32.1"
     compile "com.google.code.gson:gson:2.3.1"
-    compile "org.grails.plugins:spring-security-shiro:3.0.0"
+    compile 'org.grails.plugins:spring-security-shiro:3.1.1'
     compile "org.grails.plugins:quartz:2.0.12"
     //compile files("lib/easypost-java-2.1.2.jar")
     compile files("lib/easypost-api-client-3.4.0.jar")
