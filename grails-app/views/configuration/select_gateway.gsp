@@ -15,8 +15,8 @@
 		.gateway-select-container{
 			text-align:center;
 			float:left;
-			width:301px;
-			padding-top:63px;
+			width:321px;
+			padding-top:73px;
 			padding-bottom:5px;
 			border:dashed 3px #ccc;
 			background:#FBFFFF;
@@ -29,7 +29,7 @@
 			border:dashed 3px #a1a1a1;
 		}
 		
-		.gateway-select-container:active{
+		.gateway-select-container.pressed:active{
 			margin-top:1px;
 			opacity:1.0;
 			border:dashed 3px #9D9D9D;
@@ -97,7 +97,7 @@
 			if(!$container.hasClass("active")){
 				processing($radio, $container)
 			}
-		
+			
 		})
 	
 		$radios.change(function(event){
@@ -111,7 +111,8 @@
 	
 	
 		function processing($radio, $container){
-			$container.addClass("processing");
+			$container.addClass("pressed").removeClass("pressed");
+			$container.addClass("processing")
 			$radio.prop("checked", true);
 			if($container.prop("id") == "stripe-enabled-container"){
 				$braintreeEnabledHidden.val("false")
@@ -140,13 +141,13 @@
 	
 	<div id="" style="border:solid 0px #ddd; width:100%;text-align:center; margin-top:37px;">
 	
-		<div id="" style="margin:auto; width:627px; border:solid 0px #ddd;">
+		<div id="" style="margin:auto; width:667px; border:solid 0px #ddd;">
 			<div class="gateway-select-container" id="stripe-enabled-container">
 				<img src="${resource(dir:'images/app', file:'stripe-logo.png')}" style="height:43%; width:43%;outline:none"/>
 				<input type="radio" name="stripe-enabled" class="gateway" id="stripe-enabled"/>
 			</div>
 			<div class="gateway-select-container" style="margin-left:20px" id="braintree-enabled-container">
-				<img src="${resource(dir:'images/app', file:'braintree-logo.png')}" style="height:60%; width:60%;outline:none; margin-top:18px;"/>
+				<img src="${resource(dir:'images/app', file:'braintree-logo.png')}" style="height:60%; width:60%;outline:none; margin-top:19px;"/>
 				<input type="radio" name="braintree-enabled" class="gateway" id="braintree-enabled"/>
 			</div>
 			<br class="clear"/>
