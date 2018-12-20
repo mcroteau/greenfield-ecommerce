@@ -86,7 +86,6 @@ class ConfigurationController {
 	
 	private final String BRAINTREE_ENABLED = "braintree.enabled"
 	private final String BRAINTREE_MERCHANT_ID = "braintree.merchantId"
-	private final String BRAINTREE_TOKENIZED_KEY = "braintree.tokenizedKey"
 	private final String BRAINTREE_PUBLIC_KEY = "braintree.publicKey"
 	private final String BRAINTREE_PRIVATE_KEY = "braintree.privateKey"
 	
@@ -331,7 +330,6 @@ class ConfigurationController {
 				
 				
 				payment_settings["braintreeMerchantId"] = prop.getProperty(BRAINTREE_MERCHANT_ID)
-				payment_settings["braintreeTokenizedKey"] = prop.getProperty(BRAINTREE_TOKENIZED_KEY)
 				payment_settings["braintreePublicKey"] = prop.getProperty(BRAINTREE_PUBLIC_KEY)
 				payment_settings["braintreePrivateKey"] = prop.getProperty(BRAINTREE_PRIVATE_KEY)
 				
@@ -363,7 +361,6 @@ class ConfigurationController {
 			String stripeProdPublishableKey = params.stripeProdPublishableKey
 			
 			String braintreeMerchantId = params.braintreeMerchantId
-			String braintreeTokenizedKey = params.braintreeTokenizedKey
 			String braintreePublicKey = params.braintreePublicKey
 			String braintreePrivateKey = params.braintreePrivateKey
 			
@@ -389,7 +386,6 @@ class ConfigurationController {
 				prop.setProperty(STRIPE_PRODUCTION_PUBLISHABLE_KEY, stripeProdPublishableKey);
 
 				prop.setProperty(BRAINTREE_MERCHANT_ID, braintreeMerchantId);
-				prop.setProperty(BRAINTREE_TOKENIZED_KEY, braintreeTokenizedKey);
 				prop.setProperty(BRAINTREE_PUBLIC_KEY, braintreePublicKey);
 				prop.setProperty(BRAINTREE_PRIVATE_KEY, braintreePrivateKey);
 				

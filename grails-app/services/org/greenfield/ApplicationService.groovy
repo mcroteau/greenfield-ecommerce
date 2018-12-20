@@ -1046,13 +1046,6 @@ class ApplicationService {
 		return merchantId
 	}
 	
-	def getBraintreeTokenizedKey(){
-		if(!properties)setProperties()
-		String tokenizedKey = properties.getProperty("braintree.tokenizedKey");
-		//println "++++++++ apiKey : ${apiKey} +++++++++++"	
-		return tokenizedKey
-	}
-	
 	def getBraintreePublicKey(){
 		if(!properties)setProperties()
 		String publicKey = properties.getProperty("braintree.publicKey");
