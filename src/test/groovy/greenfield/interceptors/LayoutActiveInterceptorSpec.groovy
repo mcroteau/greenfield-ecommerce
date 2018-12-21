@@ -1,14 +1,10 @@
 package greenfield.interceptors
 
 
-import grails.test.mixin.TestFor
+import grails.testing.web.interceptor.InterceptorUnitTest
 import spock.lang.Specification
 
-/**
- * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
- */
-@TestFor(LayoutActiveInterceptor)
-class LayoutActiveInterceptorSpec extends Specification {
+class LayoutActiveInterceptorSpec extends Specification implements InterceptorUnitTest<LayoutActiveInterceptor> {
 
     def setup() {
     }
@@ -16,12 +12,12 @@ class LayoutActiveInterceptorSpec extends Specification {
     def cleanup() {
 
     }
-	/**~/(index|tags|how)/**/
+    /**~/(index|tags|how)/**/
     void "Test layoutActive interceptor matching"() {
-        when:"A request matches the interceptor"
-            withRequest(controller:"layout", action: "index")
+        when: "A request matches the interceptor"
+        withRequest(controller: "layout", action: "index")
 
-        then:"The interceptor does match"
-            interceptor.doesMatch()
+        then: "The interceptor does match"
+        interceptor.doesMatch()
     }
 }
