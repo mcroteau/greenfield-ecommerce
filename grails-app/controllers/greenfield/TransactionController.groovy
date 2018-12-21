@@ -22,6 +22,9 @@ import com.stripe.model.Refund
 
 import grails.plugin.springsecurity.annotation.Secured
 
+import org.greenfield.api.payment.StripePaymentsProcessor
+import org.greenfield.api.payment.BraintreePaymentsProcessor
+
 @Mixin(BaseController)
 class TransactionController {
 
@@ -178,29 +181,15 @@ class TransactionController {
 		
 			try{
 
-				def apiKey
-			
-				if(Environment.current == Environment.DEVELOPMENT)  apiKey = applicationService.getStripeDevelopmentApiKey()
-				if(Environment.current == Environment.PRODUCTION) apiKey = applicationService.getStripeLiveApiKey()
-
-			
-				Map<String, Object> params = new HashMap<String, Object>();
-				Charge charge = Charge.retrieve(transactionInstance.chargeId);
-			
-				if(!charge){
-					flash.message = "Stripe was unable to refund the charge. Please try again or manually refund via Stripe."
-					redirect(action: 'show', id : id)
-					return
+				def paymentsProcessor = new StripePaymentsProcessor(applicationService, currencyService)
+				println "tr 621 : " + applicationService.getBraintreeEnabled()
+				if(applicationService.getBraintreeEnabled() == "true"){
+					paymentsProcessor = new BraintreePaymentsProcessor(applicationService, currencyService)
 				}
-
-				Charge refundedCharge = charge.refund(params);
 				
-				if(!refundedCharge){
-					flash.message = "Stripe was unable to refund the charge. Please try again or manually refund via Stripe."
-					redirect(action: 'show', id : id)
-					return
-				}
-			
+				def refundedCharge = paymentsProcessor.refund(transactionInstance.chargeId)
+				println "tr 191 -> " + refundedCharge.id
+						
 				transactionInstance.status = OrderStatus.REFUNDED.description()
 				transactionInstance.save(flush:true)
 			
@@ -209,12 +198,13 @@ class TransactionController {
 			
 			}catch (Exception e){
 				//println e
+				e.printStackTrace()
 				if(e.message.indexOf("has already been refunded") >= 0){
 					if(transactionInstance.status != OrderStatus.REFUNDED.description()){
 						transactionInstance.status = OrderStatus.REFUNDED.description()
 						transactionInstance.save(flush:true)
 					}
-					flash.message = "Order <strong>#${id}</strong> has already been refunded"
+					flash.message = "Order #${id} has already been refunded"
 				}else{
 					flash.message = "Unable to process refund."
 				}

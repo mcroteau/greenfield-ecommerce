@@ -652,8 +652,9 @@ class ShoppingCartController {
 				def action = 'checkout_preview'
 				if(shoppingCart.uuid == session["shoppingCart"]){
 					action = 'anonymous_preview'
+					session["shoppingCart"] = shoppingCart.uuid
 				}
-				session["shoppingCart"] = shoppingCart.uuid
+				
 				shoppingCart.status = ShoppingCartStatus.ACTIVE.description()
 				shoppingCart.save(flush:true)
 				
@@ -661,7 +662,6 @@ class ShoppingCartController {
 					transaction.delete(flush:true)
 				}
 				flash.message = "Something went wrong, please make sure all information is correct. If issue continues contact support"
-
 				redirect(action: action, params : [id : shoppingCart.id ])
 			}
 			

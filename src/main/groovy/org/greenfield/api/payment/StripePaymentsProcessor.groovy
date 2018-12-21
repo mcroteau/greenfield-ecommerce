@@ -54,7 +54,8 @@ class StripePaymentsProcessor implements PaymentProcessor {
 				
 				def paymentCharge = new PaymentCharge()
 				paymentCharge.gateway = PaymentCharge.STRIPE
-				paymentCharge.id = result.getTarget().id
+				
+				paymentCharge.id = charge.id
 				
 				return paymentCharge
 				
@@ -71,7 +72,42 @@ class StripePaymentsProcessor implements PaymentProcessor {
 	
 	
 	def refund(transactionId){
+		def apiKey = getApiKey()
+    	
+		Map<String, Object> params = new HashMap<String, Object>();
+		Charge charge = Charge.retrieve(transactionId);
+    	
+		if(!charge){
+			throw new Exception("Stripe was unable to refund the charge. Please try again or manually refund on Stripe website.")
+		}
+    	
+		Charge stripeRefundedCharge = charge.refund(params);
+
+		if(!stripeRefundedCharge){
+			throw new Exception("Something went wrong while trying to process refund")
+		}
+
+		stripeRefundedCharge.properties.each { 
+			println "$it.key -> $it.value" 
+		}
+		
+		def refundedCharge = new RefundedCharge()
+		refundedCharge.id = stripeRefundedCharge.id
+		
+		return refundedCharge
+		
+	}
 	
+	def getApiKey(){
+		def apiKey
+  	
+		if(Environment.current == Environment.DEVELOPMENT)  apiKey = applicationService.getStripeDevelopmentApiKey()
+		if(Environment.current == Environment.PRODUCTION) apiKey = applicationService.getStripeLiveApiKey()
+    	
+		if(!apiKey){
+			throw Exception("Something went wrong while setting api keys.")
+		}
+		return apiKey
 	}
 	
 }

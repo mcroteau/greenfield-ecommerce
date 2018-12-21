@@ -65,7 +65,16 @@ class BraintreePaymentsProcessor implements PaymentProcessor {
 	
 	def refund(transactionId){
 		def gateway = getGateway()
-		gateway.transaction().refund(transactionId)
+		def braintreeRefundedCharge = gateway.transaction().refund(transactionId)
+
+		braintreeRefundedCharge.properties.each { 
+			println "$it.key -> $it.value" 
+		}
+		
+		def refundedCharge = new RefundedCharge()
+		refundedCharge.id = 0
+		
+		return refundedCharge
 	}
 	
 	

@@ -21,6 +21,9 @@
 			border:dashed 3px #ccc;
 			background:#FBFFFF;
 			opacity:0.32;
+			-webkit-border-radius: 3px !important;
+			-moz-border-radius: 3px !important;
+			border-radius: 3px !important;
 		}
 
 		.gateway-select-container:hover{
