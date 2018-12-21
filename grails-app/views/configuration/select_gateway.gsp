@@ -27,7 +27,7 @@
 			cursor:pointer;
 			background:#FBFFFF;
 			opacity:0.70;
-			border:dashed 3px #a1a1a1;
+			border:dashed 3px #ccc;
 		}
 		
 		.gateway-select-container.pressed:active{

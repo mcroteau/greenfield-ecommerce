@@ -25,7 +25,7 @@
 			<h2>Confirm Refund</h2>
 			<p>Refunding the Order will refund the full amount of :
 			<br> <strong>${currencyService.format(applicationService.formatPrice(transactionInstance.total))}</strong> to
-				<strong>${transactionInstance.account.username}'s</strong> credit card via Stripe.</p>
+				<strong>account : ${transactionInstance.account.username}</strong>'s credit card.</p>
 			
 			<br/>
 			

@@ -10,6 +10,8 @@ import com.braintreegateway.Customer;
 import com.braintreegateway.ValidationError;
 import grails.util.Environment
 
+import org.greenfield.api.payment.PaymentCharge
+
 class BraintreePaymentsProcessor implements PaymentProcessor {
 	
 	def applicationService
@@ -33,7 +35,6 @@ class BraintreePaymentsProcessor implements PaymentProcessor {
 				
 		  		Result<Transaction> result = gateway.transaction().sale(request);
 		  		
-				println result
 				if (result.isSuccess()) {
 		    		// See result.getTarget() for details
 					print result.getTarget()
@@ -42,12 +43,11 @@ class BraintreePaymentsProcessor implements PaymentProcessor {
 						println "$it.key -> $it.value" 
 					}
 					
-					refund(result.getTarget().id)
+					def paymentCharge = new PaymentCharge()
+					paymentCharge.gateway = PaymentCharge.BRAINTREE
+					paymentCharge.id = result.getTarget().id
 					
-					return [
-						id: result.getTarget().id
-					]
-					
+					return paymentCharge
 					
 		  		} else {
 					throw new Exception("Something went wrong while processing checkout... please contact support")

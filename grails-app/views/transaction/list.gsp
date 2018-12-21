@@ -30,15 +30,14 @@
 						<g:sortableColumn property="orderDate" title="${message(code: 'transaction.orderDate.label', default: 'Order Date')}" />
 						
 						<th><g:message code="transaction.account.label" default="Account" /></th>
-					
-						<g:sortableColumn property="shipping" title="${message(code: 'transaction.shipping.label', default: 'Shipping')}" />
+						
+						<g:sortableColumn property="total" title="${message(code: 'transaction.total.label', default: 'Total')}" />
 						
 						<g:sortableColumn property="taxes" title="${message(code: 'transaction.taxes.label', default: 'Taxes')}" />
 						
-						<g:sortableColumn property="status" title="${message(code: 'transaction.taxes.label', default: 'Status')}" />
+						<g:sortableColumn property="shipping" title="${message(code: 'transaction.shipping.label', default: 'Shipping')}" />
 						
-						<g:sortableColumn property="total" title="${message(code: 'transaction.total.label', default: 'Total')}" />
-					
+						<g:sortableColumn property="status" title="${message(code: 'transaction.taxes.label', default: 'Status')}" />
 						<th></th>
 					
 					</tr>
@@ -52,15 +51,15 @@
 						<td><g:link action="show" id="${transactionInstance.id}"><g:formatDate date="${transactionInstance.orderDate}" format="dd MMM yyyy hh:mm a" /></g:link></td>
 						
 						<td>${transactionInstance.account.username}</td>
-					
-						<td>${currencyService.format(applicationService.formatPrice(transactionInstance.shipping))}</td>
+				
+						<td style="font-weight:bold;">${currencyService.format(applicationService.formatPrice(transactionInstance.total))}</td>
 				
 						<td>${currencyService.format(applicationService.formatPrice(transactionInstance.taxes))}</td>
-		
-						<td>${transactionInstance.status}</td>
-				
-						<td>${currencyService.format(applicationService.formatPrice(transactionInstance.total))}</td>
 					
+						<td>${currencyService.format(applicationService.formatPrice(transactionInstance.shipping))}</td>			
+						<td>${transactionInstance.status}</td>
+						
+						
 						<td><g:link action="show" params="[id: transactionInstance.id]" class="show-transaction-${transactionInstance.id}">Show </g:link></td>
 					
 					</tr>

@@ -310,7 +310,8 @@ class ShoppingCartController {
 		}	
 	}
 		
-		
+
+	@Secured(['ROLE_CUSTOMER','ROLE_ADMIN'])
 	def checkout_preview(){
 		authenticatedPermittedShoppingCart { accountInstance, shoppingCart -> 
 
@@ -329,6 +330,23 @@ class ShoppingCartController {
 			}
 			
 			if(shoppingCart && shoppingCart.status == ShoppingCartStatus.ACTIVE.description()){
+				
+				if(applicationService.getBraintreeEnabled() == "true"){
+				
+					def environment = "sandbox"
+					if(Environment.current == Environment.PRODUCTION)environment = "production"
+				
+					def merchantId = applicationService.getBraintreeMerchantId()
+					def publicKey = applicationService.getBraintreePublicKey()
+					def privateKey = applicationService.getBraintreePrivateKey()
+				
+					println merchantId + " : " + publicKey + " : " + privateKey
+				
+					def gateway = new BraintreeGateway(environment, merchantId, publicKey, privateKey)
+					def clientToken = gateway.clientToken().generate();
+					request.clientToken = clientToken
+				}
+				
 				calculateTotal(shoppingCart, shoppingCart.account)
 				[shoppingCart : shoppingCart, accountInstance: accountInstance, countries: Country.list()]
 			}else{
@@ -421,6 +439,8 @@ class ShoppingCartController {
 				def clientToken = gateway.clientToken().generate();
 				request.clientToken = clientToken
 			}
+			
+			
 			setAccountInstanceSession(accountInstance)
 			calculateTotal(shoppingCart, accountInstance)
 			
@@ -534,7 +554,8 @@ class ShoppingCartController {
 		
 		
 		def transaction = new Transaction()
-		def shoppingCart = ShoppingCart.get(Long.parseLong(params.id))
+		
+		def shoppingCart = ShoppingCart.get(params.id)
 		
 		if(shoppingCart){
 			
@@ -547,10 +568,16 @@ class ShoppingCartController {
 			try {
 
     			def total = shoppingCart.total
-				def token = params.stripeToken
+				def token = ""
 				if(applicationService.getBraintreeEnabled() == "true"){
 					token = params.nonce
 				}
+				
+				if(applicationService.getBraintreeEnabled() == "false"){
+				 	token = params.stripeToken
+					println params
+				}
+				
 				
 				println "sc 552 : token -> " + token
 				
@@ -591,31 +618,6 @@ class ShoppingCartController {
 				shoppingCart.status = ShoppingCartStatus.TRANSACTION.description()
 				shoppingCart.save(flush:true)
 				
-				/**
-    			//TODO: Stripe charge logic
-    			def apiKey
-				
-				if(Environment.current == Environment.DEVELOPMENT)  apiKey = applicationService.getStripeDevelopmentApiKey()
-				if(Environment.current == Environment.PRODUCTION) apiKey = applicationService.getStripeLiveApiKey()
-					
-				if(!apiKey){
-					flash.message = "Please configure Stripe before continuing"
-					redirect(controller:'store', action:'index')
-					return
-				}
-				
-				Stripe.apiKey = apiKey
-				def amountInCents = (total * 100) as Integer
-				
-    			def chargeParams = [
-    			    'amount': amountInCents, 
-    			    'currency': currencyService.getCurrency().toLowerCase(), 
-    			    'source': token, 
-    			    'description': "Order Placed. Account -> ${account.id} : ${account.username}"
-    			]
-
-				def charge = Charge.create(chargeParams)
-				**/
 				
 				def paymentsProcessor = new StripePaymentsProcessor(applicationService, currencyService)
 				println "sc 621 : " + applicationService.getBraintreeEnabled()
@@ -627,7 +629,9 @@ class ShoppingCartController {
 				
 				
 				
+				transaction.gateway = charge.gateway
     	    	transaction.chargeId = charge.id
+				
 				transaction.save(flush:true)
 
 				account.orders = Transaction.countByAccount(account)
@@ -653,6 +657,9 @@ class ShoppingCartController {
 				shoppingCart.status = ShoppingCartStatus.ACTIVE.description()
 				shoppingCart.save(flush:true)
 				
+				if(transaction?.id){
+					transaction.delete(flush:true)
+				}
 				flash.message = "Something went wrong, please make sure all information is correct. If issue continues contact support"
 
 				redirect(action: action, params : [id : shoppingCart.id ])

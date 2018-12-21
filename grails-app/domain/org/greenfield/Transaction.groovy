@@ -40,6 +40,8 @@ class Transaction {
 	State billState
 	String billZip
 	
+	String gateway
+	
 	
 	Account account
 	ShoppingCart shoppingCart
@@ -75,6 +77,7 @@ class Transaction {
 		billCity(nullable:true)
 		billState(nullable:true)
 		billZip(nullable:true)
+		gateway(nullable:true)
 		id generator: 'sequence', params:[sequence:'ID_TRANSACTION_PK_SEQ']
 	}
 	

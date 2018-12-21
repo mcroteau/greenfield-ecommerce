@@ -3,6 +3,7 @@ package org.greenfield.api.payment
 import grails.util.Environment
 import com.stripe.Stripe
 import com.stripe.model.Charge
+import org.greenfield.api.payment.PaymentCharge
 
 class StripePaymentsProcessor implements PaymentProcessor {
 	
@@ -50,13 +51,16 @@ class StripePaymentsProcessor implements PaymentProcessor {
 			}
 			
 			if(charge){
-				println "spp 47 -> " + charge
-				return [
-					id : charge.id
-				]
+				
+				def paymentCharge = new PaymentCharge()
+				paymentCharge.gateway = PaymentCharge.STRIPE
+				paymentCharge.id = result.getTarget().id
+				
+				return paymentCharge
+				
+			}else{
+				throw new Exception("Something went wrong on our end. Please contact support")
 			}
-			
-			throw new Exception("Something went wrong on our end. Please contact support")
 			
 			
 		}catch(Exception e){

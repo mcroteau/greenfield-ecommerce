@@ -283,43 +283,43 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 		</div>
 
 		
-<script src="https://js.braintreegateway.com/web/dropin/1.14.1/js/dropin.min.js"></script>	
+	<script src="https://js.braintreegateway.com/web/dropin/1.14.1/js/dropin.min.js"></script>	
+		
+	<script type="text/javascript">
+	$(document).ready(function(){
 	
-<script type="text/javascript">
-$(document).ready(function(){
-
-	var clientToken = [['${clientToken}']];
-	var braintreeInstance = {}
-
-	var $submitBtn = $("#submitBtn");
-	var $braintreeCreditCardDiv = $("#braintreeCreditCardDiv");
-	var $braintreeNonce = $("#nonce");
-	var $checkoutForm = $("#checkoutForm");
-	var $inputs = $('.form-control');	
-
-	$inputs.prop('disabled', true);
+		var clientToken = [['${clientToken}']];
+		var braintreeInstance = {}
 	
-	braintree.dropin.create({
-	  	authorization: clientToken,
-	  	container: '#braintreeCreditCardDiv'
-	}, function (error, instance) {
-		//console.log(error, instance)
-		braintreeInstance = instance;
-	});
+		var $submitBtn = $("#submitBtn");
+		var $braintreeCreditCardDiv = $("#braintreeCreditCardDiv");
+		var $braintreeNonce = $("#nonce");
+		var $checkoutForm = $("#checkoutForm");
+		var $inputs = $('.form-control');	
 	
-	$submitBtn.click(function(){
-		braintreeInstance.requestPaymentMethod(processCheckout);
-	});
+		$inputs.prop('disabled', true);
+		
+		braintree.dropin.create({
+		  	authorization: clientToken,
+		  	container: '#braintreeCreditCardDiv'
+		}, function (error, instance) {
+			//console.log(error, instance)
+			braintreeInstance = instance;
+		});
+		
+		$submitBtn.click(function(){
+			braintreeInstance.requestPaymentMethod(processCheckout);
+		});
+		
+		
+		function processCheckout(err, payload) {
+			$braintreeNonce.val(payload.nonce)
+			$checkoutForm.submit()
+		}
+		
 	
-	
-	function processCheckout(err, payload) {
-		$braintreeNonce.val(payload.nonce)
-		$checkoutForm.submit()
-	}
-	
-
-})	
-</script>
+	})	
+	</script>
 	
 	
 <%}else{%>
