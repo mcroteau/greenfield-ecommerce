@@ -41,7 +41,7 @@ class Transaction {
 	String billZip
 	
 	String gateway
-	
+	String refundChargeId
 	
 	Account account
 	ShoppingCart shoppingCart
@@ -78,6 +78,7 @@ class Transaction {
 		billState(nullable:true)
 		billZip(nullable:true)
 		gateway(nullable:true)
+		refundChargeId(nullable:true)
 		id generator: 'sequence', params:[sequence:'ID_TRANSACTION_PK_SEQ']
 	}
 	

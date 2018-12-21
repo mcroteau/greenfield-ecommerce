@@ -7,12 +7,8 @@ beans = {
 	    exceptionMappings = ['java.lang.Exception': '/error']
 	}
 	authenticationSuccessHandler(GreenfieldAuthenticationSuccessHandler) {
-        //def conf = SpringSecurityUtils.securityConfig
+		//https://groggyman.com/2015/04/05/custom-authentication-success-handler-with-grails-and-spring-security/
         requestCache = ref('requestCache')
         redirectStrategy = ref('redirectStrategy')
-        //defaultTargetUrl = conf.successHandler.defaultTargetUrl
-        //alwaysUseDefaultTargetUrl = conf.successHandler.alwaysUseDefault
-        //targetUrlParameter = conf.successHandler.targetUrlParameter
-        //useReferer = conf.successHandler.useReferer
 	}
 }

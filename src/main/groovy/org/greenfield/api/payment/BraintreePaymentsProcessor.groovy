@@ -71,8 +71,12 @@ class BraintreePaymentsProcessor implements PaymentProcessor {
 			println "$it.key -> $it.value" 
 		}
 		
+		if(!braintreeRefundedCharge.target){
+			throw new Exception("Something went wrong while processing refund on Braintree. Make sure transaction is settled : " + transactionId)
+		}
+		
 		def refundedCharge = new RefundedCharge()
-		refundedCharge.id = 0
+		refundedCharge.id = braintreeRefundedCharge.getTarget().id
 		
 		return refundedCharge
 	}

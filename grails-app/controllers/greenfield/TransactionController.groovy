@@ -190,6 +190,7 @@ class TransactionController {
 				def refundedCharge = paymentsProcessor.refund(transactionInstance.chargeId)
 				println "tr 191 -> " + refundedCharge.id
 						
+				transactionInstance.refundChargeId = refundedCharge.id
 				transactionInstance.status = OrderStatus.REFUNDED.description()
 				transactionInstance.save(flush:true)
 			
@@ -206,7 +207,7 @@ class TransactionController {
 					}
 					flash.message = "Order #${id} has already been refunded"
 				}else{
-					flash.message = "Unable to process refund."
+					flash.message = "Unable to process refund on " + transactionInstance.gateway + ". Please make sure the transaction is settled"
 				}
 				redirect(action : 'show', id : id)
 				return

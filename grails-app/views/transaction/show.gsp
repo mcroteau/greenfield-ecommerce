@@ -65,7 +65,10 @@
 		<div class="form-row">
 			<span class="form-label minimum hint">Status:&nbsp;</span>
 			<span class="input-container">
-				<g:if test="${transactionInstance.status != 'REFUNDED'}">
+				<g:if test="${transactionInstance.status == 'REFUNDED'}">
+					${transactionInstance.status}
+				</g:if>
+				<g:else>
 					<g:select from="${OrderStatus.values()}" 
 						optionKey="description" 
 						name="status" value="${transactionInstance.status}" 
@@ -73,13 +76,30 @@
 						style="width:150px; display:inline-block" 
 						id="status-select"/>
 					<input type="submit" value="Update Status" id="update-status" class="btn btn-primary"> 
-				</g:if>
-				<g:else>
-					${transactionInstance.status}
 				</g:else>
 			</span>
 			<br class="clear"/>
 		</div>
+		
+		<g:if test="${transactionInstance.status == 'REFUNDED'}">
+			<div class="form-row">
+				<span class="form-label minimum hint">Refund Id:&nbsp;</span>
+				<span class="input-container">
+					<span class="label label-default">${transactionInstance.refundChargeId}</span>
+				</span>
+				<br class="clear"/>
+			</div>
+		</g:if>
+		<div class="form-row">
+			<span class="form-label minimum hint">Gateway:&nbsp;</span>
+			<span class="input-container">
+				${transactionInstance.gateway}
+			</span>
+			<br class="clear"/>
+		</div>
+		
+
+		<br class="clear"/>
 	</g:form>
 	
 	

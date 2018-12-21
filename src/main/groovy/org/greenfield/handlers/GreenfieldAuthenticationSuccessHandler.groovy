@@ -17,9 +17,11 @@ class GreenfieldAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
 
     @Override
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response) {
-		println administrator
+//		println "is admininistrator : " + administrator		
+//		def targetUrl = super.determineTargetUrl(request, response)
+//		println "target url -> " + targetUrl
+		
         if(administrator){
-            logger.info("This user is very nasty. Send him to /dev/null to rot")
             return "/admin"
 		} else {
             return super.determineTargetUrl(request, response)
@@ -37,7 +39,7 @@ class GreenfieldAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
 			e.printStackTrace()
 		} finally {
             // always remove the saved request
-            requestCache.removeRequest(request, response)
+            //requestCache.removeRequest(request, response)
         }
 		
     }

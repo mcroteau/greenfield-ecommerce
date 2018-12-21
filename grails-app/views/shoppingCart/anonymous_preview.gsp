@@ -264,6 +264,8 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				
 				<h3 style="margin-top:20px !important; margin-bottom:0px;">Credit Card Information</h3>
 				
+				<p id="pleaseWait" style="border:solid 1px #ddd; background:#f8f8f8; padding:20px 10px;">Please wait, processing...</p>
+				
 				<div id="braintreeCreditCardDiv"></div>
 				
 				
@@ -296,6 +298,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 		var $braintreeNonce = $("#nonce");
 		var $checkoutForm = $("#checkoutForm");
 		var $inputs = $('.form-control');	
+		var $pleaseWait = $("#pleaseWait");
 	
 		$inputs.prop('disabled', true);
 		
@@ -305,6 +308,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 		}, function (error, instance) {
 			//console.log(error, instance)
 			braintreeInstance = instance;
+			$pleaseWait.fadeOut( "slow", function(){});
 		});
 		
 		$submitBtn.click(function(){

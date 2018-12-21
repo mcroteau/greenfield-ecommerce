@@ -28,7 +28,7 @@ ${raw(applicationService.getDefaultHeader("Account Info"))}
 		<div style="padding:20px;">
 			
 			<h2 style="border-bottom:dashed 3px #ddd; padding-bottom:7px;">Customer Profile
-			<g:link controller="account" class="btn btn-default pull-right" action="order_history">Order History</g:link>
+				<g:link controller="account" class="btn btn-default pull-right" action="order_history">Order History</g:link>
 			</h2>
 			
 			
@@ -52,11 +52,11 @@ ${raw(applicationService.getDefaultHeader("Account Info"))}
 				</ul>
 				</div>
 			</g:hasErrors>
-			
 			<g:form controller="account" action="customer_update" method="post" class="form-horizontal">
 
 				<g:hiddenField name="id" value="${accountInstance?.id}" />
 				<g:hiddenField name="version" value="${accountInstance?.version}" />
+				
 				
 				<div class="form-group">
 				  	<label for="username" class="col-sm-4 control-label">Username</label>
