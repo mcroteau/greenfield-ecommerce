@@ -45,7 +45,7 @@ import org.greenfield.api.EasyPostShipmentApi
 @Mixin(BaseController)
 class AccountController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST", register: "POST"]
+    static allowedMethods = [customer_profile : "GET", save: "POST", update: "POST", delete: "POST", register: "POST"]
 
 	def emailService
 	def applicationService

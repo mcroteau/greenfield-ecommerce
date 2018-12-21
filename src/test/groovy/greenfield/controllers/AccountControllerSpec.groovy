@@ -21,4 +21,15 @@ class AccountControllerSpec extends Specification implements ControllerUnitTest<
         then:
 		true == true
     }
+	
+	void "test Post not allowed"(){
+        when:
+        request.method = 'POST'
+        controller.customer_profile()
+
+        then:
+		println response.status
+		println METHOD_NOT_ALLOWED.value()
+        response.status == METHOD_NOT_ALLOWED.value()
+	}
 }
