@@ -629,7 +629,6 @@ class ShoppingCartController {
 				def charge = paymentsProcessor.charge(total, token, account)
 				
 				
-				
 				transaction.gateway = charge.gateway
     	    	transaction.chargeId = charge.id
 				
@@ -640,7 +639,7 @@ class ShoppingCartController {
 				
 				adjustInventory(shoppingCart)
 				setCheckoutPrices(shoppingCart)
-				
+				sendOrderToAdmin(transaction)
 				//sendNewOrderEmail(account, transaction)
 				
 				session["shoppingCart"] = null
@@ -671,6 +670,30 @@ class ShoppingCartController {
 			redirect(controller:'store', action:'index')
 		}
 		
+	}
+	
+	
+	def sendOrderToAdmin(transactionInstance){
+		
+		try{
+			
+			def adminEmail = applicationService.getAdminEmailAddress()
+			def fromAddress = applicationService.getSupportEmailAddress()
+			
+			def subject = ""
+			if(applicationService.getStoreName()){
+				subject = applicationService.getStoreName() + ": "
+			}
+			subject = subject + "Order placed"
+			
+			def body = "Order Total : " + currencyService.format(transactionInstance.total) + 
+						"<br/> Items : " + transactionInstance.shoppingCart.shoppingCartItems.size()
+			
+			emailService.send(adminEmail, fromAddress, subject, body)
+			
+		}catch(Exception e){
+			e.printStackTrace()
+		}
 	}
 
 

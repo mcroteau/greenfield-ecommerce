@@ -44,7 +44,9 @@ class EmailService {
 					return new PasswordAuthentication(username, password);
 				}
 		 	});
- 
+			
+		session.setDebug(true);
+			
 		try {
  
 			Message message = new MimeMessage(session);

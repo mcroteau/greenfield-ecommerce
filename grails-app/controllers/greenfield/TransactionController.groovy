@@ -246,7 +246,7 @@ class TransactionController {
 	def sendNewOrderEmail(transaction){
 		def fromAddress = applicationService.getSupportEmailAddress()
 		def customerToAddress = transaction?.account?.email
-		def customerSubject = "${applicationService.getStoreName()} : Your order is placed :)"
+		def customerSubject = "${applicationService.getStoreName()} : Your order is placed!"
 		
 		File templateFile = grailsAttributes.getApplicationContext().getResource(  "/templates/email/order_confirmation.html").getFile();
     	
