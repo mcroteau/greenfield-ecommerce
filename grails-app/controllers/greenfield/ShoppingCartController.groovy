@@ -641,7 +641,7 @@ class ShoppingCartController {
 				adjustInventory(shoppingCart)
 				setCheckoutPrices(shoppingCart)
 				
-				sendNewOrderEmail(account, transaction)
+				//sendNewOrderEmail(account, transaction)
 				
 				session["shoppingCart"] = null
 				

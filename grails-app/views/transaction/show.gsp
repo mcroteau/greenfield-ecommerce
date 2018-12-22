@@ -218,6 +218,12 @@
 		<g:link controller="transaction" action="confirm_refund" class="btn btn-default pull-right" id="${transactionInstance.id}">Refund Order</g:link>
 	</g:if>
 	
+	
+	<g:form controller="transaction" action="send_confirmation" id="${transactionInstance.id}" method="POST">
+		<input type="submit" class="btn btn-default pull-right" value="Send Email Confirmation" />
+	</g:form>
+	
+	
 	<br style="clear:both"/>
 	
 <script type="text/javascript">

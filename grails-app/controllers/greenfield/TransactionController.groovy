@@ -1,5 +1,7 @@
 package greenfield
 
+import groovy.text.SimpleTemplateEngine
+
 import org.springframework.dao.DataIntegrityViolationException
 import greenfield.common.BaseController
 import org.greenfield.common.OrderStatus
@@ -28,11 +30,12 @@ import org.greenfield.api.payment.BraintreePaymentsProcessor
 @Mixin(BaseController)
 class TransactionController {
 
-    static allowedMethods = [ update_status: "POST", refund: 'POST', delete: "POST" ]
+    static allowedMethods = [ send_confirmation: "POST", update_status: "POST", refund: 'POST', delete: "POST" ]
 
 
-	def applicationService
+	def emailService
 	def currencyService
+	def applicationService
 	
 
 	@Secured(['ROLE_ADMIN', 'ROLE_CUSTOMER'])
@@ -215,5 +218,92 @@ class TransactionController {
 		}	
 	}
 	
+	
+	@Secured(['ROLE_ADMIN'])
+	def send_confirmation(Long id){
+		def transactionInstance = Transaction.get(id)
+		
+		if(!transactionInstance){
+			flash.message = "Unable to find transaction"
+			redirect(action:"")
+			return
+		}
+
+		try { 
+			sendNewOrderEmail(transactionInstance)
+		}catch(Exception e){
+			e.printStackTrace()
+			flash.message = "Something went wrong: " + e + ". Please check your store email settings."
+			redirect(action: "show", id: id)
+			return
+		}	
+
+		flash.message = "Successfully sent email"
+		redirect(action : 'show', id : id)
+		return
+	}
+	
+	def sendNewOrderEmail(transaction){
+		def fromAddress = applicationService.getSupportEmailAddress()
+		def customerToAddress = transaction?.account?.email
+		def customerSubject = "${applicationService.getStoreName()} : Your order is placed :)"
+		
+		File templateFile = grailsAttributes.getApplicationContext().getResource(  "/templates/email/order_confirmation.html").getFile();
+    	
+		
+		def binding = [ "companyName"  : applicationService.getStoreName(),
+			 			"supportEmail" : applicationService.getSupportEmailAddress(),
+						"subtotal"     : applicationService.formatPrice(transaction.subtotal),
+						"taxes"        : applicationService.formatPrice(transaction.taxes),
+						"shipping"     : applicationService.formatPrice(transaction.shipping),
+						"total"        : applicationService.formatPrice(transaction.total),
+						"transaction"  : transaction,
+						"orderNumber"  : transaction.id ]
+						
+		def engine = new SimpleTemplateEngine()
+		def template = engine.createTemplate(templateFile).make(binding)
+		def bodyString = template.toString()	
+    	
+    	
+					
+		def orderDetails = ""
+		transaction.shoppingCart.shoppingCartItems.each {
+			def optionsTotal = 0
+			def optionsString = "<div style=\"font-size:11px; color:#777\">"
+			
+			if(it.shoppingCartItemOptions?.size() > 0){
+				optionsString += "<strong>options : </strong>"
+				it.shoppingCartItemOptions.each(){ option ->
+					optionsTotal += option.variant.price
+					optionsString += "${option?.variant?.name}"
+					optionsString += "(${currencyService.format(applicationService.formatPrice(option.variant.price))})<br/>"
+				}	
+			}
+			optionsString += "</div>"
+		
+			def productTotal = it.product.price + optionsTotal
+    	
+			def extendedPrice = productTotal * it.quantity
+			
+			orderDetails += "<tr>"
+			orderDetails += "<td style=\"text-align:center; padding:3px; border-bottom:dotted 1px #ddd\">${it.product.id}</td>"
+			orderDetails += "<td style=\"padding:3px; border-bottom:dotted 1px #ddd\">${it.product.name}${optionsString}</td>"
+			orderDetails += "<td style=\"text-align:center; padding:3px; border-bottom:dotted 1px #ddd\">${currencyService.format(applicationService.formatPrice(productTotal))}</td>"
+			orderDetails += "<td style=\"text-align:center; padding:3px; border-bottom:dotted 1px #ddd\">${it.quantity}</td>"
+			orderDetails += "<td style=\"text-align:center; padding:3px; border-bottom:dotted 1px #ddd\">${currencyService.format(applicationService.formatPrice(extendedPrice))}</td>"
+			orderDetails += "</tr>"
+		}
+		
+		bodyString = bodyString.replace("[[ORDER_DETAILS]]", orderDetails)
+		
+		def adminEmail = applicationService.getAdminEmailAddress()
+		def allEmails = customerToAddress
+		if(adminEmail){
+		 	allEmails += ",${adminEmail}"
+		}
+		
+		emailService.send(allEmails, fromAddress, customerSubject, bodyString)
+		
+	}
 	
 }
