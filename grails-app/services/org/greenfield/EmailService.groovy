@@ -45,7 +45,7 @@ class EmailService {
 				}
 		 	});
 			
-		session.setDebug(true);
+		//session.setDebug(true);
 			
 		try {
  

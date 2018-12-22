@@ -238,7 +238,7 @@ class TransactionController {
 			return
 		}	
 
-		flash.message = "Successfully sent email"
+		flash.message = "Successfully sent email confirmation"
 		redirect(action : 'show', id : id)
 		return
 	}
