@@ -1210,8 +1210,19 @@ class ApplicationService {
 			
 			return numberBigDecimal
 		}else{
-			return 0
+			return new BigDecimal(0)
 		}
 	}
 	
+	
+	def formatTotal(price){
+		if(price){
+ 	   		BigDecimal numberBigDecimal = new BigDecimal(price);
+			numberBigDecimal  = numberBigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+			
+			return numberBigDecimal
+		}else{
+			return new BigDecimal(0)
+		}
+	}
 }

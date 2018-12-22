@@ -27,6 +27,10 @@
 	
 	
 <style type="text/css">	
+	
+	html,body{
+		background:#e9f6f2;
+	}
 		
 	@font-face { 
 		font-family: Roboto-Regular; 
@@ -53,6 +57,19 @@
 		src: url("${resource(dir:'fonts/Roboto-Medium.ttf')}"); 
 	}
 
+	#developer-mode{
+		/**
+		position:absolute; 
+		top:1px; 
+		left:13px;**/ 
+		width:962px;
+		line-height:1.0;
+		margin:0px 0px 0px 13px; 
+		padding:7px 0px 7px 0px; 
+		color:#97c4b6;
+		background:#f0faf7 !important;
+	}
+
 	#seeking-developers-container{
 		width:200px;
 		left:1000px;
@@ -72,10 +89,9 @@
 <body>
 	
 	<%if(Environment.current == Environment.DEVELOPMENT){%>
-		<div id="developmentMode" class="alert alert-success" style="line-height:0.8; line-height:1.0; padding:7px 0px 7px 0px; position:absolute; top:1px; left:13px; width:962px;">
+		<div id="developer-mode" class="alert alert-info">
 			<g:message code="development.mode"/>
 		</div>
-		<br/>
 	<%}%>
 	
 	<div id="seeking-developers-container" class="alert alert-info">
@@ -110,7 +126,7 @@
 				<span class="header-info pull-left align-left"><g:message code="welcome.back"/> <strong><sec:username/></strong>!</span>
 				
 				<span class="header-info pull-right align-right">
-					<g:link uri="/"><g:message code="store.front"/></g:link>
+					<g:link uri="/" target="_blank"><g:message code="store.front"/></g:link>
 					&nbsp;|&nbsp;
 					<g:link controller="logout" action="index"><g:message code="logout"/></g:link>
 				</span>

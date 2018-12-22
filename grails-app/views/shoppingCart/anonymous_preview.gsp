@@ -261,8 +261,7 @@ ${raw(applicationService.getScreenHeader("Checkout"))}
 				<input type="hidden" name="nonce" value="" id="nonce"/> 
 				
 				<br/>
-				
-				<h3 style="margin-top:20px !important; margin-bottom:0px;">Credit Card Information</h3>
+				<h3 style="margin-top:20px !important;">Credit Card Information</h3>
 				
 				<p id="pleaseWait" style="border:solid 1px #ddd; background:#f8f8f8; padding:20px 10px;">Please wait, processing...</p>
 				

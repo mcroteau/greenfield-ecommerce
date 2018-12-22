@@ -567,7 +567,8 @@ class ShoppingCartController {
 			
 			try {
 
-    			def total = shoppingCart.total
+    			def total = applicationService.formatTotal(shoppingCart.total)
+				
 				def token = ""
 				if(applicationService.getBraintreeEnabled() == "true"){
 					token = params.nonce
@@ -740,6 +741,7 @@ class ShoppingCartController {
 			shoppingCart?.shoppingCartItems.size() > 0){
 			
 			def subtotal = calculateSubTotal(shoppingCart)
+			subtotal = applicationService.formatTotal(subtotal)
 			
 			calculateShipping(shoppingCart, account)
 			
@@ -752,11 +754,17 @@ class ShoppingCartController {
 		
 			def total = 0 
 			
+			println "sc 755 -> " + shoppingCart.shipping
+			
 			total = subtotal + taxes + shoppingCart.shipping
 			
-			shoppingCart.subtotal = subtotal
+			println "sc 761 -> " + total
+			total = applicationService.formatTotal(total)
+			
+			shoppingCart.subtotal = applicationService.formatTotal(subtotal)
 			shoppingCart.taxes = taxes
-			shoppingCart.total = total
+			shoppingCart.total = applicationService.formatTotal(total)
+			
 		
 			shoppingCart.save(flush:true)
 			
@@ -792,7 +800,7 @@ class ShoppingCartController {
 					
 						
 					if(shipmentRate){
-						shoppingCart.shipping = shipmentRate.rate
+						shoppingCart.shipping = applicationService.formatTotal(shipmentRate.rate)
 						shoppingCart.shipmentId = shipmentRate.shipmentId
 						shoppingCart.shipmentDays = shipmentRate.estDeliveryDays
 						shoppingCart.shipmentCarrier = shipmentRate.carrier

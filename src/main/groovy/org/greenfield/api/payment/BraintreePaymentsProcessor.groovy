@@ -26,7 +26,7 @@ class BraintreePaymentsProcessor implements PaymentProcessor {
 	def charge(amount, nonce, account){
 		try{
 			println "btp -> " + amount
-			def total = new BigDecimal(amount)
+			def total = applicationService.formatTotal(amount)
 			TransactionRequest request = new TransactionRequest().amount(total).paymentMethodNonce(nonce).options().submitForSettlement(true).done();
 			
 			def gateway = getGateway()
@@ -50,6 +50,14 @@ class BraintreePaymentsProcessor implements PaymentProcessor {
 					return paymentCharge
 					
 		  		} else {
+
+					result.properties.each{
+						println "$it.key -> $it.value" 
+					}
+					result.getTarget().properties.each { 
+						println "$it.key -> $it.value" 
+					}
+					
 					throw new Exception("Something went wrong while processing checkout... please contact support")
 		  		}
 			
@@ -61,6 +69,8 @@ class BraintreePaymentsProcessor implements PaymentProcessor {
 			e.printStackTrace()
 		}
 	}
+	
+	
 	
 	
 	def refund(transactionId){

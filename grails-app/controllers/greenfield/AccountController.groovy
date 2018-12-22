@@ -253,38 +253,6 @@ class AccountController {
 	}
 	
 
-	/**TODO:remove
-	def addressVerifiedOLD(accountInstance){
-		try{
-		
-			def apiKey
-			
-			if(Environment.current == Environment.DEVELOPMENT)  apiKey = applicationService.getEasyPostTestApiKey()
-			if(Environment.current == Environment.PRODUCTION) apiKey = applicationService.getEasyPostLiveApiKey()
-		
-			EasyPost.apiKey = apiKey;
-		
-	    	Map<String, Object> addressMap = new HashMap<String, Object>();
-	    	addressMap.put("street1", accountInstance.address1);
-	    	addressMap.put("street2", accountInstance.address2);
-			addressMap.put("city", accountInstance.city);
-	    	addressMap.put("country", accountInstance.state.country.name);
-	    	addressMap.put("state", accountInstance.state.name);
-			addressMap.put("zip", accountInstance.zip);
-			
-    		Address address = Address.create(addressMap);
-			Address verifiedAddress = address.verify();
-			
-			return true
-			
-		}catch (Exception e){
-			println e
-			return false
-		}
-	}	
-	**/
-
-	
 	@Secured(['ROLE_ADMIN'])
 	def account_activity(Long id){
 		authenticatedAdmin { adminAccount ->
@@ -493,6 +461,21 @@ class AccountController {
 					params.ipAddress = request.getRemoteHost()
 					accountInstance.properties = params
 		
+					def existingAccountEmail = Account.findByEmail(params.email)
+					if(existingAccountEmail){
+						flash.message = "You already have an account with us with the following email " + params.email + "... "
+						redirect(controller: "auth", action: "customer_login")
+						return
+					}
+					
+					def existingAccountUsername = Account.findByUsername(params.username)
+					if(existingAccountUsername){
+						flash.message = "An account with us with the following username " + params.username + " already exists... "
+						redirect(controller: "auth", action: "customer_login")
+						return
+					}
+					
+					
 			   		//def password = new Sha256Hash(params.password).toHex()
 					def password = springSecurityService.encodePassword(params.password)
 			   		accountInstance.password = password

@@ -21,7 +21,7 @@ function setState(state){
 }
 
 function getStatesAction(event){
-	console.log(event)
+	//console.log(event)
 	var country = $countrySelect.val()
 	getStates(country).then(renderStates);
 }

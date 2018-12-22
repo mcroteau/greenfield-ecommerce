@@ -80,16 +80,6 @@
 			</span>
 			<br class="clear"/>
 		</div>
-		
-		<g:if test="${transactionInstance.status == 'REFUNDED'}">
-			<div class="form-row">
-				<span class="form-label minimum hint">Refund Id:&nbsp;</span>
-				<span class="input-container">
-					<span class="label label-default">${transactionInstance.refundChargeId}</span>
-				</span>
-				<br class="clear"/>
-			</div>
-		</g:if>
 		<div class="form-row">
 			<span class="form-label minimum hint">Gateway:&nbsp;</span>
 			<span class="input-container">
@@ -97,7 +87,22 @@
 			</span>
 			<br class="clear"/>
 		</div>
-		
+		<div class="form-row">
+			<span class="form-label minimum hint">Transcation Id:&nbsp;</span>
+			<span class="input-container">
+				${transactionInstance.chargeId}
+			</span>
+			<br class="clear"/>
+		</div>
+		<g:if test="${transactionInstance.status == 'REFUNDED'}">
+			<div class="form-row">
+				<span class="form-label minimum hint">Refund Id:&nbsp;</span>
+				<span class="input-container">
+					${transactionInstance.refundChargeId}
+				</span>
+				<br class="clear"/>
+			</div>
+		</g:if>
 
 		<br class="clear"/>
 	</g:form>
