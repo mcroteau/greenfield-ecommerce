@@ -139,7 +139,8 @@ class BootStrap {
 	
 	def createLayout(){
 		
-		if(Layout.count() == 0){		
+		def existingLayout = Layout.findByName("Store Layout: Preset")
+		if(!existingLayout){	
 			File layoutFile = grailsApplication.mainContext.getResource("templates/storefront/layout.html").file
 			String layoutContent = layoutFile.text
 
