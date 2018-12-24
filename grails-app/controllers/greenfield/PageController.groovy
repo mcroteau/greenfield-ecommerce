@@ -121,11 +121,12 @@ class PageController {
  	@Secured(['ROLE_ADMIN'])
     def save() {	
 		authenticatedAdmin { adminAccount ->
-			
+
         	def pageInstance = new Page(params)
         	if (!pageInstance.save(flush: true)) {
+				def layouts = Layout.list()
 				flash.message = "Something went wrong. Please try again"
-        	    render(view: "create", model: [pageInstance: pageInstance])
+        	    render(view: "create", model: [pageInstance: pageInstance, layouts: layouts])
         	    return
         	}
         	
@@ -150,7 +151,7 @@ class PageController {
         	}
         	
         	flash.message = "Page sucessfully updated"
-        	redirect(action: "show", id: pageInstance.id)
+        	redirect(action: "edit", id: pageInstance.id)
 		}
     }
 	

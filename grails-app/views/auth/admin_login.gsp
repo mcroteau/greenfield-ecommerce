@@ -14,6 +14,7 @@ ${applicationService.getStoreName()} : Admin Login</title>
 	<body>
 		
 <style type="text/css">
+html,
 	body{ 
 		padding:0px;
 		height:100%;
@@ -21,6 +22,7 @@ ${applicationService.getStoreName()} : Admin Login</title>
 		background:#efefef;
 		background:#1c695b;
 		background:#fff;/**TODO:darken background**/
+		background:#e9f6f2;
 	}
 	.container{
 		padding:50px 50px 50px 50px;
@@ -53,6 +55,7 @@ ${applicationService.getStoreName()} : Admin Login</title>
 		-moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0);
 		-webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0);
 		border:solid 1px #ddd;
+		border:solid 1px #bcddd3;/**TODO**/
 	}
 	
 

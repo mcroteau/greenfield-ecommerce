@@ -352,6 +352,7 @@ class LayoutController {
 	}
 	
 	
+ 	@Secured(['ROLE_ADMIN'])	
 	def apply_pages(){
 		def layout = Layout.get(params.id)
 		if(!layout){
@@ -369,6 +370,7 @@ class LayoutController {
 
 	
 	
+ 	@Secured(['ROLE_ADMIN'])	
 	def apply_products(){
 		def layout = Layout.get(params.id)
 		if(!layout){
@@ -386,6 +388,7 @@ class LayoutController {
 
 	
 	
+ 	@Secured(['ROLE_ADMIN'])	
 	def apply_catalogs(){
 		def layout = Layout.get(params.id)
 		if(!layout){

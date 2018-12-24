@@ -72,14 +72,14 @@ class BootStrap {
 
 		//Development Data
 		if(Environment.current == Environment.DEVELOPMENT) {
-			createDevelopmentData()//TODO:refactor
-			//createDevelopmentDataSimple()//TODO:refactor
+			//createDevelopmentData()//TODO:refactor
+			createDevelopmentDataSimple()//TODO:refactor
 		}
 		
 		missingUuidHelperService.correctMissingUuids()
 		
 		//calculateResolveCountData()
-		n()
+		//n()
 	}
 	
 	//TODO:refactor

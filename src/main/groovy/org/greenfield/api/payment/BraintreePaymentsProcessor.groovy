@@ -38,8 +38,12 @@ class BraintreePaymentsProcessor implements PaymentProcessor {
 				if (result.isSuccess()) {
 		    		// See result.getTarget() for details
 					print result.getTarget()
+					
+					result?.properties.each { 
+						println "$it.key -> $it.value" 
+					}
 
-					result.getTarget().properties.each { 
+					result.target?.properties.each { 
 						println "$it.key -> $it.value" 
 					}
 					
@@ -77,7 +81,7 @@ class BraintreePaymentsProcessor implements PaymentProcessor {
 		def gateway = getGateway()
 		def braintreeRefundedCharge = gateway.transaction().refund(transactionId)
 
-		braintreeRefundedCharge.properties.each { 
+		braintreeRefundedCharge?.properties.each { 
 			println "$it.key -> $it.value" 
 		}
 		
@@ -86,7 +90,7 @@ class BraintreePaymentsProcessor implements PaymentProcessor {
 		}
 		
 		def refundedCharge = new RefundedCharge()
-		refundedCharge.id = braintreeRefundedCharge.getTarget().id
+		refundedCharge.id = braintreeRefundedCharge?.getTarget().id
 		
 		return refundedCharge
 	}

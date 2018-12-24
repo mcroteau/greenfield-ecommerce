@@ -26,6 +26,7 @@ import grails.plugin.springsecurity.annotation.Secured
 
 import org.greenfield.api.payment.StripePaymentsProcessor
 import org.greenfield.api.payment.BraintreePaymentsProcessor
+import org.greenfield.api.payment.PaymentCharge
 
 @Mixin(BaseController)
 class TransactionController {
@@ -185,8 +186,9 @@ class TransactionController {
 			try{
 
 				def paymentsProcessor = new StripePaymentsProcessor(applicationService, currencyService)
-				println "tr 621 : " + applicationService.getBraintreeEnabled()
-				if(applicationService.getBraintreeEnabled() == "true"){
+				
+				if(transactionInstance.gateway == PaymentCharge.BRAINTREE){
+					println "tr 191 : braintree -> " 
 					paymentsProcessor = new BraintreePaymentsProcessor(applicationService, currencyService)
 				}
 				
