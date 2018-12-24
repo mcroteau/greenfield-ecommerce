@@ -180,7 +180,8 @@ class LayoutController {
 	        return
 	    }
 		
-		redirect(action:"show", id: layoutInstance.id)
+		flash.message = "Successfully saved layout..."
+		redirect(action:"edit", id: layoutInstance.id)
 		
 	}
 	

@@ -47,7 +47,7 @@ span, p, table, td, th{
 	margin:25px auto 80px auto;
 	margin:13px auto 180px auto;
 	margin:1px auto 180px auto;
-	margin:1px 0px 180px 13px;
+	margin:3px 0px 180px 13px;
 	padding:15px 25px 30px 15px;
 
 	/**TODO:uncomment dumbed down ui**/
@@ -881,7 +881,7 @@ float:left;
 
 #css-textarea,
 #layout-textarea{
-	height:350px; 
+	height:475px; 
 	width:100%;
 	font-size:12px;
 	background:#f8f8f8;

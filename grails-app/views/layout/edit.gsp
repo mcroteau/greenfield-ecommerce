@@ -1,4 +1,5 @@
 <%@ page import="org.greenfield.Catalog" %>
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -36,7 +37,7 @@
 		</div>
 		<br class="clear"/>
 		
-		<g:form method="post" >
+		<form name="update-layout" action="/${applicationService.getContextName()}/layout/update" method="post" id="layoutForm" class="form-horizontal">
 		
 			<g:hiddenField name="id" value="${layoutInstance?.id}" />
 			<g:hiddenField name="version" value="${layoutInstance?.version}" />
@@ -132,7 +133,7 @@
 				<g:actionSubmit class="btn btn-danger pull-right" action="delete" value="Delete" formnovalidate="" onclick="return confirm('Are you sure you want to delete this Layout?');" style="display:inline-block; margin-right:10px;"/>
 			</div>
 			
-		</g:form>
+		</form>
 				
 		<br class="clear"/>
 				
@@ -157,9 +158,34 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+	var $layoutForm = $("#layoutForm");
+	
 	$("#layout-textarea").allowTabChar();
 	$("#css-textarea").allowTabChar();
 	$("#javascript-textarea").allowTabChar();
+	
+	$(window).keypress(function(event) {
+		/**
+		console.log(event)
+		console.log(event.which, event.ctrlKey)
+		
+        if((event.ctrlKey || event.metaKey) && event.which == 83) {
+            // Save Function
+            event.preventDefault();
+            return false;
+        }
+		**/
+	});
+	
+	$(window).keydown(function(event){
+        if((event.ctrlKey || event.metaKey) && event.which == 83) {
+			console.log("save...")
+            event.preventDefault();
+            $layoutForm.submit()
+            return false;
+        }
+	})
+	
 });
 </script>		
 		

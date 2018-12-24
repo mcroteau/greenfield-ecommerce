@@ -23,6 +23,7 @@ html,
 		background:#1c695b;
 		background:#fff;/**TODO:darken background**/
 		background:#e9f6f2;
+		background:#f0faf7
 	}
 	.container{
 		padding:50px 50px 50px 50px;

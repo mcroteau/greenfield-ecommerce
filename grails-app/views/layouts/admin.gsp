@@ -30,6 +30,7 @@
 	
 	html,body{
 		background:#e9f6f2;
+		background:#f0faf7;
 	}
 		
 	@font-face { 
@@ -67,7 +68,12 @@
 		margin:0px 0px 0px 13px; 
 		padding:7px 0px 7px 0px; 
 		color:#97c4b6;
-		background:#f0faf7 !important;
+		font-size:13px;
+		background:#fff !important;
+		border:solid 1px #bcddd3 !important;
+		-webkit-border-radius: 0px;
+		-moz-border-radius: 0px;
+		border-radius: 0px;
 	}
 
 	#seeking-developers-container{
@@ -87,12 +93,6 @@
 
 </head>
 <body>
-	
-	<%if(Environment.current == Environment.DEVELOPMENT){%>
-		<div id="developer-mode" class="alert alert-info">
-			<g:message code="development.mode"/>
-		</div>
-	<%}%>
 	
 	<div id="seeking-developers-container" class="alert alert-info">
 		<g:message code="interested.contributing"/>
@@ -121,6 +121,8 @@
 		</div>
 		
 		<div id="content-container">
+			
+			<img src="${resource(dir:'images/app/mgi-emblem.png')}" style="height:3%; width:3%; position:absolute; top:5px; left:743px;"/>
 			
 			<div id="header">
 				<span class="header-info pull-left align-left"><g:message code="welcome.back"/> <strong><sec:username/></strong>!</span>
@@ -151,6 +153,7 @@
 		<br class="clear"/>
 		
 	</div>
+	
 	
 </body>
 </html>
