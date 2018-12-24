@@ -24,6 +24,7 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'styles' },
 		{ name: 'colors' },
 		{ name: 'about' }
+		{ name: 'MediaEmbed'}
 	];
 
 	// Remove some buttons provided by the standard plugins, which are
@@ -35,4 +36,6 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
+	
+	config.extraPlugins = 'mediaembed';
 };
