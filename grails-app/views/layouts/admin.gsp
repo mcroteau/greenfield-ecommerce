@@ -122,7 +122,7 @@
 		
 		<div id="content-container">
 			
-			<img src="${resource(dir:'images/app/mgi-emblem.png')}" style="height:3%; width:3%; position:absolute; top:5px; left:743px;"/>
+			<img src="${resource(dir:'images/app/mgi-emblem.png')}" style="height:27px; width:34px; position:absolute; top:5px; left:753px;"/>
 			
 			<div id="header">
 				<span class="header-info pull-left align-left"><g:message code="welcome.back"/> <strong><sec:username/></strong>!</span>

@@ -38,4 +38,6 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	
 	config.extraPlugins = 'mediaembed';
+	
+	config.height = 353; 
 };

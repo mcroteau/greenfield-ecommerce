@@ -901,6 +901,9 @@ float:left;
 	-webkit-border-radius: 1px 1px 1px 1px;	
 }
 
-
+#cke_1_top,
+#cke_1_bottom{
+	background:#f8f8f8;
+}
 
 

@@ -104,6 +104,7 @@ class AdminController {
 	
 	
 	
+	@Secured(['ROLE_ADMIN'])
 	def data(){
 		authenticatedAdmin { adminAccount ->
 			def data = [:]
@@ -119,6 +120,7 @@ class AdminController {
 				try{
 					startDate = Date.parse("MM/dd/yyyy", params.startDate)
 					endDate = Date.parse("MM/dd/yyyy", params.endDate)
+					endDate = endDate + 1
 				}catch (Exception e){
 					response.error = "Unable to parse dates"
 				}
@@ -136,6 +138,7 @@ class AdminController {
 						rows = formatPagesData(data)
 						break;
 					case "catalogs" :
+						
 						data = getCatalogViewsStatistics(startDate, endDate)
 						rows = formatCatalogsData(data)
 						break;

@@ -63,24 +63,10 @@
 						</span>
 						<br class="clear"/>
 					</div>
-						  
-
-			 		<div class="form-row">
-			 			<span class="form-label full secondary">Layout</span>
-			 			<span class="input-container">
-							<g:select name="layout.id"
-									from="${layouts}"
-									value="${pageInstance?.layout?.id}"
-									optionKey="id" 
-									optionValue="name" 
-									class="form-control"/>
-			 			</span>
-			 			<br class="clear"/>
-			 		</div>
 					
 				
 					<div class="form-row">
-						<span class="form-label full secondary">Description 
+						<span class="form-label full secondary">Content 
 						</span>
 						<span class="input-container">
 							<span class="information secondary block">Editor below allows to switch between HTML source and plain text</span>
@@ -93,6 +79,22 @@
 						<g:textArea class="form-control ckeditor" name="content" id="content" cols="40" rows="15" maxlength="65535" value="${pageInstance?.content}"/>
 						<br class="clear"/>
 					</div>
+
+					  
+
+		 			<div class="form-row">
+		 				<span class="form-label full secondary">Layout</span>
+		 				<span class="input-container">
+							<g:select name="layout.id"
+									from="${layouts}"
+									value="${pageInstance?.layout?.id}"
+									optionKey="id" 
+									optionValue="name" 
+									class="form-control"
+									style="width:275px;"/>
+		 				</span>
+		 				<br class="clear"/>
+		 			</div>
 				
 				
 				
