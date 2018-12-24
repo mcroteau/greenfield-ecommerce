@@ -100,7 +100,7 @@
 	
 	<div id="greenfield-header"></div>
 	
-	<div id="outer-container">
+	<div id="outer-container" style="position:relative">
 		
 		<div id="admin-nav-container">
 	
@@ -117,8 +117,10 @@
 				<li><g:link uri="/layout/index" class="${layoutActive}"><g:message code="store.layouts" /></g:link></li>
 				<li><g:link uri="/configuration/settings" class="${settingsActive}"><g:message code="settings" /></g:link></li>
 			</ul>
-			
+				
 		</div>
+		
+		
 		
 		<div id="content-container">
 			
@@ -147,6 +149,10 @@
 			</div>
 			<!-- end of content -->
 			
+			
+		
+			<a href="http://www.mgidatasource.com" target="_blank" style="position:absolute; left:43px; bottom:0px; display:block; height:33px; width:27px;"><img src="${resource(dir:'images/app/mgi-emblem-bottom.png')}" style="height:inherit;width:inherit;outline:none;"/></a>
+		
 			
 			
 		</div>

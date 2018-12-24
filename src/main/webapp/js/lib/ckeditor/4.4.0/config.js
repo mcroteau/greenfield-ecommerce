@@ -39,5 +39,7 @@ CKEDITOR.editorConfig = function( config ) {
 	
 	config.extraPlugins = 'youtube,justify';
 	
+	config.skin = 'minimalist';
+	
 	config.height = 353; 
 };
