@@ -37,7 +37,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	
-	config.extraPlugins = 'youtube';
+	config.extraPlugins = 'youtube,justify';
 	
 	config.height = 353; 
 };
