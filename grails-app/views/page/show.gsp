@@ -75,16 +75,14 @@
 				</div>
 						  
 
-				<div class="form-row">
+				<div class="form-row" style="border:solid 1px #ddd;">
 					<span class="form-label full secondary">Content 
 					</span>
-					<span class="input-container">
-						<div style="border:dashed 2px #ddd; width:425px; min-height:275px">
-							<!--<g:textArea class="form-control" name="content" id="content" cols="40" rows="10" maxlength="65535" value="${pageInstance?.content}"  disabled="disabled"/>-->
-							${raw(pageInstance?.content)}
-						</div>
-						<br class="clear"/>
-					</span>
+					<br/>
+					<div style="border:solid 1px #ccc; width:100% !important; min-height:275px; padding:30px; background:#efefef">
+						<!--<g:textArea class="form-control" name="content" id="content" cols="40" rows="10" maxlength="65535" value="${pageInstance?.content}"  disabled="disabled"/>-->
+						${raw(pageInstance?.content)}
+					</div>
 					<br class="clear"/>
 				</div>
 			

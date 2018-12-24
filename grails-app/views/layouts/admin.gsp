@@ -122,7 +122,10 @@
 		
 		<div id="content-container">
 			
-			<img src="${resource(dir:'images/app/mgi-emblem.png')}" style="height:27px; width:34px; position:absolute; top:5px; left:753px;"/>
+			<!--<img src="${resource(dir:'images/app/mgi-emblem.png')}" style="height:27px; width:34px; position:absolute; top:5px; left:753px;"/>-->
+			
+			<a href="http://www.mgidatasource.com" target="_blank" id="mgi-link"><img src="${resource(dir:'images/app/mgi-emblem.png')}" style="height:inherit;width:inherit;outline:none;"/></a>
+			
 			
 			<div id="header">
 				<span class="header-info pull-left align-left"><g:message code="welcome.back"/> <strong><sec:username/></strong>!</span>

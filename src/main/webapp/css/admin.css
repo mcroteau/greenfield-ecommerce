@@ -906,4 +906,12 @@ float:left;
 	background:#f8f8f8;
 }
 
+#mgi-link{
+	height:27px; 
+	width:34px; 
+	display:block; 
+	top:4px; 
+	left:753px;
+	position:absolute; 
+}
 

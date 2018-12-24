@@ -24,7 +24,7 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'styles' },
 		{ name: 'colors' },
 		{ name: 'about' },
-		{ name: 'MediaEmbed'}
+		{ name: 'MediaEmbed', groups: ['alignment:left', 'alignment:right', 'alignment:center', 'alignment:justify']}
 	];
 
 	// Remove some buttons provided by the standard plugins, which are
@@ -37,7 +37,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	
-	config.extraPlugins = 'mediaembed';
+	config.extraPlugins = 'youtube';
 	
 	config.height = 353; 
 };
