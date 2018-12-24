@@ -79,7 +79,7 @@ class BootStrap {
 		missingUuidHelperService.correctMissingUuids()
 		
 		//calculateResolveCountData()
-		//n()
+		n()
 	}
 	
 	//TODO:refactor
