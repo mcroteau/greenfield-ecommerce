@@ -47,7 +47,7 @@ span, p, table, td, th{
 	margin:25px auto 80px auto;
 	margin:13px auto 180px auto;
 	margin:1px auto 180px auto;
-	margin:3px 0px 180px 13px;
+	margin:3px 0px 20px 13px;
 	padding:15px 25px 30px 15px;
 
 	/**TODO:uncomment dumbed down ui**/
@@ -62,7 +62,9 @@ span, p, table, td, th{
 	border:solid 1px #bcddd3;/**TODO**/
 }
 
-
+#bottom-padding{
+	margin:0px 0px 180px 0px;
+}
 
 
 #admin-nav-container{
