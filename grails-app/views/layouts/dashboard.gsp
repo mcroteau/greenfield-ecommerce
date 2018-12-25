@@ -168,7 +168,38 @@
 	
 	</div>
 	
+	<div id="third-party-integrations" style="position:relative; text-align:left;">
+		<a href="http://www.stripe.com" target="_blank" style="display:inline-block;width:100px;margin-left:334px"><img src="${resource(dir:'images/app/stripe-logo.png')}" style="width:inherit;"/></a>
+		<a href="http://www.braintreepayments.com" target="_blank" style="display:inline-block;width:100px;margin:0px 50px 0px 50px"><img src="${resource(dir:'images/app/braintree-logo.png')}" style="width:inherit;"/></a>
+		<a href="http://www.easypost.com" target="_blank" style="display:inline-block;width:100px;"><img src="${resource(dir:'images/app/easypost-logo.png')}" style="width:inherit;"/></a>
+	</div>
+	
 	<div id="bottom-padding"></div>
+	
+	
+	<style type="text/css">
+		#q{
+			z-index:1000;
+			opacity:1;
+			background:#F0FAF7;
+			position:absolute;
+			top:0px;
+			bottom:0px;
+			left:0px;
+			right:0px;
+			color:#222;
+			font-size:332px;
+		}
+		#third-party-integrations img{
+			
+		}
+	</style>
+	
+	<!--<div id="q">Q</div>-->
+	
+	<script>
+		//$("#q").fadeOut( 3000, function(){});
+	</script>
 	
 </body>
 </html>

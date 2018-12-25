@@ -906,6 +906,11 @@ float:left;
 #cke_1_top,
 #cke_1_bottom{
 	background:#f8f8f8;
+	border:solid 1px #ddd;
+}
+#cke_1_contents{
+	background:#f8f8f8;
+	border:solid 1px #ddd;
 }
 
 #mgi-link{
@@ -916,4 +921,11 @@ float:left;
 	left:753px;
 	position:absolute; 
 }
+#mgi-link img{
+	padding:0px !important;
+	margin:0px !important;
+}
 
+img{
+	outline:none !important;
+}
