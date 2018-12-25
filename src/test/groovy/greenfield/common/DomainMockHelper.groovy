@@ -10,6 +10,7 @@ import org.greenfield.Permission
 import org.greenfield.Product
 import org.greenfield.ProductOption
 import org.greenfield.ProductSpecification
+import org.greenfield.Role
 import org.greenfield.ShoppingCart
 import org.greenfield.ShoppingCartItem
 import org.greenfield.ShoppingCartItemOption
@@ -19,6 +20,13 @@ import org.greenfield.State
 import org.greenfield.Transaction
 import org.greenfield.Upload
 import org.greenfield.Variant
+import org.greenfield.log.CatalogViewLog
+import org.greenfield.log.PageViewLog
+import org.greenfield.log.ProductViewLog
+import org.greenfield.log.SearchLog
+import org.greenfield.log.LoginLog
+
+
 
 class DomainMockHelper {
 
@@ -58,6 +66,18 @@ class DomainMockHelper {
 	}
 	
 	
+	public static final Permission getMockPermission(account){
+        def permission = new Permission(account: account, permission: 'transaction:1')
+		return permission
+	}
+	
+	
+	public static final Product getMockProduct(layout){
+        def product = new Product(name: 'Composite Poker Chips', price: 123.00, quantity:10, layout: layout)
+		return product
+	}
+	
+	
 	public static final Product getMockProduct(catalog, layout){
         def product = new Product(name: 'Composite Poker Chips', price: 123.00, quantity:10, layout: layout)
 	    product.addToCatalogs(catalog)
@@ -69,7 +89,19 @@ class DomainMockHelper {
         def productOption = new ProductOption(name: 'Graphite center', position: 0, product: product)
 		return productOption
 	}
-
+	
+	
+	public static final ProductSpecification getMockProductSpecification(product, specification, specificationOption){
+        def productSpecification = new ProductSpecification(product: product, specification: specification, specificationOption: specificationOption)
+		return productSpecification
+	}
+	
+	
+	public static final Role getMockRole(){
+        def role = new Role(authority: 'ROLE_ADMIN')
+		return role
+	}
+	
 	
 	public static final ShoppingCart getMockShoppingCart(account){
 		def shoppingCart = new ShoppingCart(status: "ACTIVE", taxes: new BigDecimal(0), shipping: new BigDecimal(13), subtotal: new BigDecimal(100), total: new BigDecimal(113))
@@ -86,12 +118,6 @@ class DomainMockHelper {
 	public static final ShoppingCartItemOption getMockShoppingCartItemOption(variant, shoppingCartItem){
 		def shoppingCartItemOption = new ShoppingCartItemOption(checkoutPrice: new BigDecimal(3), variant: variant, shoppingCartItem: shoppingCartItem)
 		return shoppingCartItemOption
-	}
-	
-	
-	public static final ProductSpecification getMockProductSpecification(product, specification, specificationOption){
-        def productSpecification = new ProductSpecification(product: product, specification: specification, specificationOption: specificationOption)
-		return productSpecification
 	}
 
 
@@ -154,6 +180,37 @@ class DomainMockHelper {
         def variant = new Variant(name: "Composite", price: 2.30, imageUrl: "/image.jpg", position: 0, productOption: productOption)
 		return variant
 	}
+	
+	
+	public static final CatalogViewLog getMockCatalogViewLog(account, catalog){
+        def catalogViewLog = new CatalogViewLog(catalog: catalog, account: account)
+		return catalogViewLog
+	}
+	
+	
+	public static final PageViewLog getMockPageViewLog(account, page){
+        def pageViewLog = new PageViewLog(page: page, account: account)
+		return pageViewLog
+	}
+	
+	
+	public static final ProductViewLog getMockProductViewLog(account, product){
+        def productViewLog = new ProductViewLog(product: product, account: account)
+		return productViewLog
+	}
+	
+	
+	public static final SearchLog getMockSearchLog(account){
+        def searchLog = new SearchLog(account: account, query: "Meaning of life...")
+		return searchLog
+	}
+	
+	
+	public static final LoginLog getMockLoginLog(account){
+        def productViewLog = new LoginLog(account: account, ipAddress: "1.2.3.4", date: new Date())
+		return productViewLog
+	}
+	
 	
 }
 
