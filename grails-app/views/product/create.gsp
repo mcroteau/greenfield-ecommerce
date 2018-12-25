@@ -8,7 +8,7 @@
 <html>
 <head>
 	<meta name="layout" content="admin">
-	<title>Greenfield : Create Product</title>
+	<title>Greenfield : <g:message code="create.product"/></title>
 </head>
 <body>
 	
