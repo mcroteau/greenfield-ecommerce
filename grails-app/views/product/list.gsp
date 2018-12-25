@@ -41,7 +41,7 @@
 				<g:link controller="product" action="create" class="btn btn-primary pull-right"><g:message code="new.product"/></g:link>
 				<g:form action="admin_search" class="form-horizontal">
 					<g:submitButton name="submit" value="${message(code:'search')}" id="search" class="btn btn-info"/>
-					<input type="text" name="query" value="" id="searchbox" class="form-control" style="width:250px;" placeholder="${message(code:'search.by.name')}"/>
+					<input type="text" name="query" value="${query}" id="searchbox" class="form-control" style="width:250px;" placeholder="${message(code:'search.by.name')}"/>
 				</g:form>
 			</div>
 			
@@ -111,7 +111,7 @@
 					</tbody>
 				</table>
 				<div class="btn-group">
-					<g:paginate total="${productInstanceTotal}" />
+					<g:paginate total="${productInstanceTotal}" params="${[query:query]}" />
 				</div>
 				<g:link controller="product" action="outofstock" class="pull-right"><g:message code="out.of.stock"/></g:link>
 			</g:if>

@@ -164,7 +164,7 @@ class ProductController {
 		authenticatedAdmin { adminAccount ->
 
 			if(params.query && params.query.length() >= 3){
-				def p1 = Product.findAll("from Product as p where UPPER(p.name) like UPPER('%${params.query}%') AND p.disabled = false")
+				/**def p1 = Product.findAll("from Product as p where UPPER(p.name) like UPPER('%${params.query}%') AND p.disabled = false")
 				def p2 = Product.findAll("from Product as p where UPPER(p.description) like UPPER('%${params.query}%') AND p.disabled = false")
 				
 				
@@ -172,10 +172,31 @@ class ProductController {
 				    def productB = p2.find { it.name == productA.name }
 					p2.remove(productB)
 				})
+				**/
+				def max = params.max ? params.max : 10
+				def offset = params.offset ? params.offset : 0
+				
+				def productNameCriteria = Product.createCriteria()
+				def productInstanceList = productNameCriteria.list(max: max, offset: offset, sort: "id", order: "asc"){
+					or {
+						ilike("name", "%${params.query}%")
+						ilike("description", "%${params.query}%")
+					}
+				}
+				
+				def productNameCriteriaTotal = Product.createCriteria()
+				def productInstanceListTotal = productNameCriteriaTotal.list(){
+					or {
+						ilike("name", "%${params.query}%")
+						ilike("description", "%${params.query}%")
+					}
+				}
         	
-				def productInstanceList = p1 + p2
+				//def productInstanceList = p1 + p2
 				request.productInstanceList = productInstanceList
-				request.productInstanceTotal = productInstanceList.size()
+				request.productInstanceTotal = productInstanceListTotal.size()
+				request.query = params.query
+				
 				render(view:'list')
 			}else{
 				flash.message = "Search term must be at least 3 characters long"
