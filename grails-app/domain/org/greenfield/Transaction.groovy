@@ -16,10 +16,8 @@ class Transaction {
 	String status
 	Date orderDate
 	
-	String chargeId
 	String postageId
 	String postageUrl
-	
 	
 	Date dateCreated
 	Date lastUpdated
@@ -40,6 +38,7 @@ class Transaction {
 	State billState
 	String billZip
 	
+	String chargeId
 	String gateway
 	String refundChargeId
 	

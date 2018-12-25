@@ -7,19 +7,16 @@ import grails.testing.gorm.DataTest
 import org.greenfield.Layout
 import org.greenfield.Catalog
 import org.greenfield.Product
-import org.greenfield.AdditionalPhoto
+import org.greenfield.ProductOption
+import org.greenfield.Variant
 
 import org.greenfield.common.DomainMockHelper
 
-class AdditionalPhotoSpec extends Specification implements DataTest {
-	
-	void setupSpec(){
-        mockDomain Layout
-        mockDomain Catalog
-        mockDomain Product
-        mockDomain AdditionalPhoto
-	}
+class VariantSpec extends Specification implements DataTest {
 
+	void setupSpec(){
+        mockDomain Variant
+	}
 
 	void "test basic persistence mocking"() {
 	    setup:
@@ -28,19 +25,22 @@ class AdditionalPhotoSpec extends Specification implements DataTest {
 		
 		def catalog = DomainMockHelper.getMockCatalog(layout)
 		catalog.save(flush:true)
-
+	    
 		def product = DomainMockHelper.getMockProduct(catalog, layout)
 		product.save(flush:true)
+	    
+		def productOption = DomainMockHelper.getMockProductOption(product)
+		productOption.save(flush:true)
 		
-		def additionalPhoto = DomainMockHelper.getMockAdditionalPhoto(product)
-		additionalPhoto.save(flush:true)
-		
+	    def variant = DomainMockHelper.getMockVariant(productOption)
+		variant.save(flush:true)
+
 	    expect:
-	    Layout.count() == 1
+		Layout.count() == 1
 	    Catalog.count() == 1
-		Product.count() == 1
-	    AdditionalPhoto.count() == 1
+	    Product.count() == 1
+	    ProductOption.count() == 1
+	    Variant.count() == 1
 	}
 	
-
 }
