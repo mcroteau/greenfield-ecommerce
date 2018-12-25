@@ -4,23 +4,24 @@ import spock.lang.Specification
 import grails.testing.gorm.DomainUnitTest
 import grails.testing.gorm.DataTest
 
-import org.greenfield.Account
+import org.greenfield.Country
 
 import org.greenfield.common.DomainMockHelper
 
-class AccountSpec extends Specification implements DataTest {
-
+class CountrySpec extends Specification implements DataTest {
+	
 	void setupSpec(){
-        mockDomain Account
+        mockDomain Country
 	}
 
 	void "test basic persistence mocking"() {
 	    setup:
-	    def account = DomainMockHelper.getMockAccount()
-		account.save(flush:true)
-
+		def country = DomainMockHelper.getMockCountry()
+		country.save(flush:true)
+		
 	    expect:
-	    Account.count() == 1
+	    Country.count() == 1
 	}
 	
+
 }
