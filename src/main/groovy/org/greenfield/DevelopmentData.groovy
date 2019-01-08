@@ -255,6 +255,7 @@ public class DevelopmentData {
 			customer.address1 = "${it} Main Street"
 			customer.address2 = "Apt. #${it}"
 			customer.city = "Anchorage"
+			customer.country = State.findByName("United States")
 			customer.state = State.findByName("Alaska")
 			customer.zip = "99501"
 			customer.save(flush:true)

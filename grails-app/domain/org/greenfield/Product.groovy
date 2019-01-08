@@ -22,6 +22,7 @@ class Product {
 	Date lastUpdated
 	
 	boolean disabled
+	boolean purchaseable
 	
 	double length
 	double width
@@ -52,7 +53,8 @@ class Product {
 		price(nullable:false)
 		salesPrice(nullable:true)
 		imageUrl(nullable:true)
-		disabled(nullable:true)
+		disabled(nullable:true, default:false)
+		purchaseable(nullable:true, default:true)
 		detailsImageUrl(nullable:true)
 		length(nullable:true)
 		width(nullable:true)

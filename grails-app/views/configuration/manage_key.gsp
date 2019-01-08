@@ -1,3 +1,4 @@
+<% def applicationService = grailsApplication.classLoader.loadClass('org.greenfield.ApplicationService').newInstance()%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -11,7 +12,7 @@
 				text-align:center;
 			}
 			#manage-key-container{
-				width:550px;
+				width:450px;
 				margin:81px auto;
 				text-align:center;
 				border:solid 0px #ddd;
@@ -33,7 +34,8 @@
 			<div id="manage-key-container" class="content scaffold-create" role="main">
 			
 				<h2>Manage Access Key</h2>
-				<p class="information secondar">This key is used to access <strong>/data/accounts?k=key</strong></p>
+				<p>This key is used to access <g:link controller="data" action="accounts" params="['k': privateKey]" target="_blank">Accounts Data</g:link></p>
+				<p><a href="/${applicationService.getContextName()}/data/accounts?k=${privateKey}">www.company.com/${applicationService.getContextName()}/data/accounts?k=${privateKey}</a></p>
 				<g:if test="${flash.message}">
 					<div class="alert alert-info" role="status">${flash.message}</div>
 				</g:if>

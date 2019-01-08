@@ -942,7 +942,7 @@ class ConfigurationController {
 	    prop.store(new FileOutputStream(filePath), null);
 		applicationService.setProperties()
 		
-		flash.message = "Successfully generated private access key. You can now use this to access Q data"
+		flash.message = "Successfully generated private access key. You can now use this to access data"
 		redirect(action: "manage_key")
 	}
 	
