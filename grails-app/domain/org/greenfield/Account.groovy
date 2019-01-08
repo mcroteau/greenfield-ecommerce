@@ -136,6 +136,10 @@ class Account {
 		pageViews(nullable:true, default:0)
 		searches(nullable:true, default:0)
 		orders(nullable:true, default:0)
+		enabled(nullable:true, default:true)
+		accountExpired(nullable:true)
+		accountLocked(nullable:true)
+		passwordExpired(nullable:true)
 		id generator: 'sequence', params:[sequence:'ID_ACCOUNT_PK_SEQ']
     }
 	

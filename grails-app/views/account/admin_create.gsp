@@ -45,7 +45,7 @@
 			
 		
 			
-			<g:form action="admin_save" class="form-horizontal" role="form">
+			<g:form action="admin_save" class="form-horizontal" role="form" method="post">
 
 
 

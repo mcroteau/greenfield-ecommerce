@@ -72,8 +72,6 @@ class BootStrap {
 
 		//Development Data
 		if(Environment.current == Environment.DEVELOPMENT) {
-			createDevelopmentData()//TODO:refactor
-			//createDevelopmentDataSimple()//TODO:refactor
 		}
 		
 		missingUuidHelperService.correctMissingUuids()
@@ -242,15 +240,18 @@ class BootStrap {
 	
 	
 	def createCountriesAndStates(){
-		CountryStateHelper countryStateHelper = new CountryStateHelper()
-		countryStateHelper.countryStates.each(){ countryData ->
-			
-			if(countryData.expanded){ 
-				if(applicationService.getBraintreeEnabled() == "true"){
+
+		if(Country.count() == 0){
+			CountryStateHelper countryStateHelper = new CountryStateHelper()
+			countryStateHelper.countryStates.each(){ countryData ->
+				
+				if(countryData.expanded){ 
+					if(applicationService.getBraintreeEnabled() == "true"){
+						createCountryAndStates(countryData)
+					}
+				}else{
 					createCountryAndStates(countryData)
 				}
-			}else{
-				createCountryAndStates(countryData)
 			}
 		}
 
