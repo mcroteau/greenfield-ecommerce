@@ -37,6 +37,8 @@ class ConfigurationController {
 	
 	private final String SETTINGS_FILE = "settings.properties"
 	
+	private final String STORE_PRIVATE_KEY = "store.key"
+	
 	private final String STORE_CURRENCY = "store.currency"
 	private final String STORE_COUNTRY_CODE = "store.country.code"
 	private final String STORE_NAME = "store.name"
@@ -902,4 +904,52 @@ class ConfigurationController {
 		}
 	}
 	
+	
+ 	@Secured(['ROLE_ADMIN'])
+	def manage_key(){
+		Properties prop = new Properties();
+		try{
+	
+			File propertiesFile = grailsApplication.mainContext.getResource("settings/${SETTINGS_FILE}").file
+			FileInputStream inputStream = new FileInputStream(propertiesFile)
+			prop.load(inputStream);
+			
+			def privateKey = prop.getProperty(STORE_PRIVATE_KEY);
+			
+			[ privateKey : privateKey ]
+			
+		}catch(Exception e){
+			e.printStackTrace()
+		}
+	}
+ 	
+	
+	@Secured(['ROLE_ADMIN'])
+	def generate_key(){
+
+		def key = generator( (('a'..'z')+('A'..'Z')+('0'..'9')).join(), 9)
+		
+		Properties prop = new Properties();
+		File propertiesFile = grailsApplication.mainContext.getResource("settings/${SETTINGS_FILE}").file
+		FileInputStream inputStream = new FileInputStream(propertiesFile)
+		
+		prop.load(inputStream);
+		prop.setProperty(STORE_PRIVATE_KEY, key);
+		def absolutePath = grailsApplication.mainContext.servletContext.getRealPath('settings')
+		absolutePath = absolutePath.endsWith("/") ? absolutePath : absolutePath + "/"
+		def filePath = absolutePath + SETTINGS_FILE
+		
+	    prop.store(new FileOutputStream(filePath), null);
+		applicationService.setProperties()
+		
+		flash.message = "Successfully generated private access key. You can now use this to access Q data"
+		redirect(action: "manage_key")
+	}
+	
+	
+	def generator = { String alphabet, int n ->
+	  new Random().with {
+	    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+	  }
+	}
 }

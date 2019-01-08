@@ -42,6 +42,7 @@ class DevelopmentController {
 	
 	@Secured(['ROLE_ADMIN'])
 	def generate_development_data_old(){
+		
         if (Environment.current == Environment.DEVELOPMENT) {
 			createCustomers()
 			createTopLevelCatalogs()

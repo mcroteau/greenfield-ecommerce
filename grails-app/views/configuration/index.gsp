@@ -152,6 +152,12 @@ page import="org.greenfield.log.SearchLog"
 			
 			<br class="clear"/>
 			
+			<g:link uri="/configuration/manage_key" class="pull-right">
+				Manage Data Export Key
+			</g:link>
+			
+			<br class="clear"/>
+			
 		</div>
 	</body>
 </html>

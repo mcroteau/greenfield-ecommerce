@@ -347,9 +347,6 @@ h1.dashboard{
 }	
 
 
-
-
-
 .activity-stats{
 	width:220px;
 	float:left;
@@ -929,3 +926,20 @@ float:left;
 img{
 	outline:none !important;
 }
+
+
+input[type="text"]{
+	border-radius: 0px;	
+	-moz-border-radius: 0px;		
+	-webkit-border-radius: 0px;	
+}
+.form-row{
+	margin: 0px auto 10px auto;
+}
+
+input[type="text"].form-control {
+	font-size:15px;
+	height:33px !important;
+	background:#fefefe;
+}
+

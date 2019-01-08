@@ -72,6 +72,7 @@ class BootStrap {
 
 		//Development Data
 		if(Environment.current == Environment.DEVELOPMENT) {
+			createDevelopmentData()
 		}
 		
 		missingUuidHelperService.correctMissingUuids()
