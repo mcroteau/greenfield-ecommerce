@@ -916,7 +916,13 @@ class ConfigurationController {
 			
 			def privateKey = prop.getProperty(STORE_PRIVATE_KEY);
 			
-			[ privateKey : privateKey ]
+			def url = request.getRequestURL()
+			def split = url.toString().split("/${applicationService.getContextName()}/")
+			def httpSection = split[0]
+			def accountsUrl = "${httpSection}/${applicationService.getContextName()}/data/accounts?k=${privateKey}"
+			
+			
+			[ privateKey : privateKey, accountsUrl: accountsUrl ]
 			
 		}catch(Exception e){
 			e.printStackTrace()
