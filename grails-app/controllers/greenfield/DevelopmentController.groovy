@@ -29,6 +29,7 @@ class DevelopmentController {
 	**/
 
 	def springSecurityService
+	def sessionFactory
 
 
 	@Secured(['ROLE_ADMIN'])
@@ -52,20 +53,49 @@ class DevelopmentController {
 			render products as JSON	
 		}
 	}
+	
+	@Secured(['ROLE_ADMIN'])
+	def generate_customers(){
+		createCustomers()
+		flash.message = "Successfully generated customers..."
+		redirect(controller:'configuration', action:'index')
+	}
 
 
 	def createCustomers(){
+		
+		def session = sessionFactory.getCurrentSession();
+		def tx = session.beginTransaction();
+		
 		def password = springSecurityService.encodePassword("password")
-		(1..34).each{ i ->
+		def lastCustomer = Account.list(sort:"id", order: "desc")
+		def first = lastCustomer[0]?.id ? lastCustomer[0]?.id : 1
+		
+		def last = first + 1000
+		
+		(first..last).each{ i ->
 			def customer = new Account()
 			customer.username = 'customer' + i 
 			customer.password = password
 			customer.name = 'First Last' + i
 			customer.email = 'customer' + i + '@email.com'
-			customer.save(flush:true)
+			customer.city = 'Anchorage'
+			customer.state = 'Alaska'
+			customer.country = 'United States'
+			customer.zip = '99501'
+			customer.phone = '(907) 987-6532' + i
+			//customer.save(flush:true)
+			session.save(customer)
 			customer.createAccountRoles(false)
 			customer.createAccountPermission()
+	        if(i.mod(100)==0) {
+	        	//clear session and save records after every 100 records
+	            session.flush();
+	            session.clear();
+	        }
+			
 		}
+		tx.commit()
 	}
 
 	

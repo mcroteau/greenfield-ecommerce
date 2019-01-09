@@ -59,6 +59,7 @@ public class DataController {
 		
 		accountInstanceList.each() { acc ->
 			def account = [:]
+			account.uuid = acc.uuid
 	        account.email = acc.email
 			account.name = acc.name
 			account.address1 = acc.address1

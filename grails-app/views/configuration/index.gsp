@@ -145,6 +145,11 @@ page import="org.greenfield.log.SearchLog"
 						Generate Data
 					</g:link>
 					<br/>
+					<g:link uri="/development/generate_customers" class="btn btn-default">
+						<span class="glyphicon glyphicon-retweet"></span>
+						++Dev Customers
+					</g:link>
+					<br/>
 				</g:if>
 				
 			</div>
