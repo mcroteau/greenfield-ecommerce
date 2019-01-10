@@ -18,8 +18,8 @@ class GreenfieldAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
     @Override
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response) {
 //		println "is admininistrator : " + administrator		
-//		def targetUrl = super.determineTargetUrl(request, response)
-//		println "target url -> " + targetUrl
+		def targetUrl = super.determineTargetUrl(request, response)
+		println "target url -> " + targetUrl
 		
         if(administrator){
             return "/admin"
