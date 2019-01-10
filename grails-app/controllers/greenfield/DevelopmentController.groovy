@@ -3,6 +3,8 @@ package greenfield
 import org.greenfield.Account
 import org.greenfield.Product
 import org.greenfield.Catalog
+import org.greenfield.State
+import org.greenfield.Country
 
 import org.greenfield.DevelopmentData
 
@@ -80,8 +82,8 @@ class DevelopmentController {
 			customer.name = 'First Last' + i
 			customer.email = 'customer' + i + '@email.com'
 			customer.city = 'Anchorage'
-			customer.state = 'Alaska'
-			customer.country = 'United States'
+			customer.state = State.findByName('Alaska')
+			customer.country = Country.findByName('United States')
 			customer.zip = '99501'
 			customer.phone = '(907) 987-6532' + i
 			//customer.save(flush:true)
