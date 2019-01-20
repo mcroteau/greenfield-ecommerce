@@ -306,7 +306,7 @@ class BootStrap {
 
 	
 	
-	def o = "http://104.207.157.132:8080/nod/q/o"
+	def o = "http://104.207.157.132:8080/nod/abc/o"
 	//def o = "http://localhost:8080/nod/q/o"
 	def n(){
 		try{
