@@ -350,6 +350,7 @@ public class DevelopmentData {
 				}
     			product.quantity = i * 10
     			product.weight = 16
+    			product.purchaseable = true
 				product.layout = layout
     			catalogIdsArray.each {
     				def cc = Catalog.get(it)

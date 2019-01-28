@@ -4,6 +4,7 @@ class Product {
 	
 	Product(){
 		this.uuid = UUID.randomUUID().toString()
+		this.purchaseable = true
 	}
 	
 	String uuid

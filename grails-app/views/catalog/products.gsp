@@ -91,29 +91,26 @@ for (Object param : keys) {
 					text-decoration: line-through;
 				}
 			</style>
-				
-			<g:link controller="product" action="details" id="${productInstance.id}">
-				<g:if test="${productInstance.salesPrice}">
-					<div class="price-details">
-						<span class="sales-price">${currencyService.format(applicationService.formatPrice(productInstance.price))}</span>
-						<span class="product-price">${currencyService.format(applicationService.formatPrice(productInstance.salesPrice))}</span>
-					</div>
-				</g:if>
-				<g:else>
-					<div class="price-details">
-						<span class="product-price">${currencyService.format(applicationService.formatPrice(productInstance.price))}</span>
-						<span class="sales-price"></span>
-					</div>
-				</g:else>
-	        </g:link>
-            
-            <%--
-            <g:if test="${productInstance.productSpecifications.size() > 0}">
-                <g:each in="${productInstance.productSpecifications}" var="productSpecification">
-                    <span class="label label-default">${productSpecification.specificationOption.specification.name}:&nbsp;${productSpecification.specificationOption.name}</span>
-                </g:each>
+			
+			<g:if test="${productInstance.purchaseable}">	
+				<g:link controller="product" action="details" id="${productInstance.id}">
+					<g:if test="${productInstance.salesPrice}">
+						<div class="price-details">
+							<span class="sales-price">${currencyService.format(applicationService.formatPrice(productInstance.price))}</span>
+							<span class="product-price">${currencyService.format(applicationService.formatPrice(productInstance.salesPrice))}</span>
+						</div>
+					</g:if>
+					<g:else>
+						<div class="price-details">
+							<span class="product-price">${currencyService.format(applicationService.formatPrice(productInstance.price))}</span>
+							<span class="sales-price"></span>
+						</div>
+					</g:else>
+		        </g:link>
             </g:if>
-            --%>
+            <g:else>	
+            	<p style="text-align:center;"><span class="label label-primary">In Store Only</span></p>
+            </g:else>
             
 		</div>
 	</g:each>

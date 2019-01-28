@@ -356,6 +356,15 @@
 					<br class="clear"/>
 				</div>
 				
+
+				
+				<div class="form-row">
+					<span class="form-label full hint"><g:message code="purchaseable"/></span>
+					<span class="input-container">
+						<g:checkBox name="purchaseable" value="${productInstance.purchaseable}" />
+					</span>
+					<br class="clear"/>
+				</div>
 				
 				
 				

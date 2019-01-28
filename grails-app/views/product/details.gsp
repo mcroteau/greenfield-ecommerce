@@ -99,71 +99,80 @@ ${raw(applicationService.getProductHeader(catalogInstance, productInstance, "${p
 			</div>
 		</div>
 		
-		
+
+		<style type="text/css">
+			.sales-price{
+				font-size:17px;
+				text-decoration: line-through;
+			}
+			.on-sale{
+				color:#fff;
+				background:#d7182b;
+				background:#667;
+				background:#ff0000;
+				display:inline-block;
+				padding:3px 7px;
+				-webkit-border-radius: 3px;
+				-moz-border-radius: 3px;
+				border-radius: 3px;
+			}
+		</style>
 		
 		<div class="product_details">
 			<g:form controller="shoppingCart" action="add" class="form-inline">
 				<h1 class="product_name">${productInstance.name}</h1>
-				<style type="text/css">
-					.sales-price{
-						font-size:17px;
-						text-decoration: line-through;
-					}
-					.on-sale{
-						color:#fff;
-						background:#d7182b;
-						background:#667;
-						background:#ff0000;
-						display:inline-block;
-						padding:3px 7px;
-						-webkit-border-radius: 3px;
-						-moz-border-radius: 3px;
-						border-radius: 3px;
-					}
-				</style>
+
+
+				<g:if test="${productInstance.purchaseable}">
+
+
+						
+					<g:if test="${productInstance.salesPrice}">
+						<span class="on-sale">Sale</span>
+						<span class="sales-price">${currencyService.format(applicationService.formatPrice(productInstance.price))}</span>
+						<h2 class="product_price" style="margin-top:0px;">${currencyService.format(applicationService.formatPrice(productInstance.salesPrice))}</h2>
+					</g:if>
+					<g:else>
+						<h2 class="product_price" style="margin-top:0px;">${currencyService.format(applicationService.formatPrice(productInstance.price))}</h2>
+					</g:else>
+					<div style="text-align:left; margin-top:20px;">
 					
-				<g:if test="${productInstance.salesPrice}">
-					<span class="on-sale">Sale</span>
-					<span class="sales-price">${currencyService.format(applicationService.formatPrice(productInstance.price))}</span>
-					<h2 class="product_price" style="margin-top:0px;">${currencyService.format(applicationService.formatPrice(productInstance.salesPrice))}</h2>
-				</g:if>
-				<g:else>
-					<h2 class="product_price" style="margin-top:0px;">${currencyService.format(applicationService.formatPrice(productInstance.price))}</h2>
-				</g:else>
-				<div style="text-align:left; margin-top:20px;">
-				
-					<g:each in="${productOptions}" var="productOption">
-						<g:if test="${productOption.variants?.size() > 0}">
-							<div class="form-group" style="margin-bottom:10px;">
-								<label style="display:inline-block; width:100px; text-align:right; margin-right:10px;">${productOption.name}</label>
-								<select name="product_option_${productOption.id}" class="product_option">
-									<g:each in="${productOption.variants}" var="variant">
-										<option value="${variant.id}" data-image="${variant.imageUrl}">
-											${variant.name} 
-											<g:if test="${variant.price > 0}">
-												(${currencyService.format(applicationService.formatPrice(variant.price))})
-											</g:if>
-										</option>
-									</g:each>
-								</select>
-							</div>
-						</g:if>
-					</g:each>
-				
-					<div class="form-group">
-						<label style="display:inline-block; width:100px; text-align:right; margin-right:10px;">Quantity</label>
-						<input type="text" name="quantity" value="1" style="width:70px;" class="form-control" style="margin:5px auto !important"/>
+						<g:each in="${productOptions}" var="productOption">
+							<g:if test="${productOption.variants?.size() > 0}">
+								<div class="form-group" style="margin-bottom:10px;">
+									<label style="display:inline-block; width:100px; text-align:right; margin-right:10px;">${productOption.name}</label>
+									<select name="product_option_${productOption.id}" class="product_option">
+										<g:each in="${productOption.variants}" var="variant">
+											<option value="${variant.id}" data-image="${variant.imageUrl}">
+												${variant.name} 
+												<g:if test="${variant.price > 0}">
+													(${currencyService.format(applicationService.formatPrice(variant.price))})
+												</g:if>
+											</option>
+										</g:each>
+									</select>
+								</div>
+							</g:if>
+						</g:each>
+					
+						<div class="form-group">
+							<label style="display:inline-block; width:100px; text-align:right; margin-right:10px;">Quantity</label>
+							<input type="text" name="quantity" value="1" style="width:70px;" class="form-control" style="margin:5px auto !important"/>
+						</div>
+						
 					</div>
 					
-				</div>
-				
-				
-				<br/>
-				<br/>
-				<input type="hidden" name="id" value="${productInstance.id}"/>
+					
+					<br/>
+					<br/>
+					<input type="hidden" name="id" value="${productInstance.id}"/>
 
-				<g:submitButton name="submit" class="btn btn-primary" id="submit" value="Add To Cart"/>
-				
+					<g:submitButton name="submit" class="btn btn-primary" id="submit" value="Add To Cart"/>
+
+				</g:if>
+				<g:else>
+					<h2><span class="label label-primary">In Store Only</span></h2>
+				</g:else>				
 
 
 				<g:if test="${applicationService.getSocialMediaEnabled() == "true"}">

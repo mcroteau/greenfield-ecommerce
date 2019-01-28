@@ -175,6 +175,12 @@ class ShoppingCartController {
 							- create session cart
 							- add item to session cart
 		**/
+		println "purchaseable: " + productInstance.purchaseable
+		if(!productInstance.purchaseable){
+			flash.message = "This product is not purchaseable on this site"
+			redirect(controller: "product", action:"details", id: productInstance.id)
+			return
+		}
 		
 		def shoppingCart
 		
