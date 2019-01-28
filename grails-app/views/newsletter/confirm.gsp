@@ -13,7 +13,8 @@ ${raw(applicationService.getDefaultHeader("Newsletter Opt Out"))}
 
 	<form action="/${applicationService.getContextName()}/newsletter/opt_out">
 		<input type="hidden" name="id" value="${account.id}"/>
-		<input type="submit" class="btn btn-default" value="Opt In"/>
+		<input type="hidden" name="redirect" value="true"/>
+		<input type="submit" class="btn btn-default" value="Opt Out"/>
 	</form>
 
 ${raw(applicationService.getDefaultFooter())}

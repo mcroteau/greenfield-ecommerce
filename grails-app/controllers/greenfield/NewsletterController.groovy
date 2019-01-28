@@ -76,7 +76,7 @@ class NewsletterController {
     }
 
 
-    @Secured(['ROLE_ADMIN'])
+    @Secured(["permitAll", "ROLE_ADMIN"])
     def opt_out(Long id){
     	def account = Account.get(id)
     	if(!account){
@@ -87,6 +87,12 @@ class NewsletterController {
     	account.save(flush:true)
 
     	flash.message = "Successfully opted out account: " + account.email
+
+    	if(params.redirect == "true"){
+    		redirect(action: "index")
+    		return
+    	}
+
 		redirect(action: "list")
     }
 
@@ -117,4 +123,6 @@ class NewsletterController {
 
 		[accountsList: accountsList, accountsTotal: Account.countByEmailOptIn(true)]
     }
+
+
 }
