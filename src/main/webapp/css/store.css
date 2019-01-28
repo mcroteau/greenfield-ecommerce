@@ -164,6 +164,32 @@ body, html{
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 }
+
+#newsletter-container{
+	width:960px;
+	margin:20px auto;
+}
+
+#newsletter-signup{
+	width:760px;
+	text-align:right
+}
+#newsletter-signup input[type="text"]{
+	width:300px;
+}
+
+#newsletter-signup input,
+#newsletter-signup span{
+	float:right;
+	display:inline-block;
+}
+
+#newsletter-signup span{    
+    	margin: 8px 10px 0px 0px;
+    	color: #999;
+}
+
+
 #footer{
 	font-size:12px;
 	width:960px;

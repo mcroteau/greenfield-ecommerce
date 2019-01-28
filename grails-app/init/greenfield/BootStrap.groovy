@@ -143,9 +143,13 @@ class BootStrap {
 			File layoutFile = grailsApplication.mainContext.getResource("templates/storefront/layout.html").file
 			String layoutContent = layoutFile.text
 
+			File cssFile = grailsApplication.mainContext.getResource("css/store.css").file
+			String css = cssFile.text
+
 			def layout = new Layout()
 			layout.content = layoutContent
 			layout.name = "Store Layout: Preset"
+			layout.css = css
 			layout.defaultLayout = true
 			
 			layout.save(flush:true)

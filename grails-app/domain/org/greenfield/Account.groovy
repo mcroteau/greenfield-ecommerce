@@ -30,7 +30,6 @@ class Account {
 	boolean hasAdminRole
 	
 	//TODO: Replace with Address
-	//TODO: Develop scheme for international 
 	String address1
 	String address2
 	
@@ -42,6 +41,7 @@ class Account {
 	String phone
 	
 	boolean addressVerified
+	boolean optInEmail
 	
 	Date dateCreated
 	Date lastUpdated
@@ -129,6 +129,7 @@ class Account {
 		phone(nullable:true)
 		hasAdminRole(nullabe:true)
 		addressVerified(nullable:true, default:true)
+		optInEmail(nullable:true, default:true)
 		ipAddress(blank:true, nullable:true)
 		resetUUID(nullable:true)
 		catalogViews(nullable:true, default:0)
