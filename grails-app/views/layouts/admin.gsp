@@ -158,6 +158,8 @@
 			<a href="http://www.mgidatasource.com" target="_blank" style="position:absolute; left:43px; bottom:0px; display:block; height:33px; width:27px;"><img src="${resource(dir:'images/app/mgi-emblem-bottom.png')}" style="height:inherit;width:inherit;outline:none;"/></a>
 				-->
 			
+
+			<div style="padding-bottom:100px;"></div>
 			
 		</div>
 		<!-- end of content-container -->

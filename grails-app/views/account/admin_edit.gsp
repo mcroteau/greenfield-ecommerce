@@ -200,6 +200,14 @@
 				</div>
 				
 			</g:form>
+
+			<div>
+				<g:if test="${accountInstance.emailOptIn == false}">
+					<g:form controller="newsletter" action="admin_opt_in" method="post" id="${accountInstance.id}">
+						<input type="submit" value="Opt In Emails" class="btn btn-default"/>
+					</g:form>
+				</g:if>
+			</div>
 	
 		</div>
 	

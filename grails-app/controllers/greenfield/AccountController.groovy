@@ -436,12 +436,24 @@ class AccountController {
 	
 	
 	@Secured(['permitAll'])
+	def complete_signup(){}
+	
+
+	@Secured(['permitAll'])
 	def customer_registration(){}
 	
 
 	@Secured(['permitAll'])
 	def customer_register(){
-		
+
+		def existingAccountEmailOptIn = Account.findByUsernameAndEmailAndEmailOptInAndPassword(params.email, params.email, true, "change")
+		if(existingAccountEmailOptIn){
+			println "found..."
+			flash.message = "We have started an account for you when you signed up for newsletters, please complete the account setup"
+			render(view: "complete_signup", model: [accountInstance: existingAccountEmailOptIn])
+			return
+		}
+
 		def accountInstance = new Account(params)
 
 		boolean captchaValid = simpleCaptchaService.validateCaptcha(params.captcha)
@@ -475,8 +487,6 @@ class AccountController {
 						return
 					}
 					
-					
-			   		//def password = new Sha256Hash(params.password).toHex()
 					def password = springSecurityService.encodePassword(params.password)
 			   		accountInstance.password = password
 		
@@ -517,6 +527,63 @@ class AccountController {
 	}
 	
 	
+	@Secured(['permitAll'])
+	def complete(){
+
+		def accountInstance = Account.get(params.id)
+		if(!accountInstance){
+			flash.message = "Unable to find your account information... please register for a new account or contact support if this continues"
+			redirect(action: "customer_registration")
+			return
+		}
+		
+		if(params.password && params.passwordRepeat){
+			
+			if(params.password == params.passwordRepeat){
+
+				if(params.password.length() >= 5){
+				
+					params.ipAddress = request.getRemoteHost()
+					accountInstance.properties = params
+					
+					def password = springSecurityService.encodePassword(params.password)
+			   		accountInstance.password = password
+		
+					if(accountInstance.save(flush:true)){
+					
+						accountInstance.hasAdminRole = false//TODO:used for easy searching in admin
+						accountInstance.createAccountRoles(false)
+						accountInstance.createAccountPermission()
+
+						sendAdminEmail(accountInstance)
+						sendThankYouEmail(accountInstance)
+			
+						flash.message = "You have successfully completed account signup... sign into your new account to continue"
+						redirect(controller : 'auth', action: 'customer_login', params : [ accountInstance: accountInstance, username : params.username, password : params.password, new_account : true])
+			
+					}else{
+						flash.message = "There was a problem with your registration, please try again or contact the administrator"
+						render(view: "complete_signup", model: [accountInstance: accountInstance])
+						return
+					}
+					
+				
+				}else{
+					flash.message = "Password must be at least 5 characters long.  Please try again"
+					render(view: "customer_registration", model: [accountInstance: accountInstance])
+				}
+	
+			}else{
+				//passwords don't match
+				flash.message = "Passwords don't match.  Please try again"
+				render(view: "customer_registration", model: [accountInstance: accountInstance])
+			}
+		}else{
+			flash.message = "Passwords cannot be blank"
+			render(view: "customer_registration", model: [accountInstance: accountInstance])
+		}
+	}
+
 	
 	def sendAdminEmail(Account accountInstance){
 		try { 

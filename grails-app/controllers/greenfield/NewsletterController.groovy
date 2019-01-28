@@ -76,6 +76,22 @@ class NewsletterController {
     }
 
 
+    @Secured(['ROLE_ADMIN'])
+    def admin_opt_in(Long id){
+    	def account = Account.get(id)
+    	if(!account){
+    		flash.message = "Unable to find account"
+    	}
+
+    	account.emailOptIn = true
+    	account.save(flush:true)
+
+    	flash.message = "Successfully opted in account: " + account.email
+		redirect(controller:"account", action: "edit", id: account.id)
+    }
+
+
+
     @Secured(["permitAll", "ROLE_ADMIN"])
     def opt_out(Long id){
     	def account = Account.get(id)
@@ -97,10 +113,9 @@ class NewsletterController {
     }
 
 
-
     @Secured(["permitAll"])
-    def confirm(Long id){
-    	def account = Account.get(id)
+    def confirm(){
+    	def account = Account.findByEmail(params.email)
     	if(!account){
     		flash.message = "Unable to find account"
     		redirect(action: "index")
