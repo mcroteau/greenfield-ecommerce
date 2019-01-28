@@ -13,6 +13,12 @@ page import="org.greenfield.Transaction"
 		<meta name="layout" content="admin">
 		<g:set var="entityName" value="${message(code: 'account.label', default: 'Account')}" />
 		<title>Greenfield : Accounts</title>
+
+		<style type="text/css">
+			#newsletter-signups-link{
+				text-align:right;
+			}
+		</style>
 	</head>
 	<body>
 
@@ -163,10 +169,14 @@ page import="org.greenfield.Transaction"
 					<g:paginate total="${accountInstanceTotal}" 
 						 	params="${[query : params.query ]}"/>
 				</div>
+
+				<div id="newsletter-signups-link">
+					<g:link controller="newsletter" action="list">Newsletter Signups</g:link>
+				</div>
 			</g:if>
 			<g:else>
 				<br/>
-				<p style="color:#333;padding:0px 40px;">No Accounts created yet, you just opened up a store on undeveloped land on the internet. You will have customer accounts. Hang tight...</p>
+				<p style="color:#333;padding:0px 40px;">No accounts found yet...</p>
 			</g:else>
 		</div>
 	</body>

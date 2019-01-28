@@ -41,7 +41,7 @@ class Account {
 	String phone
 	
 	boolean addressVerified
-	boolean optInEmail
+	boolean emailOptIn
 	
 	Date dateCreated
 	Date lastUpdated
@@ -129,7 +129,7 @@ class Account {
 		phone(nullable:true)
 		hasAdminRole(nullabe:true)
 		addressVerified(nullable:true, default:true)
-		optInEmail(nullable:true, default:true)
+		emailOptIn(nullable:true, default:true)
 		ipAddress(blank:true, nullable:true)
 		resetUUID(nullable:true)
 		catalogViews(nullable:true, default:0)
