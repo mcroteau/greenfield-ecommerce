@@ -40,6 +40,9 @@ import org.greenfield.SimpleCaptchaService
 
 import org.greenfield.api.mail.ShipmentAddress
 import org.greenfield.api.mail.EasyPostShipmentApi
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 	
 	
 @Mixin(BaseController)
@@ -105,18 +108,6 @@ class AccountController {
 				}
 				accountInstance.addressVerified = true
 			}
-				
-			/**
-			def easypostEnabled = applicationService.getEasyPostEnabled()
-			if(easypostEnabled == "true"){
-				if(!addressVerified(accountInstance)){
-   					flash.error = "Address cannot be verified. Please update your address with valid information..."
-   			    	render(view: "customer_profile", model: [accountInstance: accountInstance, countries: Country.list()])
-   			    	return
-				}
-				accountInstance.addressVerified = true
-			}
-			**/
 			
 			
    			if (!accountInstance.save(flush: true)) {
@@ -456,13 +447,27 @@ class AccountController {
 
 		def accountInstance = new Account(params)
 
+				
+		if(params.username.contains(" ")){
+			flash.message = "Your username contains spaces, no spaces are allowed, sorry."
+			redirect(action: "customer_registration")
+			return
+		}
+		
+		
+		if(containsSpecialCharacters(params.username)){ 
+			flash.message = "No special characters allowed, only letters and numbers, no spaces either. Sorry!"
+			redirect(action: "customer_registration")
+			return
+		}  
+
+		
 		boolean captchaValid = simpleCaptchaService.validateCaptcha(params.captcha)
 		if(!captchaValid){
 			flash.message = "Your entry did not match the image. Please try again."
 			render(view: "customer_registration", model: [accountInstance: accountInstance])
 			return
 		}
-		
 		
 		if(params.password && params.passwordRepeat){
 			
@@ -526,6 +531,18 @@ class AccountController {
 	
 	}
 	
+
+	def containsSpecialCharacters(String str) {
+		Pattern p = Pattern.compile("[^A-Za-z0-9]", Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(str);
+		boolean b = m.find();
+
+		if (b){
+			return true
+		}
+		
+		return false
+	}
 	
 	@Secured(['permitAll'])
 	def complete(){
@@ -536,6 +553,19 @@ class AccountController {
 			redirect(action: "customer_registration")
 			return
 		}
+
+		if(params.username.contains(" ")){
+			flash.message = "Your username contains spaces, no spaces are allowed, apologies."
+			redirect(action: "customer_registration")
+			return
+		}
+		
+		
+		if(containsSpecialCharacters(params.username)){ 
+			flash.message = "No special characters allowed, only letters and numbers, no spaces either. Apologies!"
+			redirect(action: "customer_registration")
+			return
+		}  
 		
 		if(params.password && params.passwordRepeat){
 			

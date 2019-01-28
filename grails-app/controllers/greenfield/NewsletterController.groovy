@@ -19,6 +19,7 @@ class NewsletterController {
     	def account = new Account()
     	account.username = params.email
     	account.email = params.email
+    	account.emailOptIn = true
     	account.password = "change"
 
     	def existingAccount = Account.findByEmail(params.email)
@@ -87,7 +88,7 @@ class NewsletterController {
     	account.save(flush:true)
 
     	flash.message = "Successfully opted in account: " + account.email
-		redirect(controller:"account", action: "edit", id: account.id)
+		redirect(controller:"account", action: "admin_edit", id: account.id)
     }
 
 
@@ -111,6 +112,23 @@ class NewsletterController {
 
 		redirect(action: "list")
     }
+
+
+
+    @Secured(['ROLE_ADMIN'])
+    def admin_opt_out(Long id){
+    	def account = Account.get(id)
+    	if(!account){
+    		flash.message = "Unable to find account"
+    	}
+
+    	account.emailOptIn = false
+    	account.save(flush:true)
+
+    	flash.message = "Successfully opted out account: " + account.email
+		redirect(controller:"account", action: "admin_edit", id: account.id)
+    }
+
 
 
     @Secured(["permitAll"])

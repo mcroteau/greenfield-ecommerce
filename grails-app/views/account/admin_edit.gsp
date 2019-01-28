@@ -20,6 +20,9 @@
 	
 		<div class="form-container">
 		
+			<g:if test="${flash.message}">
+				<div class="alert alert-info" role="status">${flash.message}</div>
+			</g:if>
 
 			<h2>Edit Account			
 
@@ -33,9 +36,6 @@
 			<br class="clear"/>
 			
 			
-			<g:if test="${flash.message}">
-				<div class="message" role="status">${flash.message}</div>
-			</g:if>
 			
 			<g:hasErrors bean="${accountInstance}">
 			<ul class="errors" role="alert">
@@ -207,6 +207,11 @@
 						<input type="submit" value="Opt In Emails" class="btn btn-default"/>
 					</g:form>
 				</g:if>
+				<g:else>
+					<g:form controller="newsletter" action="admin_opt_out" method="post" id="${accountInstance.id}">
+						<input type="submit" value="Opt Out Emails" class="btn btn-default"/>
+					</g:form>
+				</g:else>
 			</div>
 	
 		</div>
