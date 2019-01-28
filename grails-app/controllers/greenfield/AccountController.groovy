@@ -11,13 +11,6 @@ import greenfield.common.BaseController
 import greenfield.common.ControllerConstants
 
 import grails.util.Environment
-/**
-import com.easypost.EasyPost
-import com.easypost.model.Address
-import com.easypost.model.Parcel
-import com.easypost.model.Shipment
-import com.easypost.exception.EasyPostException
-**/
 
 import org.greenfield.Account
 import org.greenfield.Role
@@ -427,8 +420,17 @@ class AccountController {
 	
 	
 	@Secured(['permitAll'])
-	def complete_signup(){}
+	def complete_signup(){
+		def accountInstance = Account.get(params.id)
+		if(!accountInstance){
+			flash.message = "Unable to find your account information... please register for a new account or contact support if this continues"
+			redirect(action: "customer_registration")
+			return
+		}
+		[accountInstance: accountInstance]
+	}
 	
+
 
 	@Secured(['permitAll'])
 	def customer_registration(){}
@@ -556,14 +558,14 @@ class AccountController {
 
 		if(params.username.contains(" ")){
 			flash.message = "Your username contains spaces, no spaces are allowed, apologies."
-			redirect(action: "customer_registration")
+			redirect(action: "complete_signup", params: [id: accountInstance.id])
 			return
 		}
 		
 		
 		if(containsSpecialCharacters(params.username)){ 
 			flash.message = "No special characters allowed, only letters and numbers, no spaces either. Apologies!"
-			redirect(action: "customer_registration")
+			redirect(action: "complete_signup", params: [id: accountInstance.id])
 			return
 		}  
 		
@@ -592,7 +594,7 @@ class AccountController {
 						redirect(controller : 'auth', action: 'customer_login', params : [ accountInstance: accountInstance, username : params.username, password : params.password, new_account : true])
 			
 					}else{
-						flash.message = "There was a problem with your registration, please try again or contact the administrator"
+						flash.message = "There was a problem with your registration, please try again or contact the support. Username may be in use."
 						render(view: "complete_signup", model: [accountInstance: accountInstance])
 						return
 					}
@@ -600,17 +602,17 @@ class AccountController {
 				
 				}else{
 					flash.message = "Password must be at least 5 characters long.  Please try again"
-					render(view: "customer_registration", model: [accountInstance: accountInstance])
+					render(view: "complete_signup", model: [accountInstance: accountInstance])
 				}
 	
 			}else{
 				//passwords don't match
 				flash.message = "Passwords don't match.  Please try again"
-				render(view: "customer_registration", model: [accountInstance: accountInstance])
+				render(view: "complete_signup", model: [accountInstance: accountInstance])
 			}
 		}else{
 			flash.message = "Passwords cannot be blank"
-			render(view: "customer_registration", model: [accountInstance: accountInstance])
+			render(view: "complete_signup", model: [accountInstance: accountInstance])
 		}
 	}
 
