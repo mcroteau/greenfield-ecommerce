@@ -172,7 +172,10 @@ page import="org.greenfield.Transaction"
 
 				<div id="newsletter-signups-link">
 					<g:link controller="newsletter" action="list">Newsletter Signups</g:link>
+					&nbsp;&nbsp;
+					<g:link controller="account" action="export">Export All CSV</g:link>
 				</div>
+
 			</g:if>
 			<g:else>
 				<br/>

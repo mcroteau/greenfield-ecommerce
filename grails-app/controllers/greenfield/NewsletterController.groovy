@@ -1,5 +1,6 @@
 package greenfield
 
+import static org.springframework.http.HttpStatus.OK
 import grails.plugin.springsecurity.annotation.Secured
 
 import org.greenfield.Account
@@ -8,6 +9,9 @@ import org.greenfield.Account
 class NewsletterController {
 
     static allowedMethods = [signup: ["GET", "POST"], opt_opt: "POST"]
+    
+    String csvMimeType
+    String encoding
 
 
     @Secured(['permitAll'])
@@ -39,7 +43,7 @@ class NewsletterController {
     	if(!account.save(flush:true)){
     		flash.message = "Please enter a valid email address"
     	}else{
-    		flash.message = "Successfully signed up for news & updates"
+    		flash.message = "<strong>" + account.email + "</strong> : Successfully signed up for news & updates"
     	}
 
 
@@ -62,6 +66,7 @@ class NewsletterController {
     }
 
 
+
     @Secured(['ROLE_ADMIN'])
     def opt_in(Long id){
     	def account = Account.get(id)
@@ -75,6 +80,7 @@ class NewsletterController {
     	flash.message = "Successfully opted in account: " + account.email
 		redirect(action: "index")
     }
+
 
 
     @Secured(['ROLE_ADMIN'])
@@ -156,6 +162,33 @@ class NewsletterController {
 
 		[accountsList: accountsList, accountsTotal: Account.countByEmailOptIn(true)]
     }
+
+
+    @Secured(['ROLE_ADMIN'])
+    def export(){
+        def accountsCsvArray = []
+        def accounts = Account.findAllByEmailOptIn(true)
+
+        accounts.each { account ->
+            accountsCsvArray.add(account.email)
+        }
+
+        def filename = "account-emails.csv"
+        def outs = response.outputStream
+        response.status = OK.value()
+        response.contentType = "${csvMimeType};charset=${encoding}";
+        response.setHeader "Content-disposition", "attachment; filename=${filename}"
+ 
+        accountsCsvArray.each { String line ->
+            outs << "${line}\n"
+        }
+ 
+        outs.flush()
+        outs.close()
+    } 
+
+
+
 
 
 }

@@ -1,5 +1,5 @@
 body, html{
-	background:#efefef;
+	background:#f8f8f8;
 	text-align:center;
 }
 .clear{clear:both;}
@@ -188,6 +188,7 @@ body, html{
     	margin: 8px 10px 0px 0px;
     	color: #999;
 }
+
 
 
 #footer{

@@ -222,6 +222,7 @@ class ApplicationService {
 		section = section.replace("[[REGISTER]]", getRegister())
 		section = section.replace("[[ORDER_HISTORY]]", getOrderHistory())
 		section = section.replace("[[ADMIN_LINK]]", getAdminLink())
+		section = section.replace("[[NEWSLETTER_SIGNUP]]", getNewsletterSignup())
 		
 		if(section.contains("[[GOOGLE_ANALYTICS]]")) section = section.replace("[[GOOGLE_ANALYTICS]]", getGoogleAnalyticsCode())
 		
@@ -280,111 +281,6 @@ class ApplicationService {
 	
 	
 	
-	
-	
-	
-	/** OLD GET HEADER METHODS **/
-	/**
-	def refresh(){
-		if(!grailsApplication){
-			grailsApplication = Holders.grailsApplication
-		}
-		
-		File layoutFile = grailsApplication.mainContext.getResource("templates/storefront/layout-wrapper.html").file
-		String layoutContent = layoutFile.text
-		
-		
-		def layout = Layout.findByName("STORE_LAYOUT").content
-		layoutContent = layoutContent.replace("[[STORE_LAYOUT]]", layout)
-
-		String[] split = layoutContent.split("\\[\\[CONTENT\\]\\]");
-		
-		header = split[0];
-		
-		header = header.replace("[[SEARCH_BOX]]", getSearchBox())
-		header = header.replace("[[SHOPPING_CART]]", getShoppingCart())
-		header = header.replace("[[ACCOUNT]]", getAccount())
-		header = header.replace("[[GREETING]]", getGreeting())
-		header = header.replace("[[LOGIN]]", getLogin())
-		header = header.replace("[[LOGOUT]]", getLogout())
-		header = header.replace("[[REGISTER]]", getRegister())
-		header = header.replace("[[ORDER_HISTORY]]", getOrderHistory())
-		header = header.replace("[[ADMIN_LINK]]", getAdminLink())
-
-
-		footer = split[1];
-
-		footer = footer.replace("[[SEARCH_BOX]]", getSearchBox())
-		footer = footer.replace("[[SHOPPING_CART]]", getShoppingCart())
-		footer = footer.replace("[[ACCOUNT]]", getAccount())
-		footer = footer.replace("[[GREETING]]", getGreeting())
-		footer = footer.replace("[[LOGIN]]", getLogin())
-		footer = footer.replace("[[LOGOUT]]", getLogout())
-		footer = footer.replace("[[REGISTER]]", getRegister())
-		footer = footer.replace("[[ORDER_HISTORY]]", getOrderHistory())
-		footer = footer.replace("[[ADMIN_LINK]]", getAdminLink())
-		
-		footer = footer.replace("[[GOOGLE_ANALYTICS]]", getGoogleAnalyticsCode())
-		
-		def storeName = getStoreName().replaceAll("[^\\w\\s]",""); 
-		header = header.replace("[[SITE_NAME]]", storeName)
-		footer = footer.replace("[[SITE_NAME]]", storeName)
-	}
-	
-	
-	
-
-	
-	
-	def getHeader(Catalog catalogInstance, String title, boolean productPage, GrailsParameterMap params){
-		if(!header)refresh()
-
-		def title_full = getStoreName() + " : " + title
-		
-		header = header.replace("[[TITLE]]", title_full)
-		header = header.replace("[[META_KEYWORDS]]", getMetaKeywords())
-		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
-		header = header.replace("[[CONTEXT_NAME]]", getContextName())
-		header = header.replace("[[CATALOGS]]", getCatalogsByCatalog(catalogInstance, params))
-        header = header.replace("[[CATALOG_FILTERS]]", getCatalogFilters(catalogInstance, productPage, params))
-
-		return header
-	}
-	
-	
-	def getHeader(String title){
-		if(!header)refresh()
-		
-		def title_full = getStoreName() + " : " + title
-		
-		header = header.replace("[[TITLE]]", title_full)
-		header = header.replace("[[META_KEYWORDS]]", getMetaKeywords())
-		header = header.replace("[[META_DESCRIPTION]]", getMetaDescription())
-		header = header.replace("[[CONTEXT_NAME]]", getContextName())
-		header = header.replace("[[CATALOGS]]", getCatalogsMain())
-        header = header.replace("[[CATALOG_FILTERS]]", "")
-
-		return header
-	}
-	
-	
-	def getHeader(){
-		if(!header)refresh()
-		header = header.replace("[[TITLE]]", "Greenfield")
-		header = header.replace("[[CATALOGS]]", getCatalogsMain())
-		return header
-	}
-	
-	
-	def getFooter(){
-		if(!footer)refresh()
-		footer = footer.replace("[[CATALOGS]]", getCatalogsMain())
-		footer = footer.replace("[[CONTEXT_NAME]]", getContextName())
-		return footer
-	}
-	**/
-
-
 
 	def getCatalogsByCatalog(catalogInstance, params){
 		if(!catalogInstance){
@@ -868,6 +764,21 @@ class ApplicationService {
 		
 		return "<a href=\"/${getContextName()}/admin\" id=\"admin-link\">Administration</a>"
 	}
+
+
+	def getNewsletterSignup(){
+		def newsletterHtml = "<div id=\"newsletter-signup\" class=\"pull-right\">"
+		newsletterHtml+= "<form action=\"/${getContextName()}/newsletter/signup\" method=\"post\">"
+		newsletterHtml+= "<input type=\"submit\" class=\"btn btn-default\" value=\"Sign Up\"/>"
+		newsletterHtml+= "<input type=\"text\" name=\"email\" class=\"form-control\" value=\"\" placeholder=\"enter email address\"/>"
+		newsletterHtml+= "<span>Sign up for news &amp; updates</span>"
+		newsletterHtml+= "<br class=\"clear\"/>"
+		newsletterHtml+= "</form>"
+		newsletterHtml+="</div>"
+		newsletterHtml+= "<br class=\"clear\"/>"
+		return newsletterHtml
+	}
+
 	
 	def hasAdministrationRole(){
 		if(!springSecurityService){

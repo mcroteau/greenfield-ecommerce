@@ -5,7 +5,7 @@
 ${raw(applicationService.getDefaultHeader("Newsletter Signup"))}
 
 	<g:if test="${flash.message}">
-		<div class="alert alert-info" style="margin-top:10px;">${flash.message}</div>
+		<div class="alert alert-info" style="margin-top:10px;">${raw(flash.message)}</div>
 	</g:if>
 
 

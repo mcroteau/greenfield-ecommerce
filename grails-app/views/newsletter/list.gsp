@@ -95,8 +95,9 @@ page import="org.greenfield.Transaction"
 				</div>
 
 				<div id="newsletter-signups-link">
-					<g:link controller="newsletter" action="list">Newsletter Signups</g:link>
+					<g:link controller="newsletter" action="export">Export All CSV</g:link>
 				</div>
+				
 			</g:if>
 			<g:else>
 				<br/>

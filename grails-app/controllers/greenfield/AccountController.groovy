@@ -1,5 +1,7 @@
 package greenfield
 
+import static org.springframework.http.HttpStatus.OK
+
 import org.springframework.dao.DataIntegrityViolationException
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.apache.shiro.authc.UsernamePasswordToken
@@ -49,6 +51,8 @@ class AccountController {
 	def simpleCaptchaService
 	def currencyService
 
+    String csvMimeType
+    String encoding
 
 	@Secured(['ROLE_CUSTOMER', 'ROLE_ADMIN'])
 	def customer_profile(){
@@ -1002,10 +1006,55 @@ class AccountController {
 		}
 	}
 	
+
+    @Secured(['ROLE_ADMIN'])
+    def export(){
+        def accountsCsvArray = []
+        def accounts = Account.list()
+
+        accounts.eachWithIndex { account, index ->
+        	def accountLine = ""
+			accountLine+= account?.uuid + ","
+        	accountLine+= account?.name + ","
+        	accountLine+= account?.email + ","
+			accountLine+= account?.address1 + ","
+			accountLine+= account?.address2 + ","
+			accountLine+= account?.city + ","
+			accountLine+= account?.state?.name + ","
+			accountLine+= account?.country?.name + ","
+			accountLine+= account?.zip + ","
+			accountLine+= account?.phone + ","
+			accountLine+= account?.emailOptIn
+			accountsCsvArray.add(accountLine)
+        }
+
+        def filename = "accounts.csv"
+        def outs = response.outputStream
+        response.status = OK.value()
+        response.contentType = "${csvMimeType};charset=${encoding}";
+        response.setHeader "Content-disposition", "attachment; filename=${filename}"
+ 
+        accountsCsvArray.each { String line ->
+        	println line
+            outs << "${line}\n"
+        }
+ 
+        outs.flush()
+        outs.close()
+    } 
+
+
+
 	@Secured(['permitAll']) 
     def captcha() {
         def captcha = session[SimpleCaptchaService.CAPTCHA_IMAGE_ATTR] ?: simpleCaptchaService.newCaptcha()
         ImageIO.write(captcha, "PNG", response.outputStream)
     }
+
+
+
+
+
+
 
 }
