@@ -23,9 +23,7 @@ public class ShippingApiHelper {
 		address.street1 = customer.address1
 		address.street2 = customer.address2
 		address.city = customer.city
-		println "..."
-		address.country = customer.country.name
-		println "here..."
+		address.country = customer?.country?.name
 		if(customer.state)address.state = customer.state.name
 		if(customer.phone)address.phone = customer.phone
 		address.zip = customer.zip
