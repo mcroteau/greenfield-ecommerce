@@ -1,6 +1,6 @@
 # Greenfield - opengreenfield.org
 
-Greenfield is a lightweight eCommerce application focused on quick and easy setup. Greenfield is built on Grails, a full stack web application framework for the JVM. [http://www.grails.org](Learn more about Grails)
+Greenfield is an Open Source Java/Groovy eCommerce application focused on easy setup. Greenfield leverages the best in breeds within the Java echo-system including Groovy, Grails, Spring, Hibernate, Sitemesh, Gradle.
 
 
 ## Requirements
@@ -9,17 +9,12 @@ Greenfield is a lightweight eCommerce application focused on quick and easy setu
 	* Can easily be modified for most RDBMS
 
 
-## Get it running
+## Run Greenfield
 	* Install Grails
 	* Run 'grails run-app' in base 'greenfield' directory
 	* Browse to 'http://localhost:8080/greenfield/admin'
 	* Default username : admin
 	* Default password : admin
-
-
-## Get it running with data
-	* Locate BootStrap.groovy 'grails-app/init'
-	* Uncomment the following 'createDevelopmentData()'
 
 
 ## Contact
