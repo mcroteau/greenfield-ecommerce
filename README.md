@@ -1,3 +1,13 @@
+# Greenfield is now HILO 
+
+# [https://github.com/mcroteau/Hilo](https://github.com/mcroteau/Hilo)
+
+![Hilo Open Commerce](http://openabc.xyz/images/hilo-icon.png)
+
+
+You can still run checkout and run Greenfield but is no longer actively supported.
+
+
 # Greenfield - opengreenfield.org
 
 Greenfield is an Open Source Java/Groovy eCommerce application focused on easy setup. Greenfield leverages the best in breeds within the Java echo-system including Groovy, Grails, Spring, Hibernate, Sitemesh, Gradle.
