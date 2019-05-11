@@ -1,4 +1,4 @@
-# Greenfield is now HILO 
+# Greenfield is now Hilo 
 
 [https://github.com/mcroteau/Hilo](https://github.com/mcroteau/Hilo)
 
