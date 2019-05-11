@@ -1,6 +1,6 @@
 # Greenfield is now HILO 
 
-# [https://github.com/mcroteau/Hilo](https://github.com/mcroteau/Hilo)
+[https://github.com/mcroteau/Hilo](https://github.com/mcroteau/Hilo)
 
 ![Hilo Open Commerce](http://openabc.xyz/images/hilo-icon.png)
 
