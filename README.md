@@ -1,8 +1,8 @@
 # Greenfield is now Hilo 
 
-[https://github.com/mcroteau/Hilo](https://github.com/mcroteau/Hilo)
+[https://github.com/mcroteau/Hilo](https://github.com/mcroteau/Pelican)
 
-![Hilo Open Commerce](http://openabc.xyz/images/hilo-icon.png)
+![Pelican Open Commerce](http://openabc.xyz/images/hilo-icon.png)
 
 
 You can still run checkout and run Greenfield but is no longer actively supported.
